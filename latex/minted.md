@@ -1,0 +1,48 @@
+---
+title: Tips for using minted
+date: 2020-02-12
+---
+
+## About minted
+- minted is a package that enable to add syntax highlight by using Pygments library.
+
+## Installation
+- Pygments is written in Python and can be installed by pip
+```
+$ pip install Pygments
+```
+
+- Package minted is already installed if you use texlive.
+
+## Usage
+- At the preamble add:
+```
+\usepackage[cache=false]{minted}
+\usepackage{xcolor}
+
+\definecolor{code-bg}{rgb}{0.95, 0.95, 0.95}
+```
+
+- In the document, you can use syntax highlight like this:
+```
+\begin{minted}[breaklines, linenos, frame=lines, bgcolor=code-bg]{c}
+#include <stdio.h>
+int main(){
+    printf("Hello, World!");
+}
+\end{minted}
+```
+
+- You can include source file by using `\inputminted`:
+```
+\inputminted[breaklines, linenos, frame=lines, bgcolor=code-bg]{python}{src/hello.py}
+```
+
+- Options:
+
+|Option|Description|
+|:--|:--|
+|breaklines | Insert break when source code exceeds page width.|
+|linenos | Add line numbers.|
+|frame=lines | Add frame (line, single, ...).|
+|bgcolor=code-bg | Add background color.|

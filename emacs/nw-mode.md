@@ -8,6 +8,7 @@ date: 2020-02-12
 
 ## How to resolve the problem
 - Add the following command.
+
 ```lisp
 (if (display-graphic-p)
   (progn
@@ -30,4 +31,3 @@ date: 2020-02-12
 > This function returns t if display is a graphic display capable of displaying several frames and several different fonts at once. This is true for displays that use a window system such as X, and false for text terminals. 
 >
 > --- https://www.gnu.org/software/emacs/manual/html_node/elisp/Display-Feature-Testing.html
-

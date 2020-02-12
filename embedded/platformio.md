@@ -5,11 +5,13 @@ date: 2020-02-12
 
 ## Installation
 - PlatformIO is written in Python. You can install following command:
+
 ```
 $ pip3 install platformio
 ```
 
 ## Basic usage
+
 > [!TIP]
 > You can use `pio` instead of `platformio`.
 
@@ -28,6 +30,7 @@ $ pip3 install platformio
 
 ## Directory structure
 - The directory structure looks like this.
+
 ```
 ./
 ├── .gitignore

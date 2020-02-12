@@ -4,6 +4,7 @@ date: 2020-02-12
 ---
 
 ## Installation
+
 ```
 $ sudo apt install ffmpeg
 ```

@@ -7,12 +7,14 @@ date: 2020-02-12
 ### Create new command
 - `\newcomand` and `\renewcommand` allow you to define new command.
 - Usage:
+
 ```
 \newcommand{\command-name}[argument-number][default]{definition}
 \renewcommand{\command-name}[argument-number][default]{definition}
 ```
 
 - Example:
+
 ```
 \newcommand{\myfig}[4][width=5cm]{
   \begin{figure}[H]
@@ -27,12 +29,14 @@ date: 2020-02-12
 ### Create new environment
 - `\newenvironment` and `\renewenvironment` allow you to define new environment.
 - Usage:
+
 ```
 \newenvironment{environment-name}[argument-number][default]{before}{after}
 \renewenvironment{environment-name}[argument-number][default]{before}{after}
 ```
 
 - Example:
+
 ```
 \definecolor{code-bg}{rgb}{0.95, 0.95, 0.95}
 
@@ -43,6 +47,7 @@ date: 2020-02-12
 
 ## Add style files
 - Put your file under `/usr/local/share/texmf/tex/latex` and execute `mktexlsr` as a root user.
+
 ```
 username@ubuntu:/usr/local/share/texmf/tex/latex/mypkg
 $ sudo mktexlsr

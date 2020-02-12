@@ -8,6 +8,7 @@ date: 2020-02-12
 
 ## Installation
 - Pygments is written in Python and can be installed by pip
+
 ```
 $ pip install Pygments
 ```
@@ -16,6 +17,7 @@ $ pip install Pygments
 
 ## Usage
 - At the preamble add:
+
 ```
 \usepackage[cache=false]{minted}
 \usepackage{xcolor}
@@ -24,6 +26,7 @@ $ pip install Pygments
 ```
 
 - In the document, you can use syntax highlight like this:
+
 ```
 \begin{minted}[breaklines, linenos, frame=lines, bgcolor=code-bg]{c}
 #include <stdio.h>
@@ -34,6 +37,7 @@ int main(){
 ```
 
 - You can include source file by using `\inputminted`:
+
 ```
 \inputminted[breaklines, linenos, frame=lines, bgcolor=code-bg]{python}{src/hello.py}
 ```

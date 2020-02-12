@@ -1,5 +1,5 @@
 ---
-title: LaTeX cheat sheet
+title: Cheat sheet
 date: 2020-02-12
 ---
 

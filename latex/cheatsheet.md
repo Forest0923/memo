@@ -127,5 +127,5 @@ int main(){
 ## Footnote
 
 ```
-\footnote[number]{text}</code></pre>
+\footnote[number]{text}
 ```

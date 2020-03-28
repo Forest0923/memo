@@ -1,2 +1,0 @@
-# Embedded development
-- [PlatformIO](platformio)

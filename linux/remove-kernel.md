@@ -20,3 +20,8 @@ date: 2020-03-28
 update-grub
 ```
 
+## Reference
+- How can I remove compiled kernel
+  - https://askubuntu.com/questions/594443/how-can-i-remove-compiled-kernel
+- Kernel/Removal
+  - https://wiki.gentoo.org/wiki/Kernel/Removal

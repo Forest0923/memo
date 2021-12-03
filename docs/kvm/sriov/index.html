@@ -1,0 +1,670 @@
+<!doctype html><html lang=en dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="System #   Hardware  CPU: Intel Core-i9 9900K NIC: Intel Corporation I350 Gigabit Network Connection Motherboard: PRIME H310M-AT R2.0   OS  Host: Arch Guest  VM1: ubuntu 20.04 server VM2: ubuntu 20.04 server      Hardware setting #   Enable VT-d on UEFI BIOS  Enable SR-IOV #   Add modprobe config (/etc/modprobe.d/igb.conf)  options igb max_vfs=4 #blacklist igbvf  Add kernel options in order to enable IOMMU by editing /etc/default/grub:  -GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34; +GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;  Update grub config:  sudo grub-mkconfig -o /boot/grub/grub.">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Configurations for Single Root I/O Virtualization">
+<meta property="og:description" content="System #   Hardware  CPU: Intel Core-i9 9900K NIC: Intel Corporation I350 Gigabit Network Connection Motherboard: PRIME H310M-AT R2.0   OS  Host: Arch Guest  VM1: ubuntu 20.04 server VM2: ubuntu 20.04 server      Hardware setting #   Enable VT-d on UEFI BIOS  Enable SR-IOV #   Add modprobe config (/etc/modprobe.d/igb.conf)  options igb max_vfs=4 #blacklist igbvf  Add kernel options in order to enable IOMMU by editing /etc/default/grub:  -GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34; +GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;  Update grub config:  sudo grub-mkconfig -o /boot/grub/grub.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://example.org/docs/kvm/sriov/"><meta property="article:section" content="docs">
+<meta property="article:published_time" content="2021-11-29T12:41:46+09:00">
+<meta property="article:modified_time" content="2021-11-29T12:41:46+09:00">
+<title>Configurations for Single Root I/O Virtualization | Memo</title>
+<link rel=manifest href=/manifest.json>
+<link rel=icon href=/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://example.org/jp/docs/kvm/sriov/ title="Configurations for Single Root I/O Virtualization">
+<link rel=stylesheet href=/book.min.89a77f7e702a8626749b948bbfb01109823daf6c1246ca407d1378833494c402.css integrity="sha256-iad/fnAqhiZ0m5SLv7ARCYI9r2wSRspAfRN4gzSUxAI=" crossorigin=anonymous>
+<script defer src=/flexsearch.min.js></script>
+<script defer src=/en.search.min.4637bd7c9774790f4c95f8e23aed774e418fcf33b3a4d15f6a0970ead22e5dca.js integrity="sha256-Rje9fJd0eQ9MlfjiOu13TkGPzzOzpNFfaglw6tIuXco=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/><span>Memo</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul class=book-languages>
+<li>
+<input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between">
+<a role=button class="flex align-center">
+<img src=/svg/translate.svg class=book-icon alt=Languages>
+English
+</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/jp/docs/kvm/sriov/>
+Japanese
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<a href=https://github.com/Forest0923 target=_blank rel=noopener>
+GitHub
+</a>
+</li>
+<li>
+<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
+GitLab
+</a>
+</li>
+</ul>
+<ul>
+<li>
+<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
+<a role=button>Linux Dev</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/linux-dev/inst-kernel/>Install Kernel</a>
+</li>
+<li>
+<a href=http://example.org/docs/linux-dev/rm-kernel/>Remove Kernel</a>
+</li>
+<li>
+<a href=http://example.org/docs/linux-dev/impl-systemcall/>Implementing Original Systemcall</a>
+</li>
+<li>
+<a href=http://example.org/docs/linux-dev/impl-hypercall/>Implementing Original Hypercall</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b0282bf15e558132549c4a272eba29d7 class=toggle>
+<label for=section-b0282bf15e558132549c4a272eba29d7 class="flex justify-between">
+<a role=button>My Man Pages</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/my-manual/tar-zip/>File Compression and Decompression (tar, zip, lzh, bz2)</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/nkf/>File Encoding with nkf</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/ffmpeg/>MP4 Manipulation with ffmpeg</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/platformio/>Embedded System Development with platformio</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/fwupd/>Filmware Update with fwupd</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/find-grep/>Source Code Reading with find and grep</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/doc-gen/>Document Generator (doxygen, sourcetrail)</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/dd/>Creating Bootable USB with dd</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/emacs/>Configuration of Emacs</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-e7f7b78c1b08d611bac4551c02978c8f class=toggle>
+<label for=section-e7f7b78c1b08d611bac4551c02978c8f class="flex justify-between">
+<a role=button>Linux Cfg</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/linux-cfg/gnome/>Gnome configuration</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-af9f8fce9fee3f548c5751a8a2f5ece1 class=toggle checked>
+<label for=section-af9f8fce9fee3f548c5751a8a2f5ece1 class="flex justify-between">
+<a role=button>Kvm</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/kvm/install/>Install KVM</a>
+</li>
+<li>
+<a href=http://example.org/docs/kvm/virsh/>Usage of virsh</a>
+</li>
+<li>
+<a href=http://example.org/docs/kvm/gpu-passthrough/>Configurations for Gpu Passthrough</a>
+</li>
+<li>
+<a href=http://example.org/docs/kvm/sriov/ class=active>Configurations for Single Root I/O Virtualization</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-fb51f89dbec2637fe7d4c9b6287148ed class=toggle>
+<label for=section-fb51f89dbec2637fe7d4c9b6287148ed class="flex justify-between">
+<a role=button>Archlinux</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux with BTRFS (and Backup with Timeshift)</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux with BTRFS (and Backup with Snapper)</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/dual-boot-multi/>Dual Booting on Multiple Disks (Windows10 and ArchLinux)</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/dual-boot-mono/>Dual Booting on Mono Disk (Windows10 and ArchLinux)</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/desktop-env/>Desktop Environment</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/bspwm/>Configurtions for BSPWM</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/common-apps/>Installing Common Applications in Arch Linux</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/power-mng/>Power Management</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/abs/>Arch Build System</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/spotify/>Configurations for Spotify</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between">
+<a role=button>Ubuntu</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/ubuntu/initial-settings/>Initial Settings for Ubuntu</a>
+</li>
+<li>
+<a href=http://example.org/docs/ubuntu/common-apps/>Installing Common Apps in Ubuntu</a>
+</li>
+<li>
+<a href=http://example.org/docs/ubuntu/haribote-os/>HariboteOS with Ubuntu</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between">
+<a role=button>Android</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/android/inst-x86/>Install Android x86</a>
+</li>
+<li>
+<a href=http://example.org/docs/android/apk/>Decompile APK</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between">
+<a role=button>Git</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/git/usecases/>Usecases of Git</a>
+</li>
+<li>
+<a href=http://example.org/docs/git/github-ssh/>Connect to GitHub with SSH</a>
+</li>
+<li>
+<a href=http://example.org/docs/git/lfs/>LFS (Large File Storage)</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-65032103456e8d3264e1b113fe868d5f class=toggle>
+<label for=section-65032103456e8d3264e1b113fe868d5f class="flex justify-between">
+<a role=button>Lang</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/lang/rs-inst/>Install Rust</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/rs-asm/>Inline Assembly in Rust</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/rs-systemcall/>Call Systemcall in Rust</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/sh-cs/>Cheat Sheet for Shell Script</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/hs-inst/>Install Haskell</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/pl-inst/>Install Prolog</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/curry-inst/>Install Curry</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between">
+<a role=button>Latex</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/latex/inst-tex-live/>Install TeX Live</a>
+</li>
+<li>
+<a href=http://example.org/docs/latex/latex-cs/>Cheat Sheet for LaTeX</a>
+</li>
+<li>
+<a href=http://example.org/docs/latex/sty/>Using Custom Style File</a>
+</li>
+<li>
+<a href=http://example.org/docs/latex/minted/>Using minted for Syntax highlighting</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between">
+<a role=button>Web</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/web/devtools/>Web Development</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between">
+<a role=button>Security</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/security/pkc/>Public Key Cryptography</a>
+</li>
+<li>
+<a href=http://example.org/docs/security/gpg/>GPG Key</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<a href=/posts/>
+Posts
+</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>Configurations for Single Root I/O Virtualization</strong>
+<label for=toc-control>
+<img src=/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li><a href=#system>System</a></li>
+<li><a href=#hardware-setting>Hardware setting</a></li>
+<li><a href=#enable-sr-iov>Enable SR-IOV</a></li>
+<li><a href=#check-support-for-acs-access-control-services>Check support for ACS (Access Control Services)</a></li>
+<li><a href=#acs-override-patch>ACS override patch</a></li>
+<li><a href=#create-vms>Create VMs</a></li>
+<li><a href=#ip-info>IP info</a></li>
+<li><a href=#speedtest>Speedtest</a></li>
+<li><a href=#references>References</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+</header>
+<article class=markdown><h2 id=system>
+System
+<a class=anchor href=#system>#</a>
+</h2>
+<ul>
+<li>Hardware
+<ul>
+<li>CPU: Intel Core-i9 9900K</li>
+<li>NIC: Intel Corporation I350 Gigabit Network Connection</li>
+<li>Motherboard: PRIME H310M-AT R2.0</li>
+</ul>
+</li>
+<li>OS
+<ul>
+<li>Host: Arch</li>
+<li>Guest
+<ul>
+<li>VM1: ubuntu 20.04 server</li>
+<li>VM2: ubuntu 20.04 server</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id=hardware-setting>
+Hardware setting
+<a class=anchor href=#hardware-setting>#</a>
+</h2>
+<ul>
+<li>Enable VT-d on UEFI BIOS</li>
+</ul>
+<h2 id=enable-sr-iov>
+Enable SR-IOV
+<a class=anchor href=#enable-sr-iov>#</a>
+</h2>
+<ul>
+<li>Add modprobe config (/etc/modprobe.d/igb.conf)</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>options igb max_vfs=4
+#blacklist igbvf
+</code></pre></div><ul>
+<li>Add kernel options in order to enable IOMMU by editing /etc/default/grub:</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34;
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;
+</span></code></pre></div><ul>
+<li>Update grub config:</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre></div><ul>
+<li>Reboot</li>
+</ul>
+<blockquote>
+<p><strong>NOTE</strong>: if error occurs</p>
+<ul>
+<li>dmesg</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>mori@arch-server ~ % sudo dmesg | grep igb
+[    2.070715] igb: Intel(R) Gigabit Ethernet Network Driver
+[    2.070717] igb: Copyright (c) 2007-2014 Intel Corporation.
+[    2.126386] igb 0000:01:00.0: added PHC on eth0
+[    2.126389] igb 0000:01:00.0: Intel(R) Gigabit Ethernet Network Connection
+[    2.126389] igb 0000:01:00.0: eth0: (PCIe:5.0Gb/s:Width x4) 80:61:5f:05:e2:ec
+[    2.126465] igb 0000:01:00.0: eth0: PBA No: 106300-000
+[    2.126465] igb 0000:01:00.0: Using MSI-X interrupts. 8 rx queue(s), 8 tx queue(s)
+[    2.180163] igb 0000:01:00.1: added PHC on eth1
+[    2.180164] igb 0000:01:00.1: Intel(R) Gigabit Ethernet Network Connection
+[    2.180165] igb 0000:01:00.1: eth1: (PCIe:5.0Gb/s:Width x4) 80:61:5f:05:e2:ed
+[    2.180238] igb 0000:01:00.1: eth1: PBA No: 106300-000
+[    2.180239] igb 0000:01:00.1: Using MSI-X interrupts. 8 rx queue(s), 8 tx queue(s)
+[    2.274584] igb 0000:01:00.0 enp1s0f0: renamed from eth0
+[    2.317450] igb 0000:01:00.1 enp1s0f1: renamed from eth1
+[    5.510141] igb 0000:01:00.0 enp1s0f0: igb: enp1s0f0 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX/TX
+[    6.363591] igb 0000:01:00.1 enp1s0f1: igb: enp1s0f1 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX/TX
+[  643.338345] igb 0000:01:00.0: can&#39;t enable 2 VFs (bus 02 out of range of [bus 01])
+[  687.182846] igb 0000:01:00.0: can&#39;t enable 2 VFs (bus 02 out of range of [bus 01])
+[  705.005251] igb 0000:01:00.0: can&#39;t enable 1 VFs (bus 02 out of range of [bus 01])
+</code></pre></div><ul>
+<li>Add another kernel option:</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses&#34;
+</span></code></pre></div><ul>
+<li><code>pci=assign-busses</code>: Make the kernel always assign all PCI bus numbers
+<ul>
+<li><a href=https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html>https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html</a></li>
+</ul>
+</li>
+<li>Update grub config:</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre></div><ul>
+<li>Reboot</li>
+<li>Check iommu_group</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>find /sys/kernel/iommu_groups/ -type l
+</code></pre></div></blockquote>
+<h2 id=check-support-for-acs-access-control-services>
+Check support for ACS (Access Control Services)
+<a class=anchor href=#check-support-for-acs-access-control-services>#</a>
+</h2>
+<ul>
+<li>List pci devices</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>% lspci | grep Ethernet
+01:00.0 Ethernet controller: Intel Corporation I350 Gigabit Network Connection (rev 01)
+01:00.1 Ethernet controller: Intel Corporation I350 Gigabit Network Connection (rev 01)
+02:10.0 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:10.1 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:10.4 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:10.5 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:11.0 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:11.1 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:11.4 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:11.5 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 15)
+</code></pre></div><ul>
+<li>ACS support:</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo lspci -vv | grep <span style=color:#e6db74>&#34;Access Control Services&#34;</span> -C <span style=color:#ae81ff>5</span>
+</code></pre></div><ul>
+<li>Sample output:</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>...
+        Kernel driver in use: pcieport
+
+00:1d.0 PCI bridge: Intel Corporation 200 Series PCH PCI Express Root Port #11 (rev f0) (prog-if 00 [Normal decode])
+--
+                Device specific mode supported
+                Steering table in TPH capability structure
+        Capabilities: [1c0 v1] Latency Tolerance Reporting
+                Max snoop latency: 71680ns
+                Max no snoop latency: 71680ns
+        Capabilities: [1d0 v1] Access Control Services
+                ACSCap: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
+                ACSCtl: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
+        Kernel driver in use: igb
+        Kernel modules: igb
+
+--
+                Region 3: Memory at 00000000c8060000 (64-bit, prefetchable)
+                VF Migration: offset: 00000000, BIR: 0
+        Capabilities: [1a0 v1] Transaction Processing Hints
+...
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>        Capabilities: [1d0 v1] Access Control Services
+                ACSCap: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
+                ACSCtl: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
+</code></pre></div><ul>
+<li>ACSCap means ACS Capability. Plus or minus indicates if it is supported or not.</li>
+<li>ACSCtl shows enabled ACS capability. Plus or minus indicates if it is enabled or not.</li>
+</ul>
+<blockquote>
+<p><strong>NOTE</strong>: IOMMU Group</p>
+<p>In my case ACS not supported, so all network interfaces generated by SR-IOV belong to same iommu group.</p>
+<p>Even if we need just one of the interfaces, we have to pass through all of them to the vm.</p>
+<p>It is because same iommu group share the same IOVA (I/O Virtual Address) and IOMMU cannot identify devices.</p>
+</blockquote>
+<h2 id=acs-override-patch>
+ACS override patch
+<a class=anchor href=#acs-override-patch>#</a>
+</h2>
+<ul>
+<li>Overrides ACS (install linux-vfio)</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S linux-vfio
+</code></pre></div><ul>
+<li>Add kernel option</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses&#34;
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses pcie_acs_override=downstream&#34;
+</span></code></pre></div><ul>
+<li>Reboot and check kernel</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>mori@arch-server ~ % uname -a
+Linux arch-server 5.11.8-arch1-1-vfio #1 SMP PREEMPT Sat, 27 Mar 2021 08:40:28 +0000 x86_64 GNU/Linux
+</code></pre></div><h2 id=create-vms>
+Create VMs
+<a class=anchor href=#create-vms>#</a>
+</h2>
+<ul>
+<li>Creating VMs</li>
+</ul>
+<p><img src=ubuntu-vm-overview.png alt=Overview></p>
+<p><img src=ubuntu-vm-vcpu.png alt=vCPU></p>
+<p><img src=ubuntu-vm-mem.png alt=Memory></p>
+<p><img src=ubuntu-vm-iso.png alt=iso></p>
+<p><img src=ubuntu-vm-nic.png alt=NIC></p>
+<h2 id=ip-info>
+IP info
+<a class=anchor href=#ip-info>#</a>
+</h2>
+<ul>
+<li>Host (before boot VMs)</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>mori@arch-server ~ % ip a | grep enp1s
+3: enp1s0f0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    inet 192.168.0.170/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0
+4: enp1s0f1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    inet 192.168.0.171/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1
+6: enp1s0f0v1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.110/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v1
+7: enp1s0f0v2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.111/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v2
+8: enp1s0f0v3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.212/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v3
+10: enp1s0f1v1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.197/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v1
+11: enp1s0f1v2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.191/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v2
+12: enp1s0f1v3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.117/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v3
+19: enp1s0f0v0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.199/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v0
+20: enp1s0f1v0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.136/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v0
+</code></pre></div><ul>
+<li>Host (after boot VMs)</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>mori@arch-server ~ % ip a | grep enp1s
+3: enp1s0f0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    inet 192.168.0.170/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0
+4: enp1s0f1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    inet 192.168.0.171/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1
+6: enp1s0f0v1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.110/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v1
+7: enp1s0f0v2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.111/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v2
+8: enp1s0f0v3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.212/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v3
+10: enp1s0f1v1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.197/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v1
+11: enp1s0f1v2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.191/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v2
+12: enp1s0f1v3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.117/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v3
+</code></pre></div><ul>
+<li>VM1</li>
+</ul>
+<p><img src=vm1-ip.png alt=ip></p>
+<ul>
+<li>VM2</li>
+</ul>
+<p><img src=vm2-ip.png alt=ip></p>
+<h2 id=speedtest>
+Speedtest
+<a class=anchor href=#speedtest>#</a>
+</h2>
+<ul>
+<li>Host</li>
+</ul>
+<pre tabindex=0><code class=language-test data-lang=test>mori@arch-server ~ % speedtest-cli --server 15047
+Retrieving speedtest.net configuration...
+Testing from NTT (122.24.178.237)...
+Retrieving speedtest.net server list...
+Retrieving information for the selected server...
+Hosted by OPEN Project (via 20G SINET) (Tokyo) [1.82 km]: 50.513 ms
+Testing download speed................................................................................
+Download: 83.80 Mbit/s
+Testing upload speed......................................................................................................
+Upload: 98.05 Mbit/s
+</code></pre><ul>
+<li>VM1</li>
+</ul>
+<p><img src=vm1-speedtest.png alt=vm1-speedtest></p>
+<ul>
+<li>VM2</li>
+</ul>
+<p><img src=vm2-speedtest.png alt=vm2-speedtest></p>
+<h2 id=references>
+References
+<a class=anchor href=#references>#</a>
+</h2>
+<p><a href=https://downloadmirror.intel.com/13663/eng/readme_5.5.2.txt>https://downloadmirror.intel.com/13663/eng/readme_5.5.2.txt</a></p>
+<p><a href=https://qiita.com/m10i/items/980a350f898f28eac613>https://qiita.com/m10i/items/980a350f898f28eac613</a></p>
+<p><a href=https://metonymical.hatenablog.com/entry/2018/04/11/193408>https://metonymical.hatenablog.com/entry/2018/04/11/193408</a></p>
+<p><a href=https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin/blob/master/docs/vf-setup.md>https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin/blob/master/docs/vf-setup.md</a></p>
+<p><a href=https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/>https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/</a></p>
+<p><a href=https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_%28ACS_override_patch%29>https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_(ACS_override_patch)</a></p>
+<p><a href=https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive>https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive</a></p>
+<p><a href=https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu>https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu</a></p>
+</article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li><a href=#system>System</a></li>
+<li><a href=#hardware-setting>Hardware setting</a></li>
+<li><a href=#enable-sr-iov>Enable SR-IOV</a></li>
+<li><a href=#check-support-for-acs-access-control-services>Check support for ACS (Access Control Services)</a></li>
+<li><a href=#acs-override-patch>ACS override patch</a></li>
+<li><a href=#create-vms>Create VMs</a></li>
+<li><a href=#ip-info>IP info</a></li>
+<li><a href=#speedtest>Speedtest</a></li>
+<li><a href=#references>References</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

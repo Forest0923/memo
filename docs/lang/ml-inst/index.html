@@ -1,0 +1,356 @@
+<!doctype html><html lang=en dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Install OCaml">
+<meta property="og:description" content>
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://example.org/docs/lang/ml-inst/"><meta property="article:section" content="docs">
+<meta property="article:published_time" content="2021-11-29T14:58:10+09:00">
+<meta property="article:modified_time" content="2021-11-29T14:58:10+09:00">
+<title>Install OCaml | Memo</title>
+<link rel=manifest href=/manifest.json>
+<link rel=icon href=/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://example.org/jp/docs/lang/ml-inst/ title="Install OCaml">
+<link rel=stylesheet href=/book.min.89a77f7e702a8626749b948bbfb01109823daf6c1246ca407d1378833494c402.css integrity="sha256-iad/fnAqhiZ0m5SLv7ARCYI9r2wSRspAfRN4gzSUxAI=" crossorigin=anonymous>
+<script defer src=/flexsearch.min.js></script>
+<script defer src=/en.search.min.4637bd7c9774790f4c95f8e23aed774e418fcf33b3a4d15f6a0970ead22e5dca.js integrity="sha256-Rje9fJd0eQ9MlfjiOu13TkGPzzOzpNFfaglw6tIuXco=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/><span>Memo</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul class=book-languages>
+<li>
+<input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between">
+<a role=button class="flex align-center">
+<img src=/svg/translate.svg class=book-icon alt=Languages>
+English
+</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/jp/docs/lang/ml-inst/>
+Japanese
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<a href=https://github.com/Forest0923 target=_blank rel=noopener>
+GitHub
+</a>
+</li>
+<li>
+<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
+GitLab
+</a>
+</li>
+</ul>
+<ul>
+<li>
+<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
+<a role=button>Linux Dev</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/linux-dev/inst-kernel/>Install Kernel</a>
+</li>
+<li>
+<a href=http://example.org/docs/linux-dev/rm-kernel/>Remove Kernel</a>
+</li>
+<li>
+<a href=http://example.org/docs/linux-dev/impl-systemcall/>Implementing Original Systemcall</a>
+</li>
+<li>
+<a href=http://example.org/docs/linux-dev/impl-hypercall/>Implementing Original Hypercall</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b0282bf15e558132549c4a272eba29d7 class=toggle>
+<label for=section-b0282bf15e558132549c4a272eba29d7 class="flex justify-between">
+<a role=button>My Man Pages</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/my-manual/tar-zip/>File Compression and Decompression (tar, zip, lzh, bz2)</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/nkf/>File Encoding with nkf</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/ffmpeg/>MP4 Manipulation with ffmpeg</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/platformio/>Embedded System Development with platformio</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/fwupd/>Filmware Update with fwupd</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/find-grep/>Source Code Reading with find and grep</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/doc-gen/>Document Generator (doxygen, sourcetrail)</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/dd/>Creating Bootable USB with dd</a>
+</li>
+<li>
+<a href=http://example.org/docs/my-manual/emacs/>Configuration of Emacs</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-e7f7b78c1b08d611bac4551c02978c8f class=toggle>
+<label for=section-e7f7b78c1b08d611bac4551c02978c8f class="flex justify-between">
+<a role=button>Linux Cfg</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/linux-cfg/gnome/>Gnome configuration</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-af9f8fce9fee3f548c5751a8a2f5ece1 class=toggle>
+<label for=section-af9f8fce9fee3f548c5751a8a2f5ece1 class="flex justify-between">
+<a role=button>Kvm</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/kvm/install/>Install KVM</a>
+</li>
+<li>
+<a href=http://example.org/docs/kvm/virsh/>Usage of virsh</a>
+</li>
+<li>
+<a href=http://example.org/docs/kvm/gpu-passthrough/>Configurations for Gpu Passthrough</a>
+</li>
+<li>
+<a href=http://example.org/docs/kvm/sriov/>Configurations for Single Root I/O Virtualization</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-fb51f89dbec2637fe7d4c9b6287148ed class=toggle>
+<label for=section-fb51f89dbec2637fe7d4c9b6287148ed class="flex justify-between">
+<a role=button>Archlinux</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux with BTRFS (and Backup with Timeshift)</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux with BTRFS (and Backup with Snapper)</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/dual-boot-multi/>Dual Booting on Multiple Disks (Windows10 and ArchLinux)</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/dual-boot-mono/>Dual Booting on Mono Disk (Windows10 and ArchLinux)</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/desktop-env/>Desktop Environment</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/bspwm/>Configurtions for BSPWM</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/common-apps/>Installing Common Applications in Arch Linux</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/power-mng/>Power Management</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/abs/>Arch Build System</a>
+</li>
+<li>
+<a href=http://example.org/docs/archlinux/spotify/>Configurations for Spotify</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between">
+<a role=button>Ubuntu</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/ubuntu/initial-settings/>Initial Settings for Ubuntu</a>
+</li>
+<li>
+<a href=http://example.org/docs/ubuntu/common-apps/>Installing Common Apps in Ubuntu</a>
+</li>
+<li>
+<a href=http://example.org/docs/ubuntu/haribote-os/>HariboteOS with Ubuntu</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between">
+<a role=button>Android</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/android/inst-x86/>Install Android x86</a>
+</li>
+<li>
+<a href=http://example.org/docs/android/apk/>Decompile APK</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between">
+<a role=button>Git</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/git/usecases/>Usecases of Git</a>
+</li>
+<li>
+<a href=http://example.org/docs/git/github-ssh/>Connect to GitHub with SSH</a>
+</li>
+<li>
+<a href=http://example.org/docs/git/lfs/>LFS (Large File Storage)</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-65032103456e8d3264e1b113fe868d5f class=toggle checked>
+<label for=section-65032103456e8d3264e1b113fe868d5f class="flex justify-between">
+<a role=button>Lang</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/lang/rs-inst/>Install Rust</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/rs-asm/>Inline Assembly in Rust</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/rs-systemcall/>Call Systemcall in Rust</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/sh-cs/>Cheat Sheet for Shell Script</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/hs-inst/>Install Haskell</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/pl-inst/>Install Prolog</a>
+</li>
+<li>
+<a href=http://example.org/docs/lang/curry-inst/>Install Curry</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between">
+<a role=button>Latex</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/latex/inst-tex-live/>Install TeX Live</a>
+</li>
+<li>
+<a href=http://example.org/docs/latex/latex-cs/>Cheat Sheet for LaTeX</a>
+</li>
+<li>
+<a href=http://example.org/docs/latex/sty/>Using Custom Style File</a>
+</li>
+<li>
+<a href=http://example.org/docs/latex/minted/>Using minted for Syntax highlighting</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between">
+<a role=button>Web</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/web/devtools/>Web Development</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between">
+<a role=button>Security</a>
+</label>
+<ul>
+<li>
+<a href=http://example.org/docs/security/pkc/>Public Key Cryptography</a>
+</li>
+<li>
+<a href=http://example.org/docs/security/gpg/>GPG Key</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>
+<a href=/posts/>
+Posts
+</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>Install OCaml</strong>
+<label for=toc-control>
+<img src=/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents></nav>
+</aside>
+</header>
+<article class=markdown></article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents></nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

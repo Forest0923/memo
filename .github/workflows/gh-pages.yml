@@ -12,7 +12,7 @@ jobs:
           submodules: true
 
       - name: Setup
-        uses: peaceiris/actions-hugo@v2
+        uses: jakejarvis/hugo-build-action@master
         with:
           hugo-version: 'latest'
 

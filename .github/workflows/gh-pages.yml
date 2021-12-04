@@ -15,6 +15,7 @@ jobs:
         uses: jakejarvis/hugo-build-action@master
         with:
           hugo-version: 'latest'
+          extended: true
 
       - name: Build
         run: hugo --minify

@@ -3,9 +3,6 @@ title: Home
 type: docs
 ---
 
-# Memo
+# Home
 
-## About
-
-Welcome to my memo pages.
-
+Welcome to my page.

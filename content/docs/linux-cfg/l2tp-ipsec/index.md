@@ -12,3 +12,15 @@ menu:
 weight: 999
 toc: true
 ---
+
+## System
+
+- Arch Linux
+- Gnome
+- NetworkManager
+
+## Commands
+
+```sh
+paru -S xl2tpd strongswan networkmanager-l2tp
+```

@@ -13,6 +13,8 @@ weight: 10
 toc: true
 ---
 
+# Install Android x86
+
 ## System
 
 - Host: Linux KVM
@@ -20,7 +22,7 @@ toc: true
 
 ## Installation
 
-- Download *.iso from <https://www.android-x86.org/>
+- Download \*.iso from <https://www.android-x86.org/>
 - KVM config:
 
 ![](android-x86-overview.png)

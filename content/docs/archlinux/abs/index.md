@@ -1,17 +1,10 @@
 ---
 title: "Arch Build System"
-description: ""
-lead: ""
-date: 2021-11-29T12:45:14+09:00
-lastmod: 2021-11-29T12:45:14+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "archlinux"
 weight: 90
-toc: true
 ---
+
+# Arch Build System
 
 ## Install
 

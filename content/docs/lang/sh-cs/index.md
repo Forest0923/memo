@@ -1,17 +1,10 @@
 ---
 title: "Cheat Sheet for Shell Script"
-description: ""
-lead: ""
-date: 2021-11-29T14:57:38+09:00
-lastmod: 2021-11-29T14:57:38+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "lang"
 weight: 50
-toc: true
 ---
+
+# Cheat Sheet for Shell Script
 
 ## Array
 

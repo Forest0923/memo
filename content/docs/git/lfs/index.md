@@ -1,17 +1,10 @@
 ---
 title: "LFS (Large File Storage)"
-description: ""
-lead: ""
-date: 2021-11-29T12:48:05+09:00
-lastmod: 2021-11-29T12:48:05+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "git"
 weight: 50
-toc: true
 ---
+
+# LFS (Large File Storage)
 
 ## About
 

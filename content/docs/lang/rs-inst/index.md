@@ -1,17 +1,10 @@
 ---
 title: "Install Rust"
-description: ""
-lead: ""
-date: 2021-11-29T14:56:27+09:00
-lastmod: 2021-11-29T14:56:27+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "lang"
 weight: 10
-toc: true
 ---
+
+# Install Rust
 
 ## Installation
 

@@ -1,17 +1,10 @@
 ---
 title: "Using Custom Style File"
-description: ""
-lead: ""
-date: 2021-11-29T14:59:21+09:00
-lastmod: 2021-11-29T14:59:21+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "latex"
 weight: 30
-toc: true
 ---
+
+# Using Custom Style File
 
 ## Create style file (~.sty)
 

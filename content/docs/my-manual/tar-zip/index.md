@@ -1,17 +1,10 @@
 ---
 title: "File Compression and Decompression (tar, zip, lzh, bz2)"
-description: ""
-lead: ""
-date: 2021-11-29T12:36:33+09:00
-lastmod: 2021-11-29T12:36:33+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "my-manual"
 weight: 10
-toc: true
 ---
+
+# File Compression and Decompression (tar, zip, lzh, bz2)
 
 ## Usage
 

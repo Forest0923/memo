@@ -1,17 +1,10 @@
 ---
 title: "Configurations for Gpu Passthrough"
-description: ""
-lead: ""
-date: 2021-11-29T12:41:33+09:00
-lastmod: 2021-11-29T12:41:33+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "kvm"
 weight: 30
-toc: true
 ---
+
+# Configurations for Gpu Passthrough
 
 ## System
 

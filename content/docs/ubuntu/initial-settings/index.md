@@ -1,17 +1,10 @@
 ---
 title: "Initial Settings for Ubuntu"
-description: ""
-lead: ""
-date: 2021-11-29T12:45:50+09:00
-lastmod: 2021-11-29T12:45:50+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "ubuntu"
 weight: 10
-toc: true
 ---
+
+# Initial Settings for Ubuntu
 
 ## Systems
 

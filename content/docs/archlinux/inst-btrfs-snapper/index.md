@@ -1,17 +1,10 @@
 ---
 title: "Install Arch Linux with BTRFS (and Backup with Snapper)"
-description: ""
-lead: ""
-date: 2021-11-29T12:42:43+09:00
-lastmod: 2021-11-29T12:42:43+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "archlinux"
 weight: 20
-toc: true
 ---
+
+# Install Arch Linux with BTRFS (and Backup with Snapper)
 
 ## System
 

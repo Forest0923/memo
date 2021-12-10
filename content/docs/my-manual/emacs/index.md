@@ -1,17 +1,10 @@
 ---
 title: "Configuration of Emacs"
-description: ""
-lead: ""
-date: 2021-11-29T12:39:11+09:00
-lastmod: 2021-11-29T12:39:11+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "my-manual"
 weight: 100
-toc: true
 ---
+
+# Configuration of Emacs
 
 ## No-window-system mode
 

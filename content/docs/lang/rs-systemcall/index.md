@@ -1,17 +1,10 @@
 ---
 title: "Call Systemcall in Rust"
-description: ""
-lead: ""
-date: 2021-11-29T14:56:54+09:00
-lastmod: 2021-11-29T14:56:54+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "lang"
 weight: 30
-toc: true
 ---
+
+# Call Systemcall in Rust
 
 ## Use `system-call` crate
 

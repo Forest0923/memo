@@ -1,19 +1,10 @@
 ---
-title: "Reverse Engineering"
-description: ""
-lead: ""
-date: 2021-11-29T12:46:58+09:00
-lastmod: 2021-11-29T12:46:58+09:00
+title: "Reverse Engineering (APK)"
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "android"
 weight: 20
-toc: true
 ---
 
-# Reverse Engineering
+# Reverse Engineering (APK)
 
 <!---
 /data/app/*

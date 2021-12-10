@@ -1,17 +1,10 @@
 ---
 title: "Source Code Reading with find and grep"
-description: ""
-lead: ""
-date: 2021-11-29T12:37:51+09:00
-lastmod: 2021-11-29T12:37:51+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "my-manual"
 weight: 60
-toc: true
 ---
+
+# Source Code Reading with find and grep
 
 ## Usage
 

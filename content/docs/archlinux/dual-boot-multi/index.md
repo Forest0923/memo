@@ -1,17 +1,10 @@
 ---
 title: "Dual Booting on Multiple Disks (Windows10 and ArchLinux)"
-description: ""
-lead: ""
-date: 2021-11-29T12:43:05+09:00
-lastmod: 2021-11-29T12:43:05+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "archlinux"
 weight: 30
-toc: true
 ---
+
+# Dual Booting on Multiple Disks (Windows10 and ArchLinux)
 
 ## System
 

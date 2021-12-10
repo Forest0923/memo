@@ -1,17 +1,10 @@
 ---
 title: "HariboteOS with Ubuntu"
-description: ""
-lead: ""
-date: 2021-11-29T12:46:19+09:00
-lastmod: 2021-11-29T12:46:19+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "ubuntu"
 weight: 30
-toc: true
 ---
+
+# HariboteOS with Ubuntu
 
 ## Binary editor
 

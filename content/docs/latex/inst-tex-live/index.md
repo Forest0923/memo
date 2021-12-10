@@ -1,17 +1,10 @@
 ---
 title: "Install TeX Live"
-description: ""
-lead: ""
-date: 2021-11-29T14:58:34+09:00
-lastmod: 2021-11-29T14:58:34+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "latex"
 weight: 10
-toc: true
 ---
+
+# Install TeX Live
 
 ## System
 

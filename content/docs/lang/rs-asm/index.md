@@ -1,17 +1,10 @@
 ---
 title: "Inline Assembly in Rust"
-description: ""
-lead: ""
-date: 2021-11-29T14:56:40+09:00
-lastmod: 2021-11-29T14:56:40+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "lang"
 weight: 20
-toc: true
 ---
+
+# Inline Assembly in Rust
 
 ## Inline assembler in rust
 

@@ -1,17 +1,10 @@
 ---
 title: "Using minted for Syntax highlighting"
-description: ""
-lead: ""
-date: 2021-11-29T14:59:27+09:00
-lastmod: 2021-11-29T14:59:27+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "latex"
 weight: 40
-toc: true
 ---
+
+# Using minted for Syntax highlighting
 
 ## About
 

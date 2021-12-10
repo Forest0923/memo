@@ -1,17 +1,10 @@
 ---
 title: "Cheat Sheet for LaTeX"
-description: ""
-lead: ""
-date: 2021-11-29T14:59:13+09:00
-lastmod: 2021-11-29T14:59:13+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "latex"
 weight: 20
-toc: true
 ---
+
+# Cheat Sheet for LaTeX
 
 ## Expression
 

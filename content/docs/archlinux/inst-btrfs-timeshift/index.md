@@ -1,17 +1,10 @@
 ---
 title: "Install Arch Linux with BTRFS (and Backup with Timeshift)"
-description: ""
-lead: ""
-date: 2021-11-29T12:42:30+09:00
-lastmod: 2021-11-29T12:42:30+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "archlinux"
 weight: 10
-toc: true
 ---
+
+# Install Arch Linux with BTRFS (and Backup with Timeshift)
 
 ## System
 

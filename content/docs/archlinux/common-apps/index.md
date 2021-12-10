@@ -1,17 +1,10 @@
 ---
 title: "Installing Common Applications in Arch Linux"
-description: ""
-lead: ""
-date: 2021-11-29T12:44:23+09:00
-lastmod: 2021-11-29T12:44:23+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "archlinux"
 weight: 70
-toc: true
 ---
+
+# Installing Common Applications in Arch Linux
 
 ## Package manager
 

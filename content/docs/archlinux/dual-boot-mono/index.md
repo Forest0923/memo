@@ -1,17 +1,10 @@
 ---
 title: "Dual Booting on Mono Disk (Windows10 and ArchLinux)"
-description: ""
-lead: ""
-date: 2021-11-29T12:43:13+09:00
-lastmod: 2021-11-29T12:43:13+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "archlinux"
 weight: 40
-toc: true
 ---
+
+# Dual Booting on Mono Disk (Windows10 and ArchLinux)
 
 ## Preparation
 

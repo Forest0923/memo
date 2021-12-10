@@ -1,17 +1,10 @@
 ---
 title: "Power Management"
-description: ""
-lead: ""
-date: 2021-11-29T12:45:05+09:00
-lastmod: 2021-11-29T12:45:05+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "archlinux"
 weight: 80
-toc: true
 ---
+
+# Power Management
 
 ## Install
 

@@ -1,17 +1,10 @@
 ---
 title: "Install KVM"
-description: ""
-lead: ""
-date: 2021-11-29T12:41:12+09:00
-lastmod: 2021-11-29T12:41:12+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "kvm"
 weight: 10
-toc: true
 ---
+
+# Install KVM
 
 ## Commands
 

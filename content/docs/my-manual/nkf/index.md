@@ -1,17 +1,10 @@
 ---
 title: "File Encoding with nkf"
-description: ""
-lead: ""
-date: 2021-11-29T12:36:44+09:00
-lastmod: 2021-11-29T12:36:44+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "my-manual"
 weight: 20
-toc: true
 ---
+
+# File Encoding with nkf
 
 ## Installation
 

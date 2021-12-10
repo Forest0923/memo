@@ -1,17 +1,10 @@
 ---
 title: "GPG Key"
-description: ""
-lead: ""
-date: 2021-11-29T15:00:12+09:00
-lastmod: 2021-11-29T15:00:12+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "security"
 weight: 20
-toc: true
 ---
+
+# GPG Key
 
 GPG (GNU Privacy Key)
 

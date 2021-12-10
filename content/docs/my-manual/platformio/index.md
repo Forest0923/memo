@@ -1,17 +1,10 @@
 ---
 title: "Embedded System Development with platformio"
-description: ""
-lead: ""
-date: 2021-11-29T12:37:20+09:00
-lastmod: 2021-11-29T12:37:20+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "my-manual"
 weight: 40
-toc: true
 ---
+
+# Embedded System Development with platformio
 
 ## Installation
 

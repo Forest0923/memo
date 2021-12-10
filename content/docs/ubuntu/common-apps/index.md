@@ -1,17 +1,10 @@
 ---
 title: "Installing Common Apps in Ubuntu"
-description: ""
-lead: ""
-date: 2021-11-29T12:46:01+09:00
-lastmod: 2021-11-29T12:46:01+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "ubuntu"
 weight: 20
-toc: true
 ---
+
+# Installing Common Apps in Ubuntu
 
 ## Applications
 

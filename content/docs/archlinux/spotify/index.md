@@ -1,17 +1,10 @@
 ---
 title: "Configurations for Spotify"
-description: ""
-lead: ""
-date: 2021-11-29T12:45:25+09:00
-lastmod: 2021-11-29T12:45:25+09:00
 draft: false
-images: []
-menu: 
-  docs:
-    parent: "archlinux"
 weight: 100
-toc: true
 ---
+
+# Configurations for Spotify
 
 ## HiDPI
 

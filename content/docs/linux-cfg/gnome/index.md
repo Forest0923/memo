@@ -1,8 +1,10 @@
 ---
-title: "Gnome configuration"
+title: "Gnome Configurations"
 draft: false
 weight: 999
 ---
+
+# Gnome Configurations
 
 ## Disable wayland
 

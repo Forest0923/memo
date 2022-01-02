@@ -2,18 +2,21 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Install Kernel #  System #   OS: Ubuntu 18.04 (64bit) Current kernel: 5.3.0-42-generic  Compile #   Change directory to /usr/src. Get kernel source code with the following command (ver.5.4.1).  wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.1.tar.gz  Decompress with tar.  tar -xvf linux-5.4.1.tar.gz  Change directory to linux-5.4.1. Before compiling you have to install some packages via apt. Run the following command.  sudo apt install flex bison libssl-dev libelf-dev  Make .">
+<meta name=description content="Install Kernel #  This is a step-by-step guide on how to install kernel for those who are new to kernel development.
+System Setup #   OS: Ubuntu 18.04 (64bit) Current kernel: 5.3.0-42-generic Installed kernel: 5.4.1  Step-by-step Instructions #  1. Preparing Source Code #  In this article, I assume that /usr/src is a working directory. First of all, change directory to /usr/src and download kernel source code with the following command.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Install Kernel">
-<meta property="og:description" content="Install Kernel #  System #   OS: Ubuntu 18.04 (64bit) Current kernel: 5.3.0-42-generic  Compile #   Change directory to /usr/src. Get kernel source code with the following command (ver.5.4.1).  wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.1.tar.gz  Decompress with tar.  tar -xvf linux-5.4.1.tar.gz  Change directory to linux-5.4.1. Before compiling you have to install some packages via apt. Run the following command.  sudo apt install flex bison libssl-dev libelf-dev  Make .">
+<meta property="og:description" content="Install Kernel #  This is a step-by-step guide on how to install kernel for those who are new to kernel development.
+System Setup #   OS: Ubuntu 18.04 (64bit) Current kernel: 5.3.0-42-generic Installed kernel: 5.4.1  Step-by-step Instructions #  1. Preparing Source Code #  In this article, I assume that /usr/src is a working directory. First of all, change directory to /usr/src and download kernel source code with the following command.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/linux-dev/inst-kernel/"><meta property="article:section" content="docs">
 <title>Install Kernel | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/linux-dev/inst-kernel/ title=カーネルのインストール>
 <link rel=stylesheet href=/memo/book.min.89a77f7e702a8626749b948bbfb01109823daf6c1246ca407d1378833494c402.css integrity="sha256-iad/fnAqhiZ0m5SLv7ARCYI9r2wSRspAfRN4gzSUxAI=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.d18d076640bcdb38c7596c4a46a35b50e48fcd97d5f45964c3846d1093043e3c.js integrity="sha256-0Y0HZkC82zjHWWxKRqNbUOSPzZfV9Flkw4RtEJMEPjw=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.0384d985faf588f64da7cfe9903c8caa7263f4bf39f8aff0d39335afd50cec14.js integrity="sha256-A4TZhfr1iPZNp8/pkDyMqnJj9L85+K/w05M1r9UM7BQ=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +45,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/inst-kernel/>
 Japanese
 </a>
 </li>
@@ -369,11 +372,16 @@ Posts
 <ul>
 <li><a href=#install-kernel>Install Kernel</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#compile>Compile</a></li>
-<li><a href=#install>Install</a></li>
-<li><a href=#boot>Boot</a></li>
-<li><a href=#change-kernel-version>Change kernel version</a></li>
+<li><a href=#system-setup>System Setup</a></li>
+<li><a href=#step-by-step-instructions>Step-by-step Instructions</a>
+<ul>
+<li><a href=#1-preparing-source-code>1. Preparing Source Code</a></li>
+<li><a href=#2-compiling>2. Compiling</a></li>
+<li><a href=#3-installing>3. Installing</a></li>
+<li><a href=#4-updating-config-for-bootloader>4. Updating Config for Bootloader</a></li>
+<li><a href=#5-option-change-default-kernel-version>5. Option: Change Default Kernel Version</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -384,67 +392,59 @@ Posts
 Install Kernel
 <a class=anchor href=#install-kernel>#</a>
 </h1>
-<h2 id=system>
-System
-<a class=anchor href=#system>#</a>
+<p>This is a step-by-step guide on how to install kernel for those who are new to kernel development.</p>
+<h2 id=system-setup>
+System Setup
+<a class=anchor href=#system-setup>#</a>
 </h2>
 <ul>
 <li>OS: Ubuntu 18.04 (64bit)</li>
 <li>Current kernel: 5.3.0-42-generic</li>
+<li>Installed kernel: 5.4.1</li>
 </ul>
-<h2 id=compile>
-Compile
-<a class=anchor href=#compile>#</a>
+<h2 id=step-by-step-instructions>
+Step-by-step Instructions
+<a class=anchor href=#step-by-step-instructions>#</a>
 </h2>
-<ul>
-<li>Change directory to <code>/usr/src</code>.</li>
-<li>Get kernel source code with the following command (ver.5.4.1).</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.1.tar.gz
-</code></pre></div><ul>
-<li>Decompress with tar.</li>
-</ul>
+<h3 id=1-preparing-source-code>
+1. Preparing Source Code
+<a class=anchor href=#1-preparing-source-code>#</a>
+</h3>
+<p>In this article, I assume that <code>/usr/src</code> is a working directory. First of all, change directory to <code>/usr/src</code> and download kernel source code with the following command.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>cd /usr/src
+wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.1.tar.gz
+</code></pre></div><p>Decompress the code with <code>tar</code> command.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>tar -xvf linux-5.4.1.tar.gz
-</code></pre></div><ul>
-<li>Change directory to <code>linux-5.4.1</code>.</li>
-<li>Before compiling you have to install some packages via apt. Run the following command.</li>
-</ul>
+</code></pre></div><h3 id=2-compiling>
+2. Compiling
+<a class=anchor href=#2-compiling>#</a>
+</h3>
+<p>Before compiling you have to install some packages.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install flex bison libssl-dev libelf-dev
-</code></pre></div><ul>
-<li>Make .config with the following command.</li>
-</ul>
+</code></pre></div><p>Then change directory to <code>linux-5.4.1</code> and create <code>.config</code> file with the following command.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>make olddefconfig
-</code></pre></div><ul>
-<li>Compile with the following command. <code>4</code> indicate how many thread do you use.</li>
-</ul>
+</code></pre></div><p>Finally, compile with the following command. <code>4</code> indicate how many thread do you use.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>make -j <span style=color:#ae81ff>4</span>
-</code></pre></div><h2 id=install>
-Install
-<a class=anchor href=#install>#</a>
-</h2>
-<ul>
-<li>Install modules and kernel image with the following command.</li>
-</ul>
+</code></pre></div><h3 id=3-installing>
+3. Installing
+<a class=anchor href=#3-installing>#</a>
+</h3>
+<p>Install modules and kernel image with the following command.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>make modules_install <span style=color:#f92672>&amp;&amp;</span> make install
-</code></pre></div><h2 id=boot>
-Boot
-<a class=anchor href=#boot>#</a>
-</h2>
-<ul>
-<li>Setting bootloader (grub).</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>grub-mkconfig
+</code></pre></div><h3 id=4-updating-config-for-bootloader>
+4. Updating Config for Bootloader
+<a class=anchor href=#4-updating-config-for-bootloader>#</a>
+</h3>
+<p>Update grub configuration with the following command.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>grub-mkconfig -o /boot/grub/grub.cfg
 </code></pre></div><ul>
 <li>Reboot.</li>
 </ul>
-<h2 id=change-kernel-version>
-Change kernel version
-<a class=anchor href=#change-kernel-version>#</a>
-</h2>
-<ul>
-<li>You can choose kernel by selecting <code>Advanced options for Ubuntu</code>.</li>
-<li>You can also change default kernel by editing <code>/etc/default/grub</code>.</li>
-</ul>
+<h3 id=5-option-change-default-kernel-version>
+5. Option: Change Default Kernel Version
+<a class=anchor href=#5-option-change-default-kernel-version>#</a>
+</h3>
+<p>If you need to change default kernel, you can select kernel by editting <code>/etc/default/grub</code> as follows.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>GRUB_DEFAULT=&#34;Advanced options for Ubuntu&gt;Ubuntu, with Linux x.x.x&#34;
 </code></pre></div></article>
 <footer class=book-footer>
@@ -462,11 +462,16 @@ Change kernel version
 <ul>
 <li><a href=#install-kernel>Install Kernel</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#compile>Compile</a></li>
-<li><a href=#install>Install</a></li>
-<li><a href=#boot>Boot</a></li>
-<li><a href=#change-kernel-version>Change kernel version</a></li>
+<li><a href=#system-setup>System Setup</a></li>
+<li><a href=#step-by-step-instructions>Step-by-step Instructions</a>
+<ul>
+<li><a href=#1-preparing-source-code>1. Preparing Source Code</a></li>
+<li><a href=#2-compiling>2. Compiling</a></li>
+<li><a href=#3-installing>3. Installing</a></li>
+<li><a href=#4-updating-config-for-bootloader>4. Updating Config for Bootloader</a></li>
+<li><a href=#5-option-change-default-kernel-version>5. Option: Change Default Kernel Version</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -2,18 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Implementing Original Systemcalls #  System #   Linux kernel 5.8.x  diff #  diff --git a/Makefile b/Makefile index a3b3cc4d7ee2..0e202ce51444 100644 --- a/Makefile +++ b/Makefile @@ -1070,7 +1070,7 @@ export MODORDER := $(extmod-prefix)modules.order  export MODULES_NSDEPS := $(extmod-prefix)modules.nsdeps ifeq ($(KBUILD_EXTMOD),) -core-y	+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ +core-y	+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscall/  vmlinux-dirs	:= $(patsubst %/,%,$(filter %/, \ $(core-y) $(core-m) $(drivers-y) $(drivers-m) \ diff --git a/arch/x86/entry/syscalls/syscall_64.">
+<meta name=description content="Implementing Original Systemcalls #  This is a tutorial of implementing new systemcalls.
+System Setup #   Linux kernel 5.8.13 CPU: x86_64  Step-by-step instructions #  1. Register New Systemcall #  Add a new entry in the arch/x86/entry/syscalls/syscall_64.tbl. You can use empty systemcall number and register hello_syscall as follows.
+437	common	openat2	sys_openat2 438	common	pidfd_getfd	sys_pidfd_getfd 439	common	faccessat2	sys_faccessat2 +440	common	hello_syscall	sys_hello_syscall  # # x32-specific system call numbers start at 512 to avoid cache impact 2.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Implementing Original Systemcalls">
-<meta property="og:description" content="Implementing Original Systemcalls #  System #   Linux kernel 5.8.x  diff #  diff --git a/Makefile b/Makefile index a3b3cc4d7ee2..0e202ce51444 100644 --- a/Makefile +++ b/Makefile @@ -1070,7 +1070,7 @@ export MODORDER := $(extmod-prefix)modules.order  export MODULES_NSDEPS := $(extmod-prefix)modules.nsdeps ifeq ($(KBUILD_EXTMOD),) -core-y	+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ +core-y	+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscall/  vmlinux-dirs	:= $(patsubst %/,%,$(filter %/, \ $(core-y) $(core-m) $(drivers-y) $(drivers-m) \ diff --git a/arch/x86/entry/syscalls/syscall_64.">
+<meta property="og:description" content="Implementing Original Systemcalls #  This is a tutorial of implementing new systemcalls.
+System Setup #   Linux kernel 5.8.13 CPU: x86_64  Step-by-step instructions #  1. Register New Systemcall #  Add a new entry in the arch/x86/entry/syscalls/syscall_64.tbl. You can use empty systemcall number and register hello_syscall as follows.
+437	common	openat2	sys_openat2 438	common	pidfd_getfd	sys_pidfd_getfd 439	common	faccessat2	sys_faccessat2 +440	common	hello_syscall	sys_hello_syscall  # # x32-specific system call numbers start at 512 to avoid cache impact 2.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/linux-dev/impl-systemcall/"><meta property="article:section" content="docs">
 <title>Implementing Original Systemcalls | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-systemcall/ title=システムコールの追加>
 <link rel=stylesheet href=/memo/book.min.89a77f7e702a8626749b948bbfb01109823daf6c1246ca407d1378833494c402.css integrity="sha256-iad/fnAqhiZ0m5SLv7ARCYI9r2wSRspAfRN4gzSUxAI=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.d18d076640bcdb38c7596c4a46a35b50e48fcd97d5f45964c3846d1093043e3c.js integrity="sha256-0Y0HZkC82zjHWWxKRqNbUOSPzZfV9Flkw4RtEJMEPjw=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.0384d985faf588f64da7cfe9903c8caa7263f4bf39f8aff0d39335afd50cec14.js integrity="sha256-A4TZhfr1iPZNp8/pkDyMqnJj9L85+K/w05M1r9UM7BQ=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +47,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-systemcall/>
 Japanese
 </a>
 </li>
@@ -369,9 +374,16 @@ Posts
 <ul>
 <li><a href=#implementing-original-systemcalls>Implementing Original Systemcalls</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#diff>diff</a></li>
-<li><a href=#test>Test</a></li>
+<li><a href=#system-setup>System Setup</a></li>
+<li><a href=#step-by-step-instructions>Step-by-step instructions</a>
+<ul>
+<li><a href=#1-register-new-systemcall>1. Register New Systemcall</a></li>
+<li><a href=#2-implementing-body-of-new-systemcall>2. Implementing Body of New Systemcall</a></li>
+<li><a href=#3-modifying-makefile>3. Modifying Makefile</a></li>
+<li><a href=#4-compile-and-install>4. Compile and Install</a></li>
+<li><a href=#5-test>5. Test</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -382,92 +394,84 @@ Posts
 Implementing Original Systemcalls
 <a class=anchor href=#implementing-original-systemcalls>#</a>
 </h1>
-<h2 id=system>
-System
-<a class=anchor href=#system>#</a>
+<p>This is a tutorial of implementing new systemcalls.</p>
+<h2 id=system-setup>
+System Setup
+<a class=anchor href=#system-setup>#</a>
 </h2>
 <ul>
-<li>Linux kernel 5.8.x</li>
+<li>Linux kernel 5.8.13</li>
+<li>CPU: x86_64</li>
 </ul>
-<h2 id=diff>
-diff
-<a class=anchor href=#diff>#</a>
+<h2 id=step-by-step-instructions>
+Step-by-step instructions
+<a class=anchor href=#step-by-step-instructions>#</a>
 </h2>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff>diff --git a/Makefile b/Makefile
-index a3b3cc4d7ee2..0e202ce51444 100644
-<span style=color:#f92672>--- a/Makefile
-</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/Makefile
-</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -1070,7 +1070,7 @@ export MODORDER := $(extmod-prefix)modules.order
-</span><span style=color:#75715e></span> export MODULES_NSDEPS := $(extmod-prefix)modules.nsdeps
- 
- ifeq ($(KBUILD_EXTMOD),)
-<span style=color:#f92672>-core-y		+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/
-</span><span style=color:#f92672></span><span style=color:#a6e22e>+core-y		+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscall/
-</span><span style=color:#a6e22e></span> 
- vmlinux-dirs	:= $(patsubst %/,%,$(filter %/, \
- 		     $(core-y) $(core-m) $(drivers-y) $(drivers-m) \
-diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
-index 78847b32e137..2d2121edef82 100644
-<span style=color:#f92672>--- a/arch/x86/entry/syscalls/syscall_64.tbl
-</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/arch/x86/entry/syscalls/syscall_64.tbl
-</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -360,6 +360,7 @@
-</span><span style=color:#75715e></span> 437	common	openat2			sys_openat2
+<h3 id=1-register-new-systemcall>
+1. Register New Systemcall
+<a class=anchor href=#1-register-new-systemcall>#</a>
+</h3>
+<p>Add a new entry in the <code>arch/x86/entry/syscalls/syscall_64.tbl</code>. You can use empty systemcall number and register <code>hello_syscall</code> as follows.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff> 437	common	openat2			sys_openat2
  438	common	pidfd_getfd		sys_pidfd_getfd
  439	common	faccessat2		sys_faccessat2
-<span style=color:#a6e22e>+440 common  hello_syscall   sys_hello_syscall
+<span style=color:#a6e22e>+440	common	hello_syscall	sys_hello_syscall
 </span><span style=color:#a6e22e></span> 
  #
  # x32-specific system call numbers start at 512 to avoid cache impact
-diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-index b951a87da987..20366a8d5b32 100644
-<span style=color:#f92672>--- a/include/linux/syscalls.h
-</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/include/linux/syscalls.h
-</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -1006,6 +1006,9 @@ asmlinkage long sys_pidfd_send_signal(int pidfd, int sig,
-</span><span style=color:#75715e></span> 				       unsigned int flags);
+</code></pre></div><h3 id=2-implementing-body-of-new-systemcall>
+2. Implementing Body of New Systemcall
+<a class=anchor href=#2-implementing-body-of-new-systemcall>#</a>
+</h3>
+<p>In this article, I wrote a new systemcall in the <code>my_syscall/</code> directory. The body of <code>hello_syscall</code> is written in the <code>my_syscalls/my_syscalls.c</code> using <code>SYSCALL_DEFINEk</code> macro as follows. <code>k</code> indicates thw number of arguments.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/kernel.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/syscalls.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&#34;my_syscall.h&#34;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>
+SYSCALL_DEFINE0(hello_syscall)
+{
+    printk(KERN_INFO <span style=color:#e6db74>&#34;hello_syscall: Hello world!</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+}
+</code></pre></div><p>If the systemcall has some arguments, it could be written as follows.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>SYSCALL_DEFINE1(hello_syscall, <span style=color:#66d9ef>int</span>, arg)
+{
+    printk(KERN_INFO <span style=color:#e6db74>&#34;hello_syscall: arg = %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, arg);
+    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+}
+</code></pre></div><p>Then create header files (<code>my_syscalls/my_syscalls.h</code>) and modify <code>include/linux/syscalls.h</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>asmlinkage <span style=color:#66d9ef>long</span> <span style=color:#a6e22e>sys_hello_syscall</span>(<span style=color:#66d9ef>void</span>);
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff> asmlinkage long sys_pidfd_send_signal(int pidfd, int sig,
+ 				       unsigned int flags);
  asmlinkage long sys_pidfd_getfd(int pidfd, int fd, unsigned int flags);
  
-<span style=color:#a6e22e>+/* my_syscall/my_syscall.c */
+<span style=color:#a6e22e>+/* my_syscalls/my_syscalls.c */
 </span><span style=color:#a6e22e>+asmlinkage long sys_hello_syscall(void);
 </span><span style=color:#a6e22e>+
 </span><span style=color:#a6e22e></span> /*
   * Architecture-specific system calls
   */
-diff --git a/my_syscall/Makefile b/my_syscall/Makefile
-new file mode 100644
-index 000000000000..f8170cd4d5e7
-<span style=color:#f92672>--- /dev/null
-</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/my_syscall/Makefile
-</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -0,0 +1 @@
-</span><span style=color:#75715e></span><span style=color:#a6e22e>+obj-y:=my_syscall.o
-</span><span style=color:#a6e22e></span>diff --git a/my_syscall/my_syscall.c b/my_syscall/my_syscall.c
-new file mode 100644
-index 000000000000..5af73922f412
-<span style=color:#f92672>--- /dev/null
-</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/my_syscall/my_syscall.c
-</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -0,0 +1,9 @@
-</span><span style=color:#75715e></span><span style=color:#a6e22e>+#include &lt;linux/kernel.h&gt;
-</span><span style=color:#a6e22e>+#include &lt;linux/syscalls.h&gt;
-</span><span style=color:#a6e22e>+#include &#34;my_syscall.h&#34;
-</span><span style=color:#a6e22e>+
-</span><span style=color:#a6e22e>+SYSCALL_DEFINE0(hello_syscall)
-</span><span style=color:#a6e22e>+{
-</span><span style=color:#a6e22e>+    printk(&#34;hello_syscall: Hello world!\n&#34;);
-</span><span style=color:#a6e22e>+    return 0;
-</span><span style=color:#a6e22e>+}
-</span><span style=color:#a6e22e></span>diff --git a/my_syscall/my_syscall.h b/my_syscall/my_syscall.h
-new file mode 100644
-index 000000000000..1ead3f6f4d94
-<span style=color:#f92672>--- /dev/null
-</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/my_syscall/my_syscall.h
-</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -0,0 +1 @@
-</span><span style=color:#75715e></span><span style=color:#a6e22e>+asmlinkage long sys_hello_syscall(void);
-</span></code></pre></div><h2 id=test>
-Test
-<a class=anchor href=#test>#</a>
-</h2>
-<ul>
-<li>Test program:</li>
-</ul>
+</code></pre></div><h3 id=3-modifying-makefile>
+3. Modifying Makefile
+<a class=anchor href=#3-modifying-makefile>#</a>
+</h3>
+<p>First, create <code>my_syscalls/Makefile</code> like this.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Makefile data-lang=Makefile>obj-y<span style=color:#f92672>:=</span>my_syscalls.o
+</code></pre></div><p>Second, modify <code>Makefile</code> to add <code>my_syscalls/</code> directory to kernel.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Makefile data-lang=Makefile>core-y		<span style=color:#f92672>+=</span> kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscalls/
+</code></pre></div><h3 id=4-compile-and-install>
+4. Compile and Install
+<a class=anchor href=#4-compile-and-install>#</a>
+</h3>
+<p><a href=../inst-kernel>Install new kernel</a>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>make -j8 <span style=color:#f92672>&amp;&amp;</span> make modules_install <span style=color:#f92672>&amp;&amp;</span> make instal
+grub-mkconfig -o /boot/grub/grub.cfg
+reboot
+</code></pre></div><h3 id=5-test>
+5. Test
+<a class=anchor href=#5-test>#</a>
+</h3>
+<p>Test program:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
 </span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;sys/syscall.h&gt;</span><span style=color:#75715e>
 </span><span style=color:#75715e></span>
@@ -478,9 +482,7 @@ Test
     syscall(HELLO_SYSCALL);
     <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
 }
-</code></pre></div><ul>
-<li>Result:</li>
-</ul>
+</code></pre></div><p>Result:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>user@host ~ $ dmesg -w
 ...
 [  169.128284] hello_syscall: Hello world!
@@ -500,9 +502,16 @@ Test
 <ul>
 <li><a href=#implementing-original-systemcalls>Implementing Original Systemcalls</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#diff>diff</a></li>
-<li><a href=#test>Test</a></li>
+<li><a href=#system-setup>System Setup</a></li>
+<li><a href=#step-by-step-instructions>Step-by-step instructions</a>
+<ul>
+<li><a href=#1-register-new-systemcall>1. Register New Systemcall</a></li>
+<li><a href=#2-implementing-body-of-new-systemcall>2. Implementing Body of New Systemcall</a></li>
+<li><a href=#3-modifying-makefile>3. Modifying Makefile</a></li>
+<li><a href=#4-compile-and-install>4. Compile and Install</a></li>
+<li><a href=#5-test>5. Test</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

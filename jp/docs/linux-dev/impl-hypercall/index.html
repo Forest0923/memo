@@ -1,0 +1,356 @@
+<!doctype html><html lang=jp dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="ハイパーコールの実装 #  QEMU/KVM にハイパーコールを追加するときのメモです．
+環境 #   CPU: x86_64 Hypervisor: Linux KVM 5.8.13 Guest: Linux 5.8.13  チュートリアル #  1. KVM 側のハイパーコールの追加 #  include/uapi/linux/kvm_para.h を修正し，新しいハイパーコール番号を登録します．
+#define KVM_HC_CLOCK_PAIRING	9 #define KVM_HC_SEND_IPI	10 #define KVM_HC_SCHED_YIELD	11 +#define KVM_HC_HELLO_HYPERCALL0	12 +#define KVM_HC_HELLO_HYPERCALL1	13  /* * hypercalls use architecture specific ハイパーコールは VMCALL という VM Exit を発生させ，その exit ハンドラは最終的に arch/x86/kvm/x86.c にある kvm_emulate_hypercall() を呼び出します．その中の switch 文を次のように書き換えることでハイパーコールを追加できます．
+kvm_sched_yield(vcpu->kvm, a0); ret = 0; break; +	case KVM_HC_HELLO_HYPERCALL0: +	trace_printk(&#34;Hello world!">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="ハイパーコールの実装">
+<meta property="og:description" content="ハイパーコールの実装 #  QEMU/KVM にハイパーコールを追加するときのメモです．
+環境 #   CPU: x86_64 Hypervisor: Linux KVM 5.8.13 Guest: Linux 5.8.13  チュートリアル #  1. KVM 側のハイパーコールの追加 #  include/uapi/linux/kvm_para.h を修正し，新しいハイパーコール番号を登録します．
+#define KVM_HC_CLOCK_PAIRING	9 #define KVM_HC_SEND_IPI	10 #define KVM_HC_SCHED_YIELD	11 +#define KVM_HC_HELLO_HYPERCALL0	12 +#define KVM_HC_HELLO_HYPERCALL1	13  /* * hypercalls use architecture specific ハイパーコールは VMCALL という VM Exit を発生させ，その exit ハンドラは最終的に arch/x86/kvm/x86.c にある kvm_emulate_hypercall() を呼び出します．その中の switch 文を次のように書き換えることでハイパーコールを追加できます．
+kvm_sched_yield(vcpu->kvm, a0); ret = 0; break; +	case KVM_HC_HELLO_HYPERCALL0: +	trace_printk(&#34;Hello world!">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://forest0923.github.io/memo/jp/docs/linux-dev/impl-hypercall/"><meta property="article:section" content="docs">
+<title>ハイパーコールの実装 | Memo</title>
+<link rel=manifest href=/memo/manifest.json>
+<link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=en href=http://forest0923.github.io/memo/docs/linux-dev/impl-hypercall/ title="Implementing Original Hypercalls">
+<link rel=stylesheet href=/memo/book.min.89a77f7e702a8626749b948bbfb01109823daf6c1246ca407d1378833494c402.css integrity="sha256-iad/fnAqhiZ0m5SLv7ARCYI9r2wSRspAfRN4gzSUxAI=" crossorigin=anonymous>
+<script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.aeab2b1472ad0b4252c2f90f4ad4b9069520b8605683196dc58cdb7521bbd9f3.js integrity="sha256-rqsrFHKtC0JSwvkPStS5BpUguGBWgxltxYzbdSG72fM=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/memo/jp/><span>Memo</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul class=book-languages>
+<li>
+<input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between">
+<a role=button class="flex align-center">
+<img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+Japanese
+</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/docs/linux-dev/impl-hypercall/>
+English
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Links</h2>
+<ul>
+<li>
+<a href=https://github.com/Forest0923 target=_blank rel=noopener>
+GitHub
+</a>
+</li>
+<li>
+<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
+GitLab
+</a>
+</li>
+</ul>
+<h2>Documents</h2>
+<ul>
+<li>
+<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle checked>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
+<a role=button>Linux Kernel Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/inst-kernel/>カーネルのインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/rm-kernel/>カーネルの削除</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-systemcall/>システムコールの追加</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-hypercall/ class=active>ハイパーコールの実装</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Blog Posts</h2>
+<ul>
+<li>
+<a href=/memo/jp/posts/>
+Posts
+</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/memo/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>ハイパーコールの実装</strong>
+<label for=toc-control>
+<img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#ハイパーコールの実装>ハイパーコールの実装</a>
+<ul>
+<li><a href=#環境>環境</a></li>
+<li><a href=#チュートリアル>チュートリアル</a>
+<ul>
+<li><a href=#1-kvm-側のハイパーコールの追加>1. KVM 側のハイパーコールの追加</a></li>
+<li><a href=#2-ゲスト側からのハイパーコールの呼び出し>2. ゲスト側からのハイパーコールの呼び出し</a></li>
+<li><a href=#3-テスト>3. テスト</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+</header>
+<article class=markdown><h1 id=ハイパーコールの実装>
+ハイパーコールの実装
+<a class=anchor href=#%e3%83%8f%e3%82%a4%e3%83%91%e3%83%bc%e3%82%b3%e3%83%bc%e3%83%ab%e3%81%ae%e5%ae%9f%e8%a3%85>#</a>
+</h1>
+<p>QEMU/KVM にハイパーコールを追加するときのメモです．</p>
+<h2 id=環境>
+環境
+<a class=anchor href=#%e7%92%b0%e5%a2%83>#</a>
+</h2>
+<ul>
+<li>CPU: x86_64</li>
+<li>Hypervisor: Linux KVM 5.8.13</li>
+<li>Guest: Linux 5.8.13</li>
+</ul>
+<h2 id=チュートリアル>
+チュートリアル
+<a class=anchor href=#%e3%83%81%e3%83%a5%e3%83%bc%e3%83%88%e3%83%aa%e3%82%a2%e3%83%ab>#</a>
+</h2>
+<h3 id=1-kvm-側のハイパーコールの追加>
+1. KVM 側のハイパーコールの追加
+<a class=anchor href=#1-kvm-%e5%81%b4%e3%81%ae%e3%83%8f%e3%82%a4%e3%83%91%e3%83%bc%e3%82%b3%e3%83%bc%e3%83%ab%e3%81%ae%e8%bf%bd%e5%8a%a0>#</a>
+</h3>
+<p><code>include/uapi/linux/kvm_para.h</code> を修正し，新しいハイパーコール番号を登録します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff> #define KVM_HC_CLOCK_PAIRING		9
+ #define KVM_HC_SEND_IPI		10
+ #define KVM_HC_SCHED_YIELD		11
+<span style=color:#a6e22e>+#define KVM_HC_HELLO_HYPERCALL0	12
+</span><span style=color:#a6e22e>+#define KVM_HC_HELLO_HYPERCALL1	13
+</span><span style=color:#a6e22e></span> 
+ /*
+  * hypercalls use architecture specific
+</code></pre></div><p>ハイパーコールは VMCALL という VM Exit を発生させ，その exit ハンドラは最終的に <code>arch/x86/kvm/x86.c</code> にある <code>kvm_emulate_hypercall()</code> を呼び出します．その中の switch 文を次のように書き換えることでハイパーコールを追加できます．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff> 		kvm_sched_yield(vcpu-&gt;kvm, a0);
+ 		ret = 0;
+ 		break;
+<span style=color:#a6e22e>+	case KVM_HC_HELLO_HYPERCALL0:
+</span><span style=color:#a6e22e>+		trace_printk(&#34;Hello world!\n&#34;);
+</span><span style=color:#a6e22e>+		break;
+</span><span style=color:#a6e22e>+	case KVM_HC_HELLO_HYPERCALL1:
+</span><span style=color:#a6e22e>+		trace_printk(&#34;a0 = %d\n&#34;, a0);
+</span><span style=color:#a6e22e>+		break;
+</span><span style=color:#a6e22e></span> 	default:
+ 		ret = -KVM_ENOSYS;
+ 		break;
+</code></pre></div><h3 id=2-ゲスト側からのハイパーコールの呼び出し>
+2. ゲスト側からのハイパーコールの呼び出し
+<a class=anchor href=#2-%e3%82%b2%e3%82%b9%e3%83%88%e5%81%b4%e3%81%8b%e3%82%89%e3%81%ae%e3%83%8f%e3%82%a4%e3%83%91%e3%83%bc%e3%82%b3%e3%83%bc%e3%83%ab%e3%81%ae%e5%91%bc%e3%81%b3%e5%87%ba%e3%81%97>#</a>
+</h3>
+<p>ハイパーコールの呼び出しは次のように <code>kvm_hypercall0()</code> などを使用して行います．引数の最大は4までです．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/kernel.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/syscalls.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;uapi/linux/kvm_para.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&#34;my_syscalls.h&#34;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>
+SYSCALL_DEFINE0(hello_hypercall0)
+{
+    kvm_hypercall0(KVM_HC_HELLO_HYPERCALL0);
+    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+}
+
+SYSCALL_DEFINE1(hello_hypercall1, <span style=color:#66d9ef>int</span>, arg1)
+{
+    kvm_hypercall1(KVM_HC_HELLO_HYPERCALL1, arg1);
+    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+}
+</code></pre></div><p>ユーザ空間から直接呼び出すことはできないので <code>kvm_hypercallk()</code> を呼び出すためのシステムコールを追加する必要があります．以下のパッチは単純なハイパーコールを呼び出すシステムコールを追加するものです．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff>diff --git a/Makefile b/Makefile
+index 58283e912b4e..2f6191b70d84 100644
+<span style=color:#f92672>--- a/Makefile
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/Makefile
+</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -1066,7 +1066,7 @@ export MODORDER := $(extmod-prefix)modules.order
+</span><span style=color:#75715e></span> export MODULES_NSDEPS := $(extmod-prefix)modules.nsdeps
+
+ ifeq ($(KBUILD_EXTMOD),)
+<span style=color:#f92672>-core-y         += kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+core-y         += kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscalls/
+</span><span style=color:#a6e22e></span>
+ vmlinux-dirs   := $(patsubst %/,%,$(filter %/, \
+                     $(core-y) $(core-m) $(drivers-y) $(drivers-m) \
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index 78847b32e137..e8ce133372d2 100644
+<span style=color:#f92672>--- a/arch/x86/entry/syscalls/syscall_64.tbl
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/arch/x86/entry/syscalls/syscall_64.tbl
+</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -360,6 +360,8 @@
+</span><span style=color:#75715e></span> 437    common  openat2                 sys_openat2
+ 438    common  pidfd_getfd             sys_pidfd_getfd
+ 439    common  faccessat2              sys_faccessat2
+<span style=color:#a6e22e>+440    common  hello_hypercall0        sys_hello_hypercall0
+</span><span style=color:#a6e22e>+441    common  hello_hypercall1        sys_hello_hypercall1
+</span><span style=color:#a6e22e></span>
+ #
+ # x32-specific system call numbers start at 512 to avoid cache impact
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index b951a87da987..65f480aed5ac 100644
+<span style=color:#f92672>--- a/include/linux/syscalls.h
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/include/linux/syscalls.h
+</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -1424,4 +1424,8 @@ long compat_ksys_semtimedop(int semid, struct sembuf __user *tsems,
+</span><span style=color:#75715e></span>                            unsigned int nsops,
+                            const struct old_timespec32 __user *timeout);
+
+<span style=color:#a6e22e>+/* my_syscalls/my_syscalls.c */
+</span><span style=color:#a6e22e>+asmlinkage long sys_hello_hypercall0(void);
+</span><span style=color:#a6e22e>+asmlinkage long sys_hello_hypercall1(int arg1);
+</span><span style=color:#a6e22e>+
+</span><span style=color:#a6e22e></span> #endif
+diff --git a/include/uapi/linux/kvm_para.h b/include/uapi/linux/kvm_para.h
+index 8b86609849b9..614cc87f38ec 100644
+<span style=color:#f92672>--- a/include/uapi/linux/kvm_para.h
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/include/uapi/linux/kvm_para.h
+</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -29,6 +29,8 @@
+</span><span style=color:#75715e></span> #define KVM_HC_CLOCK_PAIRING           9
+ #define KVM_HC_SEND_IPI                10
+ #define KVM_HC_SCHED_YIELD             11
+<span style=color:#a6e22e>+#define KVM_HC_HELLO_HYPERCALL0        12
+</span><span style=color:#a6e22e>+#define KVM_HC_HELLO_HYPERCALL1        13
+</span><span style=color:#a6e22e></span>
+ /*
+  * hypercalls use architecture specific
+diff --git a/my_syscalls/Makefile b/my_syscalls/Makefile
+new file mode 100644
+index 000000000000..e7e211791186
+<span style=color:#f92672>--- /dev/null
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/my_syscalls/Makefile
+</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -0,0 +1 @@
+</span><span style=color:#75715e></span><span style=color:#a6e22e>+obj-y:=my_syscalls.o
+</span><span style=color:#a6e22e></span>diff --git a/my_syscalls/my_syscalls.c b/my_syscalls/my_syscalls.c
+new file mode 100644
+index 000000000000..0989c604cbd4
+<span style=color:#f92672>--- /dev/null
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/my_syscalls/my_syscalls.c
+</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -0,0 +1,15 @@
+</span><span style=color:#75715e></span><span style=color:#a6e22e>+#include &lt;linux/kernel.h&gt;
+</span><span style=color:#a6e22e>+#include &lt;linux/syscalls.h&gt;
+</span><span style=color:#a6e22e>+#include &lt;uapi/linux/kvm_para.h&gt;
+</span><span style=color:#a6e22e>+#include &#34;my_syscalls.h&#34;
+</span><span style=color:#a6e22e>+
+</span><span style=color:#a6e22e>+SYSCALL_DEFINE0(hello_hypercall0)
+</span><span style=color:#a6e22e>+{
+</span><span style=color:#a6e22e>+    kvm_hypercall0(KVM_HC_HELLO_HYPERCALL0);
+</span><span style=color:#a6e22e>+    return 0;
+</span><span style=color:#a6e22e>+}
+</span><span style=color:#a6e22e>+
+</span><span style=color:#a6e22e>+SYSCALL_DEFINE1(hello_hypercall1, int, arg1)
+</span><span style=color:#a6e22e>+{
+</span><span style=color:#a6e22e>+    kvm_hypercall1(KVM_HC_HELLO_HYPERCALL1, arg1);
+</span><span style=color:#a6e22e>+    return 0;
+</span><span style=color:#a6e22e>+}
+</span><span style=color:#a6e22e></span>diff --git a/my_syscalls/my_syscalls.h b/my_syscalls/my_syscalls.h
+new file mode 100644
+index 000000000000..04bf6fbd4efb
+<span style=color:#f92672>--- /dev/null
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+++ b/my_syscalls/my_syscalls.h
+</span><span style=color:#a6e22e></span><span style=color:#75715e>@@ -0,0 +1,2 @@
+</span><span style=color:#75715e></span><span style=color:#a6e22e>+asmlinkage long hello_hypercall0(void);
+</span><span style=color:#a6e22e>+asmlinkage long hello_hypercall1(int arg1);
+</span></code></pre></div><h3 id=3-テスト>
+3. テスト
+<a class=anchor href=#3-%e3%83%86%e3%82%b9%e3%83%88>#</a>
+</h3>
+<p>ゲストからハイパーコールを呼ぶためのシステムコールを呼ぶプログラム：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;sys/syscall.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>
+<span style=color:#75715e>#define HELLO_HYPERCALL0    440
+</span><span style=color:#75715e>#define HELLO_HYPERCALL1    441
+</span><span style=color:#75715e></span>
+<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>int</span> argc, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>argv)
+{
+    syscall(<span style=color:#ae81ff>440</span>);
+    syscall(<span style=color:#ae81ff>441</span>, <span style=color:#ae81ff>123</span>);
+    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+}
+</code></pre></div><p>実行したときのホスト側のログ：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>user@host ~ % sudo cat /sys/kernel/tracing/trace
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 2/2   #P:6
+#
+#                              _-----=&gt; irqs-off
+#                             / _----=&gt; need-resched
+#                            | / _---=&gt; hardirq/softirq
+#                            || / _--=&gt; preempt-depth
+#                            ||| /     delay
+#           TASK-PID   CPU#  ||||    TIMESTAMP  FUNCTION
+#              | |       |   ||||       |         |
+       CPU 1/KVM-1748  [000] ....   457.868063: kvm_emulate_hypercall: Hello world!
+       CPU 1/KVM-1748  [000] ....   457.868066: kvm_emulate_hypercall: a0 = 123
+</code></pre></div></article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#ハイパーコールの実装>ハイパーコールの実装</a>
+<ul>
+<li><a href=#環境>環境</a></li>
+<li><a href=#チュートリアル>チュートリアル</a>
+<ul>
+<li><a href=#1-kvm-側のハイパーコールの追加>1. KVM 側のハイパーコールの追加</a></li>
+<li><a href=#2-ゲスト側からのハイパーコールの呼び出し>2. ゲスト側からのハイパーコールの呼び出し</a></li>
+<li><a href=#3-テスト>3. テスト</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

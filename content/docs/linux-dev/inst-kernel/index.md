@@ -6,67 +6,72 @@ weight: 10
 
 # Install Kernel
 
-## System
+This is a step-by-step guide on how to install kernel for those who are new to kernel development.
+
+## System Setup
 
 - OS: Ubuntu 18.04 (64bit)
 - Current kernel: 5.3.0-42-generic
+- Installed kernel: 5.4.1
 
-## Compile
+## Step-by-step Instructions
 
-- Change directory to `/usr/src`.
-- Get kernel source code with the following command (ver.5.4.1).
+### 1. Preparing Source Code
+
+In this article, I assume that `/usr/src` is a working directory. First of all, change directory to `/usr/src` and download kernel source code with the following command.
 
 ```sh
+cd /usr/src
 wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.1.tar.gz
 ```
 
-- Decompress with tar.
+Decompress the code with `tar` command.
 
 ```sh
 tar -xvf linux-5.4.1.tar.gz
 ```
 
-- Change directory to `linux-5.4.1`.
-- Before compiling you have to install some packages via apt. Run the following command.
+### 2. Compiling
+
+Before compiling you have to install some packages.
 
 ```sh
 sudo apt install flex bison libssl-dev libelf-dev
 ```
 
-- Make .config with the following command.
+Then change directory to `linux-5.4.1` and create `.config` file with the following command.
 
 ```sh
 make olddefconfig
 ```
 
-- Compile with the following command. `4` indicate how many thread do you use.
+Finally, compile with the following command. `4` indicate how many thread do you use.
 
 ```sh
 make -j 4
 ```
 
-## Install
+### 3. Installing
 
-- Install modules and kernel image with the following command.
+Install modules and kernel image with the following command.
 
 ```sh
 make modules_install && make install
 ```
 
-## Boot
+### 4. Updating Config for Bootloader
 
-- Setting bootloader (grub).
+Update grub configuration with the following command.
 
 ```sh
-grub-mkconfig
+grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 - Reboot.
 
-## Change kernel version
+### 5. Option: Change Default Kernel Version
 
-- You can choose kernel by selecting `Advanced options for Ubuntu`.
-- You can also change default kernel by editing `/etc/default/grub`.
+If you need to change default kernel, you can select kernel by editting `/etc/default/grub` as follows.
 
 ```text
 GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux x.x.x"

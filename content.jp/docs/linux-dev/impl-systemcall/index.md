@@ -1,23 +1,23 @@
 ---
-title: "Implementing Original Systemcalls"
+title: "システムコールの追加"
 draft: false
 weight: 30
 ---
 
-# Implementing Original Systemcalls
+# システムコールの追加
 
-This is a tutorial of implementing new systemcalls.
+システムコールを追加するためのチュートリアルです．
 
-## System Setup
+## 環境
 
 - Linux kernel 5.8.13
 - CPU: x86_64
 
-## Step-by-step instructions
+## チュートリアル
 
-### 1. Register New Systemcall
+### 1. システムコールの登録
 
-Add a new entry in the `arch/x86/entry/syscalls/syscall_64.tbl`. You can use empty systemcall number and register `hello_syscall` as follows.
+`arch/x86/entry/syscalls/syscall_64.tbl` に新しいシステムコールのエントリを追加します．使われていないシステムコール番号を使って次のように `hello_syscall` を追加します．
 
 ```diff
  437	common	openat2			sys_openat2
@@ -29,9 +29,9 @@ Add a new entry in the `arch/x86/entry/syscalls/syscall_64.tbl`. You can use emp
  # x32-specific system call numbers start at 512 to avoid cache impact
 ```
 
-### 2. Implementing Body of New Systemcall
+### 2. 新しいシステムコールの本体の追加
 
-In this article, I wrote a new systemcall in the `my_syscall/` directory. The body of `hello_syscall` is written in the `my_syscalls/my_syscalls.c` using `SYSCALL_DEFINEk` macro as follows. `k` indicates thw number of arguments.
+ここでは新たなシステムコールを `my_syscall/` ディレクトリに追加する前提で話を進めます．システムコールの本体の処理は `my_syscalls/my_syscalls.c` に `SYSCALL_DEFINEk` マクロを使用して次のように記述します．
 
 ```c
 #include <linux/kernel.h>
@@ -45,7 +45,7 @@ SYSCALL_DEFINE0(hello_syscall)
 }
 ```
 
-If the systemcall has some arguments, it could be written as follows.
+`k` はシステムコールの引数の数に関係します．例えば引数が1つの場合は次のように記述します．
 
 ```c
 SYSCALL_DEFINE1(hello_syscall, int, arg)
@@ -55,11 +55,13 @@ SYSCALL_DEFINE1(hello_syscall, int, arg)
 }
 ```
 
-Then create header files (`my_syscalls/my_syscalls.h`) and modify `include/linux/syscalls.h`.
+次に `my_syscalls/my_syscalls.h` にヘッダファイルを追加します．
 
 ```c
 asmlinkage long sys_hello_syscall(void);
 ```
+
+`include/linux/syscalls.h` にも同様にプロトタイプ宣言を追加します．
 
 ```diff
  asmlinkage long sys_pidfd_send_signal(int pidfd, int sig,
@@ -74,21 +76,21 @@ asmlinkage long sys_hello_syscall(void);
   */
 ```
 
-### 3. Modifying Makefile
+### 3. Makefile の修正
 
-First, create `my_syscalls/Makefile` like this.
+最初に次の内容の `my_syscalls/Makefile` を追加します．
 
 ```Makefile
 obj-y:=my_syscalls.o
 ```
 
-Second, modify `Makefile` to add `my_syscalls/` directory to kernel.
+次に `Makefile` を修正し， `my_syscalls/` をカーネルに加えるように設定します．
 
 ```Makefile
 core-y		+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscalls/
 ```
 
-### 4. Compile and Install
+### 4. コンパイルとインストール
 
 [Install new kernel](../inst-kernel).
 
@@ -98,9 +100,9 @@ grub-mkconfig -o /boot/grub/grub.cfg
 reboot
 ```
 
-### 5. Test
+### 5. テスト
 
-Test program:
+確認用のプログラム：
 
 ```c
 #include <stdio.h>
@@ -115,7 +117,7 @@ int main(int argc, char **argv)
 }
 ```
 
-Result:
+ログの確認：
 
 ```text
 user@host ~ $ dmesg -w

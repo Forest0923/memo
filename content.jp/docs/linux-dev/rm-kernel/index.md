@@ -1,16 +1,16 @@
 ---
-title: "Remove Kernel"
+title: "カーネルの削除"
 draft: false
 weight: 20
 ---
 
-# Remove Kernel
+# カーネルの削除
 
-If the installed kernel no longer in use, you may want to remove it. This is introduction to remove kernel.
+Linuxカーネルの開発で必要なくなったカーネルを削除するためのチュートリアルです．
 
-## How to remove kernel
+## 方法
 
-To remove the kernel, you have to remove the following entries.
+カーネルを削除する場合は，以下のファイルやディレクトリを削除すればOKです．
 
 ```text
 /boot/vmlinuz-[version]
@@ -30,7 +30,7 @@ rm -rf /lib/modules/[version]/*
 rm /var/lib/initramfs_tools/[version]
 ```
 
-Then don't forget to update the grub configuration.
+削除したあとはブートローダの設定を更新しましょう．
 
 ```sh
 grub-mkconfig -o /boot/grub/grub.cfg

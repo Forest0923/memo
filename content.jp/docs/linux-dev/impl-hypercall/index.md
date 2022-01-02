@@ -1,24 +1,24 @@
 ---
-title: "Implementing Original Hypercalls"
+title: "ハイパーコールの実装"
 draft: false
 weight: 40
 ---
 
-# Implementing Original Hypercalls
+# ハイパーコールの実装
 
-This is a tutorial of implementing new hypercalls.
+QEMU/KVM にハイパーコールを追加するときのメモです．
 
-## System Setup
+## 環境
 
 - CPU: x86_64
 - Hypervisor: Linux KVM 5.8.13
 - Guest: Linux 5.8.13
 
-## Step-by-step instructions
+## チュートリアル
 
-### 1. Add new hypercall entry in KVM
+### 1. KVM 側のハイパーコールの追加
 
-Register new hypercall number at the `include/uapi/linux/kvm_para.h`.
+`include/uapi/linux/kvm_para.h` を修正し，新しいハイパーコール番号を登録します．
 
 ```diff
  #define KVM_HC_CLOCK_PAIRING		9
@@ -31,7 +31,7 @@ Register new hypercall number at the `include/uapi/linux/kvm_para.h`.
   * hypercalls use architecture specific
 ```
 
-Hypercall occurs VMCALL that is one of the reason of VM Exit. The handler of VMCALL eventually calls `kvm_emulate_hypercall()` in `arch/x86/kvm/x86.c`. You can add hypercall by modifying the switch statement in it as follows.
+ハイパーコールは VMCALL という VM Exit を発生させ，その exit ハンドラは最終的に `arch/x86/kvm/x86.c` にある `kvm_emulate_hypercall()` を呼び出します．その中の switch 文を次のように書き換えることでハイパーコールを追加できます．
 
 ```diff
  		kvm_sched_yield(vcpu->kvm, a0);
@@ -48,9 +48,9 @@ Hypercall occurs VMCALL that is one of the reason of VM Exit. The handler of VMC
  		break;
 ```
 
-### 2. Implementing systemcall to call hypercall
+### 2. ゲスト側からのハイパーコールの呼び出し
 
-A hypercall can be called using `kvm_hypercall0()` and so on as follows. The maximum number of arguments is 4.
+ハイパーコールの呼び出しは次のように `kvm_hypercall0()` などを使用して行います．引数の最大は4までです．
 
 ```c
 #include <linux/kernel.h>
@@ -71,7 +71,7 @@ SYSCALL_DEFINE1(hello_hypercall1, int, arg1)
 }
 ```
 
-You need to add a system call to call `kvm_hypercallk()` since it cannot be called directly from userspace. The following patch adds a system call to call a simple hypercall.
+ユーザ空間から直接呼び出すことはできないので `kvm_hypercallk()` を呼び出すためのシステムコールを追加する必要があります．以下のパッチは単純なハイパーコールを呼び出すシステムコールを追加するものです．
 
 ```diff
 diff --git a/Makefile b/Makefile
@@ -165,9 +165,9 @@ index 000000000000..04bf6fbd4efb
 +asmlinkage long hello_hypercall1(int arg1);
 ```
 
-### 3. Test
+### 3. テスト
 
-Call hypercall from guest:
+ゲストからハイパーコールを呼ぶためのシステムコールを呼ぶプログラム：
 
 ```c
 #include <stdio.h>
@@ -184,7 +184,7 @@ int main(int argc, char **argv)
 }
 ```
 
-Check log on host:
+実行したときのホスト側のログ：
 
 ```text
 user@host ~ % sudo cat /sys/kernel/tracing/trace

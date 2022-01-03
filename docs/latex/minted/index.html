@@ -2,18 +2,27 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Using minted for Syntax highlighting #  About #   minted is a package that enable to add syntax highlight by using Pygments library.  Installation #   Pygments is written in Python and can be installed by pip  pip install Pygments  Package minted is already installed if you use texlive.  Usage #   At the preamble add:  \usepackage[cache=false]{minted} \usepackage{xcolor} \definecolor{code-bg}{rgb}{0.95, 0.95, 0.95}  In the document, you can use syntax highlight like this:  \begin{minted}[breaklines, linenos, frame=lines, bgcolor=code-bg]{c} #include <stdio.">
+<meta name=description content="Using minted for Syntax highlighting #  About #  minted is a package that enable to add syntax highlight by using Pygments library.
+Installation #  Pygments is written in Python and can be installed by pip
+pip install Pygments Package minted is already installed if you use texlive.
+Usage #  At the preamble add some commands as follows.
+\usepackage[cache=false]{minted} \usepackage{xcolor} \definecolor{code-bg}{rgb}{0.95, 0.95, 0.95} You can then use syntax highlighting in your document as follows.">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Using minted for Syntax highlighting">
-<meta property="og:description" content="Using minted for Syntax highlighting #  About #   minted is a package that enable to add syntax highlight by using Pygments library.  Installation #   Pygments is written in Python and can be installed by pip  pip install Pygments  Package minted is already installed if you use texlive.  Usage #   At the preamble add:  \usepackage[cache=false]{minted} \usepackage{xcolor} \definecolor{code-bg}{rgb}{0.95, 0.95, 0.95}  In the document, you can use syntax highlight like this:  \begin{minted}[breaklines, linenos, frame=lines, bgcolor=code-bg]{c} #include <stdio.">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Using minted for Syntax Highlighting">
+<meta property="og:description" content="Using minted for Syntax highlighting #  About #  minted is a package that enable to add syntax highlight by using Pygments library.
+Installation #  Pygments is written in Python and can be installed by pip
+pip install Pygments Package minted is already installed if you use texlive.
+Usage #  At the preamble add some commands as follows.
+\usepackage[cache=false]{minted} \usepackage{xcolor} \definecolor{code-bg}{rgb}{0.95, 0.95, 0.95} You can then use syntax highlighting in your document as follows.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/latex/minted/"><meta property="article:section" content="docs">
-<title>Using minted for Syntax highlighting | Memo</title>
+<title>Using minted for Syntax Highlighting | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/latex/minted/ title="minted を使用したシンタックスハイライト">
 <link rel=stylesheet href=/memo/book.min.89a77f7e702a8626749b948bbfb01109823daf6c1246ca407d1378833494c402.css integrity="sha256-iad/fnAqhiZ0m5SLv7ARCYI9r2wSRspAfRN4gzSUxAI=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.0384d985faf588f64da7cfe9903c8caa7263f4bf39f8aff0d39335afd50cec14.js integrity="sha256-A4TZhfr1iPZNp8/pkDyMqnJj9L85+K/w05M1r9UM7BQ=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.58eaa76dab15775715d8f6c8cb19327165dcaec42b8bf2c848336fe498a55dc5.js integrity="sha256-WOqnbasVd1cV2PbIyxkycWXcrsQri/LISDNv5JilXcU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +51,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/minted/>
 Japanese
 </a>
 </li>
@@ -302,13 +311,13 @@ GitLab
 <a href=http://forest0923.github.io/memo/docs/latex/inst-tex-live/>Install TeX Live</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/latex/latex-cs/>Cheat Sheet for LaTeX</a>
+<a href=http://forest0923.github.io/memo/docs/latex/latex-cs/>LaTeX Cheat Sheet</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/latex/sty/>Using Custom Style File</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/latex/minted/ class=active>Using minted for Syntax highlighting</a>
+<a href=http://forest0923.github.io/memo/docs/latex/minted/ class=active>Using minted for Syntax Highlighting</a>
 </li>
 </ul>
 </li>
@@ -359,7 +368,7 @@ Posts
 <label for=menu-control>
 <img src=/memo/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>Using minted for Syntax highlighting</strong>
+<strong>Using minted for Syntax Highlighting</strong>
 <label for=toc-control>
 <img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
@@ -386,47 +395,33 @@ Using minted for Syntax highlighting
 About
 <a class=anchor href=#about>#</a>
 </h2>
-<ul>
-<li>minted is a package that enable to add syntax highlight by using Pygments library.</li>
-</ul>
+<p>minted is a package that enable to add syntax highlight by using Pygments library.</p>
 <h2 id=installation>
 Installation
 <a class=anchor href=#installation>#</a>
 </h2>
-<ul>
-<li>Pygments is written in Python and can be installed by pip</li>
-</ul>
+<p>Pygments is written in Python and can be installed by pip</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pip install Pygments
-</code></pre></div><ul>
-<li>Package minted is already installed if you use texlive.</li>
-</ul>
+</code></pre></div><p>Package minted is already installed if you use texlive.</p>
 <h2 id=usage>
 Usage
 <a class=anchor href=#usage>#</a>
 </h2>
-<ul>
-<li>At the preamble add:</li>
-</ul>
+<p>At the preamble add some commands as follows.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-tex data-lang=tex><span style=color:#66d9ef>\usepackage</span><span style=color:#a6e22e>[cache=false]</span>{minted}
 <span style=color:#66d9ef>\usepackage</span>{xcolor}
 
 <span style=color:#66d9ef>\definecolor</span>{code-bg}{rgb}{0.95, 0.95, 0.95}
-</code></pre></div><ul>
-<li>In the document, you can use syntax highlight like this:</li>
-</ul>
+</code></pre></div><p>You can then use syntax highlighting in your document as follows.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-tex data-lang=tex><span style=color:#66d9ef>\begin</span>{minted}[breaklines, linenos, frame=lines, bgcolor=code-bg]{c}
 #include &lt;stdio.h&gt;
 int main(){
     printf(&#34;Hello, World!&#34;);
 }
 <span style=color:#66d9ef>\end</span>{minted}
-</code></pre></div><ul>
-<li>You can include source files by using <code>\inputminted</code>:</li>
-</ul>
+</code></pre></div><p>Otherwise, you can use <code>\inputminted</code> to include source files.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-tex data-lang=tex><span style=color:#66d9ef>\inputminted</span><span style=color:#a6e22e>[breaklines, linenos, frame=lines, bgcolor=code-bg]</span>{python}{src/hello.py}
-</code></pre></div><ul>
-<li>Options:</li>
-</ul>
+</code></pre></div><p>There are several options for configuring the code visuals.</p>
 <table>
 <thead>
 <tr>

@@ -2,18 +2,25 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Using Custom Style File #  Create style file (~.sty) #  Create new command #   \newcomand and \renewcommand allow you to define new command. Usage:  \newcommand{\command-name}[argument-number][default]{definition} \renewcommand{\command-name}[argument-number][default]{definition}  Example:  \newcommand{\myfig}[4][width=5cm]{ \begin{figure}[H] \centering \includegraphics[#1]{#2} \caption{#3} \label{fig:#4} \end{figure} } Create new environment #   \newenvironment and \renewenvironment allow you to define new environment. Usage:  \newenvironment{environment-name}[argument-number][default]{before}{after} \renewenvironment{environment-name}[argument-number][default]{before}{after}  Example:  \definecolor{code-bg}{rgb}{0.95, 0.95, 0.95} \newenvironment{code}[2][] {\VerbatimEnvironment\begin{minted}[breaklines, frame=lines, bgcolor=code-bg, #1]{#2}} {\end{minted}} Add style files #   Put your file under /usr/local/share/texmf/tex/latex and execute mktexlsr as a root user.">
+<meta name=description content="Using Custom Style File #  Create style file (~.sty) #  Create new command #  \newcomand and \renewcommand allow you to define new command.
+\newcommand{\command-name}[argument-number][default]{definition} \renewcommand{\command-name}[argument-number][default]{definition} Example:
+\newcommand{\myfig}[4][width=5cm]{ \begin{figure}[H] \centering \includegraphics[#1]{#2} \caption{#3} \label{fig:#4} \end{figure} } Create new environment #   \newenvironment and \renewenvironment allow you to define new environment.  \newenvironment{environment-name}[argument-number][default]{before}{after} \renewenvironment{environment-name}[argument-number][default]{before}{after} Example:
+\definecolor{code-bg}{rgb}{0.95, 0.95, 0.95} \newenvironment{code}[2][] {\VerbatimEnvironment\begin{minted}[breaklines, frame=lines, bgcolor=code-bg, #1]{#2}} {\end{minted}} Add style files #  Put your file under /usr/local/share/texmf/tex/latex and execute mktexlsr as a root user.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Using Custom Style File">
-<meta property="og:description" content="Using Custom Style File #  Create style file (~.sty) #  Create new command #   \newcomand and \renewcommand allow you to define new command. Usage:  \newcommand{\command-name}[argument-number][default]{definition} \renewcommand{\command-name}[argument-number][default]{definition}  Example:  \newcommand{\myfig}[4][width=5cm]{ \begin{figure}[H] \centering \includegraphics[#1]{#2} \caption{#3} \label{fig:#4} \end{figure} } Create new environment #   \newenvironment and \renewenvironment allow you to define new environment. Usage:  \newenvironment{environment-name}[argument-number][default]{before}{after} \renewenvironment{environment-name}[argument-number][default]{before}{after}  Example:  \definecolor{code-bg}{rgb}{0.95, 0.95, 0.95} \newenvironment{code}[2][] {\VerbatimEnvironment\begin{minted}[breaklines, frame=lines, bgcolor=code-bg, #1]{#2}} {\end{minted}} Add style files #   Put your file under /usr/local/share/texmf/tex/latex and execute mktexlsr as a root user.">
+<meta property="og:description" content="Using Custom Style File #  Create style file (~.sty) #  Create new command #  \newcomand and \renewcommand allow you to define new command.
+\newcommand{\command-name}[argument-number][default]{definition} \renewcommand{\command-name}[argument-number][default]{definition} Example:
+\newcommand{\myfig}[4][width=5cm]{ \begin{figure}[H] \centering \includegraphics[#1]{#2} \caption{#3} \label{fig:#4} \end{figure} } Create new environment #   \newenvironment and \renewenvironment allow you to define new environment.  \newenvironment{environment-name}[argument-number][default]{before}{after} \renewenvironment{environment-name}[argument-number][default]{before}{after} Example:
+\definecolor{code-bg}{rgb}{0.95, 0.95, 0.95} \newenvironment{code}[2][] {\VerbatimEnvironment\begin{minted}[breaklines, frame=lines, bgcolor=code-bg, #1]{#2}} {\end{minted}} Add style files #  Put your file under /usr/local/share/texmf/tex/latex and execute mktexlsr as a root user.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/latex/sty/"><meta property="article:section" content="docs">
 <title>Using Custom Style File | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/latex/sty/ title="自作の sty ファイルの作り方">
 <link rel=stylesheet href=/memo/book.min.89a77f7e702a8626749b948bbfb01109823daf6c1246ca407d1378833494c402.css integrity="sha256-iad/fnAqhiZ0m5SLv7ARCYI9r2wSRspAfRN4gzSUxAI=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.0384d985faf588f64da7cfe9903c8caa7263f4bf39f8aff0d39335afd50cec14.js integrity="sha256-A4TZhfr1iPZNp8/pkDyMqnJj9L85+K/w05M1r9UM7BQ=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.58eaa76dab15775715d8f6c8cb19327165dcaec42b8bf2c848336fe498a55dc5.js integrity="sha256-WOqnbasVd1cV2PbIyxkycWXcrsQri/LISDNv5JilXcU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +49,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/sty/>
 Japanese
 </a>
 </li>
@@ -302,13 +309,13 @@ GitLab
 <a href=http://forest0923.github.io/memo/docs/latex/inst-tex-live/>Install TeX Live</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/latex/latex-cs/>Cheat Sheet for LaTeX</a>
+<a href=http://forest0923.github.io/memo/docs/latex/latex-cs/>LaTeX Cheat Sheet</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/latex/sty/ class=active>Using Custom Style File</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/latex/minted/>Using minted for Syntax highlighting</a>
+<a href=http://forest0923.github.io/memo/docs/latex/minted/>Using minted for Syntax Highlighting</a>
 </li>
 </ul>
 </li>
@@ -395,15 +402,10 @@ Create style file (~.sty)
 Create new command
 <a class=anchor href=#create-new-command>#</a>
 </h3>
-<ul>
-<li><code>\newcomand</code> and <code>\renewcommand</code> allow you to define new command.</li>
-<li>Usage:</li>
-</ul>
+<p><code>\newcomand</code> and <code>\renewcommand</code> allow you to define new command.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-tex data-lang=tex><span style=color:#66d9ef>\newcommand</span>{<span style=color:#66d9ef>\command</span>-name}[argument-number][default]{definition}
 <span style=color:#66d9ef>\renewcommand</span>{<span style=color:#66d9ef>\command</span>-name}[argument-number][default]{definition}
-</code></pre></div><ul>
-<li>Example:</li>
-</ul>
+</code></pre></div><p>Example:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-tex data-lang=tex><span style=color:#66d9ef>\newcommand</span>{<span style=color:#66d9ef>\myfig</span>}[4][width=5cm]{
   <span style=color:#66d9ef>\begin</span>{figure}[H]
     <span style=color:#66d9ef>\centering</span>
@@ -418,13 +420,10 @@ Create new environment
 </h3>
 <ul>
 <li><code>\newenvironment</code> and <code>\renewenvironment</code> allow you to define new environment.</li>
-<li>Usage:</li>
 </ul>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-tex data-lang=tex><span style=color:#66d9ef>\newenvironment</span>{environment-name}[argument-number][default]{before}{after}
 <span style=color:#66d9ef>\renewenvironment</span>{environment-name}[argument-number][default]{before}{after}
-</code></pre></div><ul>
-<li>Example:</li>
-</ul>
+</code></pre></div><p>Example:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-tex data-lang=tex><span style=color:#66d9ef>\definecolor</span>{code-bg}{rgb}{0.95, 0.95, 0.95}
 
 <span style=color:#66d9ef>\newenvironment</span>{code}[2][]
@@ -434,11 +433,9 @@ Create new environment
 Add style files
 <a class=anchor href=#add-style-files>#</a>
 </h2>
-<ul>
-<li>Put your file under <code>/usr/local/share/texmf/tex/latex</code> and execute <code>mktexlsr</code> as a root user.</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>username@ubuntu:/usr/local/share/texmf/tex/latex/mypkg
-$ sudo mktexlsr
+<p>Put your file under <code>/usr/local/share/texmf/tex/latex</code> and execute <code>mktexlsr</code> as a root user.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>cd /usr/local/share/texmf/tex/latex/mypkg
+sudo mktexlsr
 </code></pre></div><h2 id=tip-where-to-put-the-files>
 Tip: Where to put the files
 <a class=anchor href=#tip-where-to-put-the-files>#</a>

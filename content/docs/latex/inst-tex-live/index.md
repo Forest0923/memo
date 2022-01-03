@@ -6,26 +6,37 @@ weight: 10
 
 # Install TeX Live
 
-## System
+This is a startup guide for using LaTeX.
 
-- OS: Arch, Ubuntu
+## System Environment
 
-## Install commands
+- OS: Linux
 
-- Install texlive and language package:
+## Install
+
+### **TeX Live**
+
+Install texlive and language packages with the following command.
 
 ```sh
+# Arch
 sudo pacman -S texlive-most texlive-langjapanese
+```
+
+```sh
+# ubuntu
 sudo apt install texlive-full
 ```
 
-- Downloads jlisting.sty from <https://osdn.net/projects/mytexpert/downloads/26068/jlisting.sty.bz2/> and decompress:
+### **jListing**
+
+If you want to add source code that contains Japanese, you need to download jlisting from <https://osdn.net/projects/mytexpert/downloads/26068/jlisting.sty.bz2/> and extract it.
 
 ```sh
 bzip2 -dk jlisting.sty
 ```
 
-- Add jlisting.sty:
+Create a directory for jlisting in `/usr/local/share/texmf/tex/latex/`, add jlisting.sty, and run mktexlsr to reflect the added files.
 
 ```sh
 sudo mkdir -p /usr/local/share/texmf/tex/latex/jlisting

@@ -10,15 +10,14 @@ weight: 30
 
 ### Create new command
 
-- `\newcomand` and `\renewcommand` allow you to define new command.
-- Usage:
+`\newcomand` and `\renewcommand` allow you to define new command.
 
 ```tex
 \newcommand{\command-name}[argument-number][default]{definition}
 \renewcommand{\command-name}[argument-number][default]{definition}
 ```
 
-- Example:
+Example:
 
 ```tex
 \newcommand{\myfig}[4][width=5cm]{
@@ -34,14 +33,13 @@ weight: 30
 ### Create new environment
 
 - `\newenvironment` and `\renewenvironment` allow you to define new environment.
-- Usage:
 
 ```tex
 \newenvironment{environment-name}[argument-number][default]{before}{after}
 \renewenvironment{environment-name}[argument-number][default]{before}{after}
 ```
 
-- Example:
+Example:
 
 ```tex
 \definecolor{code-bg}{rgb}{0.95, 0.95, 0.95}
@@ -53,11 +51,11 @@ weight: 30
 
 ## Add style files
 
-- Put your file under `/usr/local/share/texmf/tex/latex` and execute `mktexlsr` as a root user.
+Put your file under `/usr/local/share/texmf/tex/latex` and execute `mktexlsr` as a root user.
 
-```bash
-username@ubuntu:/usr/local/share/texmf/tex/latex/mypkg
-$ sudo mktexlsr
+```sh
+cd /usr/local/share/texmf/tex/latex/mypkg
+sudo mktexlsr
 ```
 
 ## Tip: Where to put the files

@@ -9,11 +9,11 @@ weight: 20
 
 # LaTeX Cheat Sheet
 
-## Expressions
+## 数式
 
-### **Expression Number**
+### **式番号**
 
-If you need an expression number:
+式番号が必要な場合：
 
 {{< columns >}}
 
@@ -32,7 +32,7 @@ $$
 
 {{< /columns >}}
 
-If you do not need an expression number:
+式番号が必要ない場合：
 
 {{< columns >}}
 
@@ -50,9 +50,9 @@ $$
 
 {{< /columns >}}
 
-### **Align Equations**
+### **数式を揃える**
 
-Use \& to align multiple equations at equal positions.
+イコールの位置で複数の数式を揃える場合は \& を使います．
 
 {{< columns >}}
 
@@ -94,7 +94,7 @@ $$
 
 {{< /columns >}}
 
-### **Simultaneous Equations**
+### **連立方程式**
 
 {{< columns >}}
 
@@ -139,7 +139,7 @@ $$
 
 {{< /columns >}}
 
-### **Matrix**
+### **行列**
 
 {{< columns >}}
 
@@ -165,11 +165,11 @@ $$
 
 {{< /columns >}}
 
-## Source Code
+## ソースコード
 
 ### **minted**
 
-To write code directly in a tex file, use minted.
+tex ファイル内で直接コードを書くときは minted を使います．
 
 ```tex
 \begin{minted}[linenos, breaklines, frame=lines]{c}
@@ -181,15 +181,15 @@ int main(){
 \end{minted}
 ```
 
-Use inputminted to specify a file and put the source code in it.
+ファイルを指定してソースコードを載せるときは inputminted を使います．
 
 ```tex
 \inputminted[linenos, breaklines, frame=lines]{language}{src/hello.c}
 ```
 
-## Figure
+## 画像
 
-This is an example of inserting a single image. In the example below, the package here is used to insert the image at the specified position. (`\usepackage{here}`)
+画像を1枚載せたい場合の例です．下の例では here というパッケージを使用することで指定した位置に画像を挿入しています．（`\usepackage{here}`）
 
 ```tex
 \begin{figure}[H]
@@ -200,9 +200,9 @@ This is an example of inserting a single image. In the example below, the packag
 \end{figure}
 ```
 
-## Table
+## 表
 
-The table can be written as follows, but it is easier to create it automatically using [Table generator](https://www.tablesgenerator.com/).
+表は次のように書くことができますが，[Table generator](https://www.tablesgenerator.com/)などを使って自動で作成したほうが楽です．
 
 ```tex
 \begin{table}[H]
@@ -221,13 +221,13 @@ The table can be written as follows, but it is easier to create it automatically
 \end{table}
 ```
 
-## Footnote
+## 注釈
 
 ```tex
 \footnote[number]{text}
 ```
 
-## Special Characters and Operators
+## 特殊な文字や演算子
 
 ### **Σ**
 
@@ -515,7 +515,7 @@ $$
 
 {{< /columns >}}
 
-### **Null Set ∅**
+### **空集合∅**
 
 {{< columns >}}
 
@@ -547,7 +547,7 @@ $$
 
 {{< /columns >}}
 
-### **Vector**
+### **ベクトル**
 
 {{< columns >}}
 

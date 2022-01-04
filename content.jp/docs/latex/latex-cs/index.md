@@ -2,10 +2,8 @@
 title: "LaTeX Cheat Sheet"
 draft: false
 weight: 20
+katex: true
 ---
-
-{{< katex >}}
-{{< /katex >}}
 
 # LaTeX Cheat Sheet
 

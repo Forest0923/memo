@@ -1,19 +1,19 @@
 ---
-title: "Web Development"
+title: "Web 開発"
 draft: false
 weight: 10
 ---
 
-# Web Development
+# Web 開発
 
-## Source Code
+## ソースコード
 
-How to post the source code with syntax highlighting.
+ソースコードをハイライト付きで掲載する方法について．
 
 ### **Gist**
 
-Using GitHub Gist, you can put the source code by simply pasting Script tags.
-Copy the tag in the upper right corner of the Gist repository and paste it into the body to insert the source code.
+GitHub Gist を用いると Script タグを貼り付けるだけでソースコードを載せることができます．
+Gist のリポジトリの右上にあるタグをコピーして body に貼り付けるとソースコードが挿入されます．
 
 ```html
 <script src="https://gist.github.com/Forest0923/dad279ab557ae30bc51e4a9d8cf5bd7d.js"></script>
@@ -23,14 +23,14 @@ Copy the tag in the upper right corner of the Gist repository and paste it into 
 
 ### **prism.js**
 
-[prism.js](https://prismjs.com/) is a syntax highlighting tool implemented in JavaScript. To use prism.js, add the following script tag to the head.
+[prism.js](https://prismjs.com/) は JavaScript で実装されたシンタックスハイライトツールです．prism.js を使うためには，まず以下のスクリプトタグを head に追加します．
 
 ```html
 <link href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism-twilight.min.css' rel='stylesheet'/>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.css' rel='stylesheet'/>
 ```
 
-Additionally, insert following code in the body.
+次に以下のタグを body に追加します．
 
 ```html
 <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/prism.min.js'/>
@@ -38,7 +38,7 @@ Additionally, insert following code in the body.
 <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.js'/>
 ```
 
-You can display the highlighted code by writing as follows.
+以下のように書くことでハイライト付きのコードが表示されます．
 
 ```html
 <pre class="line-numbers"><code class="language-c">#include &lt;stdio.h&gt;
@@ -47,20 +47,18 @@ int main(){
 }</code></pre>
 ```
 
-## Beautiful Mathmatical Expressions
+## きれいな数式の表示
 
 ### **MathJax**
 
-[MathJax](https://www.mathjax.org/) is a library for displaying beautiful mathematical expressions like LaTeX. To use it, you need to add the following code.
+[MathJax](https://www.mathjax.org/) は LaTeX のようなきれいな数式を表示するためのライブラリです．使用する場合は以下のタグを読み込む必要があります．
 
 ```html
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 ```
 
-Expressions can be written by enclosing them with `\[\]`, `\begin{align}\end{align}` or etc.
-
-Examples:
+数式は `\[\]` や `\begin{align}\end{align}` などで囲むことで書くことができます．
 
 ```latex
 \[a^2 + b^2 = c^2\]
@@ -76,9 +74,9 @@ or
 \end{align}
 ```
 
-Inline expressions can be written by enclosing the expression with `$` or `\(\)`.
+インラインの数式は `$` や `\(\)` を使うことで表現できます．
 
-If you need numbering for expressions, you can add a script like the following to automatically number the expressions.
+数式に番号が必要な場合は以下のようなスクリプトを追加すると自動で番号がつけられます．
 
 ```html
 <script type="text/x-mathjax-config">
@@ -90,8 +88,7 @@ TeX: { equationNumbers: { autoNumber: "all" } }
 
 ### **KaTeX**
 
-[KaTeX](https://katex.org/) is a library that provides the same functionality as MathJax, but with a special emphasis on speed. To use it, you need to add the following tags.
-
+[KaTeX](https://katex.org/) は MathJax と同様の機能を提供するライブラリですが，特に速度に重きをおいています．使用するためには以下のタグを読み込む必要があります．
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">

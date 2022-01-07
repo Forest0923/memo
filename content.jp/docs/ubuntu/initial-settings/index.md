@@ -1,12 +1,12 @@
 ---
-title: "Initial Settings for Ubuntu"
+title: "Ubuntu の初期設定"
 draft: false
 weight: 10
 ---
 
-# Initial Settings for Ubuntu
+# Ubuntu の初期設定
 
-This article is a guide to help you quickly configure the initial settings when you install the desktop version of Ubuntu in VirtualBox. It is assumed that English is selected as the language setting during installation, and Minimal Install is selected.
+VirtualBox にデスクトップ版の Ubuntu を入れたときに初期設定をすぐにできるようにまとめたものです．GUI なしで設定できるようにしているので，Ubuntu インストール後にターミナルで下記のコマンドを実行すればすべて設定可能です．インストール時の言語設定は English を選択し，Minimal Install を選択した場合を想定しています．
 
 ```sh
 wget http://forest0923.github.io/memo/docs/ubuntu/initial-settings/ubuntu-initial-settings.sh
@@ -14,16 +14,16 @@ chmod +x ubuntu-initial-settings.sh
 ./ubuntu-initial-settings.sh
 ```
 
-## Systems Setup
+## 環境
 
 - Ubuntu 18.04 LTS (minimal install)
 - Ubuntu 20.04 LTS (minimal install)
 
-## Initial Settings
+## 設定
 
-### **Set the Time to Sleep**
+### **スリープまでの時間設定**
 
-Set the time as follows.
+次のコマンドで時間を設定します．
 
 {{< tabs "sleep" >}}
 {{< tab "Never">}}
@@ -42,21 +42,21 @@ gsettings set org.gnome.desktop.session idle-delay 3600
 {{< /tab>}}
 {{< /tabs >}}
 
-### **Customize Dock**
+### **DOCK のカスタマイズ**
 
-Add favorite applications to dock.
+お気に入りのアプリケーションを追加します．
 
 ```sh
 gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.Nautilus.desktop']"
 ```
 
-Change the icon size.
+アイコンのサイズを変更します．
 
 ```sh
 gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
 ```
 
-### **Change Server for apt**
+### **パッケージインストール時のサーバ変更**
 
 {{< tabs "apt_server" >}}
 {{< tab "JAIST">}}
@@ -75,7 +75,7 @@ sudo sed -i.bak -e 's%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagat
 {{< /tab>}}
 {{< /tabs >}}
 
-### **Reduce the Time to Shutdown**
+### **シャットダウンにかかる時間の短縮**
 
 ```sh
 sudo sed -i 's/#DefaultTimeoutStopSec=90s/#DefaultTimeoutStopSec=90s\nDefaultTimeoutStopSec=10s/' /etc/systemd/system.conf
@@ -85,15 +85,15 @@ sudo sed -i 's/#DefaultTimeoutStopSec=90s/#DefaultTimeoutStopSec=90s\nDefaultTim
 >
 > [systemd](https://www.freedesktop.org/software/systemd/man/systemd.service.html)
 
-### **Settings of Resolution**
+### **解像度の設定**
 
-Use xrandr to set the resolution.
+xrandr を用いて解像度を設定します．
 
 ```sh
 xrandr --output Virtual1 --mode 1440x900
 ```
 
-To run the command above at OS startup, add it to the autostart as follows.
+このコマンドを OS 起動時に実行させれば良いのでオートスタートに追加します．
 
 ```sh
 if [ ! -d /home/$USER/.config/autostart ]; then
@@ -111,15 +111,15 @@ Comment=Change builtin monitor resolution
 EOF
 ```
 
-### **Mute Error Sounds in Terminal**
+### **ターミナルのエラー音を消す**
 
 ```sh
 sudo sed -i 's/# set bell-style none/set bell-style none/' /etc/inputrc
 ```
 
-## Install Common Applications
+## アプリケーションのインストール
 
-### **Editor**
+### **エディタ**
 
 {{< tabs "editor" >}}
 {{< tab "Vim" >}}
@@ -146,7 +146,7 @@ sudo apt install emacs-nox
 {{< /tab >}}
 {{< /tabs >}}
 
-### **Terminal Multiplexer**
+### **ターミナルマルチプレクサ**
 
 ```sh
 sudo apt install tmux
@@ -158,13 +158,13 @@ sudo apt install tmux
 sudo apt install git
 ```
 
-### **Compiler and etc.**
+### **コンパイラなど**
 
 ```sh
 sudo apt install build-essential
 ```
 
-### **Tweak Tool**
+### **設定ツール**
 
 ```sh
 sudo apt install gnome-tweak-tool

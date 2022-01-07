@@ -2,18 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="HariboteOS with Ubuntu #  Binary editor #   hexedit Install:  sudo apt install hexedit  ghex Install:  sudo apt install ghex Assembler #   nasm (or gas) Usage:  nasm input.asm -o output (-l output.lst) C compiler #   gcc Usage:  gcc -march=i486 -m32 -fno-pie -nostdlib -T [linkerfile] -g *.c *.o -o bootpack.bin Make OS image #   Merge asmhead.bin and bootpack.bin:  cat asmhead.">
+<meta name=description content="Introduction to Creating Your Own OS with Ubuntu #  This article is tips for creating HariboteOS.
+ My HariboteOS
+ System Setup #   OS: Ubuntu 18.04  Tools Used #  Binary editor #   hexedit  sudo apt install hexedit  ghex  sudo apt install ghex Assembler #   nasm  sudo apt install nasm nasm input.asm -o output (-l output.lst) C Compiler #   gcc  gcc -march=i486 -m32 -fno-pie -nostdlib -T [linkerfile] -g *.">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="HariboteOS with Ubuntu">
-<meta property="og:description" content="HariboteOS with Ubuntu #  Binary editor #   hexedit Install:  sudo apt install hexedit  ghex Install:  sudo apt install ghex Assembler #   nasm (or gas) Usage:  nasm input.asm -o output (-l output.lst) C compiler #   gcc Usage:  gcc -march=i486 -m32 -fno-pie -nostdlib -T [linkerfile] -g *.c *.o -o bootpack.bin Make OS image #   Merge asmhead.bin and bootpack.bin:  cat asmhead.">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Introduction to Creating Your Own OS with Ubuntu">
+<meta property="og:description" content="Introduction to Creating Your Own OS with Ubuntu #  This article is tips for creating HariboteOS.
+ My HariboteOS
+ System Setup #   OS: Ubuntu 18.04  Tools Used #  Binary editor #   hexedit  sudo apt install hexedit  ghex  sudo apt install ghex Assembler #   nasm  sudo apt install nasm nasm input.asm -o output (-l output.lst) C Compiler #   gcc  gcc -march=i486 -m32 -fno-pie -nostdlib -T [linkerfile] -g *.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/ubuntu/haribote-os/"><meta property="article:section" content="docs">
-<title>HariboteOS with Ubuntu | Memo</title>
+<title>Introduction to Creating Your Own OS with Ubuntu | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/ubuntu/haribote-os/ title="自作 OS 入門 with Ubuntu">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.e59b355ea1685584b8b3b9d642690dba3022c1b16aa706f4e0018b196a69e64c.js integrity="sha256-5Zs1XqFoVYS4s7nWQmkNujAiwbFqpwb04AGLGWpp5kw=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.a961cf3eb3b9c0e363c0a5875c9d524156330729d029ed4ee02f4bb3215b6025.js integrity="sha256-qWHPPrO5wONjwKWHXJ1SQVYzBynQKe1O4C9LsyFbYCU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +47,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/haribote-os/>
 Japanese
 </a>
 </li>
@@ -210,10 +215,7 @@ GitLab
 <a href=http://forest0923.github.io/memo/docs/ubuntu/initial-settings/>Initial Settings for Ubuntu</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/ubuntu/common-apps/>Installing Common Apps in Ubuntu</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/ubuntu/haribote-os/ class=active>HariboteOS with Ubuntu</a>
+<a href=http://forest0923.github.io/memo/docs/ubuntu/haribote-os/ class=active>Introduction to Creating Your Own OS with Ubuntu</a>
 </li>
 </ul>
 </li>
@@ -356,7 +358,7 @@ Posts
 <label for=menu-control>
 <img src=/memo/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>HariboteOS with Ubuntu</strong>
+<strong>Introduction to Creating Your Own OS with Ubuntu</strong>
 <label for=toc-control>
 <img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
@@ -364,77 +366,87 @@ Posts
 <aside class="hidden clearfix">
 <nav id=TableOfContents>
 <ul>
-<li><a href=#hariboteos-with-ubuntu>HariboteOS with Ubuntu</a>
+<li><a href=#introduction-to-creating-your-own-os-with-ubuntu>Introduction to Creating Your Own OS with Ubuntu</a>
 <ul>
-<li><a href=#binary-editor>Binary editor</a></li>
-<li><a href=#assembler>Assembler</a></li>
-<li><a href=#c-compiler>C compiler</a></li>
-<li><a href=#make-os-image>Make OS image</a></li>
-<li><a href=#emulator>Emulator</a></li>
+<li><a href=#system-setup>System Setup</a></li>
+<li><a href=#tools-used>Tools Used</a>
+<ul>
+<li><a href=#binary-editor><strong>Binary editor</strong></a></li>
+<li><a href=#assembler><strong>Assembler</strong></a></li>
+<li><a href=#c-compiler><strong>C Compiler</strong></a></li>
+<li><a href=#make-os-image><strong>Make OS Image</strong></a></li>
+<li><a href=#emulator><strong>Emulator</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </nav>
 </aside>
 </header>
-<article class=markdown><h1 id=hariboteos-with-ubuntu>
-HariboteOS with Ubuntu
-<a class=anchor href=#hariboteos-with-ubuntu>#</a>
+<article class=markdown><h1 id=introduction-to-creating-your-own-os-with-ubuntu>
+Introduction to Creating Your Own OS with Ubuntu
+<a class=anchor href=#introduction-to-creating-your-own-os-with-ubuntu>#</a>
 </h1>
-<h2 id=binary-editor>
-Binary editor
-<a class=anchor href=#binary-editor>#</a>
+<p>This article is tips for creating HariboteOS.</p>
+<blockquote>
+<p><a href=https://github.com/Forest0923/my-haribote-os>My HariboteOS</a></p>
+</blockquote>
+<h2 id=system-setup>
+System Setup
+<a class=anchor href=#system-setup>#</a>
 </h2>
 <ul>
+<li>OS: Ubuntu 18.04</li>
+</ul>
+<h2 id=tools-used>
+Tools Used
+<a class=anchor href=#tools-used>#</a>
+</h2>
+<h3 id=binary-editor>
+<strong>Binary editor</strong>
+<a class=anchor href=#binary-editor>#</a>
+</h3>
+<ul>
 <li>hexedit</li>
-<li>Install:</li>
 </ul>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install hexedit
 </code></pre></div><ul>
 <li>ghex</li>
-<li>Install:</li>
 </ul>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install ghex
-</code></pre></div><h2 id=assembler>
-Assembler
+</code></pre></div><h3 id=assembler>
+<strong>Assembler</strong>
 <a class=anchor href=#assembler>#</a>
-</h2>
+</h3>
 <ul>
-<li>nasm (or gas)</li>
-<li>Usage:</li>
+<li>nasm</li>
 </ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>nasm input.asm -o output <span style=color:#f92672>(</span>-l output.lst<span style=color:#f92672>)</span>
-</code></pre></div><h2 id=c-compiler>
-C compiler
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install nasm
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>nasm input.asm -o output <span style=color:#f92672>(</span>-l output.lst<span style=color:#f92672>)</span>
+</code></pre></div><h3 id=c-compiler>
+<strong>C Compiler</strong>
 <a class=anchor href=#c-compiler>#</a>
-</h2>
+</h3>
 <ul>
 <li>gcc</li>
-<li>Usage:</li>
 </ul>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gcc -march<span style=color:#f92672>=</span>i486 -m32 -fno-pie -nostdlib -T <span style=color:#f92672>[</span>linkerfile<span style=color:#f92672>]</span> -g *.c *.o -o bootpack.bin
-</code></pre></div><h2 id=make-os-image>
-Make OS image
+</code></pre></div><h3 id=make-os-image>
+<strong>Make OS Image</strong>
 <a class=anchor href=#make-os-image>#</a>
-</h2>
-<ul>
-<li>Merge asmhead.bin and bootpack.bin:</li>
-</ul>
+</h3>
+<p>You can merge asmhead.bin and bootpack.bin by using cat to connect them as text.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>cat asmhead.bin bootpack.bin &gt; os.sys
-</code></pre></div><ul>
-<li>mtools</li>
-<li>Usage:</li>
-</ul>
+</code></pre></div><p>Use mtools to export the OS image.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mformat -f <span style=color:#ae81ff>1440</span> -C -B ipl.bin -i os.img ::
 mcopy -i os.img os.sys ::
-</code></pre></div><ul>
-<li>Meaning of options:</li>
-</ul>
+</code></pre></div><p>The meaning of the options in mtools is as follows.</p>
 <table>
 <thead>
 <tr>
-<th style=text-align:left>Option</th>
-<th style=text-align:left>Meaning</th>
+<th style=text-align:left>Options</th>
+<th style=text-align:left>Descriptions</th>
 </tr>
 </thead>
 <tbody>
@@ -452,23 +464,14 @@ mcopy -i os.img os.sys ::
 </tr>
 </tbody>
 </table>
-<h2 id=emulator>
-Emulator
+<h3 id=emulator>
+<strong>Emulator</strong>
 <a class=anchor href=#emulator>#</a>
-</h2>
-<ul>
-<li>qemu (or VirtualBox)</li>
-<li>Installation:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install qemu
-</code></pre></div><ul>
-<li>Usage:</li>
-</ul>
+</h3>
+<p>I used QEMU and VirtualBox as emulators. Since there was a problem that QEMU did not work well, I used VirtualBox after I faced the problem.</p>
+<p>When using QEMU, you can boot OS with the following command. <code>-fda</code> means image uses floppy disk format.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>qemu-system-i386 -fda os.img
-</code></pre></div><ul>
-<li>Option &ldquo;-fda&rdquo; means use of floppy disk</li>
-</ul>
-</article>
+</code></pre></div></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
 </div>
@@ -482,13 +485,18 @@ Emulator
 <div class=book-toc-content>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#hariboteos-with-ubuntu>HariboteOS with Ubuntu</a>
+<li><a href=#introduction-to-creating-your-own-os-with-ubuntu>Introduction to Creating Your Own OS with Ubuntu</a>
 <ul>
-<li><a href=#binary-editor>Binary editor</a></li>
-<li><a href=#assembler>Assembler</a></li>
-<li><a href=#c-compiler>C compiler</a></li>
-<li><a href=#make-os-image>Make OS image</a></li>
-<li><a href=#emulator>Emulator</a></li>
+<li><a href=#system-setup>System Setup</a></li>
+<li><a href=#tools-used>Tools Used</a>
+<ul>
+<li><a href=#binary-editor><strong>Binary editor</strong></a></li>
+<li><a href=#assembler><strong>Assembler</strong></a></li>
+<li><a href=#c-compiler><strong>C Compiler</strong></a></li>
+<li><a href=#make-os-image><strong>Make OS Image</strong></a></li>
+<li><a href=#emulator><strong>Emulator</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

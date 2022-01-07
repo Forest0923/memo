@@ -1,0 +1,303 @@
+<!doctype html><html lang=jp dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="自作 OS 入門 with Ubuntu #  「自作 OS 入門」を Ubuntu で行う際の Tips をまとめました．
+ My HariboteOS
+ 環境 #   OS: Ubuntu 18.04  使用したツール #  Binary editor #   hexedit  sudo apt install hexedit  ghex  sudo apt install ghex Assembler #   nasm  sudo apt install nasm nasm input.asm -o output (-l output.lst) C Compiler #   gcc  gcc -march=i486 -m32 -fno-pie -nostdlib -T [linkerfile] -g *.">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="自作 OS 入門 with Ubuntu">
+<meta property="og:description" content="自作 OS 入門 with Ubuntu #  「自作 OS 入門」を Ubuntu で行う際の Tips をまとめました．
+ My HariboteOS
+ 環境 #   OS: Ubuntu 18.04  使用したツール #  Binary editor #   hexedit  sudo apt install hexedit  ghex  sudo apt install ghex Assembler #   nasm  sudo apt install nasm nasm input.asm -o output (-l output.lst) C Compiler #   gcc  gcc -march=i486 -m32 -fno-pie -nostdlib -T [linkerfile] -g *.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://forest0923.github.io/memo/jp/docs/ubuntu/haribote-os/"><meta property="article:section" content="docs">
+<title>自作 OS 入門 with Ubuntu | Memo</title>
+<link rel=manifest href=/memo/manifest.json>
+<link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=en href=http://forest0923.github.io/memo/docs/ubuntu/haribote-os/ title="Introduction to Creating Your Own OS with Ubuntu">
+<link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
+<script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.4b0339e7281e46bf8c42a76953af5550f75d8b69a2e1866ab78c7147e5283b53.js integrity="sha256-SwM55ygeRr+MQqdpU69VUPddi2mi4YZqt4xxR+UoO1M=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/memo/jp/><span>Memo</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul class=book-languages>
+<li>
+<input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between">
+<a role=button class="flex align-center">
+<img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+Japanese
+</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/docs/ubuntu/haribote-os/>
+English
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Links</h2>
+<ul>
+<li>
+<a href=https://github.com/Forest0923 target=_blank rel=noopener>
+GitHub
+</a>
+</li>
+<li>
+<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
+GitLab
+</a>
+</li>
+</ul>
+<h2>Documents</h2>
+<ul>
+<li>
+<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
+<a role=button>Linux Kernel Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/inst-kernel/>カーネルのインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/rm-kernel/>カーネルの削除</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-systemcall/>システムコールの追加</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-hypercall/>ハイパーコールの実装</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle checked>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between">
+<a role=button>Ubuntu</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/initial-settings/>Ubuntu の初期設定</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/haribote-os/ class=active>自作 OS 入門 with Ubuntu</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between">
+<a role=button>LaTeX</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/inst-tex-live/>LaTeX スタートアップ：TeX Live のインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/latex-cs/>LaTeX Cheat Sheet</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/sty/>自作の sty ファイルの作り方</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/minted/>minted を使用したシンタックスハイライト</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between">
+<a role=button>Web Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/devtools/>Web 開発</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Blog Posts</h2>
+<ul>
+<li>
+<a href=/memo/jp/posts/>
+Posts
+</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/memo/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>自作 OS 入門 with Ubuntu</strong>
+<label for=toc-control>
+<img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#自作-os-入門-with-ubuntu>自作 OS 入門 with Ubuntu</a>
+<ul>
+<li><a href=#環境>環境</a></li>
+<li><a href=#使用したツール>使用したツール</a>
+<ul>
+<li><a href=#binary-editor><strong>Binary editor</strong></a></li>
+<li><a href=#assembler>Assembler</a></li>
+<li><a href=#c-compiler>C Compiler</a></li>
+<li><a href=#make-os-image>Make OS Image</a></li>
+<li><a href=#emulator>Emulator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+</header>
+<article class=markdown><h1 id=自作-os-入門-with-ubuntu>
+自作 OS 入門 with Ubuntu
+<a class=anchor href=#%e8%87%aa%e4%bd%9c-os-%e5%85%a5%e9%96%80-with-ubuntu>#</a>
+</h1>
+<p>「自作 OS 入門」を Ubuntu で行う際の Tips をまとめました．</p>
+<blockquote>
+<p><a href=https://github.com/Forest0923/my-haribote-os>My HariboteOS</a></p>
+</blockquote>
+<h2 id=環境>
+環境
+<a class=anchor href=#%e7%92%b0%e5%a2%83>#</a>
+</h2>
+<ul>
+<li>OS: Ubuntu 18.04</li>
+</ul>
+<h2 id=使用したツール>
+使用したツール
+<a class=anchor href=#%e4%bd%bf%e7%94%a8%e3%81%97%e3%81%9f%e3%83%84%e3%83%bc%e3%83%ab>#</a>
+</h2>
+<h3 id=binary-editor>
+<strong>Binary editor</strong>
+<a class=anchor href=#binary-editor>#</a>
+</h3>
+<ul>
+<li>hexedit</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install hexedit
+</code></pre></div><ul>
+<li>ghex</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install ghex
+</code></pre></div><h3 id=assembler>
+Assembler
+<a class=anchor href=#assembler>#</a>
+</h3>
+<ul>
+<li>nasm</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install nasm
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>nasm input.asm -o output <span style=color:#f92672>(</span>-l output.lst<span style=color:#f92672>)</span>
+</code></pre></div><h3 id=c-compiler>
+C Compiler
+<a class=anchor href=#c-compiler>#</a>
+</h3>
+<ul>
+<li>gcc</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gcc -march<span style=color:#f92672>=</span>i486 -m32 -fno-pie -nostdlib -T <span style=color:#f92672>[</span>linkerfile<span style=color:#f92672>]</span> -g *.c *.o -o bootpack.bin
+</code></pre></div><h3 id=make-os-image>
+Make OS Image
+<a class=anchor href=#make-os-image>#</a>
+</h3>
+<p>asmhead.bin と bootpack.bin は cat でテキストとしてつなげることでマージできます．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>cat asmhead.bin bootpack.bin &gt; os.sys
+</code></pre></div><p>OS のイメージを生成するために mtools を使用します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mformat -f <span style=color:#ae81ff>1440</span> -C -B ipl.bin -i os.img ::
+mcopy -i os.img os.sys ::
+</code></pre></div><p>mtools のオプションの意味は次のようになっています．</p>
+<table>
+<thead>
+<tr>
+<th style=text-align:left>Options</th>
+<th style=text-align:left>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style=text-align:left>-f</td>
+<td style=text-align:left>ファイルサイズ</td>
+</tr>
+<tr>
+<td style=text-align:left>-C</td>
+<td style=text-align:left>MS-MOS ファイルシステムを指定</td>
+</tr>
+<tr>
+<td style=text-align:left>-B</td>
+<td style=text-align:left>ブートセクタ</td>
+</tr>
+</tbody>
+</table>
+<h3 id=emulator>
+Emulator
+<a class=anchor href=#emulator>#</a>
+</h3>
+<p>エミュレータは QEMU と VirtualBox を使用しました．途中から QEMU でうまく動作しない問題があったため，以降は VirtualBox で実験を行いました．
+QEMU で実行する場合は下記のコマンドでブートしました．<code>-fda</code> はフロッピーディスクを使用しているという意味です．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>qemu-system-i386 -fda os.img
+</code></pre></div></article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#自作-os-入門-with-ubuntu>自作 OS 入門 with Ubuntu</a>
+<ul>
+<li><a href=#環境>環境</a></li>
+<li><a href=#使用したツール>使用したツール</a>
+<ul>
+<li><a href=#binary-editor><strong>Binary editor</strong></a></li>
+<li><a href=#assembler>Assembler</a></li>
+<li><a href=#c-compiler>C Compiler</a></li>
+<li><a href=#make-os-image>Make OS Image</a></li>
+<li><a href=#emulator>Emulator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

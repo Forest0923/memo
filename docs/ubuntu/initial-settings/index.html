@@ -2,18 +2,21 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Initial Settings for Ubuntu #  Systems #   Ubuntu 18.04 LTS (minimal install) Ubuntu 20.04 LTS (minimal install)  Settings for Ubuntu 18.04 on VirtualBox #  wget https://github.com/Forest0923/memo/blob/master/scripts/settings_ubuntu_18_20.sh chmod 755 settings_ubuntu_18_20.sh sudo ./settings_ubuntu_18_20.sh Initial settings #  Update and upgrade #   At first, upgrade apt with following commands.  sudo apt update sudo apt upgrade Change language of home directory #   English name is easier to operate on the command line than Japanese name.">
+<meta name=description content="Initial Settings for Ubuntu #  This article is a guide to help you quickly configure the initial settings when you install the desktop version of Ubuntu in VirtualBox. It is assumed that English is selected as the language setting during installation, and Minimal Install is selected.
+wget http://forest0923.github.io/memo/docs/ubuntu/initial-settings/ubuntu-initial-settings.sh chmod +x ubuntu-initial-settings.sh ./ubuntu-initial-settings.sh Systems Setup #   Ubuntu 18.04 LTS (minimal install) Ubuntu 20.04 LTS (minimal install)  Initial Settings #  Set the Time to Sleep #  Set the time as follows.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Initial Settings for Ubuntu">
-<meta property="og:description" content="Initial Settings for Ubuntu #  Systems #   Ubuntu 18.04 LTS (minimal install) Ubuntu 20.04 LTS (minimal install)  Settings for Ubuntu 18.04 on VirtualBox #  wget https://github.com/Forest0923/memo/blob/master/scripts/settings_ubuntu_18_20.sh chmod 755 settings_ubuntu_18_20.sh sudo ./settings_ubuntu_18_20.sh Initial settings #  Update and upgrade #   At first, upgrade apt with following commands.  sudo apt update sudo apt upgrade Change language of home directory #   English name is easier to operate on the command line than Japanese name.">
+<meta property="og:description" content="Initial Settings for Ubuntu #  This article is a guide to help you quickly configure the initial settings when you install the desktop version of Ubuntu in VirtualBox. It is assumed that English is selected as the language setting during installation, and Minimal Install is selected.
+wget http://forest0923.github.io/memo/docs/ubuntu/initial-settings/ubuntu-initial-settings.sh chmod +x ubuntu-initial-settings.sh ./ubuntu-initial-settings.sh Systems Setup #   Ubuntu 18.04 LTS (minimal install) Ubuntu 20.04 LTS (minimal install)  Initial Settings #  Set the Time to Sleep #  Set the time as follows.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/ubuntu/initial-settings/"><meta property="article:section" content="docs">
 <title>Initial Settings for Ubuntu | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/ubuntu/initial-settings/ title="Ubuntu の初期設定">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.e59b355ea1685584b8b3b9d642690dba3022c1b16aa706f4e0018b196a69e64c.js integrity="sha256-5Zs1XqFoVYS4s7nWQmkNujAiwbFqpwb04AGLGWpp5kw=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.a961cf3eb3b9c0e363c0a5875c9d524156330729d029ed4ee02f4bb3215b6025.js integrity="sha256-qWHPPrO5wONjwKWHXJ1SQVYzBynQKe1O4C9LsyFbYCU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +45,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/initial-settings/>
 Japanese
 </a>
 </li>
@@ -210,10 +213,7 @@ GitLab
 <a href=http://forest0923.github.io/memo/docs/ubuntu/initial-settings/ class=active>Initial Settings for Ubuntu</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/ubuntu/common-apps/>Installing Common Apps in Ubuntu</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/ubuntu/haribote-os/>HariboteOS with Ubuntu</a>
+<a href=http://forest0923.github.io/memo/docs/ubuntu/haribote-os/>Introduction to Creating Your Own OS with Ubuntu</a>
 </li>
 </ul>
 </li>
@@ -366,18 +366,24 @@ Posts
 <ul>
 <li><a href=#initial-settings-for-ubuntu>Initial Settings for Ubuntu</a>
 <ul>
-<li><a href=#systems>Systems</a></li>
-<li><a href=#settings-for-ubuntu-1804-on-virtualbox>Settings for Ubuntu 18.04 on VirtualBox</a></li>
-<li><a href=#initial-settings>Initial settings</a>
+<li><a href=#systems-setup>Systems Setup</a></li>
+<li><a href=#initial-settings>Initial Settings</a>
 <ul>
-<li><a href=#update-and-upgrade>Update and upgrade</a></li>
-<li><a href=#change-language-of-home-directory>Change language of home directory</a></li>
-<li><a href=#blank-screen-after-an-hour>Blank screen after an hour</a></li>
-<li><a href=#change-apt-server>Change apt server</a></li>
-<li><a href=#make-shutdown-time-short>Make shutdown time short</a></li>
-<li><a href=#change-resolution>Change resolution</a></li>
-<li><a href=#mute-sounds-at-terminal>Mute sounds at terminal</a></li>
-<li><a href=#customize-dock>Customize dock</a></li>
+<li><a href=#set-the-time-to-sleep><strong>Set the Time to Sleep</strong></a></li>
+<li><a href=#customize-dock><strong>Customize Dock</strong></a></li>
+<li><a href=#change-server-for-apt><strong>Change Server for apt</strong></a></li>
+<li><a href=#reduce-the-time-to-shutdown><strong>Reduce the Time to Shutdown</strong></a></li>
+<li><a href=#settings-of-resolution><strong>Settings of Resolution</strong></a></li>
+<li><a href=#mute-error-sounds-in-terminal><strong>Mute Error Sounds in Terminal</strong></a></li>
+</ul>
+</li>
+<li><a href=#install-common-applications>Install Common Applications</a>
+<ul>
+<li><a href=#editor><strong>Editor</strong></a></li>
+<li><a href=#terminal-multiplexer><strong>Terminal Multiplexer</strong></a></li>
+<li><a href=#git><strong>Git</strong></a></li>
+<li><a href=#compiler-and-etc><strong>Compiler and etc.</strong></a></li>
+<li><a href=#tweak-tool><strong>Tweak Tool</strong></a></li>
 </ul>
 </li>
 </ul>
@@ -390,81 +396,73 @@ Posts
 Initial Settings for Ubuntu
 <a class=anchor href=#initial-settings-for-ubuntu>#</a>
 </h1>
-<h2 id=systems>
-Systems
-<a class=anchor href=#systems>#</a>
+<p>This article is a guide to help you quickly configure the initial settings when you install the desktop version of Ubuntu in VirtualBox. It is assumed that English is selected as the language setting during installation, and Minimal Install is selected.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>wget http://forest0923.github.io/memo/docs/ubuntu/initial-settings/ubuntu-initial-settings.sh
+chmod +x ubuntu-initial-settings.sh
+./ubuntu-initial-settings.sh
+</code></pre></div><h2 id=systems-setup>
+Systems Setup
+<a class=anchor href=#systems-setup>#</a>
 </h2>
 <ul>
 <li>Ubuntu 18.04 LTS (minimal install)</li>
 <li>Ubuntu 20.04 LTS (minimal install)</li>
 </ul>
-<h2 id=settings-for-ubuntu-1804-on-virtualbox>
-Settings for Ubuntu 18.04 on VirtualBox
-<a class=anchor href=#settings-for-ubuntu-1804-on-virtualbox>#</a>
-</h2>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>wget https://github.com/Forest0923/memo/blob/master/scripts/settings_ubuntu_18_20.sh
-chmod <span style=color:#ae81ff>755</span> settings_ubuntu_18_20.sh
-sudo ./settings_ubuntu_18_20.sh
-</code></pre></div><h2 id=initial-settings>
-Initial settings
+<h2 id=initial-settings>
+Initial Settings
 <a class=anchor href=#initial-settings>#</a>
 </h2>
-<h3 id=update-and-upgrade>
-Update and upgrade
-<a class=anchor href=#update-and-upgrade>#</a>
+<h3 id=set-the-time-to-sleep>
+<strong>Set the Time to Sleep</strong>
+<a class=anchor href=#set-the-time-to-sleep>#</a>
 </h3>
-<ul>
-<li>At first, upgrade apt with following commands.</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt update
-sudo apt upgrade
-</code></pre></div><h3 id=change-language-of-home-directory>
-Change language of home directory
-<a class=anchor href=#change-language-of-home-directory>#</a>
+<p>Set the time as follows.</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-sleep id=tabs-sleep-0 checked>
+<label for=tabs-sleep-0>Never</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gsettings set org.gnome.desktop.session idle-delay <span style=color:#ae81ff>0</span>
+</code></pre></div></div><input type=radio class=toggle name=tabs-sleep id=tabs-sleep-1>
+<label for=tabs-sleep-1>1 hours</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gsettings set org.gnome.desktop.session idle-delay <span style=color:#ae81ff>3600</span>
+</code></pre></div></div></div>
+<h3 id=customize-dock>
+<strong>Customize Dock</strong>
+<a class=anchor href=#customize-dock>#</a>
 </h3>
-<ul>
-<li>English name is easier to operate on the command line than Japanese name.</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>env LANGUAGE<span style=color:#f92672>=</span>C LC_MESSAGES<span style=color:#f92672>=</span>C xdg-user-dirs-gtk-update
-</code></pre></div><ul>
-<li>Select <code>Update names</code>.</li>
-</ul>
-<h3 id=blank-screen-after-an-hour>
-Blank screen after an hour
-<a class=anchor href=#blank-screen-after-an-hour>#</a>
+<p>Add favorite applications to dock.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gsettings set org.gnome.shell favorite-apps <span style=color:#e6db74>&#34;[&#39;firefox.desktop&#39;, &#39;org.gnome.Terminal.desktop&#39;, &#39;org.gnome.Nautilus.desktop&#39;]&#34;</span>
+</code></pre></div><p>Change the icon size.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size <span style=color:#ae81ff>36</span>
+</code></pre></div><h3 id=change-server-for-apt>
+<strong>Change Server for apt</strong>
+<a class=anchor href=#change-server-for-apt>#</a>
 </h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gsettings set org.gnome.desktop.session idle-delay <span style=color:#ae81ff>3600</span>
-</code></pre></div><h3 id=change-apt-server>
-Change apt server
-<a class=anchor href=#change-apt-server>#</a>
-</h3>
-<ul>
-<li>Yamagata university:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo sed -i.bak -e <span style=color:#e6db74>&#39;s%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagata-u.ac.jp/pub/linux/ubuntu/archives/%g&#39;</span> /etc/apt/sources.list
-</code></pre></div><h3 id=make-shutdown-time-short>
-Make shutdown time short
-<a class=anchor href=#make-shutdown-time-short>#</a>
+<div class=book-tabs><input type=radio class=toggle name=tabs-apt_server id=tabs-apt_server-0 checked>
+<label for=tabs-apt_server-0>JAIST</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo sed -i.bak -e <span style=color:#e6db74>&#39;s%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.jaist.ac.jp/pub/Linux/ubuntu/archives/%g&#39;</span> /etc/apt/sources.list
+</code></pre></div></div><input type=radio class=toggle name=tabs-apt_server id=tabs-apt_server-1>
+<label for=tabs-apt_server-1>Yamagata Univ.</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo sed -i.bak -e <span style=color:#e6db74>&#39;s%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagata-u.ac.jp/pub/linux/ubuntu/archives/%g&#39;</span> /etc/apt/sources.list
+</code></pre></div></div></div>
+<h3 id=reduce-the-time-to-shutdown>
+<strong>Reduce the Time to Shutdown</strong>
+<a class=anchor href=#reduce-the-time-to-shutdown>#</a>
 </h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo sed -i <span style=color:#e6db74>&#39;s/#DefaultTimeoutStopSec=90s/#DefaultTimeoutStopSec=90s\nDefaultTimeoutStopSec=10s/&#39;</span> /etc/systemd/system.conf
 </code></pre></div><blockquote>
 <p>Reference:</p>
 <p><a href=https://www.freedesktop.org/software/systemd/man/systemd.service.html>systemd</a></p>
 </blockquote>
-<h3 id=change-resolution>
-Change resolution
-<a class=anchor href=#change-resolution>#</a>
+<h3 id=settings-of-resolution>
+<strong>Settings of Resolution</strong>
+<a class=anchor href=#settings-of-resolution>#</a>
 </h3>
-<ul>
-<li>Add the following command as a startup application.</li>
-<li>Selectable [monitor name] and [resolution] can be shown by <code>xrandr</code>.</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>xrandr --output <span style=color:#f92672>[</span>monitor name<span style=color:#f92672>]</span> --mode <span style=color:#f92672>[</span>resolution<span style=color:#f92672>]</span>
-</code></pre></div><ul>
-<li>GUI: run <code>gnome-session-properties</code></li>
-<li>CUI: run the following command at <code>~/.config/autostart</code></li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>cat <span style=color:#e6db74>&lt;&lt;EOF &gt; xrandr.desktop
+<p>Use xrandr to set the resolution.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>xrandr --output Virtual1 --mode 1440x900
+</code></pre></div><p>To run the command above at OS startup, add it to the autostart as follows.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> ! -d /home/$USER/.config/autostart <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
+    mkdir /home/$USER/.config/autostart
+<span style=color:#66d9ef>fi</span>
+cat <span style=color:#e6db74>&lt;&lt;EOF &gt; /home/$USER/.config/autostart/xrandr.desktop
 </span><span style=color:#e6db74>[Desktop Entry]
 </span><span style=color:#e6db74>Type=Application
 </span><span style=color:#e6db74>Exec=xrandr --output Virtual1 --mode 1440x900
@@ -474,23 +472,50 @@ Change resolution
 </span><span style=color:#e6db74>Name=monitor_resolution
 </span><span style=color:#e6db74>Comment=Change builtin monitor resolution
 </span><span style=color:#e6db74>EOF</span>
-</code></pre></div><h3 id=mute-sounds-at-terminal>
-Mute sounds at terminal
-<a class=anchor href=#mute-sounds-at-terminal>#</a>
+</code></pre></div><h3 id=mute-error-sounds-in-terminal>
+<strong>Mute Error Sounds in Terminal</strong>
+<a class=anchor href=#mute-error-sounds-in-terminal>#</a>
 </h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo sed -i <span style=color:#e6db74>&#39;s/# set bell-style none/set bell-style none/&#39;</span> /etc/inputrc
-</code></pre></div><h3 id=customize-dock>
-Customize dock
-<a class=anchor href=#customize-dock>#</a>
+</code></pre></div><h2 id=install-common-applications>
+Install Common Applications
+<a class=anchor href=#install-common-applications>#</a>
+</h2>
+<h3 id=editor>
+<strong>Editor</strong>
+<a class=anchor href=#editor>#</a>
 </h3>
-<ul>
-<li>Register favorite apps:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gsettings set org.gnome.shell favorite-apps <span style=color:#e6db74>&#34;[&#39;firefox.desktop&#39;, &#39;org.gnome.Terminal.desktop&#39;, &#39;org.gnome.Nautilus.desktop&#39;]&#34;</span>
-</code></pre></div><ul>
-<li>Change icon size:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size <span style=color:#ae81ff>36</span>
+<div class=book-tabs><input type=radio class=toggle name=tabs-editor id=tabs-editor-0 checked>
+<label for=tabs-editor-0>Vim</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install vim-gtk3
+</code></pre></div></div><input type=radio class=toggle name=tabs-editor id=tabs-editor-1>
+<label for=tabs-editor-1>VSCode</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install snapd
+sudo snap install code
+</code></pre></div></div><input type=radio class=toggle name=tabs-editor id=tabs-editor-2>
+<label for=tabs-editor-2>Emacs</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install emacs-nox
+</code></pre></div></div></div>
+<h3 id=terminal-multiplexer>
+<strong>Terminal Multiplexer</strong>
+<a class=anchor href=#terminal-multiplexer>#</a>
+</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install tmux
+</code></pre></div><h3 id=git>
+<strong>Git</strong>
+<a class=anchor href=#git>#</a>
+</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install git
+</code></pre></div><h3 id=compiler-and-etc>
+<strong>Compiler and etc.</strong>
+<a class=anchor href=#compiler-and-etc>#</a>
+</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install build-essential
+</code></pre></div><h3 id=tweak-tool>
+<strong>Tweak Tool</strong>
+<a class=anchor href=#tweak-tool>#</a>
+</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install gnome-tweak-tool
 </code></pre></div></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
@@ -507,18 +532,24 @@ Customize dock
 <ul>
 <li><a href=#initial-settings-for-ubuntu>Initial Settings for Ubuntu</a>
 <ul>
-<li><a href=#systems>Systems</a></li>
-<li><a href=#settings-for-ubuntu-1804-on-virtualbox>Settings for Ubuntu 18.04 on VirtualBox</a></li>
-<li><a href=#initial-settings>Initial settings</a>
+<li><a href=#systems-setup>Systems Setup</a></li>
+<li><a href=#initial-settings>Initial Settings</a>
 <ul>
-<li><a href=#update-and-upgrade>Update and upgrade</a></li>
-<li><a href=#change-language-of-home-directory>Change language of home directory</a></li>
-<li><a href=#blank-screen-after-an-hour>Blank screen after an hour</a></li>
-<li><a href=#change-apt-server>Change apt server</a></li>
-<li><a href=#make-shutdown-time-short>Make shutdown time short</a></li>
-<li><a href=#change-resolution>Change resolution</a></li>
-<li><a href=#mute-sounds-at-terminal>Mute sounds at terminal</a></li>
-<li><a href=#customize-dock>Customize dock</a></li>
+<li><a href=#set-the-time-to-sleep><strong>Set the Time to Sleep</strong></a></li>
+<li><a href=#customize-dock><strong>Customize Dock</strong></a></li>
+<li><a href=#change-server-for-apt><strong>Change Server for apt</strong></a></li>
+<li><a href=#reduce-the-time-to-shutdown><strong>Reduce the Time to Shutdown</strong></a></li>
+<li><a href=#settings-of-resolution><strong>Settings of Resolution</strong></a></li>
+<li><a href=#mute-error-sounds-in-terminal><strong>Mute Error Sounds in Terminal</strong></a></li>
+</ul>
+</li>
+<li><a href=#install-common-applications>Install Common Applications</a>
+<ul>
+<li><a href=#editor><strong>Editor</strong></a></li>
+<li><a href=#terminal-multiplexer><strong>Terminal Multiplexer</strong></a></li>
+<li><a href=#git><strong>Git</strong></a></li>
+<li><a href=#compiler-and-etc><strong>Compiler and etc.</strong></a></li>
+<li><a href=#tweak-tool><strong>Tweak Tool</strong></a></li>
 </ul>
 </li>
 </ul>

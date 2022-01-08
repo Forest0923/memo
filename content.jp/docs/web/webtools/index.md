@@ -1,7 +1,7 @@
 ---
 title: "Web Tools"
-draft: true
-weight: 20
+draft: false
+weight: 999
 ---
 
 # Web Tools

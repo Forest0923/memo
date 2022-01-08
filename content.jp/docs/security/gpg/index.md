@@ -1,36 +1,36 @@
 ---
-title: "GPG Key"
+title: "GNU Privacy Guard"
 draft: false
 weight: 20
 ---
 
 # GNU Privacy Guard
 
-GnuPG is the OpenPGP standard for encrypting and signing data and communications.
+GnuPG は OpenPGP 標準の暗号化規格でデータや通信に暗号化を行ったり署名をしたりすることができます．
 
-## How to Use GnuPG
+## GnuPG の使い方
 
-### **List registered keys**
+### **登録されている鍵の表示**
 
-List public keys：
+公開鍵の表示：
 
 ```sh
 gpg --list-keys
 ```
 
-List private keys:
+秘密鍵の表示：
 
 ```sh
 gpg --list-secret-keys
 ```
 
-### **Add Keys**
+### **新しい公開鍵の追加**
 
 ```sh
 gpg --keyserver keys.gnupg.net --recv-keys [key id]
 ```
 
-### **Remove Keys**
+### **鍵の削除**
 
 ```sh
 gpg --delete-keys [key id]

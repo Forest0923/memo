@@ -2,20 +2,25 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="GPG Key #  GPG (GNU Privacy Key)
- List keys Add GPG key Remove GPG key Key servers  List keys #   List public gpg keys:  gpg --list-keys  List secret gpg keys:  gpg --list-secret-keys Add GPG key #   Receive keys:  gpg --keyserver keys.gnupg.net --recv-keys [key id] Remove GPG key #   Remove keys:  gpg --delete-keys [key id] Key servers #   keys.">
+<meta name=description content="GNU Privacy Guard #  GnuPG is the OpenPGP standard for encrypting and signing data and communications.
+How to Use GnuPG #  List registered keys #  List public keys：
+gpg --list-keys List private keys:
+gpg --list-secret-keys Add Keys #  gpg --keyserver keys.gnupg.net --recv-keys [key id] Remove Keys #  gpg --delete-keys [key id] Key Servers #   keys.openpgp.org keys.gnupg.net keys.mailvelope.com pgp.mit.edu  ">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="GPG Key">
-<meta property="og:description" content="GPG Key #  GPG (GNU Privacy Key)
- List keys Add GPG key Remove GPG key Key servers  List keys #   List public gpg keys:  gpg --list-keys  List secret gpg keys:  gpg --list-secret-keys Add GPG key #   Receive keys:  gpg --keyserver keys.gnupg.net --recv-keys [key id] Remove GPG key #   Remove keys:  gpg --delete-keys [key id] Key servers #   keys.">
+<meta property="og:description" content="GNU Privacy Guard #  GnuPG is the OpenPGP standard for encrypting and signing data and communications.
+How to Use GnuPG #  List registered keys #  List public keys：
+gpg --list-keys List private keys:
+gpg --list-secret-keys Add Keys #  gpg --keyserver keys.gnupg.net --recv-keys [key id] Remove Keys #  gpg --delete-keys [key id] Key Servers #   keys.openpgp.org keys.gnupg.net keys.mailvelope.com pgp.mit.edu  ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/security/gpg/"><meta property="article:section" content="docs">
 <title>GPG Key | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/security/gpg/ title="GNU Privacy Guard">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.a961cf3eb3b9c0e363c0a5875c9d524156330729d029ed4ee02f4bb3215b6025.js integrity="sha256-qWHPPrO5wONjwKWHXJ1SQVYzBynQKe1O4C9LsyFbYCU=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.c7e519bacfdd28296a00f3bf69d4427b795851d4e3792654ba05693442c2b1e7.js integrity="sha256-x+UZus/dKClqAPO/adRCe3lYUdTjeSZUugVpNELCsec=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -44,7 +49,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/security/gpg/>
 Japanese
 </a>
 </li>
@@ -318,7 +323,13 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/web/devtools/>Web Development</a>
+<a href=http://forest0923.github.io/memo/docs/web/code-highlight/>Syntax Highlighting</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/web/latex/>Expressions like LaTeX</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/web/webtools/>Web Tools</a>
 </li>
 </ul>
 </li>
@@ -333,6 +344,12 @@ GitLab
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/security/gpg/ class=active>GPG Key</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/security/ssh/>SSH</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/security/hack/>Hack</a>
 </li>
 </ul>
 </li>
@@ -363,59 +380,51 @@ Posts
 <aside class="hidden clearfix">
 <nav id=TableOfContents>
 <ul>
-<li><a href=#gpg-key>GPG Key</a>
+<li><a href=#gnu-privacy-guard>GNU Privacy Guard</a>
 <ul>
-<li><a href=#list-keys>List keys</a></li>
-<li><a href=#add-gpg-key>Add GPG key</a></li>
-<li><a href=#remove-gpg-key>Remove GPG key</a></li>
-<li><a href=#key-servers>Key servers</a></li>
+<li><a href=#how-to-use-gnupg>How to Use GnuPG</a>
+<ul>
+<li><a href=#list-registered-keys><strong>List registered keys</strong></a></li>
+<li><a href=#add-keys><strong>Add Keys</strong></a></li>
+<li><a href=#remove-keys><strong>Remove Keys</strong></a></li>
+</ul>
+</li>
+<li><a href=#key-servers>Key Servers</a></li>
 </ul>
 </li>
 </ul>
 </nav>
 </aside>
 </header>
-<article class=markdown><h1 id=gpg-key>
-GPG Key
-<a class=anchor href=#gpg-key>#</a>
+<article class=markdown><h1 id=gnu-privacy-guard>
+GNU Privacy Guard
+<a class=anchor href=#gnu-privacy-guard>#</a>
 </h1>
-<p>GPG (GNU Privacy Key)</p>
-<ul>
-<li><a href=#list-keys>List keys</a></li>
-<li><a href=#add-gpg-key>Add GPG key</a></li>
-<li><a href=#remove-gpg-key>Remove GPG key</a></li>
-<li><a href=#key-servers>Key servers</a></li>
-</ul>
-<h2 id=list-keys>
-List keys
-<a class=anchor href=#list-keys>#</a>
+<p>GnuPG is the OpenPGP standard for encrypting and signing data and communications.</p>
+<h2 id=how-to-use-gnupg>
+How to Use GnuPG
+<a class=anchor href=#how-to-use-gnupg>#</a>
 </h2>
-<ul>
-<li>List public gpg keys:</li>
-</ul>
+<h3 id=list-registered-keys>
+<strong>List registered keys</strong>
+<a class=anchor href=#list-registered-keys>#</a>
+</h3>
+<p>List public keys：</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gpg --list-keys
-</code></pre></div><ul>
-<li>List secret gpg keys:</li>
-</ul>
+</code></pre></div><p>List private keys:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gpg --list-secret-keys
-</code></pre></div><h2 id=add-gpg-key>
-Add GPG key
-<a class=anchor href=#add-gpg-key>#</a>
-</h2>
-<ul>
-<li>Receive keys:</li>
-</ul>
+</code></pre></div><h3 id=add-keys>
+<strong>Add Keys</strong>
+<a class=anchor href=#add-keys>#</a>
+</h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gpg --keyserver keys.gnupg.net --recv-keys <span style=color:#f92672>[</span>key id<span style=color:#f92672>]</span>
-</code></pre></div><h2 id=remove-gpg-key>
-Remove GPG key
-<a class=anchor href=#remove-gpg-key>#</a>
-</h2>
-<ul>
-<li>Remove keys:</li>
-</ul>
+</code></pre></div><h3 id=remove-keys>
+<strong>Remove Keys</strong>
+<a class=anchor href=#remove-keys>#</a>
+</h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gpg --delete-keys <span style=color:#f92672>[</span>key id<span style=color:#f92672>]</span>
 </code></pre></div><h2 id=key-servers>
-Key servers
+Key Servers
 <a class=anchor href=#key-servers>#</a>
 </h2>
 <ul>
@@ -438,12 +447,16 @@ Key servers
 <div class=book-toc-content>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#gpg-key>GPG Key</a>
+<li><a href=#gnu-privacy-guard>GNU Privacy Guard</a>
 <ul>
-<li><a href=#list-keys>List keys</a></li>
-<li><a href=#add-gpg-key>Add GPG key</a></li>
-<li><a href=#remove-gpg-key>Remove GPG key</a></li>
-<li><a href=#key-servers>Key servers</a></li>
+<li><a href=#how-to-use-gnupg>How to Use GnuPG</a>
+<ul>
+<li><a href=#list-registered-keys><strong>List registered keys</strong></a></li>
+<li><a href=#add-keys><strong>Add Keys</strong></a></li>
+<li><a href=#remove-keys><strong>Remove Keys</strong></a></li>
+</ul>
+</li>
+<li><a href=#key-servers>Key Servers</a></li>
 </ul>
 </li>
 </ul>

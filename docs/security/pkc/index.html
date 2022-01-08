@@ -2,18 +2,27 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Public Key Cryptography #  Type of keys #   RSA  https://ocw.kyoto-u.ac.jp/ja/graduate-school-of-informatics-jp/06/video02/08 http://herb.h.kobe-u.ac.jp/RSA.html https://tools.ietf.org/html/rfc8017   DSA  https://tools.ietf.org/html/rfc6605   ECDSA  https://tools.ietf.org/html/rfc6979   EdDSA  https://tools.ietf.org/html/rfc8032    SSH key #   Comparing SSH Keys - RSA, DSA, ECDSA, or EdDSA? SSHの公開鍵暗号には「RSA」「DSA」「ECDSA」「EdDSA」のどれを使えばよいのか？  Key generation #   RSA:  ssh-keygen -t rsa -b 4096  ECDSA:  ssh-keygen -t ecdsa -b 521  EdDSA:  ssh-keygen -t ed25519 ">
+<meta name=description content="Public Key Cryptography #  Public key cryptography is a cryptographic scheme that uses two keys, a public key and a private key. It is used for signature, key exchange and etc.
+The security is ensured by using the difficulty of the calculation. For example, given $x$, it is easy to compute $y$ such that $y=f(x)$, but it is difficult to compute $x$ from $y$.
+RSA #  RSA is a cryptosystem that relies on the difficulty of prime factorization.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Public Key Cryptography">
-<meta property="og:description" content="Public Key Cryptography #  Type of keys #   RSA  https://ocw.kyoto-u.ac.jp/ja/graduate-school-of-informatics-jp/06/video02/08 http://herb.h.kobe-u.ac.jp/RSA.html https://tools.ietf.org/html/rfc8017   DSA  https://tools.ietf.org/html/rfc6605   ECDSA  https://tools.ietf.org/html/rfc6979   EdDSA  https://tools.ietf.org/html/rfc8032    SSH key #   Comparing SSH Keys - RSA, DSA, ECDSA, or EdDSA? SSHの公開鍵暗号には「RSA」「DSA」「ECDSA」「EdDSA」のどれを使えばよいのか？  Key generation #   RSA:  ssh-keygen -t rsa -b 4096  ECDSA:  ssh-keygen -t ecdsa -b 521  EdDSA:  ssh-keygen -t ed25519 ">
+<meta property="og:description" content="Public Key Cryptography #  Public key cryptography is a cryptographic scheme that uses two keys, a public key and a private key. It is used for signature, key exchange and etc.
+The security is ensured by using the difficulty of the calculation. For example, given $x$, it is easy to compute $y$ such that $y=f(x)$, but it is difficult to compute $x$ from $y$.
+RSA #  RSA is a cryptosystem that relies on the difficulty of prime factorization.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/security/pkc/"><meta property="article:section" content="docs">
 <title>Public Key Cryptography | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/security/pkc/ title=公開鍵暗号>
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.a961cf3eb3b9c0e363c0a5875c9d524156330729d029ed4ee02f4bb3215b6025.js integrity="sha256-qWHPPrO5wONjwKWHXJ1SQVYzBynQKe1O4C9LsyFbYCU=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.c7e519bacfdd28296a00f3bf69d4427b795851d4e3792654ba05693442c2b1e7.js integrity="sha256-x+UZus/dKClqAPO/adRCe3lYUdTjeSZUugVpNELCsec=" crossorigin=anonymous></script>
+<link rel=stylesheet href=/memo/katex/katex.min.css>
+<script defer src=/memo/katex/katex.min.js></script>
+<script defer src=/memo/katex/auto-render.min.js onload=renderMathInElement(document.body)></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:!0},{left:'$',right:'$',display:!1},{left:'\\(',right:'\\)',display:!1},{left:'\\[',right:'\\]',display:!0}],throwOnError:!1})})</script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +51,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/security/pkc/>
 Japanese
 </a>
 </li>
@@ -316,7 +325,13 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/web/devtools/>Web Development</a>
+<a href=http://forest0923.github.io/memo/docs/web/code-highlight/>Syntax Highlighting</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/web/latex/>Expressions like LaTeX</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/web/webtools/>Web Tools</a>
 </li>
 </ul>
 </li>
@@ -331,6 +346,12 @@ GitLab
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/security/gpg/>GPG Key</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/security/ssh/>SSH</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/security/hack/>Hack</a>
 </li>
 </ul>
 </li>
@@ -363,9 +384,12 @@ Posts
 <ul>
 <li><a href=#public-key-cryptography>Public Key Cryptography</a>
 <ul>
-<li><a href=#type-of-keys>Type of keys</a></li>
-<li><a href=#ssh-key>SSH key</a></li>
-<li><a href=#key-generation>Key generation</a></li>
+<li><a href=#rsa>RSA</a>
+<ul>
+<li><a href=#algorithm><strong>Algorithm</strong></a></li>
+<li><a href=#signature-algorithm><strong>Signature Algorithm</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -376,59 +400,74 @@ Posts
 Public Key Cryptography
 <a class=anchor href=#public-key-cryptography>#</a>
 </h1>
-<h2 id=type-of-keys>
-Type of keys
-<a class=anchor href=#type-of-keys>#</a>
+<p>Public key cryptography is a cryptographic scheme that uses two keys, a public key and a private key. It is used for signature, key exchange and etc.</p>
+<p>The security is ensured by using the difficulty of the calculation.
+For example, given $x$, it is easy to compute $y$ such that $y=f(x)$, but it is difficult to compute $x$ from $y$.</p>
+<h2 id=rsa>
+RSA
+<a class=anchor href=#rsa>#</a>
 </h2>
-<ul>
-<li>RSA
-<ul>
-<li><a href=https://ocw.kyoto-u.ac.jp/ja/graduate-school-of-informatics-jp/06/video02/08>https://ocw.kyoto-u.ac.jp/ja/graduate-school-of-informatics-jp/06/video02/08</a></li>
-<li><a href=http://herb.h.kobe-u.ac.jp/RSA.html>http://herb.h.kobe-u.ac.jp/RSA.html</a></li>
-<li><a href=https://tools.ietf.org/html/rfc8017>https://tools.ietf.org/html/rfc8017</a></li>
-</ul>
-</li>
-<li>DSA
-<ul>
-<li><a href=https://tools.ietf.org/html/rfc6605>https://tools.ietf.org/html/rfc6605</a></li>
-</ul>
-</li>
-<li>ECDSA
-<ul>
-<li><a href=https://tools.ietf.org/html/rfc6979>https://tools.ietf.org/html/rfc6979</a></li>
-</ul>
-</li>
-<li>EdDSA
-<ul>
-<li><a href=https://tools.ietf.org/html/rfc8032>https://tools.ietf.org/html/rfc8032</a></li>
-</ul>
-</li>
-</ul>
-<h2 id=ssh-key>
-SSH key
-<a class=anchor href=#ssh-key>#</a>
-</h2>
-<ul>
-<li><a href=https://goteleport.com/blog/comparing-ssh-keys/>Comparing SSH Keys - RSA, DSA, ECDSA, or EdDSA?</a></li>
-<li><a href=https://gigazine.net/news/20200828-ssh-encryption-algorithm/>SSHの公開鍵暗号には「RSA」「DSA」「ECDSA」「EdDSA」のどれを使えばよいのか？</a></li>
-</ul>
-<h2 id=key-generation>
-Key generation
+<p>RSA is a cryptosystem that relies on the difficulty of prime factorization.
+It is easy to compute the composite number $n = pq$ for two primes $p, q$, but it is difficult to compute the factors $q, p$ from $n$.</p>
+<h3 id=algorithm>
+<strong>Algorithm</strong>
+<a class=anchor href=#algorithm>#</a>
+</h3>
+<p>This section explains the algorithm used to exchange messages securely using RSA. Let Alice be the receiver of the message and Bob be the sender.</p>
+<h4 id=key-generation>
+<strong>Key Generation</strong>
 <a class=anchor href=#key-generation>#</a>
-</h2>
-<ul>
-<li>RSA:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t rsa -b <span style=color:#ae81ff>4096</span>
-</code></pre></div><ul>
-<li>ECDSA:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t ecdsa -b <span style=color:#ae81ff>521</span>
-</code></pre></div><ul>
-<li>EdDSA:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t ed25519
-</code></pre></div></article>
+</h4>
+<p>Alice generates a key by doing the following:</p>
+<ol>
+<li>Choose two large prime numbers $p, q$ and compute $N = pq$.</li>
+<li>Choose a natural number $e$ such that $\gcd((p-1)(q-1), e) = 1$.</li>
+<li>Find $d$ such that $ed \equiv 1 \pmod{(p-1)(q-1)}$.</li>
+<li>Let $key_p = (N, e)$ be the public key and $key_s = d$ be the private key.</li>
+</ol>
+<h4 id=encryption>
+<strong>Encryption</strong>
+<a class=anchor href=#encryption>#</a>
+</h4>
+<p>Bob takes $key_p = (N,e)$ and the plaintext $M \in {0,1,2, \dots , N-1}$ as inputs and find the ciphertext:</p>
+<p>$$
+C = M^e \pmod N
+$$</p>
+<h4 id=decryption>
+<strong>Decryption</strong>
+<a class=anchor href=#decryption>#</a>
+</h4>
+<p>Alice finds $M'$ from $key_s = d$ and $C$ as follows.</p>
+<p>$$
+M' \equiv C^d \pmod N
+$$</p>
+<p>Here $M = M'$, so we can recover the message.</p>
+<h3 id=signature-algorithm>
+<strong>Signature Algorithm</strong>
+<a class=anchor href=#signature-algorithm>#</a>
+</h3>
+<p>A signature can satisfy the authentication and non-repudiation requirements of security.</p>
+<blockquote>
+<p>Authentication: Certificates that the signer is a valid signer.</p>
+<p>Non-requdiation: The signer cannot deny the signature later.</p>
+</blockquote>
+<h4 id=signature>
+<strong>Signature</strong>
+<a class=anchor href=#signature>#</a>
+</h4>
+<p>Signed by: Alice, Received by: Bob</p>
+<ol>
+<li>Alice creates a public key $key_p = (N, e)$ and a private key $key_s = d$.</li>
+<li>Alice computes the signature $\sigma^e\equiv M^d\pmod N$ for the message $M \in {0,\dots,N-1}$ and sends $(M, \sigma)$ to Bob.</li>
+<li>Bob uses the received $(M, \sigma)$ and the public key $(N,e)$ to verify that $\sigma^e\equiv M\pmod N$ is true, and accepts if it is, or rejects otherwise.</li>
+</ol>
+<blockquote>
+<p>From properties of the RSA cipher:</p>
+<p>$$
+\sigma^e = (M^d)^e = M^{ed} \equiv M \pmod N
+$$</p>
+</blockquote>
+</article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
 </div>
@@ -444,9 +483,12 @@ Key generation
 <ul>
 <li><a href=#public-key-cryptography>Public Key Cryptography</a>
 <ul>
-<li><a href=#type-of-keys>Type of keys</a></li>
-<li><a href=#ssh-key>SSH key</a></li>
-<li><a href=#key-generation>Key generation</a></li>
+<li><a href=#rsa>RSA</a>
+<ul>
+<li><a href=#algorithm><strong>Algorithm</strong></a></li>
+<li><a href=#signature-algorithm><strong>Signature Algorithm</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

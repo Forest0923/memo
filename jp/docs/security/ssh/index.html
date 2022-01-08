@@ -1,0 +1,270 @@
+<!doctype html><html lang=jp dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="SSH #  SSH は Secure Shell の略で，リモートから安全にコンピュータと通信することができるプロトコルを指します．
+SSH の使い方（クライアント） #  インストール #  Arch sudo pacman -S openssh Ubuntu sudo apt install openssh-client  鍵の生成 #  ssh-keygen で鍵を生成します．
+RSA ssh-keygen -t rsa -b 4096 ECDSA ssh-keygen -t ecdsa -b 521 EdDSA ssh-keygen -t ed25519  デフォルトでは ~/.ssh/ に公開鍵 id_[algorithm].pub と秘密鍵 id_[algorithm] が作られるので，SSH サーバに公開鍵を登録することでパスワード認証せずに通信を行うことができます．">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="SSH">
+<meta property="og:description" content="SSH #  SSH は Secure Shell の略で，リモートから安全にコンピュータと通信することができるプロトコルを指します．
+SSH の使い方（クライアント） #  インストール #  Arch sudo pacman -S openssh Ubuntu sudo apt install openssh-client  鍵の生成 #  ssh-keygen で鍵を生成します．
+RSA ssh-keygen -t rsa -b 4096 ECDSA ssh-keygen -t ecdsa -b 521 EdDSA ssh-keygen -t ed25519  デフォルトでは ~/.ssh/ に公開鍵 id_[algorithm].pub と秘密鍵 id_[algorithm] が作られるので，SSH サーバに公開鍵を登録することでパスワード認証せずに通信を行うことができます．">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://forest0923.github.io/memo/jp/docs/security/ssh/"><meta property="article:section" content="docs">
+<title>SSH | Memo</title>
+<link rel=manifest href=/memo/manifest.json>
+<link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=en href=http://forest0923.github.io/memo/docs/security/ssh/ title=SSH>
+<link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
+<script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.266fe5728278820fc46e445af53cf981b021f14c35da789875daac283b4f1b32.js integrity="sha256-Jm/lcoJ4gg/EbkRa9Tz5gbAh8Uw12niYddqsKDtPGzI=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/memo/jp/><span>Memo</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul class=book-languages>
+<li>
+<input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between">
+<a role=button class="flex align-center">
+<img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+Japanese
+</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/docs/security/ssh/>
+English
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Links</h2>
+<ul>
+<li>
+<a href=https://github.com/Forest0923 target=_blank rel=noopener>
+GitHub
+</a>
+</li>
+<li>
+<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
+GitLab
+</a>
+</li>
+</ul>
+<h2>Documents</h2>
+<ul>
+<li>
+<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
+<a role=button>Linux Kernel Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/inst-kernel/>カーネルのインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/rm-kernel/>カーネルの削除</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-systemcall/>システムコールの追加</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-hypercall/>ハイパーコールの実装</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between">
+<a role=button>Ubuntu</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/initial-settings/>Ubuntu の初期設定</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/haribote-os/>自作 OS 入門 with Ubuntu</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between">
+<a role=button>LaTeX</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/inst-tex-live/>LaTeX スタートアップ：TeX Live のインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/latex-cs/>LaTeX Cheat Sheet</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/sty/>自作の sty ファイルの作り方</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/minted/>minted を使用したシンタックスハイライト</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between">
+<a role=button>Web Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/code-highlight/>シンタックスハイライト</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/latex/>きれいな数式の表示</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/webtools/>Web Tools</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle checked>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between">
+<a role=button>Security</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/pkc/>公開鍵暗号</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/gpg/>GNU Privacy Guard</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/ssh/ class=active>SSH</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/hack/>Hack</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Blog Posts</h2>
+<ul>
+<li>
+<a href=/memo/jp/posts/>
+Posts
+</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/memo/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>SSH</strong>
+<label for=toc-control>
+<img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#ssh>SSH</a>
+<ul>
+<li><a href=#ssh-の使い方クライアント>SSH の使い方（クライアント）</a>
+<ul>
+<li><a href=#インストール>インストール</a></li>
+<li><a href=#鍵の生成>鍵の生成</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+</header>
+<article class=markdown><h1 id=ssh>
+SSH
+<a class=anchor href=#ssh>#</a>
+</h1>
+<p>SSH は Secure Shell の略で，リモートから安全にコンピュータと通信することができるプロトコルを指します．</p>
+<h2 id=ssh-の使い方クライアント>
+SSH の使い方（クライアント）
+<a class=anchor href=#ssh-%e3%81%ae%e4%bd%bf%e3%81%84%e6%96%b9%e3%82%af%e3%83%a9%e3%82%a4%e3%82%a2%e3%83%b3%e3%83%88>#</a>
+</h2>
+<h3 id=インストール>
+インストール
+<a class=anchor href=#%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a>
+</h3>
+<div class=book-tabs><input type=radio class=toggle name=tabs-install id=tabs-install-0 checked>
+<label for=tabs-install-0>Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S openssh
+</code></pre></div></div><input type=radio class=toggle name=tabs-install id=tabs-install-1>
+<label for=tabs-install-1>Ubuntu</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install openssh-client
+</code></pre></div></div></div>
+<h3 id=鍵の生成>
+鍵の生成
+<a class=anchor href=#%e9%8d%b5%e3%81%ae%e7%94%9f%e6%88%90>#</a>
+</h3>
+<p>ssh-keygen で鍵を生成します．</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-ssh-keygen id=tabs-ssh-keygen-0 checked>
+<label for=tabs-ssh-keygen-0>RSA</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t rsa -b <span style=color:#ae81ff>4096</span>
+</code></pre></div></div><input type=radio class=toggle name=tabs-ssh-keygen id=tabs-ssh-keygen-1>
+<label for=tabs-ssh-keygen-1>ECDSA</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t ecdsa -b <span style=color:#ae81ff>521</span>
+</code></pre></div></div><input type=radio class=toggle name=tabs-ssh-keygen id=tabs-ssh-keygen-2>
+<label for=tabs-ssh-keygen-2>EdDSA</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t ed25519
+</code></pre></div></div></div>
+<p>デフォルトでは <code>~/.ssh/</code> に公開鍵 <code>id_[algorithm].pub</code> と秘密鍵 <code>id_[algorithm]</code> が作られるので，SSH サーバに公開鍵を登録することでパスワード認証せずに通信を行うことができます．</p>
+</article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#ssh>SSH</a>
+<ul>
+<li><a href=#ssh-の使い方クライアント>SSH の使い方（クライアント）</a>
+<ul>
+<li><a href=#インストール>インストール</a></li>
+<li><a href=#鍵の生成>鍵の生成</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

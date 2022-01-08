@@ -2,23 +2,27 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Web Development #  Source Code #  How to post the source code with syntax highlighting.
-Gist #  Using GitHub Gist, you can put the source code by simply pasting Script tags. Copy the tag in the upper right corner of the Gist repository and paste it into the body to insert the source code.
-<script src=&#34;https://gist.github.com/Forest0923/dad279ab557ae30bc51e4a9d8cf5bd7d.js&#34;></script>  prism.js #  prism.js is a syntax highlighting tool implemented in JavaScript.">
+<meta name=description content="Beautiful Mathmatical Expressions #  MathJax #  MathJax is a library for displaying beautiful mathematical expressions like LaTeX. To use it, you need to add the following code.
+<script src=&#34;https://polyfill.io/v3/polyfill.min.js?features=es6&#34;></script> <script id=&#34;MathJax-script&#34; async src=&#34;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&#34;></script> Expressions can be written by enclosing them with \[\], \begin{align}\end{align} or etc.
+Examples:
+\[a^2 + b^2 = c^2\] or
+\begin{align} 1 &= e^{i\theta}e^{-i\theta}\\ &= \left(\cos{\theta}+i\sin{\theta}\right) \left(\cos{\theta}-i\sin{\theta}\right)\\ &= \sin^2{\theta}+\cos^2{\theta} \end{align} Inline expressions can be written by enclosing the expression with $ or \(\).">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Web Development">
-<meta property="og:description" content="Web Development #  Source Code #  How to post the source code with syntax highlighting.
-Gist #  Using GitHub Gist, you can put the source code by simply pasting Script tags. Copy the tag in the upper right corner of the Gist repository and paste it into the body to insert the source code.
-<script src=&#34;https://gist.github.com/Forest0923/dad279ab557ae30bc51e4a9d8cf5bd7d.js&#34;></script>  prism.js #  prism.js is a syntax highlighting tool implemented in JavaScript.">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Expressions like LaTeX">
+<meta property="og:description" content="Beautiful Mathmatical Expressions #  MathJax #  MathJax is a library for displaying beautiful mathematical expressions like LaTeX. To use it, you need to add the following code.
+<script src=&#34;https://polyfill.io/v3/polyfill.min.js?features=es6&#34;></script> <script id=&#34;MathJax-script&#34; async src=&#34;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&#34;></script> Expressions can be written by enclosing them with \[\], \begin{align}\end{align} or etc.
+Examples:
+\[a^2 + b^2 = c^2\] or
+\begin{align} 1 &= e^{i\theta}e^{-i\theta}\\ &= \left(\cos{\theta}+i\sin{\theta}\right) \left(\cos{\theta}-i\sin{\theta}\right)\\ &= \sin^2{\theta}+\cos^2{\theta} \end{align} Inline expressions can be written by enclosing the expression with $ or \(\).">
 <meta property="og:type" content="article">
-<meta property="og:url" content="http://forest0923.github.io/memo/docs/web/devtools/"><meta property="article:section" content="docs">
-<title>Web Development | Memo</title>
+<meta property="og:url" content="http://forest0923.github.io/memo/docs/web/latex/"><meta property="article:section" content="docs">
+<title>Expressions like LaTeX | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
-<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/web/devtools/ title="Web 開発">
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/web/latex/ title=きれいな数式の表示>
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.a961cf3eb3b9c0e363c0a5875c9d524156330729d029ed4ee02f4bb3215b6025.js integrity="sha256-qWHPPrO5wONjwKWHXJ1SQVYzBynQKe1O4C9LsyFbYCU=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.c7e519bacfdd28296a00f3bf69d4427b795851d4e3792654ba05693442c2b1e7.js integrity="sha256-x+UZus/dKClqAPO/adRCe3lYUdTjeSZUugVpNELCsec=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -47,7 +51,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/docs/web/devtools/>
+<a href=http://forest0923.github.io/memo/jp/docs/web/latex/>
 Japanese
 </a>
 </li>
@@ -321,7 +325,13 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/web/devtools/ class=active>Web Development</a>
+<a href=http://forest0923.github.io/memo/docs/web/code-highlight/>Syntax Highlighting</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/web/latex/ class=active>Expressions like LaTeX</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/web/webtools/>Web Tools</a>
 </li>
 </ul>
 </li>
@@ -336,6 +346,12 @@ GitLab
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/security/gpg/>GPG Key</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/security/ssh/>SSH</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/docs/security/hack/>Hack</a>
 </li>
 </ul>
 </li>
@@ -358,7 +374,7 @@ Posts
 <label for=menu-control>
 <img src=/memo/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>Web Development</strong>
+<strong>Expressions like LaTeX</strong>
 <label for=toc-control>
 <img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
@@ -366,14 +382,6 @@ Posts
 <aside class="hidden clearfix">
 <nav id=TableOfContents>
 <ul>
-<li><a href=#web-development>Web Development</a>
-<ul>
-<li><a href=#source-code>Source Code</a>
-<ul>
-<li><a href=#gist><strong>Gist</strong></a></li>
-<li><a href=#prismjs><strong>prism.js</strong></a></li>
-</ul>
-</li>
 <li><a href=#beautiful-mathmatical-expressions>Beautiful Mathmatical Expressions</a>
 <ul>
 <li><a href=#mathjax><strong>MathJax</strong></a></li>
@@ -381,52 +389,17 @@ Posts
 </ul>
 </li>
 </ul>
-</li>
-</ul>
 </nav>
 </aside>
 </header>
-<article class=markdown><h1 id=web-development>
-Web Development
-<a class=anchor href=#web-development>#</a>
-</h1>
-<h2 id=source-code>
-Source Code
-<a class=anchor href=#source-code>#</a>
-</h2>
-<p>How to post the source code with syntax highlighting.</p>
-<h3 id=gist>
-<strong>Gist</strong>
-<a class=anchor href=#gist>#</a>
-</h3>
-<p>Using GitHub Gist, you can put the source code by simply pasting Script tags.
-Copy the tag in the upper right corner of the Gist repository and paste it into the body to insert the source code.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://gist.github.com/Forest0923/dad279ab557ae30bc51e4a9d8cf5bd7d.js&#34;</span>&gt;&lt;/<span style=color:#f92672>script</span>&gt;
-</code></pre></div><script src=https://gist.github.com/Forest0923/dad279ab557ae30bc51e4a9d8cf5bd7d.js></script>
-<h3 id=prismjs>
-<strong>prism.js</strong>
-<a class=anchor href=#prismjs>#</a>
-</h3>
-<p><a href=https://prismjs.com/>prism.js</a> is a syntax highlighting tool implemented in JavaScript. To use prism.js, add the following script tag to the head.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>link</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism-twilight.min.css&#39;</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;stylesheet&#39;</span>/&gt;
-&lt;<span style=color:#f92672>link</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.css&#39;</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;stylesheet&#39;</span>/&gt;
-</code></pre></div><p>Additionally, insert following code in the body.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/prism.min.js&#39;</span>/&gt;
-&lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js&#39;</span>/&gt;
-&lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#39;https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.js&#39;</span>/&gt;
-</code></pre></div><p>You can display the highlighted code by writing as follows.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>pre</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;line-numbers&#34;</span>&gt;&lt;<span style=color:#f92672>code</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;language-c&#34;</span>&gt;#include &amp;lt;stdio.h&amp;gt;
-int main(){
-  printf(&#34;Hello, World!\n&#34;);
-}&lt;/<span style=color:#f92672>code</span>&gt;&lt;/<span style=color:#f92672>pre</span>&gt;
-</code></pre></div><h2 id=beautiful-mathmatical-expressions>
+<article class=markdown><h1 id=beautiful-mathmatical-expressions>
 Beautiful Mathmatical Expressions
 <a class=anchor href=#beautiful-mathmatical-expressions>#</a>
-</h2>
-<h3 id=mathjax>
+</h1>
+<h2 id=mathjax>
 <strong>MathJax</strong>
 <a class=anchor href=#mathjax>#</a>
-</h3>
+</h2>
 <p><a href=https://www.mathjax.org/>MathJax</a> is a library for displaying beautiful mathematical expressions like LaTeX. To use it, you need to add the following code.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://polyfill.io/v3/polyfill.min.js?features=es6&#34;</span>&gt;&lt;/<span style=color:#f92672>script</span>&gt;
 &lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;MathJax-script&#34;</span> <span style=color:#a6e22e>async</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js&#34;</span>&gt;&lt;/<span style=color:#f92672>script</span>&gt;
@@ -446,10 +419,10 @@ Beautiful Mathmatical Expressions
 <span style=color:#a6e22e>TeX</span><span style=color:#f92672>:</span> { <span style=color:#a6e22e>equationNumbers</span><span style=color:#f92672>:</span> { <span style=color:#a6e22e>autoNumber</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;all&#34;</span> } }
 });
 &lt;/<span style=color:#f92672>script</span>&gt;
-</code></pre></div><h3 id=katex>
+</code></pre></div><h2 id=katex>
 <strong>KaTeX</strong>
 <a class=anchor href=#katex>#</a>
-</h3>
+</h2>
 <p><a href=https://katex.org/>KaTeX</a> is a library that provides the same functionality as MathJax, but with a special emphasis on speed. To use it, you need to add the following tags.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>link</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;stylesheet&#34;</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css&#34;</span> <span style=color:#a6e22e>integrity</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs&#34;</span> <span style=color:#a6e22e>crossorigin</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;anonymous&#34;</span>&gt;
 &lt;<span style=color:#f92672>script</span> <span style=color:#a6e22e>defer</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js&#34;</span> <span style=color:#a6e22e>integrity</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx&#34;</span> <span style=color:#a6e22e>crossorigin</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;anonymous&#34;</span>&gt;&lt;/<span style=color:#f92672>script</span>&gt;
@@ -484,20 +457,10 @@ Beautiful Mathmatical Expressions
 <div class=book-toc-content>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#web-development>Web Development</a>
-<ul>
-<li><a href=#source-code>Source Code</a>
-<ul>
-<li><a href=#gist><strong>Gist</strong></a></li>
-<li><a href=#prismjs><strong>prism.js</strong></a></li>
-</ul>
-</li>
 <li><a href=#beautiful-mathmatical-expressions>Beautiful Mathmatical Expressions</a>
 <ul>
 <li><a href=#mathjax><strong>MathJax</strong></a></li>
 <li><a href=#katex><strong>KaTeX</strong></a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

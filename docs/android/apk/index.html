@@ -2,18 +2,25 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Reverse Engineering (APK) #  System #   Linux v5.8  Tools #   apktool  yay -S android-apktool   dex2jar  yay -S dex2jar   jd-cmd  yay -S jd-cmd https://github.com/kwart/jd-cli    Commands #   Decompress:  apktool d -s -o decompiled base.apk  Convert .dex files to .jar:  cd decompiled dex2jar classes.dex dex2jar classes2.dex ...  Decompile:  jd-cmd classes-dex2jar.jar -od src jd-cmd classes2-dex2jar.">
+<meta name=description content="Reverse Engineering (APK) #  This is a page about tools for analyzing APK files, which are application packages for Android, and how to use them.
+Tools #  Apktool #  A tool for reverse engineering APKs.
+Arch paru -S android-apktool paru -S android-apktool-git  dex2jar #  A tool to convert Android&rsquo;s dex format to Java&rsquo;s class.
+Arch paru -S dex2jar paru -S dex2jar-git  jd-cli #  CLI tool for Java Decompiler.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Reverse Engineering (APK)">
-<meta property="og:description" content="Reverse Engineering (APK) #  System #   Linux v5.8  Tools #   apktool  yay -S android-apktool   dex2jar  yay -S dex2jar   jd-cmd  yay -S jd-cmd https://github.com/kwart/jd-cli    Commands #   Decompress:  apktool d -s -o decompiled base.apk  Convert .dex files to .jar:  cd decompiled dex2jar classes.dex dex2jar classes2.dex ...  Decompile:  jd-cmd classes-dex2jar.jar -od src jd-cmd classes2-dex2jar.">
+<meta property="og:description" content="Reverse Engineering (APK) #  This is a page about tools for analyzing APK files, which are application packages for Android, and how to use them.
+Tools #  Apktool #  A tool for reverse engineering APKs.
+Arch paru -S android-apktool paru -S android-apktool-git  dex2jar #  A tool to convert Android&rsquo;s dex format to Java&rsquo;s class.
+Arch paru -S dex2jar paru -S dex2jar-git  jd-cli #  CLI tool for Java Decompiler.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/android/apk/"><meta property="article:section" content="docs">
 <title>Reverse Engineering (APK) | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/android/apk/ title=リバースエンジニアリング（APK）>
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.69912256ea8b272ce9b224cd51c42ce56e33f9d637b4ce3b0b62754b594660df.js integrity="sha256-aZEiVuqLJyzpsiTNUcQs5W4z+dY3tM47C2J1S1lGYN8=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.22d61114032fe4e1345cd1499e75d53c5a7ff4db214bac7e7dae5cd6930abcc2.js integrity="sha256-ItYRFAMv5OE0XNFJnnXVPFp/9NshS6x+fa5c1pMKvMI=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +49,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/android/apk/>
 Japanese
 </a>
 </li>
@@ -221,7 +228,7 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/android/inst-x86/>Install Android x86</a>
+<a href=http://forest0923.github.io/memo/docs/android/inst-x86/>Android x86</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/android/apk/ class=active>Reverse Engineering (APK)</a>
@@ -378,9 +385,20 @@ Posts
 <ul>
 <li><a href=#reverse-engineering-apk>Reverse Engineering (APK)</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#tools>Tools</a></li>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#tools>Tools</a>
+<ul>
+<li><a href=#apktool><strong>Apktool</strong></a></li>
+<li><a href=#dex2jar><strong>dex2jar</strong></a></li>
+<li><a href=#jd-cli><strong>jd-cli</strong></a></li>
+<li><a href=#jd-gui><strong>jd-gui</strong></a></li>
+</ul>
+</li>
+<li><a href=#how-to-use>How to Use</a>
+<ul>
+<li><a href=#when-using-apktool><strong>When using Apktool</strong></a></li>
+<li><a href=#when-using-dex2jar-jd-><strong>When using dex2jar, jd-*</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -391,60 +409,72 @@ Posts
 Reverse Engineering (APK)
 <a class=anchor href=#reverse-engineering-apk>#</a>
 </h1>
-<h2 id=system>
-System
-<a class=anchor href=#system>#</a>
-</h2>
-<ul>
-<li>Linux v5.8</li>
-</ul>
+<p>This is a page about tools for analyzing APK files, which are application packages for Android, and how to use them.</p>
 <h2 id=tools>
 Tools
 <a class=anchor href=#tools>#</a>
 </h2>
-<ul>
-<li>apktool
-<ul>
-<li><code>yay -S android-apktool</code></li>
-</ul>
-</li>
-<li>dex2jar
-<ul>
-<li><code>yay -S dex2jar</code></li>
-</ul>
-</li>
-<li>jd-cmd
-<ul>
-<li><code>yay -S jd-cmd</code></li>
-<li><a href=https://github.com/kwart/jd-cli>https://github.com/kwart/jd-cli</a></li>
-</ul>
-</li>
-</ul>
-<h2 id=commands>
-Commands
-<a class=anchor href=#commands>#</a>
+<h3 id=apktool>
+<strong>Apktool</strong>
+<a class=anchor href=#apktool>#</a>
+</h3>
+<p>A tool for reverse engineering APKs.</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-Apktool id=tabs-Apktool-0 checked>
+<label for=tabs-Apktool-0>Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S android-apktool
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S android-apktool-git
+</code></pre></div></div></div>
+<h3 id=dex2jar>
+<strong>dex2jar</strong>
+<a class=anchor href=#dex2jar>#</a>
+</h3>
+<p>A tool to convert Android&rsquo;s dex format to Java&rsquo;s class.</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-dex2jar id=tabs-dex2jar-0 checked>
+<label for=tabs-dex2jar-0>Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S dex2jar
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S dex2jar-git
+</code></pre></div></div></div>
+<h3 id=jd-cli>
+<strong>jd-cli</strong>
+<a class=anchor href=#jd-cli>#</a>
+</h3>
+<p>CLI tool for Java Decompiler.</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-jd-cli id=tabs-jd-cli-0 checked>
+<label for=tabs-jd-cli-0>Black Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S jd-cli
+</code></pre></div></div></div>
+<h3 id=jd-gui>
+<strong>jd-gui</strong>
+<a class=anchor href=#jd-gui>#</a>
+</h3>
+<p>GUI tool for Java Decompiler.</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-jd-gui id=tabs-jd-gui-0 checked>
+<label for=tabs-jd-gui-0>Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S jd-gui
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S jd-gui-git
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S jd-gui-bin
+</code></pre></div></div><input type=radio class=toggle name=tabs-jd-gui id=tabs-jd-gui-1>
+<label for=tabs-jd-gui-1>Black Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S jd-gui
+</code></pre></div></div></div>
+<h2 id=how-to-use>
+How to Use
+<a class=anchor href=#how-to-use>#</a>
 </h2>
-<ul>
-<li>Decompress:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>apktool d -s -o decompiled base.apk
-</code></pre></div><ul>
-<li>Convert <code>.dex</code> files to <code>.jar</code>:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>cd decompiled
-dex2jar classes.dex
-dex2jar classes2.dex
-...
-</code></pre></div><ul>
-<li>Decompile:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>jd-cmd classes-dex2jar.jar -od src
-jd-cmd classes2-dex2jar.jar -od src
-...
-</code></pre></div><p>or</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>java -jar jd-cli.jar classes-dex2jar.jar -od src
-java -jar jd-cli.jar classes2-dex2jar.jar -od src
-...
+<h3 id=when-using-apktool>
+<strong>When using Apktool</strong>
+<a class=anchor href=#when-using-apktool>#</a>
+</h3>
+<p>The source will be extracted to <code>base/</code> by executing the command as follows.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>apktool d base.apk
+</code></pre></div><h3 id=when-using-dex2jar-jd->
+<strong>When using dex2jar, jd-*</strong>
+<a class=anchor href=#when-using-dex2jar-jd->#</a>
+</h3>
+<p>Convert the APK to a jar file with dex2jar as follows.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>dex2jar base.apk
+</code></pre></div><p>Decompile the generated <code>base-dex2jar.jar</code>. In case of GUI, run jd-gui and select <code>base-dex2jar.jar</code> from File Open. In case of CUI, run jd-cli as follows to extract the file to <code>src/</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>jd-cli base-dex2jar.jar -od src
 </code></pre></div></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
@@ -461,9 +491,20 @@ java -jar jd-cli.jar classes2-dex2jar.jar -od src
 <ul>
 <li><a href=#reverse-engineering-apk>Reverse Engineering (APK)</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#tools>Tools</a></li>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#tools>Tools</a>
+<ul>
+<li><a href=#apktool><strong>Apktool</strong></a></li>
+<li><a href=#dex2jar><strong>dex2jar</strong></a></li>
+<li><a href=#jd-cli><strong>jd-cli</strong></a></li>
+<li><a href=#jd-gui><strong>jd-gui</strong></a></li>
+</ul>
+</li>
+<li><a href=#how-to-use>How to Use</a>
+<ul>
+<li><a href=#when-using-apktool><strong>When using Apktool</strong></a></li>
+<li><a href=#when-using-dex2jar-jd-><strong>When using dex2jar, jd-*</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

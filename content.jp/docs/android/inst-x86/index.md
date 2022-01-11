@@ -6,18 +6,18 @@ weight: 10
 
 # Android x86
 
-## System Setup
+## 環境
 
 - Host: Linux KVM
 - Guest: Android x86, Lineage OS
 
-## Install
+## インストール
 
-### **Download OS image (*.iso)**
+### **OS イメージのダウンロード**
 
-- Download \*.iso from <https://www.android-x86.org/>
+<https://www.android-x86.org/> から \*.iso をダウンロードする．
 
-### **Configuration of Virtual Machine Manager**
+### **Virtual Machine Manager の設定**
 
 ![](android-x86-overview.png)
 ![](android-x86-osinfo.png)
@@ -26,7 +26,7 @@ weight: 10
 ![](android-x86-disk.png)
 ![](android-x86-nic.png)
 
-### **Install**
+### **インストール**
 
 ![](android-x86-grub.png)
 ![](android-x86-autoins.png)

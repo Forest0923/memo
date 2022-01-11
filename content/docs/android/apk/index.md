@@ -6,54 +6,109 @@ weight: 20
 
 # Reverse Engineering (APK)
 
-<!---
-/data/app/*
-/storage/emulated/0/Download
---->
-
-## System
-
-- Linux v5.8
+This is a page about tools for analyzing APK files, which are application packages for Android, and how to use them.
 
 ## Tools
 
-- apktool
-  - `yay -S android-apktool`
-- dex2jar
-  - `yay -S dex2jar`
-- jd-cmd
-  - `yay -S jd-cmd`
-  - <https://github.com/kwart/jd-cli>
+### **Apktool**
 
-## Commands
+A tool for reverse engineering APKs.
 
-- Decompress:
+{{< tabs "Apktool" >}}
+{{< tab "Arch" >}}
 
 ```sh
-apktool d -s -o decompiled base.apk
+paru -S android-apktool
 ```
 
-- Convert `.dex` files to `.jar`:
-
 ```sh
-cd decompiled
-dex2jar classes.dex
-dex2jar classes2.dex
-...
+paru -S android-apktool-git
 ```
 
-- Decompile:
+{{< /tab>}}
+{{< /tabs>}}
+
+### **dex2jar**
+
+A tool to convert Android's dex format to Java's class.
+
+{{< tabs "dex2jar" >}}
+{{< tab "Arch" >}}
 
 ```sh
-jd-cmd classes-dex2jar.jar -od src
-jd-cmd classes2-dex2jar.jar -od src
-...
+paru -S dex2jar
 ```
 
-or
+```sh
+paru -S dex2jar-git
+```
+
+{{< /tab>}}
+{{< /tabs>}}
+
+### **jd-cli**
+
+CLI tool for Java Decompiler.
+
+{{< tabs "jd-cli" >}}
+{{< tab "Black Arch" >}}
 
 ```sh
-java -jar jd-cli.jar classes-dex2jar.jar -od src
-java -jar jd-cli.jar classes2-dex2jar.jar -od src
-...
+paru -S jd-cli
+```
+
+{{< /tab>}}
+{{< /tabs>}}
+
+### **jd-gui**
+
+GUI tool for Java Decompiler.
+
+{{< tabs "jd-gui" >}}
+{{< tab "Arch" >}}
+
+```sh
+paru -S jd-gui
+```
+
+```sh
+paru -S jd-gui-git
+```
+
+```sh
+paru -S jd-gui-bin
+```
+
+{{< /tab>}}
+{{< tab "Black Arch" >}}
+
+```sh
+paru -S jd-gui
+```
+
+{{< /tab>}}
+{{< /tabs>}}
+
+## How to Use
+
+### **When using Apktool**
+
+The source will be extracted to `base/` by executing the command as follows.
+
+```sh
+apktool d base.apk
+```
+
+### **When using dex2jar, jd-\***
+
+Convert the APK to a jar file with dex2jar as follows.
+
+```sh
+dex2jar base.apk
+```
+
+Decompile the generated `base-dex2jar.jar`. In case of GUI, run jd-gui and select `base-dex2jar.jar` from File Open. In case of CUI, run jd-cli as follows to extract the file to `src/`.
+
+```sh
+jd-cli base-dex2jar.jar -od src
 ```

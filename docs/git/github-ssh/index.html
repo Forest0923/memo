@@ -2,22 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Connect to GitHub with SSH #  Add new SSH key to github #  System #   Ubuntu 18.04 git version 2.17.1 xclip version 0.12  Generating SSH key #   Set key name as id_rsa_github.  ssh-keygen -t rsa -b 4096 Adding to ssh-agent #  eval &#34;$(ssh-agent -s)&#34; ssh-add ~/.ssh/id_rsa_github Adding to GitHub account #  xclip -sel clip < ~/.ssh/id_rsa_github.pub  Reference:
-GitHubにSSHで接続する
- ">
+<meta name=description content="Connect to GitHub with SSH #  SSH Key Generation #  Executing ssh-keygen as follows will generate a key using the algorithm you have selected.
+EdDSA ssh-keygen -t ed25519 RSA ssh-keygen -t rsa -b 4096 ECDSA ssh-keygen -t ecdsa -b 521  If you do not make any changes during the generation, the private key id_[algorithm] and the public key id_[algorithm].pub will be generated in ~/.ssh.
+Registering a Private Key to SSH Agent #  By registering your key with SSH Agent, you will not be asked for your passphrase every time.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Connect to GitHub with SSH">
-<meta property="og:description" content="Connect to GitHub with SSH #  Add new SSH key to github #  System #   Ubuntu 18.04 git version 2.17.1 xclip version 0.12  Generating SSH key #   Set key name as id_rsa_github.  ssh-keygen -t rsa -b 4096 Adding to ssh-agent #  eval &#34;$(ssh-agent -s)&#34; ssh-add ~/.ssh/id_rsa_github Adding to GitHub account #  xclip -sel clip < ~/.ssh/id_rsa_github.pub  Reference:
-GitHubにSSHで接続する
- ">
+<meta property="og:description" content="Connect to GitHub with SSH #  SSH Key Generation #  Executing ssh-keygen as follows will generate a key using the algorithm you have selected.
+EdDSA ssh-keygen -t ed25519 RSA ssh-keygen -t rsa -b 4096 ECDSA ssh-keygen -t ecdsa -b 521  If you do not make any changes during the generation, the private key id_[algorithm] and the public key id_[algorithm].pub will be generated in ~/.ssh.
+Registering a Private Key to SSH Agent #  By registering your key with SSH Agent, you will not be asked for your passphrase every time.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/git/github-ssh/"><meta property="article:section" content="docs">
 <title>Connect to GitHub with SSH | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/git/github-ssh/ title="GitHub への SSH 接続">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.22d61114032fe4e1345cd1499e75d53c5a7ff4db214bac7e7dae5cd6930abcc2.js integrity="sha256-ItYRFAMv5OE0XNFJnnXVPFp/9NshS6x+fa5c1pMKvMI=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.c3bab44b6d8d2c64719d16c28879c4ea9b7aa15553683deb1c3fc0fc9c8ae3c0.js integrity="sha256-w7q0S22NLGRxnRbCiHnE6pt6oVVTaD3rHD/A/JyK48A=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -46,7 +47,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-ssh/>
 Japanese
 </a>
 </li>
@@ -239,16 +240,16 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/git/initial-settings/>Initial Settings for Git</a>
+<a href=http://forest0923.github.io/memo/docs/git/github-cli/>GitHub CLI</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/git/github-cli/>GitHub CLI</a>
+<a href=http://forest0923.github.io/memo/docs/git/github-ssh/ class=active>Connect to GitHub with SSH</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/git/usecases/>Usecases of Git</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/git/github-ssh/ class=active>Connect to GitHub with SSH</a>
+<a href=http://forest0923.github.io/memo/docs/git/submodule/>Submodule</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/git/lfs/>LFS (Large File Storage)</a>
@@ -382,14 +383,15 @@ Posts
 <ul>
 <li><a href=#connect-to-github-with-ssh>Connect to GitHub with SSH</a>
 <ul>
-<li><a href=#add-new-ssh-key-to-github>Add new SSH key to github</a>
+<li><a href=#ssh-key-generation>SSH Key Generation</a></li>
+<li><a href=#registering-a-private-key-to-ssh-agent>Registering a Private Key to SSH Agent</a></li>
+<li><a href=#registering-a-public-key-to-github>Registering a Public Key to GitHub</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#generating-ssh-key>Generating SSH key</a></li>
-<li><a href=#adding-to-ssh-agent>Adding to ssh-agent</a></li>
-<li><a href=#adding-to-github-account>Adding to GitHub account</a></li>
+<li><a href=#registering-from-browser>Registering from Browser</a></li>
+<li><a href=#registering-with-github-cli>Registering with GitHub CLI</a></li>
 </ul>
 </li>
+<li><a href=#connection-test>Connection Test</a></li>
 </ul>
 </li>
 </ul>
@@ -400,41 +402,64 @@ Posts
 Connect to GitHub with SSH
 <a class=anchor href=#connect-to-github-with-ssh>#</a>
 </h1>
-<h2 id=add-new-ssh-key-to-github>
-Add new SSH key to github
-<a class=anchor href=#add-new-ssh-key-to-github>#</a>
+<h2 id=ssh-key-generation>
+SSH Key Generation
+<a class=anchor href=#ssh-key-generation>#</a>
 </h2>
-<h3 id=system>
-System
-<a class=anchor href=#system>#</a>
-</h3>
-<ul>
-<li>Ubuntu 18.04</li>
-<li>git version 2.17.1</li>
-<li>xclip version 0.12</li>
-</ul>
-<h3 id=generating-ssh-key>
-Generating SSH key
-<a class=anchor href=#generating-ssh-key>#</a>
-</h3>
-<ul>
-<li>Set key name as <code>id_rsa_github</code>.</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t rsa -b <span style=color:#ae81ff>4096</span>
-</code></pre></div><h3 id=adding-to-ssh-agent>
-Adding to ssh-agent
-<a class=anchor href=#adding-to-ssh-agent>#</a>
-</h3>
+<p>Executing ssh-keygen as follows will generate a key using the algorithm you have selected.</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-ssh-keygen id=tabs-ssh-keygen-0 checked>
+<label for=tabs-ssh-keygen-0>EdDSA</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t ed25519
+</code></pre></div></div><input type=radio class=toggle name=tabs-ssh-keygen id=tabs-ssh-keygen-1>
+<label for=tabs-ssh-keygen-1>RSA</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t rsa -b <span style=color:#ae81ff>4096</span>
+</code></pre></div></div><input type=radio class=toggle name=tabs-ssh-keygen id=tabs-ssh-keygen-2>
+<label for=tabs-ssh-keygen-2>ECDSA</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t ecdsa -b <span style=color:#ae81ff>521</span>
+</code></pre></div></div></div>
+<p>If you do not make any changes during the generation, the private key <code>id_[algorithm]</code> and the public key <code>id_[algorithm].pub</code> will be generated in <code>~/.ssh</code>.</p>
+<h2 id=registering-a-private-key-to-ssh-agent>
+Registering a Private Key to SSH Agent
+<a class=anchor href=#registering-a-private-key-to-ssh-agent>#</a>
+</h2>
+<p>By registering your key with SSH Agent, you will not be asked for your passphrase every time.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>eval <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>ssh-agent -s<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
-ssh-add ~/.ssh/id_rsa_github
-</code></pre></div><h3 id=adding-to-github-account>
-Adding to GitHub account
-<a class=anchor href=#adding-to-github-account>#</a>
+ssh-add ~/.ssh/id_<span style=color:#f92672>[</span>algorithm<span style=color:#f92672>]</span>
+</code></pre></div><h2 id=registering-a-public-key-to-github>
+Registering a Public Key to GitHub
+<a class=anchor href=#registering-a-public-key-to-github>#</a>
+</h2>
+<h3 id=registering-from-browser>
+Registering from Browser
+<a class=anchor href=#registering-from-browser>#</a>
 </h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>xclip -sel clip &lt; ~/.ssh/id_rsa_github.pub
-</code></pre></div><blockquote>
+<p>From your account page on GitHub, go to <code>Settings > SSH and GPG keys</code>, click <code>New SSH key</code>, and copy and paste the contents of <code>id_[algorithm].pub</code> to register it.</p>
+<h3 id=registering-with-github-cli>
+Registering with GitHub CLI
+<a class=anchor href=#registering-with-github-cli>#</a>
+</h3>
+<p>You can also use the following command to register a key.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gh auth login
+</code></pre></div><p>When you choose SSH as the connection protocol, you can choose whether to upload the public key or not.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations?  [Use arrows to move, type to filter]
+  HTTPS
+&gt; SSH
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? SSH
+? Upload your SSH public key to your GitHub account?  [Use arrows to move, type to filter]
+&gt; /home/user/.ssh/id_ed25519.pub
+  Skip
+</code></pre></div><h2 id=connection-test>
+Connection Test
+<a class=anchor href=#connection-test>#</a>
+</h2>
+<p>Execute the following command to test the connection.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh git@github.com
+</code></pre></div><p>When the fingerprint is displayed, compare it with <a href=https://docs.github.com/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints>https://docs.github.com/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints</a> and confirm that it is github.com, then select yes.</p>
+<blockquote>
 <p>Reference:</p>
-<p><a href=https://help.github.com/ja/github/authenticating-to-github/connecting-to-github-with-ssh>GitHubにSSHで接続する</a></p>
+<p><a href=https://help.github.com/github/authenticating-to-github/connecting-to-github-with-ssh>Connecting to GitHub with SSH</a></p>
 </blockquote>
 </article>
 <footer class=book-footer>
@@ -452,14 +477,15 @@ Adding to GitHub account
 <ul>
 <li><a href=#connect-to-github-with-ssh>Connect to GitHub with SSH</a>
 <ul>
-<li><a href=#add-new-ssh-key-to-github>Add new SSH key to github</a>
+<li><a href=#ssh-key-generation>SSH Key Generation</a></li>
+<li><a href=#registering-a-private-key-to-ssh-agent>Registering a Private Key to SSH Agent</a></li>
+<li><a href=#registering-a-public-key-to-github>Registering a Public Key to GitHub</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#generating-ssh-key>Generating SSH key</a></li>
-<li><a href=#adding-to-ssh-agent>Adding to ssh-agent</a></li>
-<li><a href=#adding-to-github-account>Adding to GitHub account</a></li>
+<li><a href=#registering-from-browser>Registering from Browser</a></li>
+<li><a href=#registering-with-github-cli>Registering with GitHub CLI</a></li>
 </ul>
 </li>
+<li><a href=#connection-test>Connection Test</a></li>
 </ul>
 </li>
 </ul>

@@ -1,0 +1,348 @@
+<!doctype html><html lang=jp dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="GitHub への SSH 接続 #  SSH Key の生成 #  ssh-keygen を用いて下記のようにコマンドを実行すると選択したアルゴリズムで鍵が生成されます．
+EdDSA ssh-keygen -t ed25519 RSA ssh-keygen -t rsa -b 4096 ECDSA ssh-keygen -t ecdsa -b 521  生成時に特に変更を加えなければ ~/.ssh に秘密鍵の id_[algorithm] と公開鍵の id_[algorithm].pub が生成されます．
+SSH Agent への秘密鍵の登録 #  SSH Agent に鍵を登録することで，毎回パスフレーズを求められることがなくなります．
+eval &#34;$(ssh-agent -s)&#34; ssh-add ~/.ssh/id_[algorithm] GitHub への公開鍵の登録 #  ブラウザから登録する場合 #  GitHub で自分のアカウントページから Settings > SSH and GPG keys と進み，New SSH key を押して id_[algorithm].pub の内容をコピペして登録します．">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="GitHub への SSH 接続">
+<meta property="og:description" content="GitHub への SSH 接続 #  SSH Key の生成 #  ssh-keygen を用いて下記のようにコマンドを実行すると選択したアルゴリズムで鍵が生成されます．
+EdDSA ssh-keygen -t ed25519 RSA ssh-keygen -t rsa -b 4096 ECDSA ssh-keygen -t ecdsa -b 521  生成時に特に変更を加えなければ ~/.ssh に秘密鍵の id_[algorithm] と公開鍵の id_[algorithm].pub が生成されます．
+SSH Agent への秘密鍵の登録 #  SSH Agent に鍵を登録することで，毎回パスフレーズを求められることがなくなります．
+eval &#34;$(ssh-agent -s)&#34; ssh-add ~/.ssh/id_[algorithm] GitHub への公開鍵の登録 #  ブラウザから登録する場合 #  GitHub で自分のアカウントページから Settings > SSH and GPG keys と進み，New SSH key を押して id_[algorithm].pub の内容をコピペして登録します．">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://forest0923.github.io/memo/jp/docs/git/github-ssh/"><meta property="article:section" content="docs">
+<title>GitHub への SSH 接続 | Memo</title>
+<link rel=manifest href=/memo/manifest.json>
+<link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=en href=http://forest0923.github.io/memo/docs/git/github-ssh/ title="Connect to GitHub with SSH">
+<link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
+<script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.6e913b0aeec525ccf0ab16f6c0221e1aaa257210e493a861cd3a1b133e0800bd.js integrity="sha256-bpE7Cu7FJczwqxb2wCIeGqolchDkk6hhzTobEz4IAL0=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/memo/jp/><span>Memo</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul class=book-languages>
+<li>
+<input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between">
+<a role=button class="flex align-center">
+<img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+Japanese
+</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/docs/git/github-ssh/>
+English
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Links</h2>
+<ul>
+<li>
+<a href=https://github.com/Forest0923 target=_blank rel=noopener>
+GitHub
+</a>
+</li>
+<li>
+<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
+GitLab
+</a>
+</li>
+</ul>
+<h2>Documents</h2>
+<ul>
+<li>
+<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
+<a role=button>Linux Kernel Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/inst-kernel/>カーネルのインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/rm-kernel/>カーネルの削除</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-systemcall/>システムコールの追加</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-hypercall/>ハイパーコールの実装</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between">
+<a role=button>Ubuntu</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/initial-settings/>Ubuntu の初期設定</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/haribote-os/>自作 OS 入門 with Ubuntu</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between">
+<a role=button>Android</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/android/inst-x86/>Android x86</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/android/apk/>リバースエンジニアリング（APK）</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle checked>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between">
+<a role=button>Git</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-cli/>GitHub CLI</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-ssh/ class=active>GitHub への SSH 接続</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/usecases/>Git の使い方（使用例）</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/submodule/>サブモジュール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/lfs/>LFS (Large File Storage)</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/links/>Git を学ぶ上で参考になるリンク集</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between">
+<a role=button>LaTeX</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/inst-tex-live/>LaTeX スタートアップ：TeX Live のインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/latex-cs/>LaTeX Cheat Sheet</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/sty/>自作の sty ファイルの作り方</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/minted/>minted を使用したシンタックスハイライト</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between">
+<a role=button>Web Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/code-highlight/>シンタックスハイライト</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/latex/>きれいな数式の表示</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/mermaid/>Mermaid</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/webtools/>Web Tools</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between">
+<a role=button>Security</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/pkc/>公開鍵暗号</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/gpg/>GNU Privacy Guard</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/ssh/>SSH</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/hack/>Hack</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Blog Posts</h2>
+<ul>
+<li>
+<a href=/memo/jp/posts/>
+Posts
+</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/memo/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>GitHub への SSH 接続</strong>
+<label for=toc-control>
+<img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#github-への-ssh-接続>GitHub への SSH 接続</a>
+<ul>
+<li><a href=#ssh-key-の生成>SSH Key の生成</a></li>
+<li><a href=#ssh-agent-への秘密鍵の登録>SSH Agent への秘密鍵の登録</a></li>
+<li><a href=#github-への公開鍵の登録>GitHub への公開鍵の登録</a>
+<ul>
+<li><a href=#ブラウザから登録する場合>ブラウザから登録する場合</a></li>
+<li><a href=#github-cli-を用いる場合>GitHub CLI を用いる場合</a></li>
+</ul>
+</li>
+<li><a href=#接続テスト>接続テスト</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+</header>
+<article class=markdown><h1 id=github-への-ssh-接続>
+GitHub への SSH 接続
+<a class=anchor href=#github-%e3%81%b8%e3%81%ae-ssh-%e6%8e%a5%e7%b6%9a>#</a>
+</h1>
+<h2 id=ssh-key-の生成>
+SSH Key の生成
+<a class=anchor href=#ssh-key-%e3%81%ae%e7%94%9f%e6%88%90>#</a>
+</h2>
+<p>ssh-keygen を用いて下記のようにコマンドを実行すると選択したアルゴリズムで鍵が生成されます．</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-ssh-keygen id=tabs-ssh-keygen-0 checked>
+<label for=tabs-ssh-keygen-0>EdDSA</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t ed25519
+</code></pre></div></div><input type=radio class=toggle name=tabs-ssh-keygen id=tabs-ssh-keygen-1>
+<label for=tabs-ssh-keygen-1>RSA</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t rsa -b <span style=color:#ae81ff>4096</span>
+</code></pre></div></div><input type=radio class=toggle name=tabs-ssh-keygen id=tabs-ssh-keygen-2>
+<label for=tabs-ssh-keygen-2>ECDSA</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh-keygen -t ecdsa -b <span style=color:#ae81ff>521</span>
+</code></pre></div></div></div>
+<p>生成時に特に変更を加えなければ <code>~/.ssh</code> に秘密鍵の <code>id_[algorithm]</code> と公開鍵の <code>id_[algorithm].pub</code> が生成されます．</p>
+<h2 id=ssh-agent-への秘密鍵の登録>
+SSH Agent への秘密鍵の登録
+<a class=anchor href=#ssh-agent-%e3%81%b8%e3%81%ae%e7%a7%98%e5%af%86%e9%8d%b5%e3%81%ae%e7%99%bb%e9%8c%b2>#</a>
+</h2>
+<p>SSH Agent に鍵を登録することで，毎回パスフレーズを求められることがなくなります．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>eval <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>ssh-agent -s<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+ssh-add ~/.ssh/id_<span style=color:#f92672>[</span>algorithm<span style=color:#f92672>]</span>
+</code></pre></div><h2 id=github-への公開鍵の登録>
+GitHub への公開鍵の登録
+<a class=anchor href=#github-%e3%81%b8%e3%81%ae%e5%85%ac%e9%96%8b%e9%8d%b5%e3%81%ae%e7%99%bb%e9%8c%b2>#</a>
+</h2>
+<h3 id=ブラウザから登録する場合>
+ブラウザから登録する場合
+<a class=anchor href=#%e3%83%96%e3%83%a9%e3%82%a6%e3%82%b6%e3%81%8b%e3%82%89%e7%99%bb%e9%8c%b2%e3%81%99%e3%82%8b%e5%a0%b4%e5%90%88>#</a>
+</h3>
+<p>GitHub で自分のアカウントページから <code>Settings > SSH and GPG keys</code> と進み，<code>New SSH key</code> を押して <code>id_[algorithm].pub</code> の内容をコピペして登録します．</p>
+<h3 id=github-cli-を用いる場合>
+GitHub CLI を用いる場合
+<a class=anchor href=#github-cli-%e3%82%92%e7%94%a8%e3%81%84%e3%82%8b%e5%a0%b4%e5%90%88>#</a>
+</h3>
+<p>GitHub CLI の初期設定で実行する下記コマンドでも鍵を登録できます．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gh auth login
+</code></pre></div><p>接続プロトコルで SSH を選んだ場合に公開鍵をアップロードするか選択することができます．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations?  [Use arrows to move, type to filter]
+  HTTPS
+&gt; SSH
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? SSH
+? Upload your SSH public key to your GitHub account?  [Use arrows to move, type to filter]
+&gt; /home/user/.ssh/id_ed25519.pub
+  Skip
+</code></pre></div><h2 id=接続テスト>
+接続テスト
+<a class=anchor href=#%e6%8e%a5%e7%b6%9a%e3%83%86%e3%82%b9%e3%83%88>#</a>
+</h2>
+<p>下記のコマンドを実行して接続テストを行います．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ssh git@github.com
+</code></pre></div><p>フィンガープリントが表示されるので，<a href=https://docs.github.com/ja/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints>https://docs.github.com/ja/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints</a> と比較して github.com であることを確認したら yes を選択します．</p>
+<blockquote>
+<p>Reference:</p>
+<p><a href=https://help.github.com/ja/github/authenticating-to-github/connecting-to-github-with-ssh>GitHubにSSHで接続する</a></p>
+</blockquote>
+</article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#github-への-ssh-接続>GitHub への SSH 接続</a>
+<ul>
+<li><a href=#ssh-key-の生成>SSH Key の生成</a></li>
+<li><a href=#ssh-agent-への秘密鍵の登録>SSH Agent への秘密鍵の登録</a></li>
+<li><a href=#github-への公開鍵の登録>GitHub への公開鍵の登録</a>
+<ul>
+<li><a href=#ブラウザから登録する場合>ブラウザから登録する場合</a></li>
+<li><a href=#github-cli-を用いる場合>GitHub CLI を用いる場合</a></li>
+</ul>
+</li>
+<li><a href=#接続テスト>接続テスト</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!doctype html><html lang=jp dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="LFS (Large File Storage) #  GitHub にアップロードできる最大のファイルサイズはデフォルトでは 100 MB となっています． その制限を超えるサイズのファイルを Git で管理したい場合には Git LFS を用いる必要があり，ここではその使い方を説明します．
+インストール #  下記コマンドでインストールします．
+Arch sudo pacman -S git-lfs Ubuntu sudo apt install git-lfs  インストールできたことを下記のコマンドで確認します．
+git lfs install 使い方 #  hello.txt という 100MB より小さいファイルと large.file という 100MB を超えるファイルがある場合を考えます．
+. ├── hello.txt └── large.file この状態で通常通りに push しようとすると次のようにエラーが出ます．
+git init git remote add origin git@github.com:user/git-lfs-test.git git add . git commit -m &#34;Initial commit&#34; git push origin master Enumerating objects: 4, done.">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="LFS (Large File Storage)">
+<meta property="og:description" content="LFS (Large File Storage) #  GitHub にアップロードできる最大のファイルサイズはデフォルトでは 100 MB となっています． その制限を超えるサイズのファイルを Git で管理したい場合には Git LFS を用いる必要があり，ここではその使い方を説明します．
+インストール #  下記コマンドでインストールします．
+Arch sudo pacman -S git-lfs Ubuntu sudo apt install git-lfs  インストールできたことを下記のコマンドで確認します．
+git lfs install 使い方 #  hello.txt という 100MB より小さいファイルと large.file という 100MB を超えるファイルがある場合を考えます．
+. ├── hello.txt └── large.file この状態で通常通りに push しようとすると次のようにエラーが出ます．
+git init git remote add origin git@github.com:user/git-lfs-test.git git add . git commit -m &#34;Initial commit&#34; git push origin master Enumerating objects: 4, done.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://forest0923.github.io/memo/jp/docs/git/lfs/"><meta property="article:section" content="docs">
+<title>LFS (Large File Storage) | Memo</title>
+<link rel=manifest href=/memo/manifest.json>
+<link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=en href=http://forest0923.github.io/memo/docs/git/lfs/ title="LFS (Large File Storage)">
+<link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
+<script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.6e913b0aeec525ccf0ab16f6c0221e1aaa257210e493a861cd3a1b133e0800bd.js integrity="sha256-bpE7Cu7FJczwqxb2wCIeGqolchDkk6hhzTobEz4IAL0=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/memo/jp/><span>Memo</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul class=book-languages>
+<li>
+<input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between">
+<a role=button class="flex align-center">
+<img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+Japanese
+</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/docs/git/lfs/>
+English
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Links</h2>
+<ul>
+<li>
+<a href=https://github.com/Forest0923 target=_blank rel=noopener>
+GitHub
+</a>
+</li>
+<li>
+<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
+GitLab
+</a>
+</li>
+</ul>
+<h2>Documents</h2>
+<ul>
+<li>
+<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
+<a role=button>Linux Kernel Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/inst-kernel/>カーネルのインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/rm-kernel/>カーネルの削除</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-systemcall/>システムコールの追加</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-hypercall/>ハイパーコールの実装</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between">
+<a role=button>Ubuntu</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/initial-settings/>Ubuntu の初期設定</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/haribote-os/>自作 OS 入門 with Ubuntu</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between">
+<a role=button>Android</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/android/inst-x86/>Android x86</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/android/apk/>リバースエンジニアリング（APK）</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle checked>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between">
+<a role=button>Git</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-cli/>GitHub CLI</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-ssh/>GitHub への SSH 接続</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/usecases/>Git の使い方（使用例）</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/submodule/>サブモジュール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/lfs/ class=active>LFS (Large File Storage)</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/links/>Git を学ぶ上で参考になるリンク集</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between">
+<a role=button>LaTeX</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/inst-tex-live/>LaTeX スタートアップ：TeX Live のインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/latex-cs/>LaTeX Cheat Sheet</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/sty/>自作の sty ファイルの作り方</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/minted/>minted を使用したシンタックスハイライト</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between">
+<a role=button>Web Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/code-highlight/>シンタックスハイライト</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/latex/>きれいな数式の表示</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/mermaid/>Mermaid</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/webtools/>Web Tools</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between">
+<a role=button>Security</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/pkc/>公開鍵暗号</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/gpg/>GNU Privacy Guard</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/ssh/>SSH</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/hack/>Hack</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Blog Posts</h2>
+<ul>
+<li>
+<a href=/memo/jp/posts/>
+Posts
+</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/memo/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>LFS (Large File Storage)</strong>
+<label for=toc-control>
+<img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#lfs-large-file-storage>LFS (Large File Storage)</a>
+<ul>
+<li><a href=#インストール><strong>インストール</strong></a></li>
+<li><a href=#使い方><strong>使い方</strong></a></li>
+<li><a href=#注意点><strong>注意点</strong></a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+</header>
+<article class=markdown><h1 id=lfs-large-file-storage>
+LFS (Large File Storage)
+<a class=anchor href=#lfs-large-file-storage>#</a>
+</h1>
+<p>GitHub にアップロードできる最大のファイルサイズはデフォルトでは 100 MB となっています．
+その制限を超えるサイズのファイルを Git で管理したい場合には Git LFS を用いる必要があり，ここではその使い方を説明します．</p>
+<h2 id=インストール>
+<strong>インストール</strong>
+<a class=anchor href=#%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a>
+</h2>
+<p>下記コマンドでインストールします．</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-install id=tabs-install-0 checked>
+<label for=tabs-install-0>Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S git-lfs
+</code></pre></div></div><input type=radio class=toggle name=tabs-install id=tabs-install-1>
+<label for=tabs-install-1>Ubuntu</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install git-lfs
+</code></pre></div></div></div>
+<p>インストールできたことを下記のコマンドで確認します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>git lfs install
+</code></pre></div><h2 id=使い方>
+<strong>使い方</strong>
+<a class=anchor href=#%e4%bd%bf%e3%81%84%e6%96%b9>#</a>
+</h2>
+<p>hello.txt という 100MB より小さいファイルと large.file という 100MB を超えるファイルがある場合を考えます．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>.
+├── hello.txt
+└── large.file
+</code></pre></div><p>この状態で通常通りに push しようとすると次のようにエラーが出ます．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>git init
+git remote add origin git@github.com:user/git-lfs-test.git
+git add .
+git commit -m <span style=color:#e6db74>&#34;Initial commit&#34;</span>
+git push origin master
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 8.31 MiB | 1.76 MiB/s, done.
+Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+remote: error: GH001: local files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+remote: error: Trace: f2804525d75e71f1d42747fe638744b05a78ef347da1de187e2437a43d25eccb
+remote: error: See http://git.io/iEPt8g for more information.
+remote: error: File large.file is 119.52 MB; this exceeds GitHub&#39;s file size limit of 100.00 MB
+To github.com:user/git-lfs-test.git
+ ! [remote rejected] master -&gt; master (pre-receive hook declined)
+error: failed to push some refs to &#39;github.com:user/git-lfs-test.git&#39;
+</code></pre></div><p>LFS を使うためにまずはサイズの大きいファイルを commit から削除します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>git rm --cached large.file
+git commit --amend -CHEAD
+</code></pre></div><p>サイズの大きいファイルを LFS で追跡します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>git lfs track large.file
+git add .gitattributes <span style=color:#f92672>&amp;&amp;</span> git commit -m <span style=color:#e6db74>&#34;Track large file&#34;</span>
+git add large.file <span style=color:#f92672>&amp;&amp;</span> git commit -m <span style=color:#e6db74>&#34;Add large file&#34;</span>
+</code></pre></div><p>これで push すれば large.file も GitHub にアップロードできるようになります．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>git push origin master
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>Uploading LFS objects: 100% (1/1), 125 MB | 0 B/s, done.
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (9/9), 900 bytes | 900.00 KiB/s, done.
+Total 9 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), done.
+To github.com:user/git-lfs-test.git
+ * [new branch]      master -&gt; master
+</code></pre></div><h2 id=注意点>
+<strong>注意点</strong>
+<a class=anchor href=#%e6%b3%a8%e6%84%8f%e7%82%b9>#</a>
+</h2>
+<p>GitHub では LFS を用いて管理できるサイズにはアカウント単位で上限が存在します．詳しい内容は <a href=https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage>GitHub - About storage and bandwidth usage</a> を見ることをおすすめしますが，現状でどれだけ利用しているかといった情報は <a href=https://github.com/settings/billing>https://github.com/settings/billing</a> の Git LFS Data から確認できます．</p>
+</article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#lfs-large-file-storage>LFS (Large File Storage)</a>
+<ul>
+<li><a href=#インストール><strong>インストール</strong></a></li>
+<li><a href=#使い方><strong>使い方</strong></a></li>
+<li><a href=#注意点><strong>注意点</strong></a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

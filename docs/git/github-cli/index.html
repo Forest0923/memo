@@ -2,18 +2,25 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="GitHub CLI #  ">
+<meta name=description content="GitHub CLI #  In this page, I will explain how to install, configure and use the GitHub CLI.
+Install #  Use the following command to install GitHub CLI.
+Arch sudo pacman -S github-cli Ubuntu For Ubuntu, it is not possible to install directly from apt, so you will have to install via snap.
+sudo apt install snapd sudo snap install gh  Configuration #  You can authenticate your account by executing the following command.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="GitHub CLI">
-<meta property="og:description" content="GitHub CLI #  ">
+<meta property="og:description" content="GitHub CLI #  In this page, I will explain how to install, configure and use the GitHub CLI.
+Install #  Use the following command to install GitHub CLI.
+Arch sudo pacman -S github-cli Ubuntu For Ubuntu, it is not possible to install directly from apt, so you will have to install via snap.
+sudo apt install snapd sudo snap install gh  Configuration #  You can authenticate your account by executing the following command.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/git/github-cli/"><meta property="article:section" content="docs">
 <title>GitHub CLI | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/git/github-cli/ title="GitHub CLI">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.22d61114032fe4e1345cd1499e75d53c5a7ff4db214bac7e7dae5cd6930abcc2.js integrity="sha256-ItYRFAMv5OE0XNFJnnXVPFp/9NshS6x+fa5c1pMKvMI=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.c3bab44b6d8d2c64719d16c28879c4ea9b7aa15553683deb1c3fc0fc9c8ae3c0.js integrity="sha256-w7q0S22NLGRxnRbCiHnE6pt6oVVTaD3rHD/A/JyK48A=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +49,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-cli/>
 Japanese
 </a>
 </li>
@@ -235,16 +242,16 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/git/initial-settings/>Initial Settings for Git</a>
+<a href=http://forest0923.github.io/memo/docs/git/github-cli/ class=active>GitHub CLI</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/git/github-cli/ class=active>GitHub CLI</a>
+<a href=http://forest0923.github.io/memo/docs/git/github-ssh/>Connect to GitHub with SSH</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/git/usecases/>Usecases of Git</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/git/github-ssh/>Connect to GitHub with SSH</a>
+<a href=http://forest0923.github.io/memo/docs/git/submodule/>Submodule</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/git/lfs/>LFS (Large File Storage)</a>
@@ -376,7 +383,17 @@ Posts
 <aside class="hidden clearfix">
 <nav id=TableOfContents>
 <ul>
-<li><a href=#github-cli>GitHub CLI</a></li>
+<li><a href=#github-cli>GitHub CLI</a>
+<ul>
+<li><a href=#install><strong>Install</strong></a></li>
+<li><a href=#configuration><strong>Configuration</strong></a></li>
+<li><a href=#how-to-use>How to Use</a>
+<ul>
+<li><a href=#create-repository><strong>Create Repository</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </nav>
 </aside>
@@ -385,7 +402,68 @@ Posts
 GitHub CLI
 <a class=anchor href=#github-cli>#</a>
 </h1>
-</article>
+<p>In this page, I will explain how to install, configure and use the GitHub CLI.</p>
+<h2 id=install>
+<strong>Install</strong>
+<a class=anchor href=#install>#</a>
+</h2>
+<p>Use the following command to install GitHub CLI.</p>
+<div class=book-tabs><input type=radio class=toggle name=tabs-install id=tabs-install-0 checked>
+<label for=tabs-install-0>Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S github-cli
+</code></pre></div></div><input type=radio class=toggle name=tabs-install id=tabs-install-1>
+<label for=tabs-install-1>Ubuntu</label>
+<div class="book-tabs-content markdown-inner"><p>For Ubuntu, it is not possible to install directly from apt, so you will have to install via snap.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install snapd
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo snap install gh
+</code></pre></div></div></div>
+<h2 id=configuration>
+<strong>Configuration</strong>
+<a class=anchor href=#configuration>#</a>
+</h2>
+<p>You can authenticate your account by executing the following command.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gh auth login
+</code></pre></div><p>There is a step-by-step guide, so you can choose the one that best suits your environment.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>? What account do you want to log into?  [Use arrows to move, type to filter]
+&gt; GitHub.com
+  GitHub Enterprise Server
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations?  [Use arrows to move, type to filter]
+  HTTPS
+&gt; SSH
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? SSH
+? Upload your SSH public key to your GitHub account?  [Use arrows to move, type to filter]
+&gt; /home/user/.ssh/id_ed25519.pub
+  Skip
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? SSH
+? Upload your SSH public key to your GitHub account? /home/user/.ssh/id_ed25519.pub
+? How would you like to authenticate GitHub CLI?  [Use arrows to move, type to filter]
+&gt; Login with a web browser
+  Paste an authentication token
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? SSH
+? Upload your SSH public key to your GitHub account? /home/user/.ssh/id_ed25519.pub
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: 51E6-B724
+- Press Enter to open github.com in your browser...
+</code></pre></div><h2 id=how-to-use>
+How to Use
+<a class=anchor href=#how-to-use>#</a>
+</h2>
+<h3 id=create-repository>
+<strong>Create Repository</strong>
+<a class=anchor href=#create-repository>#</a>
+</h3>
+<p>If you want to add a new repository to GitHub, you can either create it in the GUI from your browser, or use gh as shown below.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gh repo create &lt;repo-name&gt; &lt;visibility&gt;
+</code></pre></div><p>Example: Create a private repository named github-test</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gh repo create github-test --private
+</code></pre></div><p>Example: Create a public repository named github-test</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gh repo create github-test --public
+</code></pre></div></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
 </div>
@@ -399,7 +477,17 @@ GitHub CLI
 <div class=book-toc-content>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#github-cli>GitHub CLI</a></li>
+<li><a href=#github-cli>GitHub CLI</a>
+<ul>
+<li><a href=#install><strong>Install</strong></a></li>
+<li><a href=#configuration><strong>Configuration</strong></a></li>
+<li><a href=#how-to-use>How to Use</a>
+<ul>
+<li><a href=#create-repository><strong>Create Repository</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </nav>
 </div>

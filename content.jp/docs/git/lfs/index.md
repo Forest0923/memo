@@ -6,12 +6,12 @@ weight: 50
 
 # LFS (Large File Storage)
 
-The maximum file size that can be uploaded to github is 100MB.
-Git Large File Storage enables to upload large file that is larger than 100MB.
+GitHub にアップロードできる最大のファイルサイズはデフォルトでは 100 MB となっています．
+その制限を超えるサイズのファイルを Git で管理したい場合には Git LFS を用いる必要があり，ここではその使い方を説明します．
 
-## **Install**
+## **インストール**
 
-Install git-lfs with following commands.
+下記コマンドでインストールします．
 
 {{< tabs "install" >}}
 {{< tab "Arch" >}}
@@ -30,15 +30,15 @@ sudo apt install git-lfs
 {{< /tab >}}
 {{< /tabs >}}
 
-Use the following command to confirm that the installation is complete.
+インストールできたことを下記のコマンドで確認します．
 
 ```sh
 git lfs install
 ```
 
-## How to Use
+## **使い方**
 
-Assume that you have a file smaller than 100MB named hello.txt and a file larger than 100MB named large.file.
+hello.txt という 100MB より小さいファイルと large.file という 100MB を超えるファイルがある場合を考えます．
 
 ```text
 .
@@ -46,7 +46,7 @@ Assume that you have a file smaller than 100MB named hello.txt and a file larger
 └── large.file
 ```
 
-If you try to push as usual in this state, you will get the following error message.
+この状態で通常通りに push しようとすると次のようにエラーが出ます．
 
 ```sh
 git init
@@ -72,14 +72,14 @@ To github.com:user/git-lfs-test.git
 error: failed to push some refs to 'github.com:user/git-lfs-test.git'
 ```
 
-To use LFS, first delete large files from commit.
+LFS を使うためにまずはサイズの大きいファイルを commit から削除します．
 
 ```sh
 git rm --cached large.file
 git commit --amend -CHEAD
 ```
 
-Track large files with LFS.
+サイズの大きいファイルを LFS で追跡します．
 
 ```sh
 git lfs track large.file
@@ -87,7 +87,7 @@ git add .gitattributes && git commit -m "Track large file"
 git add large.file && git commit -m "Add large file"
 ```
 
-Then, you can upload the large.file to GitHub by pushing it.
+これで push すれば large.file も GitHub にアップロードできるようになります．
 
 ```sh
 git push origin master
@@ -106,6 +106,6 @@ To github.com:user/git-lfs-test.git
  * [new branch]      master -> master
 ```
 
-## **Note**
+## **注意点**
 
-GitHub has a per-account limit on the size of a file that can be managed using LFS. For more information, see [GitHub - About storage and bandwidth usage](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage). You can check how much you're currently using from Git LFS Data at <https://github.com/settings/billing>.
+GitHub では LFS を用いて管理できるサイズにはアカウント単位で上限が存在します．詳しい内容は [GitHub - About storage and bandwidth usage](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage) を見ることをおすすめしますが，現状でどれだけ利用しているかといった情報は <https://github.com/settings/billing> の Git LFS Data から確認できます．

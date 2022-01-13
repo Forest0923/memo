@@ -6,11 +6,11 @@ weight: 10
 
 # GitHub CLI
 
-In this page, I will explain how to install, configure and use the GitHub CLI.
+このページでは GitHub CLI のインストール，設定，使い方をまとめます．
 
-## **Install**
+## インストール
 
-Use the following command to install GitHub CLI.
+下記のコマンドでインストールします．
 
 {{< tabs "install" >}}
 {{< tab "Arch" >}}
@@ -22,7 +22,7 @@ sudo pacman -S github-cli
 {{< /tab >}}
 {{< tab "Ubuntu" >}}
 
-For Ubuntu, it is not possible to install directly from apt, so you will have to install via snap.
+Ubuntu の場合は apt から直接インストールできないので，snap 経由でインストールします．
 
 ```sh
 sudo apt install snapd
@@ -35,15 +35,15 @@ sudo snap install gh
 {{< /tab >}}
 {{< /tabs >}}
 
-## **Configuration**
+## 設定
 
-You can authenticate your account by executing the following command.
+次のコマンドを実行することでアカウントの認証ができます．
 
 ```sh
 gh auth login
 ```
 
-There is a step-by-step guide, so you can choose the one that best suits your environment.
+ステップごとにガイドが表示されるので環境に合わせて選択すれば認証できます．
 
 ```text
 ? What account do you want to log into?  [Use arrows to move, type to filter]
@@ -85,23 +85,23 @@ There is a step-by-step guide, so you can choose the one that best suits your en
 - Press Enter to open github.com in your browser...
 ```
 
-## How to Use
+## 使い方
 
-### **Create Repository**
+### **リポジトリ作成**
 
-If you want to add a new repository to GitHub, you can either create it in the GUI from your browser, or use gh as shown below.
+GitHub に新しいリポジトリを追加したいときは，ブラウザから GUI で作成するか，gh を下記のように使います．
 
 ```sh
 gh repo create <repo-name> <visibility>
 ```
 
-Example: Create a private repository named github-test
+例：github-test という名前のプライベートリポジトリを作成する
 
 ```sh
 gh repo create github-test --private
 ```
 
-Example: Create a public repository named github-test
+例：github-test という名前のパブリックリポジトリを作成する
 
 ```sh
 gh repo create github-test --public

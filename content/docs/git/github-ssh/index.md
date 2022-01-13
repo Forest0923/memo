@@ -1,40 +1,91 @@
 ---
 title: "Connect to GitHub with SSH"
 draft: false
-weight: 40
+weight: 20
 ---
 
 # Connect to GitHub with SSH
 
-## Add new SSH key to github
+## SSH Key Generation
 
-### System
+Executing ssh-keygen as follows will generate a key using the algorithm you have selected.
 
-- Ubuntu 18.04
-- git version 2.17.1
-- xclip version 0.12
+{{< tabs "ssh-keygen" >}}
+{{< tab "EdDSA" >}}
 
-### Generating SSH key
+```sh
+ssh-keygen -t ed25519
+```
 
-- Set key name as `id_rsa_github`.
+{{< /tab >}}
+{{< tab "RSA" >}}
 
 ```sh
 ssh-keygen -t rsa -b 4096
 ```
 
-### Adding to ssh-agent
+{{< /tab >}}
+{{< tab "ECDSA" >}}
+
+```sh
+ssh-keygen -t ecdsa -b 521
+```
+
+{{< /tab >}}
+{{< /tabs >}}
+
+If you do not make any changes during the generation, the private key `id_[algorithm]` and the public key `id_[algorithm].pub` will be generated in `~/.ssh`.
+
+## Registering a Private Key to SSH Agent
+
+By registering your key with SSH Agent, you will not be asked for your passphrase every time.
 
 ```sh
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa_github
+ssh-add ~/.ssh/id_[algorithm]
 ```
 
-### Adding to GitHub account
+## Registering a Public Key to GitHub
+
+### Registering from Browser
+
+From your account page on GitHub, go to `Settings > SSH and GPG keys`, click `New SSH key`, and copy and paste the contents of `id_[algorithm].pub` to register it.
+
+### Registering with GitHub CLI
+
+You can also use the following command to register a key.
 
 ```sh
-xclip -sel clip < ~/.ssh/id_rsa_github.pub
+gh auth login
 ```
+
+When you choose SSH as the connection protocol, you can choose whether to upload the public key or not.
+
+```text
+? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations?  [Use arrows to move, type to filter]
+  HTTPS
+> SSH
+```
+
+```text
+? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? SSH
+? Upload your SSH public key to your GitHub account?  [Use arrows to move, type to filter]
+> /home/user/.ssh/id_ed25519.pub
+  Skip
+```
+
+## Connection Test
+
+Execute the following command to test the connection.
+
+```sh
+ssh git@github.com
+```
+
+When the fingerprint is displayed, compare it with <https://docs.github.com/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints> and confirm that it is github.com, then select yes.
 
 > Reference:
 >
-> [GitHubにSSHで接続する](https://help.github.com/ja/github/authenticating-to-github/connecting-to-github-with-ssh)
+> [Connecting to GitHub with SSH](https://help.github.com/github/authenticating-to-github/connecting-to-github-with-ssh)

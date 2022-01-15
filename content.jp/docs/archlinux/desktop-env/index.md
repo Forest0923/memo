@@ -1,18 +1,18 @@
 ---
-title: "Desktop Environment"
+title: "デスクトップ環境"
 draft: false
 weight: 50
 ---
 
-# Desktop Environment
+# デスクトップ環境
 
-This is a tutorial for installing desktop environment.
+デスクトップ環境をインストールするチュートリアルです．
 
 ## Install
 
 ### **Graphics Driver**
 
-Install graphics driver.
+グラフィックドライバをインストールします．
 
 {{< tabs "gpu-driver" >}}
 {{< tab "Intel" >}}
@@ -35,7 +35,7 @@ sudo pacman -S nvidia nvidia-utils nvidia-dkms
 
 ### **Display Server**
 
-Install xorg as a display server. A display server is software that passes input and output using a GUI such as Gnome to the OS and hardware.
+ディスプレイサーバとして xorg をインストールします．ディスプレイサーバは Gnome などの GUI を用いた入出力を OS，ハードウェアに受け渡すソフトウェアです．
 
 ```sh
 sudo pacman -S xorg
@@ -43,7 +43,7 @@ sudo pacman -S xorg
 
 ### **Display Manager**
 
-Install the Display Manager to use the GUI for login.
+ログインを GUI で行うためにディスプレイマネージャをインストールします．
 
 {{< tabs "display-manager" >}}
 {{< tab "lightdm" >}}
@@ -90,7 +90,7 @@ sudo pacman -S budgie-desktop gnome
 
 ### **Systemd**
 
-Set systemd to start the display manager automatically.
+ディスプレイマネージャを自動で起動するように systemd を設定します．
 
 {{< tabs "systemd" >}}
 {{< tab "lightdm" >}}

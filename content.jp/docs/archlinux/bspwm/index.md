@@ -1,18 +1,18 @@
 ---
-title: "Installing BSPWM"
+title: "BSPWM のインストール"
 draft: false
 weight: 60
 ---
 
-# Installing BSPWM
+# BSPWM のインストール
 
-Install and customize a Tile-type window manager called BSPWM.
+BSPWM という Tile 型のウィンドウマネージャをインストールして，カスタマイズを行います．
 
 ## Install and Configurations
 
 ### **Graphics Driver**
 
-Install graphics driver.
+グラフィックドライバをインストールします．
 
 {{< tabs "gpu-driver" >}}
 {{< tab "Intel" >}}
@@ -35,19 +35,19 @@ sudo pacman -S nvidia nvidia-utils nvidia-dkms
 
 ### **BSPWM**
 
-Install display server, bspwm and etc.
+ディスプレイサーバや bspwm などをインストールします．
 
 ```sh
 sudo pacman -S xorg xorg-xinit bspwm picom dmenu sxhkd nitrogen arandr
 ```
 
-Install a terminal emulator and a browser.
+アプリケーションの例としてターミナルエミュレータとブラウザをインストールします
 
 ```sh
 sudo pacman -S alacritty firefox
 ```
 
-Create a config file. sxhkd is a daemon for using hotkeys.
+config ファイルを作成します．sxhkd はホットキーを使用するための daemon です．
 
 ```sh
 mkdir .config/bspwm
@@ -56,7 +56,7 @@ cp /usr/share/doc/bspwm/examples/bspwmrc .config/bspwm/
 cp /usr/share/doc/bspwm/examples/sxhkdrc .config/sxhkd/
 ```
 
-Configure `Super + Return` to run alacritty as a terminal emulator.
+`Super + Return` でターミナルエミュレータとして alacritty を実行するように設定します．
 
 ```sh
 vim /.config/sxhkd/sxhkdrc
@@ -68,7 +68,7 @@ super + Return
 +     alacritty
 ```
 
-Modify .xinitrc and set it to run bspwm, etc.
+.xinitrc を修正して bspwm などを実行するように設定します．
 
 ```sh
 cp /etc/X11/xinit/xinitrc .xinitrc
@@ -86,7 +86,7 @@ vim .xinitrc
 + exec bspwm
 ```
 
-picom is used for graphic settings.
+picom はグラフィックの設定に使われます．
 
 ```sh
 sudo vim /etc/xdg/picom.conf
@@ -97,7 +97,7 @@ sudo vim /etc/xdg/picom.conf
 + #vsync = true;
 ```
 
-Start window manager.
+ウィンドウマネージャをスタートします．
 
 ```sh
 startx
@@ -105,7 +105,7 @@ startx
 
 ## Customize
 
-Change the resolution
+解像度を変更します．
 
 ```sh
 arandr  # choose resolution and save as a shell script
@@ -119,13 +119,13 @@ setkbmap ch &
 picom -f &
 ```
 
-Quit bspwm (`super + alt + q`) and restart the window manager.
+bspwm を終了して（super + alt + q）ウィンドウマネージャを再起動します．
 
 ```sh
 startx
 ```
 
-Change cursor theme.
+カーソルを変更します．
 
 ```sh
 vim .xinitrc
@@ -138,7 +138,7 @@ $HOME/.screenlayout/display.sh
 picom -f &
 ```
 
-Change the desktop background (Preferences > Add > Pictures > OK > Apply) and modify xinitrc to start nitrogen.
+デスクトップの背景を変更して（Preferences > Add > Pictures > OK > Apply）nitrogen を起動するように xinitrc を修正します．
 
 ```sh
 vim .xinitrc

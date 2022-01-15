@@ -6,11 +6,11 @@ weight: 90
 
 # Arch Build System
 
-ABS is a system that automates the building of packages from source code; it uses makepkg to build packages based on information in PKGBUILD, and pacman to install them.
+ABS はソースコードからパッケージのビルドを自動化するシステムです．PKGBUILD に記述された情報をもとに makepkg でパッケージをビルドし，pacman を用いてインストールを行います．
 
 ## Install
 
-Install asp to use ABS.
+ABS を用いるために asp をインストールします．
 
 ```sh
 sudo pacman -S asp
@@ -18,21 +18,21 @@ sudo pacman -S asp
 
 ## Usage (kernel build)
 
-The following is an example of how to build a kernel. Create `build/` as a working directory.
+使い方の例としてカーネルのビルドを行う方法を紹介します．作業用ディレクトリとして build を作成します．
 
 ```sh
 mkdir build
 cd build
 ```
 
-Download the PKGBUILD for the Linux kernel.
+Linux kernel の PKGBUILD をダウンロードします．
 
 ```sh
 asp update linux
 asp export linux
 ```
 
-Modify PKGBUILD to rename the package and prevent it from generating documentation.
+PKGBUILD を修正してパッケージの名前変更したり，ドキュメントを生成させないように修正します．
 
 ```sh
 cd linux
@@ -52,7 +52,7 @@ vim PKGBUILD
 > pkgname=("$pkgbase" "$pkgbase-headers")
 ```
 
-Use the following command to download the source code.
+下記のコマンドでソースコードをダウンロードします．
 
 ```sh
 makepkg -so
@@ -80,7 +80,7 @@ makepkg -so
     └── sphinx-workaround.patch -> /home/mori/kernelbuild/linux/sphinx-workaround.patch
 ```
 
-Build kernel package with makepkg as shown below, and install it with pacman.
+makepkg で下記のようにビルドして，pacman でインストールします．
 
 ```sh
 makepkg -se     # Additionally 'f' option needed when overwrite pkg

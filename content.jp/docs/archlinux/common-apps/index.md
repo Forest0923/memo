@@ -1,10 +1,10 @@
 ---
-title: "Install Applications"
+title: "アプリケーションのインストール"
 draft: false
 weight: 70
 ---
 
-# Install Applications
+# アプリケーションのインストール
 
 ## Package Manager
 

@@ -1,65 +1,83 @@
 ---
-title: "Install Arch Linux with BTRFS (and Backup with Timeshift)"
+title: "Install Arch Linux (BTRFS + Timeshift)"
 draft: false
 weight: 10
 ---
 
-# Install Arch Linux with BTRFS (and Backup with Timeshift)
+# Install Arch Linux (BTRFS + Timeshift)
+
+Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Timeshift.
 
 ## System
 
-- CPU: Intel
+- Intel CPU
 - UEFI Boot
 
-## Commands
+## Install
 
-### Keymap
+### **Change Keymaps**
 
-- Change keymap:
+Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.
 
 ```sh
 loadkeys jp106
 ```
 
-### Time
+### **Time Settings**
 
-- Timedatectl:
+Execute the following command to use the NTP (Network Time Protocol).
 
 ```sh
 timedatectl set-ntp true
 ```
 
-### Mirrorlist
+### **Optimizing Mirrorlist**
 
-- Optimize mirror list:
+Optimize the mirror list using reflector to access mirror servers with fast access during installation.
 
 ```sh
 pacman -Syy
-pacman -S reflector
+pacman -S reflector # `python` might be required
 reflector -c Japan --sort rate -a 6 --save /etc/pacman.d/mirrorlist
 ```
 
-### Disk Partitioning
+The meaning of the reflector option is as follows.
 
-- Disk partitioning:
+|Options|Description|
+|-|-|
+|`-c Japan`|Restrict mirrors to selected countries. |
+|`--sort rate`|Sort by download rate.|
+|`-a 6`|Restrict to servers synchronized within 6 hours.|
+|`--save /etc/pacman.d/mirrorlist`|Save the mirror list to the specified path.|
+
+### **Disk Partitioning and Formatting**
+
+Use gdisk to change the partition. In this example, we assume that Arch Linux is installed in `/dev/vda`.
 
 ```sh
 gdisk /dev/vda
 ```
+
+Allocate the first partition as an EFI partition of about 200MB. The remaining space will be allocated as a Linux Filesystem. Assuming that there is enough memory, we will not allocate the swap space.
 
 ```text
 /dev/vda1: EFI system (200M)
 /dev/vda2: Linux filesystem
 ```
 
-- Format partitions:
+EFI partition is formatted with fat.
 
 ```sh
 mkfs.fat -F32 /dev/vda1
+```
+
+Linux Filesystem is formatted with BTRFS.
+
+```sh
 mkfs.btrfs /dev/vda2
 ```
 
-- Create subvolume and mount devices:
+Create subvolume and mount devices.
 
 ```sh
 mount /dev/vda2 /mnt
@@ -70,40 +88,45 @@ mkdir -p /mnt/boot/efi
 mount /dev/vda1 /mnt/boot/efi
 ```
 
-### Base Install
+### **Base Install**
 
-- Install base package:
+Install the package in the root directory, `/mnt`.
 
 ```sh
 pacstrap /mnt base linux linux-firmware vim
 ```
 
-### fstab
+### **fstab**
 
-- Generate fstab file:
+Generate the fstab file, which holds the information about which device to mount.
 
 ```sh
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
-### chroot
+### **Change the Root Directory**
 
-- chroot:
+Use chroot to set `/mnt` as the root directory.
 
 ```sh
 arch-chroot /mnt
 ```
 
-### Localization
+### **Localization**
 
-- Hardware clock:
+Create a symbolic link to `/etc/localtime` to change the time zone.
 
 ```sh
 ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+```
+
+Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.
+
+```sh
 hwclock --systohc
 ```
 
-- locale:
+To set the locale, first generate the locale. Uncomment the entries you want to use in `/etc/locale.gen` and run `locale-gen`.
 
 ```sh
 vim /etc/locale.gen
@@ -116,13 +139,18 @@ vim /etc/locale.gen
 
 ```sh
 locale-gen
+```
+
+Execute the following command to set the locale of the system.
+
+```sh
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 echo KEYMAP=jp106 >> /etc/vconsole.conf
 ```
 
-### Set hostname and hosts
+### **Hostname**
 
-- Hostname:
+Register hostname in `/etc/hostname`.
 
 ```sh
 vim /etc/hostname
@@ -132,144 +160,148 @@ vim /etc/hostname
 + arch
 ```
 
-- Hosts:
+Edit `/etc/hosts` and set IP address corresponding to hostname.
 
 ```sh
 vim /etc/hosts
 ```
 
-```udiff
+```diff
 + 127.0.0.1   localhost
 + ::1         localhost
 + 127.0.1.1   arch.localdomain    arch
 ```
 
-### Root password
+### **Root Password**
 
-- Set root password:
+Set the password of root user.
 
 ```sh
 passwd
 ```
 
-### Install necessary softwares
+### **Install Additional Packages**
 
-- Bootloader:
+Install Grub as a bootloader.
 
 ```sh
 pacman -S grub efibootmgr os-prober
 ```
 
-- Network and wireless tools:
+Install software for network and wireless tools.
 
 ```sh
 pacman -S networkmanager network-manager-applet wireless_tools wpa_supplicant dialog
 ```
 
-- Disk:
+Install tools that allow us to access MS-DOS disks.
 
 ```sh
 pacman -S mtools dosgstools
 ```
 
-- Basic apps (bison, make, gcc, sudo, and etc.):
+Install basic applications (commands) such as sudo, make and gcc.
 
 ```sh
 pacman -S base-devel
 ```
 
-- Kernel header files:
+Install kernel headers. Kernel headers is a colection of headers and scripts which are used when building kernel modules.
 
 ```sh
 pacman -S linux-headers
 ```
 
-- Bluetooth and audio:
+Install tools for Bluetooth and audio configurations.
 
 ```sh
 pacman -S bluez bluez-utils alsa-utils pulseaudio pulseaudio-bluetooth
 ```
 
-- Desktop:
+Install command line tools related to desktop applications.
 
 ```sh
-pacman -S xdg-utils xdg-user-dirs
+pacman -S xdg-utils
 ```
 
-- Git:
+xdg-user-dirs add directories such as `~/Desktop` and `~/Music`.
+
+```sh
+pacman -S xdg-user-dirs
+```
+
+Install Git.
 
 ```sh
 pacman -S git
 ```
 
-- cron:
+Install cron which is used by Timeshift. cron is used to execute the program on a scheduled basis.
 
 ```sh
 pacman -S cron
 ```
 
-- reflector:
+Install reflector to optimize the mirrorlist.
 
 ```sh
 pacman -S reflector
 ```
 
-### Grub install
+### **Bootloader**
 
-- Grub install and make config:
+Install Grub and create config file.
 
 ```sh
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-### Systemd
+### **Systemd**
 
-- Activate network:
+Enables NetworkManager.
 
 ```sh
 systemctl enable NetworkManager
 ```
 
-- Bluetooth:
+Enables Bluetooth.
 
 ```sh
 systemctl enable bluetooth
 ```
 
-- Refresh mirrorlist with reflector
-  - Exec options    : `/etc/xdg/reflector/reflector.conf`
-  - Weekly setting  : `/usr/lib/systemd/system/reflector.timer`
+Enables reflector. The execution options are written in `/etc/xdg/reflector/reflector.conf`.
 
 ```sh
 systemctl enable reflector.service  # update mirrorlist every boot
-# or
+```
+
+```sh
 systemctl enable reflector.timer    # update mirrorlist weekly
 ```
 
-### Add user
+### **Add User**
 
-- Add user:
+Add user with useradd and set the password.
 
 ```sh
 useradd -mG wheel mori
 passwd mori
 ```
 
-- Give the user priviledge:
+Give the user priviledges.
 
 ```sh
 EDITOR=vim visudo
 ```
 
-```udiff
+```diff
 - # %wheel ALL=(ALL) ALL
 + %wheel ALL=(ALL) ALL
 ```
 
-### Finish base installation
-
-- Reboot
+### **Reboot**
 
 ```sh
 exit
@@ -277,27 +309,34 @@ umount -a
 reboot
 ```
 
-### Install desktop environment
+### **Install Desktop Environment**
 
-- [Stacking window manager](arch-desktop)
-- [Tiling window manager](arch-bspwm)
+[Desktop Environment](../desktop-env/)
 
-### Install timeshift
+### **Install Timeshift**
 
-- Install AUR helper:
+Install Timeshift with AUR helper.
+
+{{< tabs "aurhelper" >}}
+{{< tab "paru" >}}
 
 ```sh
-# yay
-git clone https://aur.archlinux.org/yay
-cd yay
-makepkg -si
-# paru
 git clone https://aur.archlinux.org/paru
 cd paru
 makepkg -si
 ```
 
-- Install timeshift:
+{{< /tab >}}
+{{< tab "yay" >}}
+
+```sh
+git clone https://aur.archlinux.org/yay
+cd yay
+makepkg -si
+```
+
+{{< /tab >}}
+{{< /tabs >}}
 
 ```sh
 paru -S timeshift

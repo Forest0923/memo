@@ -1,45 +1,46 @@
 ---
-title: "Install Arch Linux with BTRFS (and Backup with Snapper)"
+title: "Install Arch Linux (Multi-disks + BTRFS + Snapper)"
 draft: false
 weight: 20
 ---
 
-# Install Arch Linux with BTRFS (and Backup with Snapper)
+# Install Arch Linux (Multi-disks + BTRFS + Snapper)
+
+Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Snapper.
 
 ## System
 
-- CPU: Intel
+- Intel CPU
 - UEFI Boot
-- Multi-disk support with btrfs
-  - Devices:
+- Disks
 
-  ```text
-  /dev/vda
-  /dev/vdb
-  /dev/vdc
-  ```
+```text
+/dev/vda
+/dev/vdb
+/dev/vdc
+```
 
-## Commands
+## Install
 
-### Keymap
+### **Change Keymaps**
 
-- Change keymap:
+Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.
 
 ```sh
 loadkeys jp106
 ```
 
-### Time
+### **Time Settings**
 
-- Timedatectl:
+Execute the following command to use the NTP (Network Time Protocol).
 
 ```sh
 timedatectl set-ntp true
 ```
 
-### Mirrorlist
+### **Optimizing Mirrorlist**
 
-- Optimize mirror list:
+Optimize the mirror list using reflector to access mirror servers with fast access during installation.
 
 ```sh
 pacman -Syy
@@ -47,43 +48,40 @@ pacman -S reflector # `python` might be required
 reflector -c Japan --sort rate -a 6 --save /etc/pacman.d/mirrorlist
 ```
 
-### Disk formatting
+The meaning of the reflector option is as follows.
 
-- Partitioning:
+|Options|Description|
+|-|-|
+|`-c Japan`|Restrict mirrors to selected countries. |
+|`--sort rate`|Sort by download rate.|
+|`-a 6`|Restrict to servers synchronized within 6 hours.|
+|`--save /etc/pacman.d/mirrorlist`|Save the mirror list to the specified path.|
+
+### **Disk Partitioning and Formatting**
+
+Use gdisk to create partitions. We will create an EFI partition (about 200MB) in `/dev/vda`, and the rest of the space and devices will be Linux Filesystem.
 
 ```sh
 gdisk /dev/vda
+gdisk /dev/vdb
+gdisk /dev/vdc
 ```
 
 ```text
 /dev/vda1: EFI system (200M)
 /dev/vda2: Linux filesystem
-```
-
-```sh
-gdisk /dev/vdb
-```
-
-```text
 /dev/vdb1: Linux filesystem
-```
-
-```sh
-gdisk /dev/vdc
-```
-
-```text
 /dev/vdc1: Linux filesystem
 ```
 
-- Formattiong:
+EFI partition is formatted as fat, and Linux Filesystem is formatted as BTRFS.
 
 ```sh
 mkfs.fat -F32 /dev/vda1
 mkfs.btrfs /dev/vda2 /dev/vdb1 /dev/vdc1
 ```
 
-- Mount:
+Create subvolume and mount devices.
 
 ```sh
 mount /dev/vda2 /mnt
@@ -103,38 +101,45 @@ mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/vda2 /mnt/var/
 mount /dev/vda1 /mnt/boot
 ```
 
-### Base install
+### **Base install**
 
-- Install base package:
+Install the package in the root directory, `/mnt`.
 
 ```sh
 pacstrap /mnt base linux linux-firmware intel-ucode vim
 ```
 
-### Create fstab file
+### **Create fstab File**
 
-- Generate fstab:
+Generate the fstab file, which holds the information about which device to mount.
 
 ```sh
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
-### Chroot
+### **Change the Root Directory**
+
+Use chroot to set `/mnt` as the root directory.
 
 ```sh
 arch-chroot /mnt
 ```
 
-### Localization
+### **Localization**
 
-- Hardware clock:
+Create a symbolic link to `/etc/localtime` to change the time zone.
 
 ```sh
 ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+```
+
+Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.
+
+```sh
 hwclock --systohc
 ```
 
-- Set locale and input method:
+To set the locale, first generate the locale. Uncomment the entries you want to use in `/etc/locale.gen` and run `locale-gen`.
 
 ```sh
 vim /etc/locale.gen
@@ -147,13 +152,18 @@ vim /etc/locale.gen
 
 ```sh
 locale-gen
+```
+
+Execute the following command to set the locale of the system.
+
+```sh
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 echo KEYMAP=jp106 >> /etc/vconsole.conf
 ```
 
-### Hostname and hosts
+### **Hostname**
 
-- Hostname:
+Register hostname in `/etc/hostname`.
 
 ```sh
 vim /etc/hostname
@@ -163,7 +173,7 @@ vim /etc/hostname
 + arch
 ```
 
-- Hosts:
+Edit `/etc/hosts` and set IP address corresponding to hostname.
 
 ```sh
 vim /etc/hosts
@@ -175,89 +185,97 @@ vim /etc/hosts
 + 127.0.1.1   arch.localdomain    arch
 ```
 
-### Root password
+### **Root Password**
 
-- passwd
+Set the password of root user.
 
 ```sh
 passwd
 ```
 
-### Install necessary softwares
+### **Install Additional Packages**
 
-- Bootloader:
+Install Grub as a bootloader.
 
 ```sh
 pacman -S grub efibootmgr os-prober
 ```
 
-- Network and wireless tools:
+Install software for network and wireless tools.
 
 ```sh
 pacman -S networkmanager network-manager-applet wireless_tools wpa_supplicant dialog
 ```
 
-- Disk:
+Install tools that allow us to access MS-DOS disks.
 
 ```sh
 pacman -S mtools dosgstools
 ```
 
-- Basic apps (bison, make, gcc, sudo, and etc.):
+Install basic applications (commands) such as sudo, make and gcc.
 
 ```sh
 pacman -S base-devel
 ```
 
-- Kernel header files:
+Install kernel headers. Kernel headers is a colection of headers and scripts which are used when building kernel modules.
 
 ```sh
 pacman -S linux-headers
 ```
 
-- Bluetooth and audio:
+Install tools for Bluetooth and audio configurations.
 
 ```sh
 pacman -S bluez bluez-utils alsa-utils pulseaudio pulseaudio-bluetooth
 ```
 
-- Desktop:
+Install command line tools related to desktop applications.
 
 ```sh
-pacman -S xdg-utils xdg-user-dirs
+pacman -S xdg-utils
 ```
 
-- Git:
+xdg-user-dirs add directories such as `~/Desktop` and `~/Music`.
+
+```sh
+pacman -S xdg-user-dirs
+```
+
+Install Git.
 
 ```sh
 pacman -S git
 ```
 
-- cron:
+Install cron which is used by Snapper. cron is used to execute the program on a scheduled basis.
 
 ```sh
 pacman -S cron
 ```
 
-- reflector:
+Install reflector to optimize the mirrorlist.
 
 ```sh
 pacman -S reflector
 ```
 
-- snapper:
+Install Snapper.
 
 ```sh
 pacman -S snapper
 ```
 
-- Keyring:
+Install the PGP Keyring for Arch Linux.
 
 ```sh
 sudo pacman -S archlinux-keyring
 ```
 
-### mkinitcpio
+### **Configuring mkinitcpio**
+
+Change the configurations, and reflect the changes with mkinitcpio.
 
 ```sh
 vim /etc/mkinitcpio.conf
@@ -272,62 +290,60 @@ vim /etc/mkinitcpio.conf
 mkinitcpio -p linux
 ```
 
-### Grub install
+### **Bootloader**
 
-- Grub install and make config:
+Install Grub and create config file.
 
 ```sh
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-### Systemd
+### **Systemd**
 
-- Activate network:
+Enables NetworkManager.
 
 ```sh
 systemctl enable NetworkManager
 ```
 
-- Bluetooth:
+Enables Bluetooth.
 
 ```sh
 systemctl enable bluetooth
 ```
 
-- Refresh mirrorlist with reflector
-  - Exec options    : `/etc/xdg/reflector/reflector.conf`
-  - Weekly setting  : `/usr/lib/systemd/system/reflector.timer`
+Enables reflector. The execution options are written in `/etc/xdg/reflector/reflector.conf`.
 
 ```sh
 systemctl enable reflector.service  # update mirrorlist every boot
-# or
+```
+
+```sh
 systemctl enable reflector.timer    # update mirrorlist weekly
 ```
 
-### Add user
+### **Add User**
 
-- Add user:
+Add user with useradd and set the password.
 
 ```sh
 useradd -mG wheel mori
 passwd mori
 ```
 
-- Give the user priviledge:
+Give the user priviledges.
 
 ```sh
 EDITOR=vim visudo
 ```
 
-```udiff
+```diff
 - # %wheel ALL=(ALL) ALL
 + %wheel ALL=(ALL) ALL
 ```
 
-### Finish base installation
-
-- Reboot
+### **Reboot**
 
 ```sh
 exit
@@ -335,12 +351,11 @@ umount -a
 reboot
 ```
 
-### Install desktop environment
+### **Install Desktop Environment**
 
-- [Stacking window manager](arch-desktop)
-- [Tiling window manager](arch-bspwm)
+[Desktop Environment](../desktop-env/)
 
-### Install and configure snapper
+### **Configuring Snapper**
 
 ```sh
 sudo umount /.snapshots

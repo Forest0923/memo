@@ -1,54 +1,67 @@
 ---
-title: "Dual Booting on Multiple Disks (Windows10 and ArchLinux)"
+title: "Dual Booting (multi-disk + Windows10 and Arch Linux)"
 draft: false
 weight: 30
 ---
 
-# Dual Booting on Multiple Disks (Windows10 and ArchLinux)
+# Dual Booting (multi-disk + Windows10 and Arch Linux)
 
 ## System
 
 - Preinstalled OS: Windows 10 (64 bit Home)
 - CPU: Intel
 - GPU: Nvidia
-- SSD
-  - win
-  - linux
+- Storage:
+  - `/dev/sda`: Windows sub
+  - `/dev/sdb`: Windows main
+  - `/dev/sdc`: Linux
 
-## Goal
+## Install
 
-- Dual booting Windows 10 and Arch Linux
-- Arch Linux with BTRFS
+### **Change Keymaps**
 
-## Commands
-
-### Keymap
-
-- Set keymaps:
+Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.
 
 ```sh
 loadkeys jp106
 ```
 
-### Mirrorlist
+### **Time Settings**
 
-- Optimize mirror list:
+Execute the following command to use the NTP (Network Time Protocol).
 
 ```sh
-pacman -Syyy
-pacman -S reflector
-reflector -c Japan --sort rate --save /etc/pacman.d/mirrorlist
+timedatectl set-ntp true
 ```
 
-### Disk Partitioning
+### **Optimizing Mirrorlist**
 
-- Find windows EFI partition:
+Optimize the mirror list using reflector to access mirror servers with fast access during installation.
+
+```sh
+pacman -Syy
+pacman -S reflector # `python` might be required
+reflector -c Japan --sort rate -a 6 --save /etc/pacman.d/mirrorlist
+```
+
+The meaning of the reflector option is as follows.
+
+|Options|Description|
+|-|-|
+|`-c Japan`|Restrict mirrors to selected countries. |
+|`--sort rate`|Sort by download rate.|
+|`-a 6`|Restrict to servers synchronized within 6 hours.|
+|`--save /etc/pacman.d/mirrorlist`|Save the mirror list to the specified path.|
+
+### **Disk Partitioning and Formatting**
+
+First, find the EFI partition in Windows. Use the following command to find the devices allocated as an EFI partition.
 
 ```sh
 fdisk -l
 ```
 
-- In my case:
+In this example, we assume that `/dev/sdb1` is the EFI partition. The size of the partition is a bit small (100MB), but it is no problem for now. We will use `/dev/sdc` as the Linux Filesystem.
 
 ```text
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
@@ -64,19 +77,17 @@ sdc      8:32   0 476.9G  0 disk
 sr0     11:0    1  1024M  0 rom
 ```
 
-- Disk partitioning (Linux File System only):
-
 ```sh
 fdisk /dev/sdc
 ```
 
-- Formatting:
+Format with BTRFS.
 
 ```sh
 mkfs.btrfs /dev/sdc1
 ```
 
-- Mount partitions:
+Create subvolume and mount devices.
 
 ```sh
 mount /dev/sdc1 /mnt
@@ -93,87 +104,99 @@ mkdir /mnt/windows_d
 mount /dev/sdb1 /mnt/windows_d
 ```
 
-### Base Install
+### **Base install**
 
-- Install base packages:
+Install the package in the root directory, `/mnt`.
 
 ```sh
 pacstrap /mnt base linux linux-firmware vim intel-ucode
 ```
 
-### fstab
+### **fstab**
 
-- Generate fstab file:
+Generate the fstab file, which holds the information about which device to mount.
 
 ```sh
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
-### chroot
+### **Change the Root Directory**
+
+Use chroot to set `/mnt` as the root directory.
 
 ```sh
 arch-chroot /mnt
 ```
 
-### Localization
+### **Localization**
 
-- Hardware clock:
+Create a symbolic link to `/etc/localtime` to change the time zone.
 
 ```sh
 ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+```
+
+Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.
+
+```sh
 hwclock --systohc
 ```
 
-- locale:
+To set the locale, first generate the locale. Uncomment the entries you want to use in `/etc/locale.gen` and run `locale-gen`.
 
 ```sh
 vim /etc/locale.gen
 ```
 
-```udiff
+```diff
 - # en_US.UTF-8 UTF-8
 + en_US.UTF-8 UTF-8
 ```
 
 ```sh
 locale-gen
+```
+
+Execute the following command to set the locale of the system.
+
+```sh
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 echo KEYMAP=jp106 >> /etc/vconsole.conf
 ```
 
-### Set hostname and hosts
+### **Hostname**
 
-- Set hostname and hosts:
+Register hostname in `/etc/hostname`.
 
 ```sh
 vim /etc/hostname
 ```
 
-```udiff
+```diff
 + arch
 ```
+
+Edit `/etc/hosts` and set IP address corresponding to hostname.
 
 ```sh
 vim /etc/hosts
 ```
 
-```udiff
+```diff
 + 127.0.0.1   localhost
 + ::1         localhost
 + 127.0.1.1   arch.localdomain    arch
 ```
 
-### Root password
+### **Root Password**
 
-- Set root password:
+Set the password of root user.
 
 ```sh
 passwd
 ```
 
-### Install grub and etc
-
-- Install bootloader, network tools, and etc:
+### **Install Additional Packages**
 
 ```sh
 pacman -S grub efibootmgr networkmanager network-manager-applet wireless_tools \
@@ -181,47 +204,60 @@ wpa_supplicant dialog os-prober mtools dosfstools base-devel linux-headers git \
 reflector bluez bluez-utils pulseaudio-bluetooth ntfs-3g xdg-utils xdg-user-dirs
 ```
 
-### Grub install
+### **Bootloader**
 
-- Grub install and make config:
+Install Grub and create config file.
 
 ```sh
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-### Systemd (Network Manager and Bluetooth)
+### **Systemd**
 
-- Activate services:
+Enables NetworkManager.
 
 ```sh
 systemctl enable NetworkManager
+```
+
+Enables Bluetooth.
+
+```sh
 systemctl enable bluetooth
 ```
 
-### Add user
+Enables reflector. The execution options are written in `/etc/xdg/reflector/reflector.conf`.
 
-- Add user:
+```sh
+systemctl enable reflector.service  # update mirrorlist every boot
+```
+
+```sh
+systemctl enable reflector.timer    # update mirrorlist weekly
+```
+
+### **Add User**
+
+Add user with useradd and set the password.
 
 ```sh
 useradd -mG wheel mori
 passwd mori
 ```
 
-- Give priviledge:
+Give the user priviledges.
 
 ```sh
 EDITOR=vim visudo
 ```
 
-```udiff
-- # %wheel all=(all) all
-+ %wheel all=(all) all
+```diff
+- # %wheel ALL=(ALL) ALL
++ %wheel ALL=(ALL) ALL
 ```
 
-### Exit chroot
-
-- Reboot:
+### **Reboot**
 
 ```sh
 exit
@@ -229,17 +265,21 @@ umount -a
 reboot
 ```
 
-### Graphic driver
+### **Graphic Driver**
 
-- Graphic card:
+{{< tabs "gpu-driver" >}}
+{{< tab "Nvidia" >}}
 
 ```sh
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
 ```
 
-### Font
+{{< /tab >}}
+{{< /tabs >}}
 
-- Copy fonts from windows:
+### **Fonts**
+
+Copy fonts from windows partition.
 
 ```sh
 sudo mkdir /usr/share/fonts/WindowsFonts
@@ -248,39 +288,6 @@ sudo chmod 644 /usr/share/fonts/WindowsFonts/*
 fc-cache -f
 ```
 
-### Desktop environment
+### **Install Desktop Environment**
 
-- Display server:
-
-```sh
-sudo pacman -S xorg
-```
-
-- Display manager:
-
-```sh
-# lightdm
-sudo pacman -S lightdm lightdm-gtk-greeter
-# gdm
-sudo pacman -S gdm
-```
-
-- Desktop environment:
-
-```sh
-# xfce
-sudo pacman -S xfce4 xfce4-goodies
-# gnome
-sudo pacman -S gnome gnome-tweaks
-# budgie
-sudo pacman -S budgie-desktop gnome
-```
-
-- Activate display manager:
-
-```sh
-# lightdm
-systemctl enable lightdm
-# gdm
-systemctl enable gdm
-```
+[Desktop Environment](../desktop-env/)

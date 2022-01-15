@@ -1,17 +1,17 @@
 ---
-title: "Configurations for Spotify"
+title: "Spotify の設定"
 draft: false
 weight: 100
 ---
 
-# Configurations for Spotify
+# Spotify の設定
 
-This is a page about Spotify settings and troubleshooting.
+Spotify の設定やトラブルシューティングについてのページです．
 
 ## HiDPI
 
-If you use a high resolution monitor, the default UI is too small, so change the settings to make it easier to see.
-By modifying `/usr/share/applications/spotify.desktop` as follows, you can change the scale of Spotify when it is launched in the GUI.
+高解像度のモニタを使う場合にはデフォルトだと UI が小さすぎるので設定を変えて見やすくします．
+`/usr/share/applications/spotify.desktop` を下記のように修正することで，Spotify を GUI で起動したときにスケールを変えることができます．
 
 ```diff
 -Exec=spotify %U
@@ -20,7 +20,7 @@ By modifying `/usr/share/applications/spotify.desktop` as follows, you can chang
 
 ## Download Error
 
-Since Spotify has a lot of download errors, I'll write down some of the errors and solutions below.
+Spotify はダウンロードエラーが多いので，以下にエラー内容や解決策を雑記しておきます．
 
 - Error:
 

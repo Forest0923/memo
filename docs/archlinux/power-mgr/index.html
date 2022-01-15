@@ -2,18 +2,25 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Power Management #  Install #   Install tlp:  sudo pacman -S tlp  Check dependencies (Thinkpad only?):  tlp-stat -b  Install recommended package (e.g. acpi_call).  Setting #   When using btrfs as a file system:  sudo vim /etc/default/tlp # /etc/default/tlp SATA_LINKPWR_ON_BAT=max_performance Start #   Start tlp:  sudo tlp start  Systemctl:  sudo systemctl enable tlp ">
+<meta name=description content="Power Management #  This is a memo about power management.
+TLP #  TLP is a power management tool for Linux. Once installed and activated, it can be used without any special configuration.
+Install #  sudo pacman -S tlp Settings #  If you are using BTRFS as a file system, you should make the following settings because the file system may be corrupted.
+sudo vim /etc/default/tlp SATA_LINKPWR_ON_BAT=max_performance Enable TLP #  Enable TLP by running following commands.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Power Management">
-<meta property="og:description" content="Power Management #  Install #   Install tlp:  sudo pacman -S tlp  Check dependencies (Thinkpad only?):  tlp-stat -b  Install recommended package (e.g. acpi_call).  Setting #   When using btrfs as a file system:  sudo vim /etc/default/tlp # /etc/default/tlp SATA_LINKPWR_ON_BAT=max_performance Start #   Start tlp:  sudo tlp start  Systemctl:  sudo systemctl enable tlp ">
+<meta property="og:description" content="Power Management #  This is a memo about power management.
+TLP #  TLP is a power management tool for Linux. Once installed and activated, it can be used without any special configuration.
+Install #  sudo pacman -S tlp Settings #  If you are using BTRFS as a file system, you should make the following settings because the file system may be corrupted.
+sudo vim /etc/default/tlp SATA_LINKPWR_ON_BAT=max_performance Enable TLP #  Enable TLP by running following commands.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/archlinux/power-mgr/"><meta property="article:section" content="docs">
 <title>Power Management | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/archlinux/power-mgr/ title=電源管理>
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.c3bab44b6d8d2c64719d16c28879c4ea9b7aa15553683deb1c3fc0fc9c8ae3c0.js integrity="sha256-w7q0S22NLGRxnRbCiHnE6pt6oVVTaD3rHD/A/JyK48A=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.cf3105e1d0e2240fb7bb144f18bdd24db8e4a973167d0d9aede220a371052069.js integrity="sha256-zzEF4dDiJA+3uxRPGL3STbjkqXMWfQ2a7eIgo3EFIGk=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +49,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/power-mgr/>
 Japanese
 </a>
 </li>
@@ -169,25 +176,25 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux with BTRFS (and Backup with Timeshift)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux (BTRFS + Timeshift)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux with BTRFS (and Backup with Snapper)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux (Multi-disks + BTRFS + Snapper)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/>Dual Booting on Multiple Disks (Windows10 and ArchLinux)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/>Dual Booting on Mono Disk (Windows10 and ArchLinux)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/>Dual Booting (multi-disk + Windows10 and Arch Linux)</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/archlinux/desktop-env/>Desktop Environment</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>Configurtions for BSPWM</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>Installing BSPWM</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>Installing Common Applications in Arch Linux</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>Install Applications</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/archlinux/power-mgr/ class=active>Power Management</a>
@@ -378,9 +385,19 @@ Posts
 <ul>
 <li><a href=#power-management>Power Management</a>
 <ul>
-<li><a href=#install>Install</a></li>
-<li><a href=#setting>Setting</a></li>
-<li><a href=#start>Start</a></li>
+<li><a href=#tlp>TLP</a>
+<ul>
+<li><a href=#install><strong>Install</strong></a></li>
+<li><a href=#settings><strong>Settings</strong></a></li>
+<li><a href=#enable-tlp><strong>Enable TLP</strong></a></li>
+</ul>
+</li>
+<li><a href=#powertop>Powertop</a>
+<ul>
+<li><a href=#install-1><strong>Install</strong></a></li>
+<li><a href=#auto-tune><strong>Auto tune</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -391,44 +408,51 @@ Posts
 Power Management
 <a class=anchor href=#power-management>#</a>
 </h1>
-<h2 id=install>
-Install
+<p>This is a memo about power management.</p>
+<h2 id=tlp>
+TLP
+<a class=anchor href=#tlp>#</a>
+</h2>
+<p>TLP is a power management tool for Linux. Once installed and activated, it can be used without any special configuration.</p>
+<h3 id=install>
+<strong>Install</strong>
 <a class=anchor href=#install>#</a>
-</h2>
-<ul>
-<li>Install tlp:</li>
-</ul>
+</h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S tlp
-</code></pre></div><ul>
-<li>Check dependencies (Thinkpad only?):</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>tlp-stat -b
-</code></pre></div><ul>
-<li>Install recommended package (e.g. acpi_call).</li>
-</ul>
-<h2 id=setting>
-Setting
-<a class=anchor href=#setting>#</a>
-</h2>
-<ul>
-<li>When using btrfs as a file system:</li>
-</ul>
+</code></pre></div><h3 id=settings>
+<strong>Settings</strong>
+<a class=anchor href=#settings>#</a>
+</h3>
+<p>If you are using BTRFS as a file system, you should make the following settings because the file system may be corrupted.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/default/tlp
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#75715e># /etc/default/tlp</span>
-SATA_LINKPWR_ON_BAT<span style=color:#f92672>=</span>max_performance
-</code></pre></div><h2 id=start>
-Start
-<a class=anchor href=#start>#</a>
-</h2>
-<ul>
-<li>Start tlp:</li>
-</ul>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>SATA_LINKPWR_ON_BAT<span style=color:#f92672>=</span>max_performance
+</code></pre></div><h3 id=enable-tlp>
+<strong>Enable TLP</strong>
+<a class=anchor href=#enable-tlp>#</a>
+</h3>
+<p>Enable TLP by running following commands.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo tlp start
-</code></pre></div><ul>
-<li>Systemctl:</li>
-</ul>
+</code></pre></div><p>Enable the tlp service in systemd to start it automatically.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo systemctl enable tlp
-</code></pre></div></article>
+</code></pre></div><h2 id=powertop>
+Powertop
+<a class=anchor href=#powertop>#</a>
+</h2>
+<p>Powertop is a power saving tool provided by Intel.</p>
+<h3 id=install-1>
+<strong>Install</strong>
+<a class=anchor href=#install-1>#</a>
+</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S powertop
+</code></pre></div><h3 id=auto-tune>
+<strong>Auto tune</strong>
+<a class=anchor href=#auto-tune>#</a>
+</h3>
+<p>Execute the following command to automatically save power.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo powertop --auto-tune
+</code></pre></div><p>If you create a service to run this command in systemd, it will automatically reduce the power consumption.</p>
+<p><a href=https://wiki.archlinux.jp/index.php/Powertop>Powertop - Arch Wiki</a></p>
+</article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
 </div>
@@ -444,9 +468,19 @@ Start
 <ul>
 <li><a href=#power-management>Power Management</a>
 <ul>
-<li><a href=#install>Install</a></li>
-<li><a href=#setting>Setting</a></li>
-<li><a href=#start>Start</a></li>
+<li><a href=#tlp>TLP</a>
+<ul>
+<li><a href=#install><strong>Install</strong></a></li>
+<li><a href=#settings><strong>Settings</strong></a></li>
+<li><a href=#enable-tlp><strong>Enable TLP</strong></a></li>
+</ul>
+</li>
+<li><a href=#powertop>Powertop</a>
+<ul>
+<li><a href=#install-1><strong>Install</strong></a></li>
+<li><a href=#auto-tune><strong>Auto tune</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

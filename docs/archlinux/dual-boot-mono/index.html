@@ -2,18 +2,21 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Dual Booting on Mono Disk (Windows10 and ArchLinux) #  Preparation #   Install Windows 10 Disk layout:  Create partition for linux:  Boot with iso  Commands #  loadkeys jp106 timedatectl set-ntp true pacman -Syy pacman -S reflector reflector -c Japan --sort rate --save /etc/pacman.d/mirrorlist cfdisk /dev/sda mkfs.btrfs /dev/sda6 mkfs.fat -F32 /dev/sda5 mount /dev/sda6 /mnt btrfs su cr /mnt/@ btrfs su cr /mnt/@home btrfs su cr /mnt/@snapshots btrfs su cr /mnt/@var_log umount /mnt mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/sda6 /mnt mkdir -p /mnt/{boot,home,.">
+<meta name=description content="Dual Booting (mono disk + Windows10 and Arch Linux) #  System #   Preinstalled OS: Windows 10 (64 bit Home) CPU: Intel Storage: /dev/sda  Preparation in Windows 10 #  First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.
+ Before:  After:   Then, install Arch Linux as follows.">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Dual Booting on Mono Disk (Windows10 and ArchLinux)">
-<meta property="og:description" content="Dual Booting on Mono Disk (Windows10 and ArchLinux) #  Preparation #   Install Windows 10 Disk layout:  Create partition for linux:  Boot with iso  Commands #  loadkeys jp106 timedatectl set-ntp true pacman -Syy pacman -S reflector reflector -c Japan --sort rate --save /etc/pacman.d/mirrorlist cfdisk /dev/sda mkfs.btrfs /dev/sda6 mkfs.fat -F32 /dev/sda5 mount /dev/sda6 /mnt btrfs su cr /mnt/@ btrfs su cr /mnt/@home btrfs su cr /mnt/@snapshots btrfs su cr /mnt/@var_log umount /mnt mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/sda6 /mnt mkdir -p /mnt/{boot,home,.">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Dual Booting (mono disk + Windows10 and Arch Linux)">
+<meta property="og:description" content="Dual Booting (mono disk + Windows10 and Arch Linux) #  System #   Preinstalled OS: Windows 10 (64 bit Home) CPU: Intel Storage: /dev/sda  Preparation in Windows 10 #  First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.
+ Before:  After:   Then, install Arch Linux as follows.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/"><meta property="article:section" content="docs">
-<title>Dual Booting on Mono Disk (Windows10 and ArchLinux) | Memo</title>
+<title>Dual Booting (mono disk + Windows10 and Arch Linux) | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/archlinux/dual-boot-mono/ title="Dual Booting (mono disk + Windows10 and Arch Linux)">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.c3bab44b6d8d2c64719d16c28879c4ea9b7aa15553683deb1c3fc0fc9c8ae3c0.js integrity="sha256-w7q0S22NLGRxnRbCiHnE6pt6oVVTaD3rHD/A/JyK48A=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.cf3105e1d0e2240fb7bb144f18bdd24db8e4a973167d0d9aede220a371052069.js integrity="sha256-zzEF4dDiJA+3uxRPGL3STbjkqXMWfQ2a7eIgo3EFIGk=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +45,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/dual-boot-mono/>
 Japanese
 </a>
 </li>
@@ -169,25 +172,25 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux with BTRFS (and Backup with Timeshift)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux (BTRFS + Timeshift)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux with BTRFS (and Backup with Snapper)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux (Multi-disks + BTRFS + Snapper)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/>Dual Booting on Multiple Disks (Windows10 and ArchLinux)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/ class=active>Dual Booting (mono disk + Windows10 and Arch Linux)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/ class=active>Dual Booting on Mono Disk (Windows10 and ArchLinux)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/>Dual Booting (multi-disk + Windows10 and Arch Linux)</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/archlinux/desktop-env/>Desktop Environment</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>Configurtions for BSPWM</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>Installing BSPWM</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>Installing Common Applications in Arch Linux</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>Install Applications</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/archlinux/power-mgr/>Power Management</a>
@@ -368,7 +371,7 @@ Posts
 <label for=menu-control>
 <img src=/memo/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>Dual Booting on Mono Disk (Windows10 and ArchLinux)</strong>
+<strong>Dual Booting (mono disk + Windows10 and Arch Linux)</strong>
 <label for=toc-control>
 <img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
@@ -376,10 +379,30 @@ Posts
 <aside class="hidden clearfix">
 <nav id=TableOfContents>
 <ul>
-<li><a href=#dual-booting-on-mono-disk-windows10-and-archlinux>Dual Booting on Mono Disk (Windows10 and ArchLinux)</a>
+<li><a href=#dual-booting-mono-disk--windows10-and-arch-linux>Dual Booting (mono disk + Windows10 and Arch Linux)</a>
 <ul>
-<li><a href=#preparation>Preparation</a></li>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#system>System</a></li>
+<li><a href=#preparation-in-windows-10>Preparation in Windows 10</a></li>
+<li><a href=#install>Install</a>
+<ul>
+<li><a href=#change-keymaps><strong>Change Keymaps</strong></a></li>
+<li><a href=#time-settings><strong>Time Settings</strong></a></li>
+<li><a href=#optimizing-mirrorlist><strong>Optimizing Mirrorlist</strong></a></li>
+<li><a href=#disk-partitioning-and-formatting><strong>Disk Partitioning and Formatting</strong></a></li>
+<li><a href=#base-install><strong>Base install</strong></a></li>
+<li><a href=#fstab><strong>fstab</strong></a></li>
+<li><a href=#change-the-root-directory><strong>Change the Root Directory</strong></a></li>
+<li><a href=#localization><strong>Localization</strong></a></li>
+<li><a href=#hostname><strong>Hostname</strong></a></li>
+<li><a href=#root-password><strong>Root Password</strong></a></li>
+<li><a href=#install-additional-packages><strong>Install Additional Packages</strong></a></li>
+<li><a href=#configuring-mkinitcpio><strong>Configuring mkinitcpio</strong></a></li>
+<li><a href=#bootloader><strong>Bootloader</strong></a></li>
+<li><a href=#systemd><strong>Systemd</strong></a></li>
+<li><a href=#add-user><strong>Add User</strong></a></li>
+<li><a href=#reboot><strong>Reboot</strong></a></li>
+</ul>
+</li>
 <li><a href=#trouble-shooting>Trouble shooting</a></li>
 </ul>
 </li>
@@ -387,91 +410,211 @@ Posts
 </nav>
 </aside>
 </header>
-<article class=markdown><h1 id=dual-booting-on-mono-disk-windows10-and-archlinux>
-Dual Booting on Mono Disk (Windows10 and ArchLinux)
-<a class=anchor href=#dual-booting-on-mono-disk-windows10-and-archlinux>#</a>
+<article class=markdown><h1 id=dual-booting-mono-disk--windows10-and-arch-linux>
+Dual Booting (mono disk + Windows10 and Arch Linux)
+<a class=anchor href=#dual-booting-mono-disk--windows10-and-arch-linux>#</a>
 </h1>
-<h2 id=preparation>
-Preparation
-<a class=anchor href=#preparation>#</a>
+<h2 id=system>
+System
+<a class=anchor href=#system>#</a>
 </h2>
 <ul>
-<li>Install Windows 10</li>
-<li>Disk layout:
-<img src=dual-boot-disk-before.png alt=disk-layout-before></li>
-<li>Create partition for linux:
-<img src=dual-boot-disk-after.png alt=disk-layout-after></li>
-<li>Boot with iso</li>
+<li>Preinstalled OS: Windows 10 (64 bit Home)</li>
+<li>CPU: Intel</li>
+<li>Storage: <code>/dev/sda</code></li>
 </ul>
-<h2 id=commands>
-Commands
-<a class=anchor href=#commands>#</a>
+<h2 id=preparation-in-windows-10>
+Preparation in Windows 10
+<a class=anchor href=#preparation-in-windows-10>#</a>
 </h2>
+<p>First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.</p>
+<ul>
+<li>Before:
+<img src=dual-boot-disk-before.png alt=disk-layout-before></li>
+<li>After:
+<img src=dual-boot-disk-after.png alt=disk-layout-after></li>
+</ul>
+<p>Then, install Arch Linux as follows.</p>
+<h2 id=install>
+Install
+<a class=anchor href=#install>#</a>
+</h2>
+<h3 id=change-keymaps>
+<strong>Change Keymaps</strong>
+<a class=anchor href=#change-keymaps>#</a>
+</h3>
+<p>Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>loadkeys jp106
-timedatectl set-ntp true
-pacman -Syy
-pacman -S reflector
-reflector -c Japan --sort rate --save /etc/pacman.d/mirrorlist
-cfdisk /dev/sda
-mkfs.btrfs /dev/sda6
-mkfs.fat -F32 /dev/sda5
-mount /dev/sda6 /mnt
+</code></pre></div><h3 id=time-settings>
+<strong>Time Settings</strong>
+<a class=anchor href=#time-settings>#</a>
+</h3>
+<p>Execute the following command to use the NTP (Network Time Protocol).</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>timedatectl set-ntp true
+</code></pre></div><h3 id=optimizing-mirrorlist>
+<strong>Optimizing Mirrorlist</strong>
+<a class=anchor href=#optimizing-mirrorlist>#</a>
+</h3>
+<p>Optimize the mirror list using reflector to access mirror servers with fast access during installation.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -Syy
+pacman -S reflector <span style=color:#75715e># `python` might be required</span>
+reflector -c Japan --sort rate -a <span style=color:#ae81ff>6</span> --save /etc/pacman.d/mirrorlist
+</code></pre></div><p>The meaning of the reflector option is as follows.</p>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c Japan</code></td>
+<td>Restrict mirrors to selected countries.</td>
+</tr>
+<tr>
+<td><code>--sort rate</code></td>
+<td>Sort by download rate.</td>
+</tr>
+<tr>
+<td><code>-a 6</code></td>
+<td>Restrict to servers synchronized within 6 hours.</td>
+</tr>
+<tr>
+<td><code>--save /etc/pacman.d/mirrorlist</code></td>
+<td>Save the mirror list to the specified path.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=disk-partitioning-and-formatting>
+<strong>Disk Partitioning and Formatting</strong>
+<a class=anchor href=#disk-partitioning-and-formatting>#</a>
+</h3>
+<p>We will assume that the partition in <code>/dev/sda</code> is as follows.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>sda
+├─sda1 &lt;-- EFI Partition
+├─sda2
+├─sda3
+├─sda4
+└─sda5 &lt;-- Empty Partition for Linux Filesystem
+</code></pre></div><p>First, update the partition table so that the empty partition you created is used as Linux Filesystem.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>cfdisk /dev/sda
+</code></pre></div><p>Format the Linux filesystem partition with BTRFS, create a subvolume, and mount it.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mkfs.btrfs /dev/sda5
+mount /dev/sda5 /mnt
 btrfs su cr /mnt/@
 btrfs su cr /mnt/@home
 btrfs su cr /mnt/@snapshots
 btrfs su cr /mnt/@var_log
 umount /mnt
-mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@ /dev/sda6 /mnt
+mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@ /dev/sda5 /mnt
 mkdir -p /mnt/<span style=color:#f92672>{</span>boot,home,.snapshots,var/log<span style=color:#f92672>}</span>
-mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@home /dev/sda6 /mnt/home
-mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@snapshots /dev/sda6 /mnt/.snapshots
-mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@var_log /dev/sda6 /mnt/var/log
+mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@home /dev/sda5 /mnt/home
+mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@snapshots /dev/sda5 /mnt/.snapshots
+mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@var_log /dev/sda5 /mnt/var/log
 mount /dev/sda5 /mnt/boot
-pacstrap /mnt base linux linux-firmware intel-ucode vim
-genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
-arch-chroot /mnt
-ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-hwclock --systohc
-
-vim /etc/locale.gen
-- <span style=color:#75715e># en_US.UTF-8</span>
-+ en_US.UTF-8
-
-locale-gen
-echo LANG<span style=color:#f92672>=</span>en_US.UTF-8 &gt;&gt; /etc/locale.conf
+</code></pre></div><h3 id=base-install>
+<strong>Base install</strong>
+<a class=anchor href=#base-install>#</a>
+</h3>
+<p>Install the package in the root directory, <code>/mnt</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacstrap /mnt base linux linux-firmware vim intel-ucode
+</code></pre></div><h3 id=fstab>
+<strong>fstab</strong>
+<a class=anchor href=#fstab>#</a>
+</h3>
+<p>Generate the fstab file, which holds the information about which device to mount.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
+</code></pre></div><h3 id=change-the-root-directory>
+<strong>Change the Root Directory</strong>
+<a class=anchor href=#change-the-root-directory>#</a>
+</h3>
+<p>Use chroot to set <code>/mnt</code> as the root directory.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>arch-chroot /mnt
+</code></pre></div><h3 id=localization>
+<strong>Localization</strong>
+<a class=anchor href=#localization>#</a>
+</h3>
+<p>Create a symbolic link to <code>/etc/localtime</code> to change the time zone.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+</code></pre></div><p>Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>hwclock --systohc
+</code></pre></div><p>To set the locale, first generate the locale. Uncomment the entries you want to use in <code>/etc/locale.gen</code> and run <code>locale-gen</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/locale.gen
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- # en_US.UTF-8 UTF-8
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+ en_US.UTF-8 UTF-8
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>locale-gen
+</code></pre></div><p>Execute the following command to set the locale of the system.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>echo LANG<span style=color:#f92672>=</span>en_US.UTF-8 &gt;&gt; /etc/locale.conf
 echo KEYMAP<span style=color:#f92672>=</span>jp106 &gt;&gt; /etc/vconsole.conf
-
-vim /etc/hostname
-+ arch
-
-vim /etc/hosts
-+ 127.0.0.1   localhost
-+ ::1         localhost
-+ 127.0.1.1   arch.localdomain    arch
-
-passwd
-
-pacman -S grub efibootmgr networkmanager network-manager-applet <span style=color:#ae81ff>\
+</code></pre></div><h3 id=hostname>
+<strong>Hostname</strong>
+<a class=anchor href=#hostname>#</a>
+</h3>
+<p>Register hostname in <code>/etc/hostname</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/hostname
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-udiff data-lang=udiff><span style=color:#a6e22e>+ arch
+</span></code></pre></div><p>Edit <code>/etc/hosts</code> and set IP address corresponding to hostname.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/hosts
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ 127.0.0.1   localhost
+</span><span style=color:#a6e22e>+ ::1         localhost
+</span><span style=color:#a6e22e>+ 127.0.1.1   arch.localdomain    arch
+</span></code></pre></div><h3 id=root-password>
+<strong>Root Password</strong>
+<a class=anchor href=#root-password>#</a>
+</h3>
+<p>Set the password of root user.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>passwd
+</code></pre></div><h3 id=install-additional-packages>
+<strong>Install Additional Packages</strong>
+<a class=anchor href=#install-additional-packages>#</a>
+</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S grub efibootmgr networkmanager network-manager-applet <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span> dialog os-prober mtools dosfstools base-devel linux-headers snapper <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>reflector cron git xdg-utils xdg-user-dirs ntfs-3g
-
-vim /etc/mkinitcpio.conf
-+ MODULES<span style=color:#f92672>=(</span>btrfs<span style=color:#f92672>)</span>
-
-mkinitcpio -p linux
-
-grub-install --target<span style=color:#f92672>=</span>x86_64-efi --efi-directory<span style=color:#f92672>=</span>/boot --bootloader-id<span style=color:#f92672>=</span>GRUB
+</code></pre></div><h3 id=configuring-mkinitcpio>
+<strong>Configuring mkinitcpio</strong>
+<a class=anchor href=#configuring-mkinitcpio>#</a>
+</h3>
+<p>Change the configurations, and reflect the changes with mkinitcpio.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/mkinitcpio.conf
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- MODULES=()
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+ MODULES=(btrfs)
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mkinitcpio -p linux
+</code></pre></div><h3 id=bootloader>
+<strong>Bootloader</strong>
+<a class=anchor href=#bootloader>#</a>
+</h3>
+<p>Install Grub and create config file.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>grub-install --target<span style=color:#f92672>=</span>x86_64-efi --efi-directory<span style=color:#f92672>=</span>/boot --bootloader-id<span style=color:#f92672>=</span>GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
-
-systemctl enable NetworkManager
-useradd -mG wheel mori
+</code></pre></div><h3 id=systemd>
+<strong>Systemd</strong>
+<a class=anchor href=#systemd>#</a>
+</h3>
+<p>Enables NetworkManager.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable NetworkManager
+</code></pre></div><p>Enables Bluetooth.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable bluetooth
+</code></pre></div><p>Enables reflector. The execution options are written in <code>/etc/xdg/reflector/reflector.conf</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable reflector.service  <span style=color:#75715e># update mirrorlist every boot</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable reflector.timer    <span style=color:#75715e># update mirrorlist weekly</span>
+</code></pre></div><h3 id=add-user>
+<strong>Add User</strong>
+<a class=anchor href=#add-user>#</a>
+</h3>
+<p>Add user with useradd and set the password.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>useradd -mG wheel mori
 passwd mori
-
-EDITOR<span style=color:#f92672>=</span>vim visudo
-- <span style=color:#75715e># %wheel ALL=(ALL) ALL</span>
-+ %wheel ALL<span style=color:#f92672>=(</span>ALL<span style=color:#f92672>)</span> ALL
-
-exit
+</code></pre></div><p>Give the user priviledges.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>EDITOR<span style=color:#f92672>=</span>vim visudo
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- # %wheel ALL=(ALL) ALL
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+ %wheel ALL=(ALL) ALL
+</span></code></pre></div><h3 id=reboot>
+<strong>Reboot</strong>
+<a class=anchor href=#reboot>#</a>
+</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>exit
 umount -a
 reboot
 </code></pre></div><h2 id=trouble-shooting>
@@ -500,10 +643,30 @@ Trouble shooting
 <div class=book-toc-content>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#dual-booting-on-mono-disk-windows10-and-archlinux>Dual Booting on Mono Disk (Windows10 and ArchLinux)</a>
+<li><a href=#dual-booting-mono-disk--windows10-and-arch-linux>Dual Booting (mono disk + Windows10 and Arch Linux)</a>
 <ul>
-<li><a href=#preparation>Preparation</a></li>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#system>System</a></li>
+<li><a href=#preparation-in-windows-10>Preparation in Windows 10</a></li>
+<li><a href=#install>Install</a>
+<ul>
+<li><a href=#change-keymaps><strong>Change Keymaps</strong></a></li>
+<li><a href=#time-settings><strong>Time Settings</strong></a></li>
+<li><a href=#optimizing-mirrorlist><strong>Optimizing Mirrorlist</strong></a></li>
+<li><a href=#disk-partitioning-and-formatting><strong>Disk Partitioning and Formatting</strong></a></li>
+<li><a href=#base-install><strong>Base install</strong></a></li>
+<li><a href=#fstab><strong>fstab</strong></a></li>
+<li><a href=#change-the-root-directory><strong>Change the Root Directory</strong></a></li>
+<li><a href=#localization><strong>Localization</strong></a></li>
+<li><a href=#hostname><strong>Hostname</strong></a></li>
+<li><a href=#root-password><strong>Root Password</strong></a></li>
+<li><a href=#install-additional-packages><strong>Install Additional Packages</strong></a></li>
+<li><a href=#configuring-mkinitcpio><strong>Configuring mkinitcpio</strong></a></li>
+<li><a href=#bootloader><strong>Bootloader</strong></a></li>
+<li><a href=#systemd><strong>Systemd</strong></a></li>
+<li><a href=#add-user><strong>Add User</strong></a></li>
+<li><a href=#reboot><strong>Reboot</strong></a></li>
+</ul>
+</li>
 <li><a href=#trouble-shooting>Trouble shooting</a></li>
 </ul>
 </li>

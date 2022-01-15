@@ -2,24 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Install Arch Linux with BTRFS (and Backup with Snapper) #  System #    CPU: Intel
-  UEFI Boot
-  Multi-disk support with btrfs
- Devices:  /dev/vda /dev/vdb /dev/vdc   Commands #  Keymap #   Change keymap:  loadkeys jp106 Time #   Timedatectl:  timedatectl set-ntp true Mirrorlist #   Optimize mirror list:  pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman.">
+<meta name=description content="Install Arch Linux (Multi-disks + BTRFS + Snapper) #  Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Snapper.
+System #   Intel CPU UEFI Boot Disks  /dev/vda /dev/vdb /dev/vdc Install #  Change Keymaps #  Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.
+loadkeys jp106 Time Settings #  Execute the following command to use the NTP (Network Time Protocol).">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Install Arch Linux with BTRFS (and Backup with Snapper)">
-<meta property="og:description" content="Install Arch Linux with BTRFS (and Backup with Snapper) #  System #    CPU: Intel
-  UEFI Boot
-  Multi-disk support with btrfs
- Devices:  /dev/vda /dev/vdb /dev/vdc   Commands #  Keymap #   Change keymap:  loadkeys jp106 Time #   Timedatectl:  timedatectl set-ntp true Mirrorlist #   Optimize mirror list:  pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman.">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Install Arch Linux (Multi-disks + BTRFS + Snapper)">
+<meta property="og:description" content="Install Arch Linux (Multi-disks + BTRFS + Snapper) #  Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Snapper.
+System #   Intel CPU UEFI Boot Disks  /dev/vda /dev/vdb /dev/vdc Install #  Change Keymaps #  Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.
+loadkeys jp106 Time Settings #  Execute the following command to use the NTP (Network Time Protocol).">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/"><meta property="article:section" content="docs">
-<title>Install Arch Linux with BTRFS (and Backup with Snapper) | Memo</title>
+<title>Install Arch Linux (Multi-disks + BTRFS + Snapper) | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/archlinux/inst-btrfs-snapper/ title="Arch Linux のインストール（Multi-disks + BTRFS + Snapper）">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.c3bab44b6d8d2c64719d16c28879c4ea9b7aa15553683deb1c3fc0fc9c8ae3c0.js integrity="sha256-w7q0S22NLGRxnRbCiHnE6pt6oVVTaD3rHD/A/JyK48A=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.cf3105e1d0e2240fb7bb144f18bdd24db8e4a973167d0d9aede220a371052069.js integrity="sha256-zzEF4dDiJA+3uxRPGL3STbjkqXMWfQ2a7eIgo3EFIGk=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -48,7 +47,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/inst-btrfs-snapper/>
 Japanese
 </a>
 </li>
@@ -175,25 +174,25 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux with BTRFS (and Backup with Timeshift)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux (BTRFS + Timeshift)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/ class=active>Install Arch Linux with BTRFS (and Backup with Snapper)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/ class=active>Install Arch Linux (Multi-disks + BTRFS + Snapper)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/>Dual Booting on Multiple Disks (Windows10 and ArchLinux)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/>Dual Booting on Mono Disk (Windows10 and ArchLinux)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/>Dual Booting (multi-disk + Windows10 and Arch Linux)</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/archlinux/desktop-env/>Desktop Environment</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>Configurtions for BSPWM</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>Installing BSPWM</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>Installing Common Applications in Arch Linux</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>Install Applications</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/archlinux/power-mgr/>Power Management</a>
@@ -374,7 +373,7 @@ Posts
 <label for=menu-control>
 <img src=/memo/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>Install Arch Linux with BTRFS (and Backup with Snapper)</strong>
+<strong>Install Arch Linux (Multi-disks + BTRFS + Snapper)</strong>
 <label for=toc-control>
 <img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
@@ -382,29 +381,29 @@ Posts
 <aside class="hidden clearfix">
 <nav id=TableOfContents>
 <ul>
-<li><a href=#install-arch-linux-with-btrfs-and-backup-with-snapper>Install Arch Linux with BTRFS (and Backup with Snapper)</a>
+<li><a href=#install-arch-linux-multi-disks--btrfs--snapper>Install Arch Linux (Multi-disks + BTRFS + Snapper)</a>
 <ul>
 <li><a href=#system>System</a></li>
-<li><a href=#commands>Commands</a>
+<li><a href=#install>Install</a>
 <ul>
-<li><a href=#keymap>Keymap</a></li>
-<li><a href=#time>Time</a></li>
-<li><a href=#mirrorlist>Mirrorlist</a></li>
-<li><a href=#disk-formatting>Disk formatting</a></li>
-<li><a href=#base-install>Base install</a></li>
-<li><a href=#create-fstab-file>Create fstab file</a></li>
-<li><a href=#chroot>Chroot</a></li>
-<li><a href=#localization>Localization</a></li>
-<li><a href=#hostname-and-hosts>Hostname and hosts</a></li>
-<li><a href=#root-password>Root password</a></li>
-<li><a href=#install-necessary-softwares>Install necessary softwares</a></li>
-<li><a href=#mkinitcpio>mkinitcpio</a></li>
-<li><a href=#grub-install>Grub install</a></li>
-<li><a href=#systemd>Systemd</a></li>
-<li><a href=#add-user>Add user</a></li>
-<li><a href=#finish-base-installation>Finish base installation</a></li>
-<li><a href=#install-desktop-environment>Install desktop environment</a></li>
-<li><a href=#install-and-configure-snapper>Install and configure snapper</a></li>
+<li><a href=#change-keymaps><strong>Change Keymaps</strong></a></li>
+<li><a href=#time-settings><strong>Time Settings</strong></a></li>
+<li><a href=#optimizing-mirrorlist><strong>Optimizing Mirrorlist</strong></a></li>
+<li><a href=#disk-partitioning-and-formatting><strong>Disk Partitioning and Formatting</strong></a></li>
+<li><a href=#base-install><strong>Base install</strong></a></li>
+<li><a href=#create-fstab-file><strong>Create fstab File</strong></a></li>
+<li><a href=#change-the-root-directory><strong>Change the Root Directory</strong></a></li>
+<li><a href=#localization><strong>Localization</strong></a></li>
+<li><a href=#hostname><strong>Hostname</strong></a></li>
+<li><a href=#root-password><strong>Root Password</strong></a></li>
+<li><a href=#install-additional-packages><strong>Install Additional Packages</strong></a></li>
+<li><a href=#configuring-mkinitcpio><strong>Configuring mkinitcpio</strong></a></li>
+<li><a href=#bootloader><strong>Bootloader</strong></a></li>
+<li><a href=#systemd><strong>Systemd</strong></a></li>
+<li><a href=#add-user><strong>Add User</strong></a></li>
+<li><a href=#reboot><strong>Reboot</strong></a></li>
+<li><a href=#install-desktop-environment><strong>Install Desktop Environment</strong></a></li>
+<li><a href=#configuring-snapper><strong>Configuring Snapper</strong></a></li>
 </ul>
 </li>
 </ul>
@@ -413,83 +412,90 @@ Posts
 </nav>
 </aside>
 </header>
-<article class=markdown><h1 id=install-arch-linux-with-btrfs-and-backup-with-snapper>
-Install Arch Linux with BTRFS (and Backup with Snapper)
-<a class=anchor href=#install-arch-linux-with-btrfs-and-backup-with-snapper>#</a>
+<article class=markdown><h1 id=install-arch-linux-multi-disks--btrfs--snapper>
+Install Arch Linux (Multi-disks + BTRFS + Snapper)
+<a class=anchor href=#install-arch-linux-multi-disks--btrfs--snapper>#</a>
 </h1>
+<p>Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Snapper.</p>
 <h2 id=system>
 System
 <a class=anchor href=#system>#</a>
 </h2>
 <ul>
-<li>
-<p>CPU: Intel</p>
-</li>
-<li>
-<p>UEFI Boot</p>
-</li>
-<li>
-<p>Multi-disk support with btrfs</p>
-<ul>
-<li>Devices:</li>
+<li>Intel CPU</li>
+<li>UEFI Boot</li>
+<li>Disks</li>
 </ul>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>/dev/vda
 /dev/vdb
 /dev/vdc
-</code></pre></div></li>
-</ul>
-<h2 id=commands>
-Commands
-<a class=anchor href=#commands>#</a>
+</code></pre></div><h2 id=install>
+Install
+<a class=anchor href=#install>#</a>
 </h2>
-<h3 id=keymap>
-Keymap
-<a class=anchor href=#keymap>#</a>
+<h3 id=change-keymaps>
+<strong>Change Keymaps</strong>
+<a class=anchor href=#change-keymaps>#</a>
 </h3>
-<ul>
-<li>Change keymap:</li>
-</ul>
+<p>Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>loadkeys jp106
-</code></pre></div><h3 id=time>
-Time
-<a class=anchor href=#time>#</a>
+</code></pre></div><h3 id=time-settings>
+<strong>Time Settings</strong>
+<a class=anchor href=#time-settings>#</a>
 </h3>
-<ul>
-<li>Timedatectl:</li>
-</ul>
+<p>Execute the following command to use the NTP (Network Time Protocol).</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>timedatectl set-ntp true
-</code></pre></div><h3 id=mirrorlist>
-Mirrorlist
-<a class=anchor href=#mirrorlist>#</a>
+</code></pre></div><h3 id=optimizing-mirrorlist>
+<strong>Optimizing Mirrorlist</strong>
+<a class=anchor href=#optimizing-mirrorlist>#</a>
 </h3>
-<ul>
-<li>Optimize mirror list:</li>
-</ul>
+<p>Optimize the mirror list using reflector to access mirror servers with fast access during installation.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -Syy
 pacman -S reflector <span style=color:#75715e># `python` might be required</span>
 reflector -c Japan --sort rate -a <span style=color:#ae81ff>6</span> --save /etc/pacman.d/mirrorlist
-</code></pre></div><h3 id=disk-formatting>
-Disk formatting
-<a class=anchor href=#disk-formatting>#</a>
+</code></pre></div><p>The meaning of the reflector option is as follows.</p>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c Japan</code></td>
+<td>Restrict mirrors to selected countries.</td>
+</tr>
+<tr>
+<td><code>--sort rate</code></td>
+<td>Sort by download rate.</td>
+</tr>
+<tr>
+<td><code>-a 6</code></td>
+<td>Restrict to servers synchronized within 6 hours.</td>
+</tr>
+<tr>
+<td><code>--save /etc/pacman.d/mirrorlist</code></td>
+<td>Save the mirror list to the specified path.</td>
+</tr>
+</tbody>
+</table>
+<h3 id=disk-partitioning-and-formatting>
+<strong>Disk Partitioning and Formatting</strong>
+<a class=anchor href=#disk-partitioning-and-formatting>#</a>
 </h3>
-<ul>
-<li>Partitioning:</li>
-</ul>
+<p>Use gdisk to create partitions. We will create an EFI partition (about 200MB) in <code>/dev/vda</code>, and the rest of the space and devices will be Linux Filesystem.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gdisk /dev/vda
+gdisk /dev/vdb
+gdisk /dev/vdc
 </code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>/dev/vda1: EFI system (200M)
 /dev/vda2: Linux filesystem
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gdisk /dev/vdb
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>/dev/vdb1: Linux filesystem
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gdisk /dev/vdc
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>/dev/vdc1: Linux filesystem
-</code></pre></div><ul>
-<li>Formattiong:</li>
-</ul>
+/dev/vdb1: Linux filesystem
+/dev/vdc1: Linux filesystem
+</code></pre></div><p>EFI partition is formatted as fat, and Linux Filesystem is formatted as BTRFS.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mkfs.fat -F32 /dev/vda1
 mkfs.btrfs /dev/vda2 /dev/vdb1 /dev/vdc1
-</code></pre></div><ul>
-<li>Mount:</li>
-</ul>
+</code></pre></div><p>Create subvolume and mount devices.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mount /dev/vda2 /mnt
 btrfs su cr /mnt/@
 btrfs su cr /mnt/@home
@@ -506,196 +512,140 @@ mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span 
 
 mount /dev/vda1 /mnt/boot
 </code></pre></div><h3 id=base-install>
-Base install
+<strong>Base install</strong>
 <a class=anchor href=#base-install>#</a>
 </h3>
-<ul>
-<li>Install base package:</li>
-</ul>
+<p>Install the package in the root directory, <code>/mnt</code>.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacstrap /mnt base linux linux-firmware intel-ucode vim
 </code></pre></div><h3 id=create-fstab-file>
-Create fstab file
+<strong>Create fstab File</strong>
 <a class=anchor href=#create-fstab-file>#</a>
 </h3>
-<ul>
-<li>Generate fstab:</li>
-</ul>
+<p>Generate the fstab file, which holds the information about which device to mount.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
-</code></pre></div><h3 id=chroot>
-Chroot
-<a class=anchor href=#chroot>#</a>
+</code></pre></div><h3 id=change-the-root-directory>
+<strong>Change the Root Directory</strong>
+<a class=anchor href=#change-the-root-directory>#</a>
 </h3>
+<p>Use chroot to set <code>/mnt</code> as the root directory.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>arch-chroot /mnt
 </code></pre></div><h3 id=localization>
-Localization
+<strong>Localization</strong>
 <a class=anchor href=#localization>#</a>
 </h3>
-<ul>
-<li>Hardware clock:</li>
-</ul>
+<p>Create a symbolic link to <code>/etc/localtime</code> to change the time zone.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-hwclock --systohc
-</code></pre></div><ul>
-<li>Set locale and input method:</li>
-</ul>
+</code></pre></div><p>Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>hwclock --systohc
+</code></pre></div><p>To set the locale, first generate the locale. Uncomment the entries you want to use in <code>/etc/locale.gen</code> and run <code>locale-gen</code>.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/locale.gen
 </code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- # en_US.UTF-8 UTF-8
 </span><span style=color:#f92672></span><span style=color:#a6e22e>+ en_US.UTF-8 UTF-8
 </span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>locale-gen
-echo LANG<span style=color:#f92672>=</span>en_US.UTF-8 &gt;&gt; /etc/locale.conf
+</code></pre></div><p>Execute the following command to set the locale of the system.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>echo LANG<span style=color:#f92672>=</span>en_US.UTF-8 &gt;&gt; /etc/locale.conf
 echo KEYMAP<span style=color:#f92672>=</span>jp106 &gt;&gt; /etc/vconsole.conf
-</code></pre></div><h3 id=hostname-and-hosts>
-Hostname and hosts
-<a class=anchor href=#hostname-and-hosts>#</a>
+</code></pre></div><h3 id=hostname>
+<strong>Hostname</strong>
+<a class=anchor href=#hostname>#</a>
 </h3>
-<ul>
-<li>Hostname:</li>
-</ul>
+<p>Register hostname in <code>/etc/hostname</code>.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/hostname
 </code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ arch
-</span></code></pre></div><ul>
-<li>Hosts:</li>
-</ul>
+</span></code></pre></div><p>Edit <code>/etc/hosts</code> and set IP address corresponding to hostname.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/hosts
 </code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ 127.0.0.1   localhost
 </span><span style=color:#a6e22e>+ ::1         localhost
 </span><span style=color:#a6e22e>+ 127.0.1.1   arch.localdomain    arch
 </span></code></pre></div><h3 id=root-password>
-Root password
+<strong>Root Password</strong>
 <a class=anchor href=#root-password>#</a>
 </h3>
-<ul>
-<li>passwd</li>
-</ul>
+<p>Set the password of root user.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>passwd
-</code></pre></div><h3 id=install-necessary-softwares>
-Install necessary softwares
-<a class=anchor href=#install-necessary-softwares>#</a>
+</code></pre></div><h3 id=install-additional-packages>
+<strong>Install Additional Packages</strong>
+<a class=anchor href=#install-additional-packages>#</a>
 </h3>
-<ul>
-<li>Bootloader:</li>
-</ul>
+<p>Install Grub as a bootloader.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S grub efibootmgr os-prober
-</code></pre></div><ul>
-<li>Network and wireless tools:</li>
-</ul>
+</code></pre></div><p>Install software for network and wireless tools.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S networkmanager network-manager-applet wireless_tools wpa_supplicant dialog
-</code></pre></div><ul>
-<li>Disk:</li>
-</ul>
+</code></pre></div><p>Install tools that allow us to access MS-DOS disks.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S mtools dosgstools
-</code></pre></div><ul>
-<li>Basic apps (bison, make, gcc, sudo, and etc.):</li>
-</ul>
+</code></pre></div><p>Install basic applications (commands) such as sudo, make and gcc.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S base-devel
-</code></pre></div><ul>
-<li>Kernel header files:</li>
-</ul>
+</code></pre></div><p>Install kernel headers. Kernel headers is a colection of headers and scripts which are used when building kernel modules.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S linux-headers
-</code></pre></div><ul>
-<li>Bluetooth and audio:</li>
-</ul>
+</code></pre></div><p>Install tools for Bluetooth and audio configurations.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S bluez bluez-utils alsa-utils pulseaudio pulseaudio-bluetooth
-</code></pre></div><ul>
-<li>Desktop:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S xdg-utils xdg-user-dirs
-</code></pre></div><ul>
-<li>Git:</li>
-</ul>
+</code></pre></div><p>Install command line tools related to desktop applications.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S xdg-utils
+</code></pre></div><p>xdg-user-dirs add directories such as <code>~/Desktop</code> and <code>~/Music</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S xdg-user-dirs
+</code></pre></div><p>Install Git.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S git
-</code></pre></div><ul>
-<li>cron:</li>
-</ul>
+</code></pre></div><p>Install cron which is used by Snapper. cron is used to execute the program on a scheduled basis.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S cron
-</code></pre></div><ul>
-<li>reflector:</li>
-</ul>
+</code></pre></div><p>Install reflector to optimize the mirrorlist.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S reflector
-</code></pre></div><ul>
-<li>snapper:</li>
-</ul>
+</code></pre></div><p>Install Snapper.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S snapper
-</code></pre></div><ul>
-<li>Keyring:</li>
-</ul>
+</code></pre></div><p>Install the PGP Keyring for Arch Linux.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S archlinux-keyring
-</code></pre></div><h3 id=mkinitcpio>
-mkinitcpio
-<a class=anchor href=#mkinitcpio>#</a>
+</code></pre></div><h3 id=configuring-mkinitcpio>
+<strong>Configuring mkinitcpio</strong>
+<a class=anchor href=#configuring-mkinitcpio>#</a>
 </h3>
+<p>Change the configurations, and reflect the changes with mkinitcpio.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/mkinitcpio.conf
 </code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- MODULES=()
 </span><span style=color:#f92672></span><span style=color:#a6e22e>+ MODULES=(btrfs)
 </span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mkinitcpio -p linux
-</code></pre></div><h3 id=grub-install>
-Grub install
-<a class=anchor href=#grub-install>#</a>
+</code></pre></div><h3 id=bootloader>
+<strong>Bootloader</strong>
+<a class=anchor href=#bootloader>#</a>
 </h3>
-<ul>
-<li>Grub install and make config:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>grub-install --target<span style=color:#f92672>=</span>x86_64-efi --efi-directory<span style=color:#f92672>=</span>/boot/efi --bootloader-id<span style=color:#f92672>=</span>GRUB
+<p>Install Grub and create config file.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>grub-install --target<span style=color:#f92672>=</span>x86_64-efi --efi-directory<span style=color:#f92672>=</span>/boot --bootloader-id<span style=color:#f92672>=</span>GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 </code></pre></div><h3 id=systemd>
-Systemd
+<strong>Systemd</strong>
 <a class=anchor href=#systemd>#</a>
 </h3>
-<ul>
-<li>Activate network:</li>
-</ul>
+<p>Enables NetworkManager.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable NetworkManager
-</code></pre></div><ul>
-<li>Bluetooth:</li>
-</ul>
+</code></pre></div><p>Enables Bluetooth.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable bluetooth
-</code></pre></div><ul>
-<li>Refresh mirrorlist with reflector
-<ul>
-<li>Exec options : <code>/etc/xdg/reflector/reflector.conf</code></li>
-<li>Weekly setting : <code>/usr/lib/systemd/system/reflector.timer</code></li>
-</ul>
-</li>
-</ul>
+</code></pre></div><p>Enables reflector. The execution options are written in <code>/etc/xdg/reflector/reflector.conf</code>.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable reflector.service  <span style=color:#75715e># update mirrorlist every boot</span>
-<span style=color:#75715e># or</span>
-systemctl enable reflector.timer    <span style=color:#75715e># update mirrorlist weekly</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable reflector.timer    <span style=color:#75715e># update mirrorlist weekly</span>
 </code></pre></div><h3 id=add-user>
-Add user
+<strong>Add User</strong>
 <a class=anchor href=#add-user>#</a>
 </h3>
-<ul>
-<li>Add user:</li>
-</ul>
+<p>Add user with useradd and set the password.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>useradd -mG wheel mori
 passwd mori
-</code></pre></div><ul>
-<li>Give the user priviledge:</li>
-</ul>
+</code></pre></div><p>Give the user priviledges.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>EDITOR<span style=color:#f92672>=</span>vim visudo
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-udiff data-lang=udiff><span style=color:#f92672>- # %wheel ALL=(ALL) ALL
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- # %wheel ALL=(ALL) ALL
 </span><span style=color:#f92672></span><span style=color:#a6e22e>+ %wheel ALL=(ALL) ALL
-</span></code></pre></div><h3 id=finish-base-installation>
-Finish base installation
-<a class=anchor href=#finish-base-installation>#</a>
+</span></code></pre></div><h3 id=reboot>
+<strong>Reboot</strong>
+<a class=anchor href=#reboot>#</a>
 </h3>
-<ul>
-<li>Reboot</li>
-</ul>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>exit
 umount -a
 reboot
 </code></pre></div><h3 id=install-desktop-environment>
-Install desktop environment
+<strong>Install Desktop Environment</strong>
 <a class=anchor href=#install-desktop-environment>#</a>
 </h3>
-<ul>
-<li><a href=arch-desktop>Stacking window manager</a></li>
-<li><a href=arch-bspwm>Tiling window manager</a></li>
-</ul>
-<h3 id=install-and-configure-snapper>
-Install and configure snapper
-<a class=anchor href=#install-and-configure-snapper>#</a>
+<p><a href=../desktop-env/>Desktop Environment</a></p>
+<h3 id=configuring-snapper>
+<strong>Configuring Snapper</strong>
+<a class=anchor href=#configuring-snapper>#</a>
 </h3>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo umount /.snapshots
 sudo rm -r /.snapshots
@@ -744,29 +694,29 @@ sudo chown :mori /.snapshots
 <div class=book-toc-content>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#install-arch-linux-with-btrfs-and-backup-with-snapper>Install Arch Linux with BTRFS (and Backup with Snapper)</a>
+<li><a href=#install-arch-linux-multi-disks--btrfs--snapper>Install Arch Linux (Multi-disks + BTRFS + Snapper)</a>
 <ul>
 <li><a href=#system>System</a></li>
-<li><a href=#commands>Commands</a>
+<li><a href=#install>Install</a>
 <ul>
-<li><a href=#keymap>Keymap</a></li>
-<li><a href=#time>Time</a></li>
-<li><a href=#mirrorlist>Mirrorlist</a></li>
-<li><a href=#disk-formatting>Disk formatting</a></li>
-<li><a href=#base-install>Base install</a></li>
-<li><a href=#create-fstab-file>Create fstab file</a></li>
-<li><a href=#chroot>Chroot</a></li>
-<li><a href=#localization>Localization</a></li>
-<li><a href=#hostname-and-hosts>Hostname and hosts</a></li>
-<li><a href=#root-password>Root password</a></li>
-<li><a href=#install-necessary-softwares>Install necessary softwares</a></li>
-<li><a href=#mkinitcpio>mkinitcpio</a></li>
-<li><a href=#grub-install>Grub install</a></li>
-<li><a href=#systemd>Systemd</a></li>
-<li><a href=#add-user>Add user</a></li>
-<li><a href=#finish-base-installation>Finish base installation</a></li>
-<li><a href=#install-desktop-environment>Install desktop environment</a></li>
-<li><a href=#install-and-configure-snapper>Install and configure snapper</a></li>
+<li><a href=#change-keymaps><strong>Change Keymaps</strong></a></li>
+<li><a href=#time-settings><strong>Time Settings</strong></a></li>
+<li><a href=#optimizing-mirrorlist><strong>Optimizing Mirrorlist</strong></a></li>
+<li><a href=#disk-partitioning-and-formatting><strong>Disk Partitioning and Formatting</strong></a></li>
+<li><a href=#base-install><strong>Base install</strong></a></li>
+<li><a href=#create-fstab-file><strong>Create fstab File</strong></a></li>
+<li><a href=#change-the-root-directory><strong>Change the Root Directory</strong></a></li>
+<li><a href=#localization><strong>Localization</strong></a></li>
+<li><a href=#hostname><strong>Hostname</strong></a></li>
+<li><a href=#root-password><strong>Root Password</strong></a></li>
+<li><a href=#install-additional-packages><strong>Install Additional Packages</strong></a></li>
+<li><a href=#configuring-mkinitcpio><strong>Configuring mkinitcpio</strong></a></li>
+<li><a href=#bootloader><strong>Bootloader</strong></a></li>
+<li><a href=#systemd><strong>Systemd</strong></a></li>
+<li><a href=#add-user><strong>Add User</strong></a></li>
+<li><a href=#reboot><strong>Reboot</strong></a></li>
+<li><a href=#install-desktop-environment><strong>Install Desktop Environment</strong></a></li>
+<li><a href=#configuring-snapper><strong>Configuring Snapper</strong></a></li>
 </ul>
 </li>
 </ul>

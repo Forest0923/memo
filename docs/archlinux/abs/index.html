@@ -2,18 +2,25 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Arch Build System #  Install #   Install asp:  sudo pacman -S asp Usage (kernel build) #   Create directory for build kernel:  mkdir build cd build  Download PKGBUILD via asp:  asp update linux asp export linux  Edit PKGBUILD:  cd linux vim PKGBUILD 3c3 < pkgbase=linux --- > pkgbase=linux-custom 64d63 < make htmldocs 191c190 < pkgname=(&#34;$pkgbase&#34; &#34;$pkgbase-headers&#34; &#34;$pkgbase-docs&#34;) --- > pkgname=(&#34;$pkgbase&#34; &#34;$pkgbase-headers&#34;)  Downloads source code:  makepkg -so user@host linux % tree -C -L 2 .">
+<meta name=description content="Arch Build System #  ABS is a system that automates the building of packages from source code; it uses makepkg to build packages based on information in PKGBUILD, and pacman to install them.
+Install #  Install asp to use ABS.
+sudo pacman -S asp Usage (kernel build) #  The following is an example of how to build a kernel. Create build/ as a working directory.
+mkdir build cd build Download the PKGBUILD for the Linux kernel.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Arch Build System">
-<meta property="og:description" content="Arch Build System #  Install #   Install asp:  sudo pacman -S asp Usage (kernel build) #   Create directory for build kernel:  mkdir build cd build  Download PKGBUILD via asp:  asp update linux asp export linux  Edit PKGBUILD:  cd linux vim PKGBUILD 3c3 < pkgbase=linux --- > pkgbase=linux-custom 64d63 < make htmldocs 191c190 < pkgname=(&#34;$pkgbase&#34; &#34;$pkgbase-headers&#34; &#34;$pkgbase-docs&#34;) --- > pkgname=(&#34;$pkgbase&#34; &#34;$pkgbase-headers&#34;)  Downloads source code:  makepkg -so user@host linux % tree -C -L 2 .">
+<meta property="og:description" content="Arch Build System #  ABS is a system that automates the building of packages from source code; it uses makepkg to build packages based on information in PKGBUILD, and pacman to install them.
+Install #  Install asp to use ABS.
+sudo pacman -S asp Usage (kernel build) #  The following is an example of how to build a kernel. Create build/ as a working directory.
+mkdir build cd build Download the PKGBUILD for the Linux kernel.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/archlinux/abs/"><meta property="article:section" content="docs">
 <title>Arch Build System | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/archlinux/abs/ title="Arch Build System">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.c3bab44b6d8d2c64719d16c28879c4ea9b7aa15553683deb1c3fc0fc9c8ae3c0.js integrity="sha256-w7q0S22NLGRxnRbCiHnE6pt6oVVTaD3rHD/A/JyK48A=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.cf3105e1d0e2240fb7bb144f18bdd24db8e4a973167d0d9aede220a371052069.js integrity="sha256-zzEF4dDiJA+3uxRPGL3STbjkqXMWfQ2a7eIgo3EFIGk=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +49,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/abs/>
 Japanese
 </a>
 </li>
@@ -169,25 +176,25 @@ GitLab
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux with BTRFS (and Backup with Timeshift)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux (BTRFS + Timeshift)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux with BTRFS (and Backup with Snapper)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux (Multi-disks + BTRFS + Snapper)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/>Dual Booting on Multiple Disks (Windows10 and ArchLinux)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/>Dual Booting on Mono Disk (Windows10 and ArchLinux)</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/>Dual Booting (multi-disk + Windows10 and Arch Linux)</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/archlinux/desktop-env/>Desktop Environment</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>Configurtions for BSPWM</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>Installing BSPWM</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>Installing Common Applications in Arch Linux</a>
+<a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>Install Applications</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/archlinux/power-mgr/>Power Management</a>
@@ -390,31 +397,24 @@ Posts
 Arch Build System
 <a class=anchor href=#arch-build-system>#</a>
 </h1>
+<p>ABS is a system that automates the building of packages from source code; it uses makepkg to build packages based on information in PKGBUILD, and pacman to install them.</p>
 <h2 id=install>
 Install
 <a class=anchor href=#install>#</a>
 </h2>
-<ul>
-<li>Install asp:</li>
-</ul>
+<p>Install asp to use ABS.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S asp
 </code></pre></div><h2 id=usage-kernel-build>
 Usage (kernel build)
 <a class=anchor href=#usage-kernel-build>#</a>
 </h2>
-<ul>
-<li>Create directory for build kernel:</li>
-</ul>
+<p>The following is an example of how to build a kernel. Create <code>build/</code> as a working directory.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mkdir build
 cd build
-</code></pre></div><ul>
-<li>Download PKGBUILD via asp:</li>
-</ul>
+</code></pre></div><p>Download the PKGBUILD for the Linux kernel.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>asp update linux
 asp export linux
-</code></pre></div><ul>
-<li>Edit PKGBUILD:</li>
-</ul>
+</code></pre></div><p>Modify PKGBUILD to rename the package and prevent it from generating documentation.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>cd linux
 vim PKGBUILD
 </code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff>3c3
@@ -427,23 +427,20 @@ vim PKGBUILD
 &lt; pkgname=(&#34;$pkgbase&#34; &#34;$pkgbase-headers&#34; &#34;$pkgbase-docs&#34;)
 <span style=color:#f92672>---
 </span><span style=color:#f92672></span>&gt; pkgname=(&#34;$pkgbase&#34; &#34;$pkgbase-headers&#34;)
-</code></pre></div><ul>
-<li>Downloads source code:</li>
-</ul>
+</code></pre></div><p>Use the following command to download the source code.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>makepkg -so
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>user@host linux % tree -C -L 2
-.
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>.
 ├── archlinux-linux
-│   ├── branches
-│   ├── config
-│   ├── description
-│   ├── FETCH_HEAD
-│   ├── HEAD
-│   ├── hooks
-│   ├── info
-│   ├── objects
-│   ├── packed-refs
-│   └── refs
+│   ├── branches
+│   ├── config
+│   ├── description
+│   ├── FETCH_HEAD
+│   ├── HEAD
+│   ├── hooks
+│   ├── info
+│   ├── objects
+│   ├── packed-refs
+│   └── refs
 ├── config
 ├── PKGBUILD
 ├── sphinx-workaround.patch
@@ -451,9 +448,7 @@ vim PKGBUILD
     ├── archlinux-linux &lt;- Kernel source code here
     ├── config -&gt; /home/mori/kernelbuild/linux/config
     └── sphinx-workaround.patch -&gt; /home/mori/kernelbuild/linux/sphinx-workaround.patch
-</code></pre></div><ul>
-<li>Build and install custom kernel:</li>
-</ul>
+</code></pre></div><p>Build kernel package with makepkg as shown below, and install it with pacman.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>makepkg -se     <span style=color:#75715e># Additionally &#39;f&#39; option needed when overwrite pkg</span>
 sudo pacman -U linux-custom-<span style=color:#f92672>[</span>version<span style=color:#f92672>]</span>.arch1-1-x86_64.pkg.tar.zst linux-custom-headers-<span style=color:#f92672>[</span>version<span style=color:#f92672>]</span>.arch1-1-x86_64.pkg.tar.zst
 </code></pre></div><blockquote>

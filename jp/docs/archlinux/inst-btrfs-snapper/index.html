@@ -1,0 +1,621 @@
+<!doctype html><html lang=jp dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Arch Linux のインストール（Multi-disks + BTRFS + Snapper） #  Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Snapper でスナップショットを保存する方法を紹介します．
+環境 #   Intel CPU UEFI Boot Disks  /dev/vda /dev/vdb /dev/vdc インストール #  キーマップの変更 #  インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．
+loadkeys jp106 時間設定 #  NTP（Network Time Protocol）を使用するために次のコマンドを実行します．
+timedatectl set-ntp true ミラーリストの最適化 #  インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．
+pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman.">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="Arch Linux のインストール（Multi-disks + BTRFS + Snapper）">
+<meta property="og:description" content="Arch Linux のインストール（Multi-disks + BTRFS + Snapper） #  Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Snapper でスナップショットを保存する方法を紹介します．
+環境 #   Intel CPU UEFI Boot Disks  /dev/vda /dev/vdb /dev/vdc インストール #  キーマップの変更 #  インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．
+loadkeys jp106 時間設定 #  NTP（Network Time Protocol）を使用するために次のコマンドを実行します．
+timedatectl set-ntp true ミラーリストの最適化 #  インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．
+pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://forest0923.github.io/memo/jp/docs/archlinux/inst-btrfs-snapper/"><meta property="article:section" content="docs">
+<title>Arch Linux のインストール（Multi-disks + BTRFS + Snapper） | Memo</title>
+<link rel=manifest href=/memo/manifest.json>
+<link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=en href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/ title="Install Arch Linux (Multi-disks + BTRFS + Snapper)">
+<link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
+<script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.f10e3f853925bbdeb566ccc3bda63078cabbaf51d3b54e7222704c5839c9aef6.js integrity="sha256-8Q4/hTklu961ZszDvaYweMq7r1HTtU5yInBMWDnJrvY=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/memo/jp/><span>Memo</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul class=book-languages>
+<li>
+<input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between">
+<a role=button class="flex align-center">
+<img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+Japanese
+</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>
+English
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Links</h2>
+<ul>
+<li>
+<a href=https://github.com/Forest0923 target=_blank rel=noopener>
+GitHub
+</a>
+</li>
+<li>
+<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
+GitLab
+</a>
+</li>
+</ul>
+<h2>Documents</h2>
+<ul>
+<li>
+<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
+<a role=button>Linux Kernel Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/inst-kernel/>カーネルのインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/rm-kernel/>カーネルの削除</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-systemcall/>システムコールの追加</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-hypercall/>ハイパーコールの実装</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-fb51f89dbec2637fe7d4c9b6287148ed class=toggle checked>
+<label for=section-fb51f89dbec2637fe7d4c9b6287148ed class="flex justify-between">
+<a role=button>Arch Linux</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/inst-btrfs-timeshift/>Arch Linux のインストール（BTRFS + Timeshift）</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/inst-btrfs-snapper/ class=active>Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/dual-boot-multi/>Dual Booting (multi-disk + Windows10 and Arch Linux)</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/desktop-env/>デスクトップ環境</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/bspwm/>BSPWM のインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/common-apps/>アプリケーションのインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/power-mgr/>電源管理</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/abs/>Arch Build System</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/spotify/>Spotify の設定</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between">
+<a role=button>Ubuntu</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/initial-settings/>Ubuntu の初期設定</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/haribote-os/>自作 OS 入門 with Ubuntu</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between">
+<a role=button>Android</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/android/inst-x86/>Android x86</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/android/apk/>リバースエンジニアリング（APK）</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between">
+<a role=button>Git</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-cli/>GitHub CLI</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-ssh/>GitHub への SSH 接続</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/usecases/>Git の使い方（使用例）</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/submodule/>サブモジュール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/lfs/>LFS (Large File Storage)</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/links/>Git を学ぶ上で参考になるリンク集</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between">
+<a role=button>LaTeX</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/inst-tex-live/>LaTeX スタートアップ：TeX Live のインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/latex-cs/>LaTeX Cheat Sheet</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/sty/>自作の sty ファイルの作り方</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/minted/>minted を使用したシンタックスハイライト</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between">
+<a role=button>Web Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/code-highlight/>シンタックスハイライト</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/latex/>きれいな数式の表示</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/mermaid/>Mermaid</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/webtools/>Web Tools</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between">
+<a role=button>Security</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/pkc/>公開鍵暗号</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/gpg/>GNU Privacy Guard</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/ssh/>SSH</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/hack/>Hack</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Blog Posts</h2>
+<ul>
+<li>
+<a href=/memo/jp/posts/>
+Posts
+</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/memo/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</strong>
+<label for=toc-control>
+<img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#arch-linux-のインストールmulti-disks--btrfs--snapper>Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</a>
+<ul>
+<li><a href=#環境>環境</a></li>
+<li><a href=#インストール>インストール</a>
+<ul>
+<li><a href=#キーマップの変更><strong>キーマップの変更</strong></a></li>
+<li><a href=#時間設定><strong>時間設定</strong></a></li>
+<li><a href=#ミラーリストの最適化><strong>ミラーリストの最適化</strong></a></li>
+<li><a href=#ディスクパーティショニングとフォーマット><strong>ディスクパーティショニングとフォーマット</strong></a></li>
+<li><a href=#ベースのインストール><strong>ベースのインストール</strong></a></li>
+<li><a href=#fstab><strong>fstab</strong></a></li>
+<li><a href=#root-ディレクトリの変更><strong>Root ディレクトリの変更</strong></a></li>
+<li><a href=#ローカライズ><strong>ローカライズ</strong></a></li>
+<li><a href=#ホスト名><strong>ホスト名</strong></a></li>
+<li><a href=#root-のパスワード><strong>Root のパスワード</strong></a></li>
+<li><a href=#追加のパッケージインストール><strong>追加のパッケージインストール</strong></a></li>
+<li><a href=#mkinitcpio-の設定>mkinitcpio の設定</a></li>
+<li><a href=#ブートローダ><strong>ブートローダ</strong></a></li>
+<li><a href=#systemd><strong>Systemd</strong></a></li>
+<li><a href=#ユーザの追加><strong>ユーザの追加</strong></a></li>
+<li><a href=#reboot><strong>Reboot</strong></a></li>
+<li><a href=#デスクトップ環境のインストール><strong>デスクトップ環境のインストール</strong></a></li>
+<li><a href=#snapper-の設定><strong>Snapper の設定</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+</header>
+<article class=markdown><h1 id=arch-linux-のインストールmulti-disks--btrfs--snapper>
+Arch Linux のインストール（Multi-disks + BTRFS + Snapper）
+<a class=anchor href=#arch-linux-%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%abmulti-disks--btrfs--snapper>#</a>
+</h1>
+<p>Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Snapper でスナップショットを保存する方法を紹介します．</p>
+<h2 id=環境>
+環境
+<a class=anchor href=#%e7%92%b0%e5%a2%83>#</a>
+</h2>
+<ul>
+<li>Intel CPU</li>
+<li>UEFI Boot</li>
+<li>Disks</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>/dev/vda
+/dev/vdb
+/dev/vdc
+</code></pre></div><h2 id=インストール>
+インストール
+<a class=anchor href=#%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a>
+</h2>
+<h3 id=キーマップの変更>
+<strong>キーマップの変更</strong>
+<a class=anchor href=#%e3%82%ad%e3%83%bc%e3%83%9e%e3%83%83%e3%83%97%e3%81%ae%e5%a4%89%e6%9b%b4>#</a>
+</h3>
+<p>インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>loadkeys jp106
+</code></pre></div><h3 id=時間設定>
+<strong>時間設定</strong>
+<a class=anchor href=#%e6%99%82%e9%96%93%e8%a8%ad%e5%ae%9a>#</a>
+</h3>
+<p>NTP（Network Time Protocol）を使用するために次のコマンドを実行します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>timedatectl set-ntp true
+</code></pre></div><h3 id=ミラーリストの最適化>
+<strong>ミラーリストの最適化</strong>
+<a class=anchor href=#%e3%83%9f%e3%83%a9%e3%83%bc%e3%83%aa%e3%82%b9%e3%83%88%e3%81%ae%e6%9c%80%e9%81%a9%e5%8c%96>#</a>
+</h3>
+<p>インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -Syy
+pacman -S reflector <span style=color:#75715e># `python` might be required</span>
+reflector -c Japan --sort rate -a <span style=color:#ae81ff>6</span> --save /etc/pacman.d/mirrorlist
+</code></pre></div><p>reflector のオプションの意味は次のようになっています．</p>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-c Japan</code></td>
+<td>日本のミラーサーバのみに制限する</td>
+</tr>
+<tr>
+<td><code>--sort rate</code></td>
+<td>ダウンロード速度でソートする</td>
+</tr>
+<tr>
+<td><code>-a 6</code></td>
+<td>6時間以内に同期したサーバに制限する</td>
+</tr>
+<tr>
+<td><code>--save /etc/pacman.d/mirrorlist</code></td>
+<td>ミラーリストを指定したパスに保存する</td>
+</tr>
+</tbody>
+</table>
+<h3 id=ディスクパーティショニングとフォーマット>
+<strong>ディスクパーティショニングとフォーマット</strong>
+<a class=anchor href=#%e3%83%87%e3%82%a3%e3%82%b9%e3%82%af%e3%83%91%e3%83%bc%e3%83%86%e3%82%a3%e3%82%b7%e3%83%a7%e3%83%8b%e3%83%b3%e3%82%b0%e3%81%a8%e3%83%95%e3%82%a9%e3%83%bc%e3%83%9e%e3%83%83%e3%83%88>#</a>
+</h3>
+<p>gdisk を用いてパーティションを変更します．ここでは <code>/dev/vda</code> に EFI パーティション（200MB程度）を作成し，残りの領域とデバイスは Linux Filesystem とします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gdisk /dev/vda
+gdisk /dev/vdb
+gdisk /dev/vdc
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>/dev/vda1: EFI system (200M)
+/dev/vda2: Linux filesystem
+/dev/vdb1: Linux filesystem
+/dev/vdc1: Linux filesystem
+</code></pre></div><p>EFI パーティションは fat，Linux Filesystem は BTRFS でフォーマットします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mkfs.fat -F32 /dev/vda1
+mkfs.btrfs /dev/vda2 /dev/vdb1 /dev/vdc1
+</code></pre></div><p>BTRFS のサブボリュームを作成して，マウントします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mount /dev/vda2 /mnt
+btrfs su cr /mnt/@
+btrfs su cr /mnt/@home
+btrfs su cr /mnt/@snapshots
+btrfs su cr /mnt/@var_log
+
+umount /mnt
+
+mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@ /dev/vda2 /mnt
+mkdir -p /mnt/<span style=color:#f92672>{</span>boot,home,.snapshots,var/log<span style=color:#f92672>}</span>
+mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@home /dev/vda2 /mnt/home
+mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@snapshots /dev/vda2 /mnt/.snapshots
+mount -o noatime,compress<span style=color:#f92672>=</span>lzo,space_cache<span style=color:#f92672>=</span>v2,subvol<span style=color:#f92672>=</span>@var_log /dev/vda2 /mnt/var/log
+
+mount /dev/vda1 /mnt/boot
+</code></pre></div><h3 id=ベースのインストール>
+<strong>ベースのインストール</strong>
+<a class=anchor href=#%e3%83%99%e3%83%bc%e3%82%b9%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a>
+</h3>
+<p>Root ディレクトリとなる <code>/mnt</code> にパッケージをインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacstrap /mnt base linux linux-firmware intel-ucode vim
+</code></pre></div><h3 id=fstab>
+<strong>fstab</strong>
+<a class=anchor href=#fstab>#</a>
+</h3>
+<p>fstab ファイルを生成します．fstab ファイルはどのデバイスをマウントするかという情報を保持するファイルです．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
+</code></pre></div><h3 id=root-ディレクトリの変更>
+<strong>Root ディレクトリの変更</strong>
+<a class=anchor href=#root-%e3%83%87%e3%82%a3%e3%83%ac%e3%82%af%e3%83%88%e3%83%aa%e3%81%ae%e5%a4%89%e6%9b%b4>#</a>
+</h3>
+<p>chroot で root ディレクトリを <code>/mnt</code> に変更します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>arch-chroot /mnt
+</code></pre></div><h3 id=ローカライズ>
+<strong>ローカライズ</strong>
+<a class=anchor href=#%e3%83%ad%e3%83%bc%e3%82%ab%e3%83%a9%e3%82%a4%e3%82%ba>#</a>
+</h3>
+<p><code>/etc/localtime</code> にシンボリックリンクを作成してタイムゾーンを変更します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+</code></pre></div><p>ハードウェアクロックを現在のシステムクロックに合わせます．システムクロックは OS が管理する時計のことで，ハードウェアクロックはマザーボード（ハードウェア）が管理する時計のことです．OS が再起動されたときは，メモリに展開されたシステムクロックが失われるのでハードウェアクロックから時刻を取得します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>hwclock --systohc
+</code></pre></div><p>locale を設定するためにまずは locale を生成します．<code>/etc/locale.gen</code> の使用するエントリをアンコメントして <code>locale-gen</code> を実行します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/locale.gen
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- # en_US.UTF-8 UTF-8
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+ en_US.UTF-8 UTF-8
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>locale-gen
+</code></pre></div><p>システムの locale を設定するために次のコマンドを実行します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>echo LANG<span style=color:#f92672>=</span>en_US.UTF-8 &gt;&gt; /etc/locale.conf
+echo KEYMAP<span style=color:#f92672>=</span>jp106 &gt;&gt; /etc/vconsole.conf
+</code></pre></div><h3 id=ホスト名>
+<strong>ホスト名</strong>
+<a class=anchor href=#%e3%83%9b%e3%82%b9%e3%83%88%e5%90%8d>#</a>
+</h3>
+<p>ホスト名を <code>/etc/hostname</code> に登録します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/hostname
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ arch
+</span></code></pre></div><p><code>/etc/hosts</code> を編集してホスト名に対応する IP アドレスを設定します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/hosts
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ 127.0.0.1   localhost
+</span><span style=color:#a6e22e>+ ::1         localhost
+</span><span style=color:#a6e22e>+ 127.0.1.1   arch.localdomain    arch
+</span></code></pre></div><h3 id=root-のパスワード>
+<strong>Root のパスワード</strong>
+<a class=anchor href=#root-%e3%81%ae%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89>#</a>
+</h3>
+<p>Root ユーザのパスワードを設定します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>passwd
+</code></pre></div><h3 id=追加のパッケージインストール>
+<strong>追加のパッケージインストール</strong>
+<a class=anchor href=#%e8%bf%bd%e5%8a%a0%e3%81%ae%e3%83%91%e3%83%83%e3%82%b1%e3%83%bc%e3%82%b8%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a>
+</h3>
+<p>ブートローダとして grub をインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S grub efibootmgr os-prober
+</code></pre></div><p>ネットワークとワイヤレスデバイス用のソフトウェアをインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S networkmanager network-manager-applet wireless_tools wpa_supplicant dialog
+</code></pre></div><p>MS-DOS ディスクにアクセスするためのツールをインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S mtools dosgstools
+</code></pre></div><p>sudo や make，gcc などの基本的なアプリケーション（コマンド）をインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S base-devel
+</code></pre></div><p>カーネルヘッダをインストールします．カーネルヘッダはカーネルモジュールをビルドするときに用いられるヘッダやスクリプトです．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S linux-headers
+</code></pre></div><p>Bluetooth や オーディオ設定のツールをインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S bluez bluez-utils alsa-utils pulseaudio pulseaudio-bluetooth
+</code></pre></div><p>デスクトップアプリケーションに関係するコマンドラインツールをインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S xdg-utils
+</code></pre></div><p>home ディレクトリの <code>~/Desktop/</code>，<code>~/Music/</code> などを追加します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S xdg-user-dirs
+</code></pre></div><p>Git をインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S git
+</code></pre></div><p>Snapper で使用する cron をインストールします．cron はプログラムの定期実行を行うために使用されます．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S cron
+</code></pre></div><p>mirrorlist を最適化するツールをインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S reflector
+</code></pre></div><p>Snapper をインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S snapper
+</code></pre></div><p>Arch Linux の PGP Key をインストールします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S archlinux-keyring
+</code></pre></div><h3 id=mkinitcpio-の設定>
+mkinitcpio の設定
+<a class=anchor href=#mkinitcpio-%e3%81%ae%e8%a8%ad%e5%ae%9a>#</a>
+</h3>
+<p>設定を変更し，mkinitcpio で変更を反映します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/mkinitcpio.conf
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- MODULES=()
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+ MODULES=(btrfs)
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mkinitcpio -p linux
+</code></pre></div><h3 id=ブートローダ>
+<strong>ブートローダ</strong>
+<a class=anchor href=#%e3%83%96%e3%83%bc%e3%83%88%e3%83%ad%e3%83%bc%e3%83%80>#</a>
+</h3>
+<p>Grub をインストールして設定ファイルを生成します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>grub-install --target<span style=color:#f92672>=</span>x86_64-efi --efi-directory<span style=color:#f92672>=</span>/boot --bootloader-id<span style=color:#f92672>=</span>GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre></div><h3 id=systemd>
+<strong>Systemd</strong>
+<a class=anchor href=#systemd>#</a>
+</h3>
+<p>NetworkManager を有効化．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable NetworkManager
+</code></pre></div><p>Bluetooth を有効化．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable bluetooth
+</code></pre></div><p>reflector の有効化．実行オプションは <code>/etc/xdg/reflector/reflector.conf</code> に記述します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable reflector.service  <span style=color:#75715e># update mirrorlist every boot</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable reflector.timer    <span style=color:#75715e># update mirrorlist weekly</span>
+</code></pre></div><h3 id=ユーザの追加>
+<strong>ユーザの追加</strong>
+<a class=anchor href=#%e3%83%a6%e3%83%bc%e3%82%b6%e3%81%ae%e8%bf%bd%e5%8a%a0>#</a>
+</h3>
+<p>useradd で追加してパスワードを設定します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>useradd -mG wheel mori
+passwd mori
+</code></pre></div><p>ユーザに特権を追加します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>EDITOR<span style=color:#f92672>=</span>vim visudo
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-udiff data-lang=udiff><span style=color:#f92672>- # %wheel ALL=(ALL) ALL
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+ %wheel ALL=(ALL) ALL
+</span></code></pre></div><h3 id=reboot>
+<strong>Reboot</strong>
+<a class=anchor href=#reboot>#</a>
+</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>exit
+umount -a
+reboot
+</code></pre></div><h3 id=デスクトップ環境のインストール>
+<strong>デスクトップ環境のインストール</strong>
+<a class=anchor href=#%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97%e7%92%b0%e5%a2%83%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a>
+</h3>
+<p><a href=../desktop-env/>デスクトップ環境</a></p>
+<h3 id=snapper-の設定>
+<strong>Snapper の設定</strong>
+<a class=anchor href=#snapper-%e3%81%ae%e8%a8%ad%e5%ae%9a>#</a>
+</h3>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo umount /.snapshots
+sudo rm -r /.snapshots
+sudo snapper -c root create-config /
+sudo btrfs su delete /.snapshots
+sudo mkdir /.snapshots
+sudo mount -a
+sudo chmod <span style=color:#ae81ff>750</span> /.snapshots
+sudo vim /etc/snapper/configs/root
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ TIMELINE_LIMIT_HOURLY=&#34;5&#34;
+</span><span style=color:#a6e22e>+ TIMELINE_LIMIT_DAILY=&#34;7&#34;
+</span><span style=color:#a6e22e>+ TIMELINE_LIMIT_WEEKLY=&#34;0&#34;
+</span><span style=color:#a6e22e>+ TIMELINE_LIMIT_MONTHLY=&#34;0&#34;
+</span><span style=color:#a6e22e>+ TIMELINE_LIMIT_YEARLY=&#34;0&#34;
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo systemctl enable --now snapper-timeline.timer
+sudo systemctl enable --now snapper-cleanup.timer
+paru -S snap-pac-grub snapper-gui-git
+sudo mkdir /etc/pacman.d/hooks
+sudo vim /etc/pacman.d/hooks/50-bootbackup.hook
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ [Trigger]
+</span><span style=color:#a6e22e>+ Operation = Upgrade
+</span><span style=color:#a6e22e>+ Operation = Install
+</span><span style=color:#a6e22e>+ Operation = Remove
+</span><span style=color:#a6e22e>+ Type = Path
+</span><span style=color:#a6e22e>+ Target = boot/*
+</span><span style=color:#a6e22e>+ 
+</span><span style=color:#a6e22e>+ [Action]
+</span><span style=color:#a6e22e>+ Depends = rsync
+</span><span style=color:#a6e22e>+ Description = Backing up /boot...
+</span><span style=color:#a6e22e>+ When = PreTransaction
+</span><span style=color:#a6e22e>+ Exec = /usr/bin/rsync -a --delete /boot /.bootbackup
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S rsync
+sudo chmod a+rx /.snapshots
+sudo chown :mori /.snapshots
+</code></pre></div></article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#arch-linux-のインストールmulti-disks--btrfs--snapper>Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</a>
+<ul>
+<li><a href=#環境>環境</a></li>
+<li><a href=#インストール>インストール</a>
+<ul>
+<li><a href=#キーマップの変更><strong>キーマップの変更</strong></a></li>
+<li><a href=#時間設定><strong>時間設定</strong></a></li>
+<li><a href=#ミラーリストの最適化><strong>ミラーリストの最適化</strong></a></li>
+<li><a href=#ディスクパーティショニングとフォーマット><strong>ディスクパーティショニングとフォーマット</strong></a></li>
+<li><a href=#ベースのインストール><strong>ベースのインストール</strong></a></li>
+<li><a href=#fstab><strong>fstab</strong></a></li>
+<li><a href=#root-ディレクトリの変更><strong>Root ディレクトリの変更</strong></a></li>
+<li><a href=#ローカライズ><strong>ローカライズ</strong></a></li>
+<li><a href=#ホスト名><strong>ホスト名</strong></a></li>
+<li><a href=#root-のパスワード><strong>Root のパスワード</strong></a></li>
+<li><a href=#追加のパッケージインストール><strong>追加のパッケージインストール</strong></a></li>
+<li><a href=#mkinitcpio-の設定>mkinitcpio の設定</a></li>
+<li><a href=#ブートローダ><strong>ブートローダ</strong></a></li>
+<li><a href=#systemd><strong>Systemd</strong></a></li>
+<li><a href=#ユーザの追加><strong>ユーザの追加</strong></a></li>
+<li><a href=#reboot><strong>Reboot</strong></a></li>
+<li><a href=#デスクトップ環境のインストール><strong>デスクトップ環境のインストール</strong></a></li>
+<li><a href=#snapper-の設定><strong>Snapper の設定</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

@@ -18,11 +18,11 @@ theme = 'hugo-book'
 [languages]
   [languages.en]
     languageName = 'English'
-    contentDir = 'content'
+    contentDir = 'content/en'
     weight = 1
   [languages.jp]
     languageName = 'Japanese'
-    contentDir = 'content.jp'
+    contentDir = 'content/jp'
     weight = 2
 
 [menu]

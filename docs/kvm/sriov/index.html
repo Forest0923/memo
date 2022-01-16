@@ -2,18 +2,21 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Configurations for Single Root I/O Virtualization #  System #   Hardware  CPU: Intel Core-i9 9900K NIC: Intel Corporation I350 Gigabit Network Connection Motherboard: PRIME H310M-AT R2.0   OS  Host: Arch Guest  VM1: ubuntu 20.04 server VM2: ubuntu 20.04 server      Hardware setting #   Enable VT-d on UEFI BIOS  Enable SR-IOV #   Add modprobe config (/etc/modprobe.d/igb.conf)  options igb max_vfs=4 #blacklist igbvf  Add kernel options in order to enable IOMMU by editing /etc/default/grub:  -GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34; +GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;  Update grub config:  sudo grub-mkconfig -o /boot/grub/grub.">
+<meta name=description content="Configurations for Single Root I/O Virtualization #  SR-IOV (Single Root I/O Virtualization) is a hardware feature that allows a single physical device to be recognized by a hypervisor as if it were multiple separate devices. For example, a machine with a single NIC that supports SR-IOV can be recognized as if it has multiple NICs by using SR-IOV, and each NIC can be passed through to the VM.
+This page contains some notes on using SR-IOV with KVM.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Configurations for Single Root I/O Virtualization">
-<meta property="og:description" content="Configurations for Single Root I/O Virtualization #  System #   Hardware  CPU: Intel Core-i9 9900K NIC: Intel Corporation I350 Gigabit Network Connection Motherboard: PRIME H310M-AT R2.0   OS  Host: Arch Guest  VM1: ubuntu 20.04 server VM2: ubuntu 20.04 server      Hardware setting #   Enable VT-d on UEFI BIOS  Enable SR-IOV #   Add modprobe config (/etc/modprobe.d/igb.conf)  options igb max_vfs=4 #blacklist igbvf  Add kernel options in order to enable IOMMU by editing /etc/default/grub:  -GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34; +GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;  Update grub config:  sudo grub-mkconfig -o /boot/grub/grub.">
+<meta property="og:description" content="Configurations for Single Root I/O Virtualization #  SR-IOV (Single Root I/O Virtualization) is a hardware feature that allows a single physical device to be recognized by a hypervisor as if it were multiple separate devices. For example, a machine with a single NIC that supports SR-IOV can be recognized as if it has multiple NICs by using SR-IOV, and each NIC can be passed through to the VM.
+This page contains some notes on using SR-IOV with KVM.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/kvm/sriov/"><meta property="article:section" content="docs">
 <title>Configurations for Single Root I/O Virtualization | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/kvm/sriov/ title="SR-IOV の設定">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.cf3105e1d0e2240fb7bb144f18bdd24db8e4a973167d0d9aede220a371052069.js integrity="sha256-zzEF4dDiJA+3uxRPGL3STbjkqXMWfQ2a7eIgo3EFIGk=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.8bdd89222f1cd7413d4e8d4ca9f31caae25957d0ed9f7609306c42d115fc1cc5.js integrity="sha256-i92JIi8c10E9To1MqfMcquJZV9Dtn3YJMGxC0RX8HMU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +45,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/kvm/sriov/>
 Japanese
 </a>
 </li>
@@ -152,7 +155,7 @@ GitLab
 <a href=http://forest0923.github.io/memo/docs/kvm/install/>Install KVM</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/kvm/virsh/>Usage of virsh</a>
+<a href=http://forest0923.github.io/memo/docs/kvm/virsh/>How to Use virsh</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/kvm/gpu-passthrough/>Configurations for Gpu Passthrough</a>
@@ -378,11 +381,16 @@ Posts
 <ul>
 <li><a href=#configurations-for-single-root-io-virtualization>Configurations for Single Root I/O Virtualization</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#hardware-setting>Hardware setting</a></li>
+<li><a href=#system-setup>System Setup</a></li>
+<li><a href=#configurations-for-bios>Configurations for BIOS</a></li>
 <li><a href=#enable-sr-iov>Enable SR-IOV</a></li>
+<li><a href=#grub>Grub</a>
+<ul>
+<li><a href=#when-the-error-occurs>When the Error Occurs</a></li>
+</ul>
+</li>
 <li><a href=#check-support-for-acs-access-control-services>Check support for ACS (Access Control Services)</a></li>
-<li><a href=#acs-override-patch>ACS override patch</a></li>
+<li><a href=#acs-override-patch>ACS Override Patch</a></li>
 <li><a href=#create-vms>Create VMs</a></li>
 <li><a href=#ip-info>IP info</a></li>
 <li><a href=#speedtest>Speedtest</a></li>
@@ -397,9 +405,11 @@ Posts
 Configurations for Single Root I/O Virtualization
 <a class=anchor href=#configurations-for-single-root-io-virtualization>#</a>
 </h1>
-<h2 id=system>
-System
-<a class=anchor href=#system>#</a>
+<p>SR-IOV (Single Root I/O Virtualization) is a hardware feature that allows a single physical device to be recognized by a hypervisor as if it were multiple separate devices. For example, a machine with a single NIC that supports SR-IOV can be recognized as if it has multiple NICs by using SR-IOV, and each NIC can be passed through to the VM.</p>
+<p>This page contains some notes on using SR-IOV with KVM.</p>
+<h2 id=system-setup>
+System Setup
+<a class=anchor href=#system-setup>#</a>
 </h2>
 <ul>
 <li>Hardware
@@ -421,41 +431,36 @@ System
 </ul>
 </li>
 </ul>
-<h2 id=hardware-setting>
-Hardware setting
-<a class=anchor href=#hardware-setting>#</a>
+<h2 id=configurations-for-bios>
+Configurations for BIOS
+<a class=anchor href=#configurations-for-bios>#</a>
 </h2>
-<ul>
-<li>Enable VT-d on UEFI BIOS</li>
-</ul>
+<p>Enable VT-d in the BIOS.</p>
 <h2 id=enable-sr-iov>
 Enable SR-IOV
 <a class=anchor href=#enable-sr-iov>#</a>
 </h2>
-<ul>
-<li>Add modprobe config (/etc/modprobe.d/igb.conf)</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>options igb max_vfs=4
+<p>Create a configuration file <code>/etc/modprobe.d/igb.conf</code> for modprobe.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/modprobe.d/igb.conf
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>options igb max_vfs=4
 #blacklist igbvf
-</code></pre></div><ul>
-<li>Add kernel options in order to enable IOMMU by editing /etc/default/grub:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34;
+</code></pre></div><h2 id=grub>
+Grub
+<a class=anchor href=#grub>#</a>
+</h2>
+<p>To enable IOMMU, change the Grub configuration and add kernel options.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/default/grub
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34;
 </span><span style=color:#f92672></span><span style=color:#a6e22e>+GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;
-</span></code></pre></div><ul>
-<li>Update grub config:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
-</code></pre></div><ul>
-<li>Reboot</li>
-</ul>
-<blockquote>
-<p><strong>NOTE</strong>: if error occurs</p>
-<ul>
-<li>dmesg</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>mori@arch-server ~ % sudo dmesg | grep igb
-[    2.070715] igb: Intel(R) Gigabit Ethernet Network Driver
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
+reboot
+</code></pre></div><h3 id=when-the-error-occurs>
+When the Error Occurs
+<a class=anchor href=#when-the-error-occurs>#</a>
+</h3>
+<p>Here is what to do if you get an error in dmesg.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo dmesg | grep igb
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>[    2.070715] igb: Intel(R) Gigabit Ethernet Network Driver
 [    2.070717] igb: Copyright (c) 2007-2014 Intel Corporation.
 [    2.126386] igb 0000:01:00.0: added PHC on eth0
 [    2.126389] igb 0000:01:00.0: Intel(R) Gigabit Ethernet Network Connection
@@ -474,35 +479,27 @@ Enable SR-IOV
 [  643.338345] igb 0000:01:00.0: can&#39;t enable 2 VFs (bus 02 out of range of [bus 01])
 [  687.182846] igb 0000:01:00.0: can&#39;t enable 2 VFs (bus 02 out of range of [bus 01])
 [  705.005251] igb 0000:01:00.0: can&#39;t enable 1 VFs (bus 02 out of range of [bus 01])
-</code></pre></div><ul>
-<li>Add another kernel option:</li>
-</ul>
+</code></pre></div><p>Add the following options to the kernel options in grub configuration.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;
 </span><span style=color:#f92672></span><span style=color:#a6e22e>+GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses&#34;
-</span></code></pre></div><ul>
-<li><code>pci=assign-busses</code>: Make the kernel always assign all PCI bus numbers
-<ul>
-<li><a href=https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html>https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html</a></li>
-</ul>
-</li>
-<li>Update grub config:</li>
-</ul>
+</span></code></pre></div><blockquote>
+<p><code>pci=assign-busses</code>: Make the kernel always assign all PCI bus numbers</p>
+<p><a href=https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html>https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html</a></p>
+</blockquote>
+<p>Create grub config file and reboot.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
-</code></pre></div><ul>
-<li>Reboot</li>
-<li>Check iommu_group</li>
-</ul>
+reboot
+</code></pre></div><blockquote>
+<p>Check iommu_group</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>find /sys/kernel/iommu_groups/ -type l
 </code></pre></div></blockquote>
 <h2 id=check-support-for-acs-access-control-services>
 Check support for ACS (Access Control Services)
 <a class=anchor href=#check-support-for-acs-access-control-services>#</a>
 </h2>
-<ul>
-<li>List pci devices</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>% lspci | grep Ethernet
-01:00.0 Ethernet controller: Intel Corporation I350 Gigabit Network Connection (rev 01)
+<p>The following is the list of PCI devices.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>lspci | grep Ethernet
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>01:00.0 Ethernet controller: Intel Corporation I350 Gigabit Network Connection (rev 01)
 01:00.1 Ethernet controller: Intel Corporation I350 Gigabit Network Connection (rev 01)
 02:10.0 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
 02:10.1 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
@@ -513,14 +510,9 @@ Check support for ACS (Access Control Services)
 02:11.4 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
 02:11.5 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
 04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 15)
-</code></pre></div><ul>
-<li>ACS support:</li>
-</ul>
+</code></pre></div><p>Check if ACS is supported.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo lspci -vv | grep <span style=color:#e6db74>&#34;Access Control Services&#34;</span> -C <span style=color:#ae81ff>5</span>
-</code></pre></div><ul>
-<li>Sample output:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>...
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>...
         Kernel driver in use: pcieport
 
 00:1d.0 PCI bridge: Intel Corporation 200 Series PCH PCI Express Root Port #11 (rev f0) (prog-if 00 [Normal decode])
@@ -544,41 +536,25 @@ Check support for ACS (Access Control Services)
 </code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>        Capabilities: [1d0 v1] Access Control Services
                 ACSCap: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
                 ACSCtl: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
-</code></pre></div><ul>
-<li>ACSCap means ACS Capability. Plus or minus indicates if it is supported or not.</li>
-<li>ACSCtl shows enabled ACS capability. Plus or minus indicates if it is enabled or not.</li>
-</ul>
-<blockquote>
-<p><strong>NOTE</strong>: IOMMU Group</p>
-<p>In my case ACS not supported, so all network interfaces generated by SR-IOV belong to same iommu group.</p>
-<p>Even if we need just one of the interfaces, we have to pass through all of them to the vm.</p>
-<p>It is because same iommu group share the same IOVA (I/O Virtual Address) and IOMMU cannot identify devices.</p>
-</blockquote>
+</code></pre></div><p>ACSCap is the ACS Capability, +/- indicates supported/not supported.</p>
+<p>ACSCtl is the ACS capability that is enabled, +/- indicates enabled/disabled.</p>
 <h2 id=acs-override-patch>
-ACS override patch
+ACS Override Patch
 <a class=anchor href=#acs-override-patch>#</a>
 </h2>
-<ul>
-<li>Overrides ACS (install linux-vfio)</li>
-</ul>
+<p>Install linux-vfio and overwrite ACS.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S linux-vfio
-</code></pre></div><ul>
-<li>Add kernel option</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses&#34;
+</code></pre></div><p>Add kernel options and update the grub configuration.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/default/grub
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses&#34;
 </span><span style=color:#f92672></span><span style=color:#a6e22e>+GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses pcie_acs_override=downstream&#34;
-</span></code></pre></div><ul>
-<li>Reboot and check kernel</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>mori@arch-server ~ % uname -a
-Linux arch-server 5.11.8-arch1-1-vfio #1 SMP PREEMPT Sat, 27 Mar 2021 08:40:28 +0000 x86_64 GNU/Linux
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
+reboot
 </code></pre></div><h2 id=create-vms>
 Create VMs
 <a class=anchor href=#create-vms>#</a>
 </h2>
-<ul>
-<li>Creating VMs</li>
-</ul>
+<p>Create a VM in Virtual Machine Manager.</p>
 <p><img src=ubuntu-vm-overview.png alt=Overview></p>
 <p><img src=ubuntu-vm-vcpu.png alt=vCPU></p>
 <p><img src=ubuntu-vm-mem.png alt=Memory></p>
@@ -588,11 +564,12 @@ Create VMs
 IP info
 <a class=anchor href=#ip-info>#</a>
 </h2>
+<p>The network information before and after starting the VM is as follows.</p>
 <ul>
-<li>Host (before boot VMs)</li>
+<li>Before:</li>
 </ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>mori@arch-server ~ % ip a | grep enp1s
-3: enp1s0f0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ip a | grep enp1s
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>3: enp1s0f0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
     inet 192.168.0.170/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0
 4: enp1s0f1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
     inet 192.168.0.171/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1
@@ -613,10 +590,10 @@ IP info
 20: enp1s0f1v0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
     inet 192.168.0.136/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v0
 </code></pre></div><ul>
-<li>Host (after boot VMs)</li>
+<li>After:</li>
 </ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>mori@arch-server ~ % ip a | grep enp1s
-3: enp1s0f0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ip a | grep enp1s
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>3: enp1s0f0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
     inet 192.168.0.170/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0
 4: enp1s0f1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
     inet 192.168.0.171/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1
@@ -632,18 +609,11 @@ IP info
     inet 192.168.0.191/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v2
 12: enp1s0f1v3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
     inet 192.168.0.117/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v3
-</code></pre></div><ul>
-<li>VM1</li>
-</ul>
-<p><img src=vm1-ip.png alt=ip></p>
-<ul>
-<li>VM2</li>
-</ul>
-<p><img src=vm2-ip.png alt=ip></p>
-<h2 id=speedtest>
+</code></pre></div><h2 id=speedtest>
 Speedtest
 <a class=anchor href=#speedtest>#</a>
 </h2>
+<p>I ran a speed test on the host and VM to check the speed. I was expecting to get near-native speed with SR-IOV, but the overhead was unexpectedly large.</p>
 <ul>
 <li>Host</li>
 </ul>
@@ -693,11 +663,16 @@ References
 <ul>
 <li><a href=#configurations-for-single-root-io-virtualization>Configurations for Single Root I/O Virtualization</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#hardware-setting>Hardware setting</a></li>
+<li><a href=#system-setup>System Setup</a></li>
+<li><a href=#configurations-for-bios>Configurations for BIOS</a></li>
 <li><a href=#enable-sr-iov>Enable SR-IOV</a></li>
+<li><a href=#grub>Grub</a>
+<ul>
+<li><a href=#when-the-error-occurs>When the Error Occurs</a></li>
+</ul>
+</li>
 <li><a href=#check-support-for-acs-access-control-services>Check support for ACS (Access Control Services)</a></li>
-<li><a href=#acs-override-patch>ACS override patch</a></li>
+<li><a href=#acs-override-patch>ACS Override Patch</a></li>
 <li><a href=#create-vms>Create VMs</a></li>
 <li><a href=#ip-info>IP info</a></li>
 <li><a href=#speedtest>Speedtest</a></li>

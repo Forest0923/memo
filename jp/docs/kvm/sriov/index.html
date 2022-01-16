@@ -1,0 +1,632 @@
+<!doctype html><html lang=jp dir=ltr>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="SR-IOV の設定 #  SR-IOV（Single Root I/O Virtualization）は一つの物理的なデバイスをハイパーバイザなどから複数の別のデバイスのように認識させることができるハードウェアの機能です．例えば SR-IOV に対応した一つの NIC を搭載したマシンで SR-IOV を用いると複数の NIC を搭載しているかのように認識させることができ，個々の NIC をそれぞれ VM にパススルーすることもできます．
+このページでは KVM で SR-IOV を使用する際のメモをまとめています．
+環境 #   Hardware  CPU: Intel Core-i9 9900K NIC: Intel Corporation I350 Gigabit Network Connection Motherboard: PRIME H310M-AT R2.0   OS  Host: Arch Guest  VM1: ubuntu 20.04 server VM2: ubuntu 20.04 server      BIOS の設定 #  BIOS 上で VT-d を有効化します．">
+<meta name=theme-color content="#FFFFFF">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="SR-IOV の設定">
+<meta property="og:description" content="SR-IOV の設定 #  SR-IOV（Single Root I/O Virtualization）は一つの物理的なデバイスをハイパーバイザなどから複数の別のデバイスのように認識させることができるハードウェアの機能です．例えば SR-IOV に対応した一つの NIC を搭載したマシンで SR-IOV を用いると複数の NIC を搭載しているかのように認識させることができ，個々の NIC をそれぞれ VM にパススルーすることもできます．
+このページでは KVM で SR-IOV を使用する際のメモをまとめています．
+環境 #   Hardware  CPU: Intel Core-i9 9900K NIC: Intel Corporation I350 Gigabit Network Connection Motherboard: PRIME H310M-AT R2.0   OS  Host: Arch Guest  VM1: ubuntu 20.04 server VM2: ubuntu 20.04 server      BIOS の設定 #  BIOS 上で VT-d を有効化します．">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://forest0923.github.io/memo/jp/docs/kvm/sriov/"><meta property="article:section" content="docs">
+<title>SR-IOV の設定 | Memo</title>
+<link rel=manifest href=/memo/manifest.json>
+<link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=en href=http://forest0923.github.io/memo/docs/kvm/sriov/ title="Configurations for Single Root I/O Virtualization">
+<link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
+<script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.58dc1c36209611fbb847e89b236190640bfbd89043ce6b3cc53dd6dbede788b7.js integrity="sha256-WNwcNiCWEfu4R+ibI2GQZAv72JBDzms8xT3W2+3niLc=" crossorigin=anonymous></script>
+</head>
+<body dir=ltr>
+<input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control>
+<main class="container flex">
+<aside class=book-menu>
+<div class=book-menu-content>
+<nav>
+<h2 class=book-brand>
+<a class="flex align-center" href=/memo/jp/><span>Memo</span>
+</a>
+</h2>
+<div class=book-search>
+<input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/>
+<div class="book-search-spinner hidden"></div>
+<ul id=book-search-results></ul>
+</div>
+<ul class=book-languages>
+<li>
+<input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between">
+<a role=button class="flex align-center">
+<img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+Japanese
+</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/docs/kvm/sriov/>
+English
+</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Links</h2>
+<ul>
+<li>
+<a href=https://github.com/Forest0923 target=_blank rel=noopener>
+GitHub
+</a>
+</li>
+<li>
+<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
+GitLab
+</a>
+</li>
+</ul>
+<h2>Documents</h2>
+<ul>
+<li>
+<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
+<a role=button>Linux Kernel Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/inst-kernel/>カーネルのインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/rm-kernel/>カーネルの削除</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-systemcall/>システムコールの追加</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-dev/impl-hypercall/>ハイパーコールの実装</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-af9f8fce9fee3f548c5751a8a2f5ece1 class=toggle checked>
+<label for=section-af9f8fce9fee3f548c5751a8a2f5ece1 class="flex justify-between">
+<a role=button>KVM</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/kvm/install/>KVM のインストールと設定</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/kvm/virsh/>virsh の使い方</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/kvm/gpu-passthrough/>KVM における GPU パススルーの設定</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/kvm/sriov/ class=active>SR-IOV の設定</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-fb51f89dbec2637fe7d4c9b6287148ed class=toggle>
+<label for=section-fb51f89dbec2637fe7d4c9b6287148ed class="flex justify-between">
+<a role=button>Arch Linux</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/inst-btrfs-timeshift/>Arch Linux のインストール（BTRFS + Timeshift）</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/inst-btrfs-snapper/>Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/dual-boot-multi/>Dual Booting (multi-disk + Windows10 and Arch Linux)</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/desktop-env/>デスクトップ環境</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/bspwm/>BSPWM のインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/common-apps/>アプリケーションのインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/power-mgr/>電源管理</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/abs/>Arch Build System</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/archlinux/spotify/>Spotify の設定</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between">
+<a role=button>Ubuntu</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/initial-settings/>Ubuntu の初期設定</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/ubuntu/haribote-os/>自作 OS 入門 with Ubuntu</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between">
+<a role=button>Android</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/android/inst-x86/>Android x86</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/android/apk/>リバースエンジニアリング（APK）</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between">
+<a role=button>Git</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-cli/>GitHub CLI</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/github-ssh/>GitHub への SSH 接続</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/usecases/>Git の使い方（使用例）</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/submodule/>サブモジュール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/lfs/>LFS (Large File Storage)</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/git/links/>Git を学ぶ上で参考になるリンク集</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-65032103456e8d3264e1b113fe868d5f class=toggle>
+<label for=section-65032103456e8d3264e1b113fe868d5f class="flex justify-between">
+<a role=button>Programming Language</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/rs-inst/>Install Rust</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/rs-asm/>Inline Assembly in Rust</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/rs-systemcall/>Call Systemcall in Rust</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/rs-cs/>Cheat Sheet for Rust</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/sh-cs/>Cheat Sheet for Shell Script</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/hs-inst/>Install Haskell</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/pl-inst/>Install Prolog</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/curry-inst/>Curry 言語の実行環境構築</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/ml-inst/>Install OCaml</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between">
+<a role=button>LaTeX</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/inst-tex-live/>LaTeX スタートアップ：TeX Live のインストール</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/latex-cs/>LaTeX Cheat Sheet</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/sty/>自作の sty ファイルの作り方</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/latex/minted/>minted を使用したシンタックスハイライト</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between">
+<a role=button>Web Development</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/code-highlight/>シンタックスハイライト</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/latex/>きれいな数式の表示</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/mermaid/>Mermaid</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/web/webtools/>Web Tools</a>
+</li>
+</ul>
+</li>
+<li>
+<input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between">
+<a role=button>Security</a>
+</label>
+<ul>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/pkc/>公開鍵暗号</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/gpg/>GNU Privacy Guard</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/ssh/>SSH</a>
+</li>
+<li>
+<a href=http://forest0923.github.io/memo/jp/docs/security/hack/>Hack</a>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Blog Posts</h2>
+<ul>
+<li>
+<a href=/memo/jp/posts/>
+Posts
+</a>
+</li>
+</ul>
+</nav>
+<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+</div>
+</aside>
+<div class=book-page>
+<header class=book-header>
+<div class="flex align-center justify-between">
+<label for=menu-control>
+<img src=/memo/svg/menu.svg class=book-icon alt=Menu>
+</label>
+<strong>SR-IOV の設定</strong>
+<label for=toc-control>
+<img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
+</label>
+</div>
+<aside class="hidden clearfix">
+<nav id=TableOfContents>
+<ul>
+<li><a href=#sr-iov-の設定>SR-IOV の設定</a>
+<ul>
+<li><a href=#環境>環境</a></li>
+<li><a href=#bios-の設定>BIOS の設定</a></li>
+<li><a href=#sr-iov-の有効化>SR-IOV の有効化</a></li>
+<li><a href=#grub>Grub</a>
+<ul>
+<li><a href=#エラーが発生した場合>エラーが発生した場合</a></li>
+</ul>
+</li>
+<li><a href=#check-support-for-acs-access-control-services>Check support for ACS (Access Control Services)</a></li>
+<li><a href=#acs-override-patch>ACS Override Patch</a></li>
+<li><a href=#create-vms>Create VMs</a></li>
+<li><a href=#ip-info>IP info</a></li>
+<li><a href=#speedtest>Speedtest</a></li>
+<li><a href=#references>References</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+</header>
+<article class=markdown><h1 id=sr-iov-の設定>
+SR-IOV の設定
+<a class=anchor href=#sr-iov-%e3%81%ae%e8%a8%ad%e5%ae%9a>#</a>
+</h1>
+<p>SR-IOV（Single Root I/O Virtualization）は一つの物理的なデバイスをハイパーバイザなどから複数の別のデバイスのように認識させることができるハードウェアの機能です．例えば SR-IOV に対応した一つの NIC を搭載したマシンで SR-IOV を用いると複数の NIC を搭載しているかのように認識させることができ，個々の NIC をそれぞれ VM にパススルーすることもできます．</p>
+<p>このページでは KVM で SR-IOV を使用する際のメモをまとめています．</p>
+<h2 id=環境>
+環境
+<a class=anchor href=#%e7%92%b0%e5%a2%83>#</a>
+</h2>
+<ul>
+<li>Hardware
+<ul>
+<li>CPU: Intel Core-i9 9900K</li>
+<li>NIC: Intel Corporation I350 Gigabit Network Connection</li>
+<li>Motherboard: PRIME H310M-AT R2.0</li>
+</ul>
+</li>
+<li>OS
+<ul>
+<li>Host: Arch</li>
+<li>Guest
+<ul>
+<li>VM1: ubuntu 20.04 server</li>
+<li>VM2: ubuntu 20.04 server</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id=bios-の設定>
+BIOS の設定
+<a class=anchor href=#bios-%e3%81%ae%e8%a8%ad%e5%ae%9a>#</a>
+</h2>
+<p>BIOS 上で VT-d を有効化します．</p>
+<h2 id=sr-iov-の有効化>
+SR-IOV の有効化
+<a class=anchor href=#sr-iov-%e3%81%ae%e6%9c%89%e5%8a%b9%e5%8c%96>#</a>
+</h2>
+<p>modprobe の設定ファイル <code>/etc/modprobe.d/igb.conf</code> を作成します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/modprobe.d/igb.conf
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>options igb max_vfs=4
+#blacklist igbvf
+</code></pre></div><h2 id=grub>
+Grub
+<a class=anchor href=#grub>#</a>
+</h2>
+<p>IOMMU を有効にするために Grub の設定を変更して，カーネルオプションを追加します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/default/grub
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34;
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
+reboot
+</code></pre></div><h3 id=エラーが発生した場合>
+エラーが発生した場合
+<a class=anchor href=#%e3%82%a8%e3%83%a9%e3%83%bc%e3%81%8c%e7%99%ba%e7%94%9f%e3%81%97%e3%81%9f%e5%a0%b4%e5%90%88>#</a>
+</h3>
+<p>dmesg でエラーが確認された場合の対処法です．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo dmesg | grep igb
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>[    2.070715] igb: Intel(R) Gigabit Ethernet Network Driver
+[    2.070717] igb: Copyright (c) 2007-2014 Intel Corporation.
+[    2.126386] igb 0000:01:00.0: added PHC on eth0
+[    2.126389] igb 0000:01:00.0: Intel(R) Gigabit Ethernet Network Connection
+[    2.126389] igb 0000:01:00.0: eth0: (PCIe:5.0Gb/s:Width x4) 80:61:5f:05:e2:ec
+[    2.126465] igb 0000:01:00.0: eth0: PBA No: 106300-000
+[    2.126465] igb 0000:01:00.0: Using MSI-X interrupts. 8 rx queue(s), 8 tx queue(s)
+[    2.180163] igb 0000:01:00.1: added PHC on eth1
+[    2.180164] igb 0000:01:00.1: Intel(R) Gigabit Ethernet Network Connection
+[    2.180165] igb 0000:01:00.1: eth1: (PCIe:5.0Gb/s:Width x4) 80:61:5f:05:e2:ed
+[    2.180238] igb 0000:01:00.1: eth1: PBA No: 106300-000
+[    2.180239] igb 0000:01:00.1: Using MSI-X interrupts. 8 rx queue(s), 8 tx queue(s)
+[    2.274584] igb 0000:01:00.0 enp1s0f0: renamed from eth0
+[    2.317450] igb 0000:01:00.1 enp1s0f1: renamed from eth1
+[    5.510141] igb 0000:01:00.0 enp1s0f0: igb: enp1s0f0 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX/TX
+[    6.363591] igb 0000:01:00.1 enp1s0f1: igb: enp1s0f1 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX/TX
+[  643.338345] igb 0000:01:00.0: can&#39;t enable 2 VFs (bus 02 out of range of [bus 01])
+[  687.182846] igb 0000:01:00.0: can&#39;t enable 2 VFs (bus 02 out of range of [bus 01])
+[  705.005251] igb 0000:01:00.0: can&#39;t enable 1 VFs (bus 02 out of range of [bus 01])
+</code></pre></div><p>Grub のカーネルオプションに次のオプションを追加します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt&#34;
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses&#34;
+</span></code></pre></div><blockquote>
+<p><code>pci=assign-busses</code>: Make the kernel always assign all PCI bus numbers</p>
+<p><a href=https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html>https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html</a></p>
+</blockquote>
+<p>Grub の設定ファイルを生成して再起動します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
+reboot
+</code></pre></div><blockquote>
+<p>Check iommu_group</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>find /sys/kernel/iommu_groups/ -type l
+</code></pre></div></blockquote>
+<h2 id=check-support-for-acs-access-control-services>
+Check support for ACS (Access Control Services)
+<a class=anchor href=#check-support-for-acs-access-control-services>#</a>
+</h2>
+<p>PCI デバイスのリストを出力すると下記のようになっています，</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>lspci | grep Ethernet
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>01:00.0 Ethernet controller: Intel Corporation I350 Gigabit Network Connection (rev 01)
+01:00.1 Ethernet controller: Intel Corporation I350 Gigabit Network Connection (rev 01)
+02:10.0 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:10.1 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:10.4 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:10.5 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:11.0 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:11.1 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:11.4 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+02:11.5 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
+04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 15)
+</code></pre></div><p>ACS をサポートしているか確認します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo lspci -vv | grep <span style=color:#e6db74>&#34;Access Control Services&#34;</span> -C <span style=color:#ae81ff>5</span>
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>...
+        Kernel driver in use: pcieport
+
+00:1d.0 PCI bridge: Intel Corporation 200 Series PCH PCI Express Root Port #11 (rev f0) (prog-if 00 [Normal decode])
+--
+                Device specific mode supported
+                Steering table in TPH capability structure
+        Capabilities: [1c0 v1] Latency Tolerance Reporting
+                Max snoop latency: 71680ns
+                Max no snoop latency: 71680ns
+        Capabilities: [1d0 v1] Access Control Services
+                ACSCap: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
+                ACSCtl: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
+        Kernel driver in use: igb
+        Kernel modules: igb
+
+--
+                Region 3: Memory at 00000000c8060000 (64-bit, prefetchable)
+                VF Migration: offset: 00000000, BIR: 0
+        Capabilities: [1a0 v1] Transaction Processing Hints
+...
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>        Capabilities: [1d0 v1] Access Control Services
+                ACSCap: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
+                ACSCtl: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
+</code></pre></div><p>ACSCap は ACS Capability の意味で +/- で サポートしている/していない を表しています.</p>
+<p>ACSCtl は有効になっている ACS capability の意味で +/- で 有効/無効 を表しています.</p>
+<h2 id=acs-override-patch>
+ACS Override Patch
+<a class=anchor href=#acs-override-patch>#</a>
+</h2>
+<p>linux-vfio をインストールして ACS を上書きします．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S linux-vfio
+</code></pre></div><p>カーネルオプションを追加して grub の設定を更新します．</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/default/grub
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>-GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses&#34;
+</span><span style=color:#f92672></span><span style=color:#a6e22e>+GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses pcie_acs_override=downstream&#34;
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
+reboot
+</code></pre></div><h2 id=create-vms>
+Create VMs
+<a class=anchor href=#create-vms>#</a>
+</h2>
+<p>Virtual Machine Manager で VM を作成します．</p>
+<p><img src=ubuntu-vm-overview.png alt=Overview></p>
+<p><img src=ubuntu-vm-vcpu.png alt=vCPU></p>
+<p><img src=ubuntu-vm-mem.png alt=Memory></p>
+<p><img src=ubuntu-vm-iso.png alt=iso></p>
+<p><img src=ubuntu-vm-nic.png alt=NIC></p>
+<h2 id=ip-info>
+IP info
+<a class=anchor href=#ip-info>#</a>
+</h2>
+<p>VM 起動前と起動後のネットワークの情報を確認すると次のようになっています．</p>
+<ul>
+<li>Before:</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ip a | grep enp1s
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>3: enp1s0f0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    inet 192.168.0.170/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0
+4: enp1s0f1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    inet 192.168.0.171/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1
+6: enp1s0f0v1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.110/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v1
+7: enp1s0f0v2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.111/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v2
+8: enp1s0f0v3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.212/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v3
+10: enp1s0f1v1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.197/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v1
+11: enp1s0f1v2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.191/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v2
+12: enp1s0f1v3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.117/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v3
+19: enp1s0f0v0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.199/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v0
+20: enp1s0f1v0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.136/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v0
+</code></pre></div><ul>
+<li>After:</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ip a | grep enp1s
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>3: enp1s0f0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    inet 192.168.0.170/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0
+4: enp1s0f1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+    inet 192.168.0.171/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1
+6: enp1s0f0v1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.110/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v1
+7: enp1s0f0v2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.111/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v2
+8: enp1s0f0v3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.212/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v3
+10: enp1s0f1v1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.197/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v1
+11: enp1s0f1v2: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.191/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v2
+12: enp1s0f1v3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    inet 192.168.0.117/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v3
+</code></pre></div><h2 id=speedtest>
+Speedtest
+<a class=anchor href=#speedtest>#</a>
+</h2>
+<p>Host と VM でスピードテストを実行して速度を確認します．SR−IOV でネイティブに近い速度が出ると期待していましたが，オーバヘッドは意外と大きくなってしまいました．</p>
+<ul>
+<li>Host</li>
+</ul>
+<pre tabindex=0><code class=language-test data-lang=test>mori@arch-server ~ % speedtest-cli --server 15047
+Retrieving speedtest.net configuration...
+Testing from NTT (122.24.178.237)...
+Retrieving speedtest.net server list...
+Retrieving information for the selected server...
+Hosted by OPEN Project (via 20G SINET) (Tokyo) [1.82 km]: 50.513 ms
+Testing download speed................................................................................
+Download: 83.80 Mbit/s
+Testing upload speed......................................................................................................
+Upload: 98.05 Mbit/s
+</code></pre><ul>
+<li>VM1</li>
+</ul>
+<p><img src=vm1-speedtest.png alt=vm1-speedtest></p>
+<ul>
+<li>VM2</li>
+</ul>
+<p><img src=vm2-speedtest.png alt=vm2-speedtest></p>
+<h2 id=references>
+References
+<a class=anchor href=#references>#</a>
+</h2>
+<p><a href=https://downloadmirror.intel.com/13663/eng/readme_5.5.2.txt>https://downloadmirror.intel.com/13663/eng/readme_5.5.2.txt</a></p>
+<p><a href=https://qiita.com/m10i/items/980a350f898f28eac613>https://qiita.com/m10i/items/980a350f898f28eac613</a></p>
+<p><a href=https://metonymical.hatenablog.com/entry/2018/04/11/193408>https://metonymical.hatenablog.com/entry/2018/04/11/193408</a></p>
+<p><a href=https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin/blob/master/docs/vf-setup.md>https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin/blob/master/docs/vf-setup.md</a></p>
+<p><a href=https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/>https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/</a></p>
+<p><a href=https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_%28ACS_override_patch%29>https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_(ACS_override_patch)</a></p>
+<p><a href=https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive>https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive</a></p>
+<p><a href=https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu>https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu</a></p>
+</article>
+<footer class=book-footer>
+<div class="flex flex-wrap justify-between">
+</div>
+<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+</footer>
+<div class=book-comments>
+</div>
+<label for=menu-control class="hidden book-menu-overlay"></label>
+</div>
+<aside class=book-toc>
+<div class=book-toc-content>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#sr-iov-の設定>SR-IOV の設定</a>
+<ul>
+<li><a href=#環境>環境</a></li>
+<li><a href=#bios-の設定>BIOS の設定</a></li>
+<li><a href=#sr-iov-の有効化>SR-IOV の有効化</a></li>
+<li><a href=#grub>Grub</a>
+<ul>
+<li><a href=#エラーが発生した場合>エラーが発生した場合</a></li>
+</ul>
+</li>
+<li><a href=#check-support-for-acs-access-control-services>Check support for ACS (Access Control Services)</a></li>
+<li><a href=#acs-override-patch>ACS Override Patch</a></li>
+<li><a href=#create-vms>Create VMs</a></li>
+<li><a href=#ip-info>IP info</a></li>
+<li><a href=#speedtest>Speedtest</a></li>
+<li><a href=#references>References</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
+</main>
+</body>
+</html>

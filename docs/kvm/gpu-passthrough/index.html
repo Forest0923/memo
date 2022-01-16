@@ -2,18 +2,21 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Configurations for Gpu Passthrough #  System #   Arch Linux CPU: Intel Core-i9 9900K (8 cores, 16 threads) GPT: Nvidia RTX 2060  Initialization #   /etc/default/grub  - GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34; + GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on vfio_iommu_type1.allow_unsafe_interrupts=1 iommu=pt&#34;   /etc/modules-load.d/vfio-pci.conf  + pci_stub + vfio + vfio_iommu_type1 + vfio_pci + kvm + kvm_intel  Update grub.cfg:  sudo grub-mkconfig -o /boot/grub/grub.cfg  Reboot  Isolating the GPU #   Find the device ID of the GPU:  lspci -nn | grep NVIDIA  Output:  01:00.">
+<meta name=description content="Configurations for Gpu Passthrough #  GPU passthrough is a technology that allows VMs to directly access hardware (GPU), and is expected to provide high graphics performance even in a virtualized environment. This page describes how to pass-through an Nvidia GPU to Windows 10 on KVM.
+System #   Host: Arch Linux Guest: Windows 10 CPU: Intel Core-i9 9900K (8 cores, 16 threads) GPT: Nvidia RTX 2060 Memory: 32 GB  Grub #  Change the Grub configuration and generate a config file with grub-mkconfig.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Configurations for Gpu Passthrough">
-<meta property="og:description" content="Configurations for Gpu Passthrough #  System #   Arch Linux CPU: Intel Core-i9 9900K (8 cores, 16 threads) GPT: Nvidia RTX 2060  Initialization #   /etc/default/grub  - GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34; + GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on vfio_iommu_type1.allow_unsafe_interrupts=1 iommu=pt&#34;   /etc/modules-load.d/vfio-pci.conf  + pci_stub + vfio + vfio_iommu_type1 + vfio_pci + kvm + kvm_intel  Update grub.cfg:  sudo grub-mkconfig -o /boot/grub/grub.cfg  Reboot  Isolating the GPU #   Find the device ID of the GPU:  lspci -nn | grep NVIDIA  Output:  01:00.">
+<meta property="og:description" content="Configurations for Gpu Passthrough #  GPU passthrough is a technology that allows VMs to directly access hardware (GPU), and is expected to provide high graphics performance even in a virtualized environment. This page describes how to pass-through an Nvidia GPU to Windows 10 on KVM.
+System #   Host: Arch Linux Guest: Windows 10 CPU: Intel Core-i9 9900K (8 cores, 16 threads) GPT: Nvidia RTX 2060 Memory: 32 GB  Grub #  Change the Grub configuration and generate a config file with grub-mkconfig.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/kvm/gpu-passthrough/"><meta property="article:section" content="docs">
 <title>Configurations for Gpu Passthrough | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/kvm/gpu-passthrough/ title="KVM における GPU パススルーの設定">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.cf3105e1d0e2240fb7bb144f18bdd24db8e4a973167d0d9aede220a371052069.js integrity="sha256-zzEF4dDiJA+3uxRPGL3STbjkqXMWfQ2a7eIgo3EFIGk=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.8bdd89222f1cd7413d4e8d4ca9f31caae25957d0ed9f7609306c42d115fc1cc5.js integrity="sha256-i92JIi8c10E9To1MqfMcquJZV9Dtn3YJMGxC0RX8HMU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +45,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/kvm/gpu-passthrough/>
 Japanese
 </a>
 </li>
@@ -152,7 +155,7 @@ GitLab
 <a href=http://forest0923.github.io/memo/docs/kvm/install/>Install KVM</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/kvm/virsh/>Usage of virsh</a>
+<a href=http://forest0923.github.io/memo/docs/kvm/virsh/>How to Use virsh</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/kvm/gpu-passthrough/ class=active>Configurations for Gpu Passthrough</a>
@@ -379,7 +382,7 @@ Posts
 <li><a href=#configurations-for-gpu-passthrough>Configurations for Gpu Passthrough</a>
 <ul>
 <li><a href=#system>System</a></li>
-<li><a href=#initialization>Initialization</a></li>
+<li><a href=#grub>Grub</a></li>
 <li><a href=#isolating-the-gpu>Isolating the GPU</a></li>
 <li><a href=#create-vm>Create VM</a></li>
 <li><a href=#benchmark>Benchmark</a></li>
@@ -393,81 +396,60 @@ Posts
 Configurations for Gpu Passthrough
 <a class=anchor href=#configurations-for-gpu-passthrough>#</a>
 </h1>
+<p>GPU passthrough is a technology that allows VMs to directly access hardware (GPU), and is expected to provide high graphics performance even in a virtualized environment. This page describes how to pass-through an Nvidia GPU to Windows 10 on KVM.</p>
 <h2 id=system>
 System
 <a class=anchor href=#system>#</a>
 </h2>
 <ul>
-<li>Arch Linux</li>
+<li>Host: Arch Linux</li>
+<li>Guest: Windows 10</li>
 <li>CPU: Intel Core-i9 9900K (8 cores, 16 threads)</li>
 <li>GPT: Nvidia RTX 2060</li>
+<li>Memory: 32 GB</li>
 </ul>
-<h2 id=initialization>
-Initialization
-<a class=anchor href=#initialization>#</a>
+<h2 id=grub>
+Grub
+<a class=anchor href=#grub>#</a>
 </h2>
-<ul>
-<li>/etc/default/grub</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34;
+<p>Change the Grub configuration and generate a config file with grub-mkconfig.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/default/grub
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet&#34;
 </span><span style=color:#f92672></span><span style=color:#a6e22e>+ GRUB_CMDLINE_LINUX_DEFAULT=&#34;loglevel=3 quiet intel_iommu=on vfio_iommu_type1.allow_unsafe_interrupts=1 iommu=pt&#34;
 </span><span style=color:#a6e22e></span>
-</code></pre></div><ul>
-<li>/etc/modules-load.d/vfio-pci.conf</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ pci_stub
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/modules-load.d/vfio-pci.conf
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ pci_stub
 </span><span style=color:#a6e22e>+ vfio
 </span><span style=color:#a6e22e>+ vfio_iommu_type1
 </span><span style=color:#a6e22e>+ vfio_pci
 </span><span style=color:#a6e22e>+ kvm
 </span><span style=color:#a6e22e>+ kvm_intel
-</span></code></pre></div><ul>
-<li>Update grub.cfg:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
-</code></pre></div><ul>
-<li>Reboot</li>
-</ul>
-<h2 id=isolating-the-gpu>
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo grub-mkconfig -o /boot/grub/grub.cfg
+reboot
+</code></pre></div><h2 id=isolating-the-gpu>
 Isolating the GPU
 <a class=anchor href=#isolating-the-gpu>#</a>
 </h2>
-<ul>
-<li>Find the device ID of the GPU:</li>
-</ul>
+<p>Find the ID of the device you want to pass through. NVIDIA&rsquo;s PCI devices can be found as follows.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>lspci -nn | grep NVIDIA
-</code></pre></div><ul>
-<li>Output:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>01:00.0 VGA compatible controller [0300]: NVIDIA Corporation TU106 [GeForce RTX 2060 Rev. A] [10de:1f08] (rev a1)
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>01:00.0 VGA compatible controller [0300]: NVIDIA Corporation TU106 [GeForce RTX 2060 Rev. A] [10de:1f08] (rev a1)
 01:00.1 Audio device [0403]: NVIDIA Corporation TU106 High Definition Audio Controller [10de:10f9] (rev a1)
 01:00.2 USB controller [0c03]: NVIDIA Corporation TU106 USB 3.1 Host Controller [10de:1ada] (rev a1)
 01:00.3 Serial bus controller [0c80]: NVIDIA Corporation TU106 USB Type-C UCSI Controller [10de:1adb] (rev a1)
-</code></pre></div><ul>
-<li>
-<p>ID: <code>10de:1f08</code>, <code>10de:10f9</code>, <code>10de:1ada</code>, <code>10de:1adb</code></p>
-</li>
-<li>
-<p>/etc/modprobe.d/vfio.conf</p>
-</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ options vfio-pci ids=10de:1f08, 10de:10f9, 10de:1ada, 10de:1adb
-</span></code></pre></div><ul>
-<li>/etc/mkinitcpio.conf</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- MODULES=(btrfs)
+</code></pre></div><p>From this output, we know that the IDs are <code>10de:1f08</code>, <code>10de:10f9</code>, <code>10de:1ada</code>, and <code>10de:1adb</code>. Based on this, we can configure vfio.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/modprobe.d/vfio.conf
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ options vfio-pci ids=10de:1f08, 10de:10f9, 10de:1ada, 10de:1adb
+</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim /etc/mkinitcpio.conf
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- MODULES=(btrfs)
 </span><span style=color:#f92672></span><span style=color:#a6e22e>+ MODULES=(btrfs vfio vfio_iommu_type1 vfio_pci vfio_virqfd nouveau)
-</span></code></pre></div><ul>
-<li>Update:</li>
-</ul>
+</span></code></pre></div><p>Create initial ramdisk and reboot.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo mkinitcpio -g /boot/linux-custom.img
-</code></pre></div><ul>
-<li>Reboot</li>
-</ul>
-<h2 id=create-vm>
+Reboot
+</code></pre></div><h2 id=create-vm>
 Create VM
 <a class=anchor href=#create-vm>#</a>
 </h2>
+<p>Create a VM using the Virtual Machine Manager. The setting is as follows.</p>
 <ul>
 <li>Overview
 <ul>
@@ -500,8 +482,8 @@ Create VM
 </li>
 <li>Add usb devices for VM.</li>
 <li>Add PCI devices (GPU).</li>
-<li>Edit XML:</li>
 </ul>
+<p>Since Nvidia GPUs are designed to stop running when they detect that they are running in a virtualized environment, we will edit the XML to prevent detection.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff>  &lt;features&gt;
     &lt;acpi/&gt;
     &lt;apic/&gt;
@@ -521,15 +503,17 @@ Create VM
 Benchmark
 <a class=anchor href=#benchmark>#</a>
 </h2>
+<p>The following is a comparison of the scores for the native and virtualized environments when running FFBench.</p>
 <ul>
-<li>Core i9-9900K native:</li>
+<li>Native:</li>
 </ul>
 <p><img src=ffbench_i9-9900k_native.png alt=Core-i9-9900K-native></p>
 <ul>
-<li>Core i9-9900K VM:</li>
+<li>VM:</li>
 </ul>
 <p><img src=ffbench_i9-9900k_vm_h.png alt=Core-i9-9900K-VM>
 <img src=ffbench_i9-9900k_vm_h_taskmanager.png alt=Core-i9-9900K-VM-taskmanager></p>
+<p>In games that require network communication, even if only the GPU is passed through, the game will not run comfortably due to network slowdown. In such cases, you can pass through the NIC as well, so that the game can run in almost the same environment as the native.</p>
 <hr>
 <blockquote>
 <p>References</p>
@@ -556,7 +540,7 @@ Benchmark
 <li><a href=#configurations-for-gpu-passthrough>Configurations for Gpu Passthrough</a>
 <ul>
 <li><a href=#system>System</a></li>
-<li><a href=#initialization>Initialization</a></li>
+<li><a href=#grub>Grub</a></li>
 <li><a href=#isolating-the-gpu>Isolating the GPU</a></li>
 <li><a href=#create-vm>Create VM</a></li>
 <li><a href=#benchmark>Benchmark</a></li>

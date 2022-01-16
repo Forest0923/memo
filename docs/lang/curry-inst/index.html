@@ -2,18 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Install Curry #  About PAKCS #   PAKCS enables to run programs written in Curry language. Curry combines the features of functional and logical programming languages. PAKCS converts Curry code to Prolog and execute.  Install on Ubuntu #   At first, you have to install swi-prolog.  sudo apt-add-repository ppa:swi-prolog/stable sudo apt update sudo apt install swi-prolog  In Ubuntu, you can install PAKCS by following command.">
+<meta name=description content="Install Curry #  PAKCS is an interpreter that can execute programs written in the Curry language. Curry is a language that combines features of both functional and logic programming languages, and PAKCS converts Curry code into Prolog for execution.
+Install #  Arch paru -S pakcs Ubuntu sudo apt-add-repository ppa:swi-prolog/stable sudo apt update sudo apt install swi-prolog sudo apt install pakcs  download site
+Basic Usage #   Sample program:  -- family.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Install Curry">
-<meta property="og:description" content="Install Curry #  About PAKCS #   PAKCS enables to run programs written in Curry language. Curry combines the features of functional and logical programming languages. PAKCS converts Curry code to Prolog and execute.  Install on Ubuntu #   At first, you have to install swi-prolog.  sudo apt-add-repository ppa:swi-prolog/stable sudo apt update sudo apt install swi-prolog  In Ubuntu, you can install PAKCS by following command.">
+<meta property="og:description" content="Install Curry #  PAKCS is an interpreter that can execute programs written in the Curry language. Curry is a language that combines features of both functional and logic programming languages, and PAKCS converts Curry code into Prolog for execution.
+Install #  Arch paru -S pakcs Ubuntu sudo apt-add-repository ppa:swi-prolog/stable sudo apt update sudo apt install swi-prolog sudo apt install pakcs  download site
+Basic Usage #   Sample program:  -- family.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/lang/curry-inst/"><meta property="article:section" content="docs">
 <title>Install Curry | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/lang/curry-inst/ title="Curry 言語の実行環境構築">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.cf3105e1d0e2240fb7bb144f18bdd24db8e4a973167d0d9aede220a371052069.js integrity="sha256-zzEF4dDiJA+3uxRPGL3STbjkqXMWfQ2a7eIgo3EFIGk=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.8bdd89222f1cd7413d4e8d4ca9f31caae25957d0ed9f7609306c42d115fc1cc5.js integrity="sha256-i92JIi8c10E9To1MqfMcquJZV9Dtn3YJMGxC0RX8HMU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +47,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/lang/curry-inst/>
 Japanese
 </a>
 </li>
@@ -152,7 +157,7 @@ GitLab
 <a href=http://forest0923.github.io/memo/docs/kvm/install/>Install KVM</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/kvm/virsh/>Usage of virsh</a>
+<a href=http://forest0923.github.io/memo/docs/kvm/virsh/>How to Use virsh</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/kvm/gpu-passthrough/>Configurations for Gpu Passthrough</a>
@@ -378,9 +383,7 @@ Posts
 <ul>
 <li><a href=#install-curry>Install Curry</a>
 <ul>
-<li><a href=#about-pakcs>About PAKCS</a></li>
-<li><a href=#install-on-ubuntu>Install on Ubuntu</a></li>
-<li><a href=#install-on-arch>Install on Arch</a></li>
+<li><a href=#install>Install</a></li>
 <li><a href=#basic-usage>Basic Usage</a></li>
 </ul>
 </li>
@@ -392,46 +395,23 @@ Posts
 Install Curry
 <a class=anchor href=#install-curry>#</a>
 </h1>
-<h2 id=about-pakcs>
-About PAKCS
-<a class=anchor href=#about-pakcs>#</a>
+<p>PAKCS is an interpreter that can execute programs written in the Curry language. Curry is a language that combines features of both functional and logic programming languages, and PAKCS converts Curry code into Prolog for execution.</p>
+<h2 id=install>
+Install
+<a class=anchor href=#install>#</a>
 </h2>
-<ul>
-<li>PAKCS enables to run programs written in Curry language.</li>
-<li>Curry combines the features of functional and logical programming languages.</li>
-<li>PAKCS converts Curry code to Prolog and execute.</li>
-</ul>
-<h2 id=install-on-ubuntu>
-Install on Ubuntu
-<a class=anchor href=#install-on-ubuntu>#</a>
-</h2>
-<ul>
-<li>At first, you have to install swi-prolog.</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt-add-repository ppa:swi-prolog/stable
+<div class=book-tabs><input type=radio class=toggle name=tabs-install id=tabs-install-0 checked>
+<label for=tabs-install-0>Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S pakcs
+</code></pre></div></div><input type=radio class=toggle name=tabs-install id=tabs-install-1>
+<label for=tabs-install-1>Ubuntu</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt-add-repository ppa:swi-prolog/stable
 sudo apt update
 sudo apt install swi-prolog
-</code></pre></div><ul>
-<li>In Ubuntu, you can install PAKCS by following command.</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install pakcs
-</code></pre></div><ul>
-<li>However, due to unknown errors, it is recommended to download from <a href=https://www.informatik.uni-kiel.de/~pakcs/download.html>download site</a>.</li>
-<li>Decompress the downloaded file and run the following command.</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>make SWIPROLOG<span style=color:#f92672>=</span>/usr/bin/swipl
-</code></pre></div><ul>
-<li>Add <code>pakcs-version/bin</code> to PATH.</li>
-</ul>
-<h2 id=install-on-arch>
-Install on Arch
-<a class=anchor href=#install-on-arch>#</a>
-</h2>
-<ul>
-<li>Commands:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>paru -S pakcs
-</code></pre></div><h2 id=basic-usage>
+sudo apt install pakcs
+</code></pre></div></div></div>
+<p><a href=https://www.informatik.uni-kiel.de/~pakcs/download.html>download site</a></p>
+<h2 id=basic-usage>
 Basic Usage
 <a class=anchor href=#basic-usage>#</a>
 </h2>
@@ -506,9 +486,7 @@ family&gt;
 <ul>
 <li><a href=#install-curry>Install Curry</a>
 <ul>
-<li><a href=#about-pakcs>About PAKCS</a></li>
-<li><a href=#install-on-ubuntu>Install on Ubuntu</a></li>
-<li><a href=#install-on-arch>Install on Arch</a></li>
+<li><a href=#install>Install</a></li>
 <li><a href=#basic-usage>Basic Usage</a></li>
 </ul>
 </li>

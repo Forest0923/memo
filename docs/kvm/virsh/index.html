@@ -2,18 +2,21 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Usage of virsh #  Commands #  sudo virsh setvcpus [vm_name] [vcpu_num] --config --maximum sudo virsh setvcpus [vm_name] [vcpu_num] --config ">
+<meta name=description content="How to Use virsh #  virsh is a tool for managing KVM and Guest VMs via the CLI. This page describes how to use virsh to manage KVM and VMs.
+Change the Number of vCPU Cores #  sudo virsh setvcpus [vm_name] [vcpu_num] --config --maximum sudo virsh setvcpus [vm_name] [vcpu_num] --config ">
 <meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Usage of virsh">
-<meta property="og:description" content="Usage of virsh #  Commands #  sudo virsh setvcpus [vm_name] [vcpu_num] --config --maximum sudo virsh setvcpus [vm_name] [vcpu_num] --config ">
+<meta name=color-scheme content="light dark"><meta property="og:title" content="How to Use virsh">
+<meta property="og:description" content="How to Use virsh #  virsh is a tool for managing KVM and Guest VMs via the CLI. This page describes how to use virsh to manage KVM and VMs.
+Change the Number of vCPU Cores #  sudo virsh setvcpus [vm_name] [vcpu_num] --config --maximum sudo virsh setvcpus [vm_name] [vcpu_num] --config ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/kvm/virsh/"><meta property="article:section" content="docs">
-<title>Usage of virsh | Memo</title>
+<title>How to Use virsh | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/kvm/virsh/ title="virsh の使い方">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.cf3105e1d0e2240fb7bb144f18bdd24db8e4a973167d0d9aede220a371052069.js integrity="sha256-zzEF4dDiJA+3uxRPGL3STbjkqXMWfQ2a7eIgo3EFIGk=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.8bdd89222f1cd7413d4e8d4ca9f31caae25957d0ed9f7609306c42d115fc1cc5.js integrity="sha256-i92JIi8c10E9To1MqfMcquJZV9Dtn3YJMGxC0RX8HMU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +45,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/kvm/virsh/>
 Japanese
 </a>
 </li>
@@ -152,7 +155,7 @@ GitLab
 <a href=http://forest0923.github.io/memo/docs/kvm/install/>Install KVM</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/kvm/virsh/ class=active>Usage of virsh</a>
+<a href=http://forest0923.github.io/memo/docs/kvm/virsh/ class=active>How to Use virsh</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/kvm/gpu-passthrough/>Configurations for Gpu Passthrough</a>
@@ -368,7 +371,7 @@ Posts
 <label for=menu-control>
 <img src=/memo/svg/menu.svg class=book-icon alt=Menu>
 </label>
-<strong>Usage of virsh</strong>
+<strong>How to Use virsh</strong>
 <label for=toc-control>
 <img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
 </label>
@@ -376,22 +379,23 @@ Posts
 <aside class="hidden clearfix">
 <nav id=TableOfContents>
 <ul>
-<li><a href=#usage-of-virsh>Usage of virsh</a>
+<li><a href=#how-to-use-virsh>How to Use virsh</a>
 <ul>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#change-the-number-of-vcpu-cores>Change the Number of vCPU Cores</a></li>
 </ul>
 </li>
 </ul>
 </nav>
 </aside>
 </header>
-<article class=markdown><h1 id=usage-of-virsh>
-Usage of virsh
-<a class=anchor href=#usage-of-virsh>#</a>
+<article class=markdown><h1 id=how-to-use-virsh>
+How to Use virsh
+<a class=anchor href=#how-to-use-virsh>#</a>
 </h1>
-<h2 id=commands>
-Commands
-<a class=anchor href=#commands>#</a>
+<p>virsh is a tool for managing KVM and Guest VMs via the CLI. This page describes how to use virsh to manage KVM and VMs.</p>
+<h2 id=change-the-number-of-vcpu-cores>
+Change the Number of vCPU Cores
+<a class=anchor href=#change-the-number-of-vcpu-cores>#</a>
 </h2>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo virsh setvcpus <span style=color:#f92672>[</span>vm_name<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>vcpu_num<span style=color:#f92672>]</span> --config --maximum
 sudo virsh setvcpus <span style=color:#f92672>[</span>vm_name<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>vcpu_num<span style=color:#f92672>]</span> --config
@@ -409,9 +413,9 @@ sudo virsh setvcpus <span style=color:#f92672>[</span>vm_name<span style=color:#
 <div class=book-toc-content>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#usage-of-virsh>Usage of virsh</a>
+<li><a href=#how-to-use-virsh>How to Use virsh</a>
 <ul>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#change-the-number-of-vcpu-cores>Change the Number of vCPU Cores</a></li>
 </ul>
 </li>
 </ul>

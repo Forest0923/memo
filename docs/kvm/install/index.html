@@ -2,18 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Install KVM #  Commands #   Install:  # Arch sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 \  ebtables dnsmasq bridge-utils openbsd-netcat # Ubuntu server sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst  Systemd:  sudo systemctl enable libvirtd.service sudo systemctl start libvirtd.service  Configuring bridge:  sudo vim br10.xml <network> <name>br10</name> <forward mode='nat'> <nat> <port start='1024' end='65535'/> </nat> </forward> <bridge name='br10' stp='on' delay='0'/> <ip address='192.">
+<meta name=description content="Install KVM #  Install #  Arch sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 \  ebtables dnsmasq bridge-utils openbsd-netcat Ubuntu sudo apt install qemu-kvm libvirt-daemon-system \  libvirt-clients bridge-utils virtinst  Configrations #  Configure the systemd service to automatically enable the libvirt daemon.
+sudo systemctl enable libvirtd.service sudo systemctl start libvirtd.service Create an xml file to configure the port and IP address settings.
+sudo vim br0.xml <network> <name>br0</name> <forward mode='nat'> <nat> <port start='1024' end='65535'/> </nat> </forward> <bridge name='br0' stp='on' delay='0'/> <ip address='192.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Install KVM">
-<meta property="og:description" content="Install KVM #  Commands #   Install:  # Arch sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 \  ebtables dnsmasq bridge-utils openbsd-netcat # Ubuntu server sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst  Systemd:  sudo systemctl enable libvirtd.service sudo systemctl start libvirtd.service  Configuring bridge:  sudo vim br10.xml <network> <name>br10</name> <forward mode='nat'> <nat> <port start='1024' end='65535'/> </nat> </forward> <bridge name='br10' stp='on' delay='0'/> <ip address='192.">
+<meta property="og:description" content="Install KVM #  Install #  Arch sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 \  ebtables dnsmasq bridge-utils openbsd-netcat Ubuntu sudo apt install qemu-kvm libvirt-daemon-system \  libvirt-clients bridge-utils virtinst  Configrations #  Configure the systemd service to automatically enable the libvirt daemon.
+sudo systemctl enable libvirtd.service sudo systemctl start libvirtd.service Create an xml file to configure the port and IP address settings.
+sudo vim br0.xml <network> <name>br0</name> <forward mode='nat'> <nat> <port start='1024' end='65535'/> </nat> </forward> <bridge name='br0' stp='on' delay='0'/> <ip address='192.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/kvm/install/"><meta property="article:section" content="docs">
 <title>Install KVM | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/kvm/install/ title="KVM のインストールと設定">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.cf3105e1d0e2240fb7bb144f18bdd24db8e4a973167d0d9aede220a371052069.js integrity="sha256-zzEF4dDiJA+3uxRPGL3STbjkqXMWfQ2a7eIgo3EFIGk=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.8bdd89222f1cd7413d4e8d4ca9f31caae25957d0ed9f7609306c42d115fc1cc5.js integrity="sha256-i92JIi8c10E9To1MqfMcquJZV9Dtn3YJMGxC0RX8HMU=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +47,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/kvm/install/>
 Japanese
 </a>
 </li>
@@ -152,7 +157,7 @@ GitLab
 <a href=http://forest0923.github.io/memo/docs/kvm/install/ class=active>Install KVM</a>
 </li>
 <li>
-<a href=http://forest0923.github.io/memo/docs/kvm/virsh/>Usage of virsh</a>
+<a href=http://forest0923.github.io/memo/docs/kvm/virsh/>How to Use virsh</a>
 </li>
 <li>
 <a href=http://forest0923.github.io/memo/docs/kvm/gpu-passthrough/>Configurations for Gpu Passthrough</a>
@@ -378,7 +383,8 @@ Posts
 <ul>
 <li><a href=#install-kvm>Install KVM</a>
 <ul>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#install>Install</a></li>
+<li><a href=#configrations>Configrations</a></li>
 </ul>
 </li>
 </ul>
@@ -389,47 +395,46 @@ Posts
 Install KVM
 <a class=anchor href=#install-kvm>#</a>
 </h1>
-<h2 id=commands>
-Commands
-<a class=anchor href=#commands>#</a>
+<h2 id=install>
+Install
+<a class=anchor href=#install>#</a>
 </h2>
-<ul>
-<li>Install:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#75715e># Arch</span>
-sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 <span style=color:#ae81ff>\
+<div class=book-tabs><input type=radio class=toggle name=tabs-install id=tabs-install-0 checked>
+<label for=tabs-install-0>Arch</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>               ebtables dnsmasq bridge-utils openbsd-netcat
-<span style=color:#75715e># Ubuntu server</span>
-sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst
-</code></pre></div><ul>
-<li>Systemd:</li>
-</ul>
+</code></pre></div></div><input type=radio class=toggle name=tabs-install id=tabs-install-1>
+<label for=tabs-install-1>Ubuntu</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo apt install qemu-kvm libvirt-daemon-system <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>                  libvirt-clients bridge-utils virtinst
+</code></pre></div></div></div>
+<h2 id=configrations>
+Configrations
+<a class=anchor href=#configrations>#</a>
+</h2>
+<p>Configure the systemd service to automatically enable the libvirt daemon.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo systemctl enable libvirtd.service
 sudo systemctl start libvirtd.service
-</code></pre></div><ul>
-<li>Configuring bridge:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim br10.xml
+</code></pre></div><p>Create an xml file to configure the port and IP address settings.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo vim br0.xml
 </code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;network&gt;</span>
-  <span style=color:#f92672>&lt;name&gt;</span>br10<span style=color:#f92672>&lt;/name&gt;</span>
+  <span style=color:#f92672>&lt;name&gt;</span>br0<span style=color:#f92672>&lt;/name&gt;</span>
   <span style=color:#f92672>&lt;forward</span> <span style=color:#a6e22e>mode=</span><span style=color:#e6db74>&#39;nat&#39;</span><span style=color:#f92672>&gt;</span>
     <span style=color:#f92672>&lt;nat&gt;</span>
       <span style=color:#f92672>&lt;port</span> <span style=color:#a6e22e>start=</span><span style=color:#e6db74>&#39;1024&#39;</span> <span style=color:#a6e22e>end=</span><span style=color:#e6db74>&#39;65535&#39;</span><span style=color:#f92672>/&gt;</span>
     <span style=color:#f92672>&lt;/nat&gt;</span>
   <span style=color:#f92672>&lt;/forward&gt;</span>
-  <span style=color:#f92672>&lt;bridge</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;br10&#39;</span> <span style=color:#a6e22e>stp=</span><span style=color:#e6db74>&#39;on&#39;</span> <span style=color:#a6e22e>delay=</span><span style=color:#e6db74>&#39;0&#39;</span><span style=color:#f92672>/&gt;</span>
+  <span style=color:#f92672>&lt;bridge</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#39;br0&#39;</span> <span style=color:#a6e22e>stp=</span><span style=color:#e6db74>&#39;on&#39;</span> <span style=color:#a6e22e>delay=</span><span style=color:#e6db74>&#39;0&#39;</span><span style=color:#f92672>/&gt;</span>
   <span style=color:#f92672>&lt;ip</span> <span style=color:#a6e22e>address=</span><span style=color:#e6db74>&#39;192.168.30.1&#39;</span> <span style=color:#a6e22e>netmask=</span><span style=color:#e6db74>&#39;255.255.255.0&#39;</span><span style=color:#f92672>&gt;</span>
     <span style=color:#f92672>&lt;dhcp&gt;</span>
       <span style=color:#f92672>&lt;range</span> <span style=color:#a6e22e>start=</span><span style=color:#e6db74>&#39;192.168.30.50&#39;</span> <span style=color:#a6e22e>end=</span><span style=color:#e6db74>&#39;192.168.30.200&#39;</span><span style=color:#f92672>/&gt;</span>
     <span style=color:#f92672>&lt;/dhcp&gt;</span>
   <span style=color:#f92672>&lt;/ip&gt;</span>
 <span style=color:#f92672>&lt;/network&gt;</span>
-</code></pre></div><ul>
-<li>Activate network:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo virsh net-define br10.xml
-sudo virsh net-start br10
-sudo virsh net-autostart br10
+</code></pre></div><p>Register the information of the created network.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo virsh net-define br0.xml
+sudo virsh net-start br0
+sudo virsh net-autostart br0
 </code></pre></div></article>
 <footer class=book-footer>
 <div class="flex flex-wrap justify-between">
@@ -446,7 +451,8 @@ sudo virsh net-autostart br10
 <ul>
 <li><a href=#install-kvm>Install KVM</a>
 <ul>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#install>Install</a></li>
+<li><a href=#configrations>Configrations</a></li>
 </ul>
 </li>
 </ul>

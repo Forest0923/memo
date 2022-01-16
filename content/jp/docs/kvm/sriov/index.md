@@ -1,16 +1,16 @@
 ---
-title: "Configurations for Single Root I/O Virtualization"
+title: "SR-IOV の設定"
 draft: false
 weight: 40
 ---
 
-# Configurations for Single Root I/O Virtualization
+# SR-IOV の設定
 
-SR-IOV (Single Root I/O Virtualization) is a hardware feature that allows a single physical device to be recognized by a hypervisor as if it were multiple separate devices. For example, a machine with a single NIC that supports SR-IOV can be recognized as if it has multiple NICs by using SR-IOV, and each NIC can be passed through to the VM.
+SR-IOV（Single Root I/O Virtualization）は一つの物理的なデバイスをハイパーバイザなどから複数の別のデバイスのように認識させることができるハードウェアの機能です．例えば SR-IOV に対応した一つの NIC を搭載したマシンで SR-IOV を用いると複数の NIC を搭載しているかのように認識させることができ，個々の NIC をそれぞれ VM にパススルーすることもできます．
 
-This page contains some notes on using SR-IOV with KVM.
+このページでは KVM で SR-IOV を使用する際のメモをまとめています．
 
-## System Setup
+## 環境
 
 - Hardware
   - CPU: Intel Core-i9 9900K
@@ -22,13 +22,13 @@ This page contains some notes on using SR-IOV with KVM.
     - VM1: ubuntu 20.04 server
     - VM2: ubuntu 20.04 server
 
-## Configurations for BIOS
+## BIOS の設定
 
-Enable VT-d in the BIOS.
+BIOS 上で VT-d を有効化します．
 
-## Enable SR-IOV
+## SR-IOV の有効化
 
-Create a configuration file `/etc/modprobe.d/igb.conf` for modprobe.
+modprobe の設定ファイル `/etc/modprobe.d/igb.conf` を作成します．
 
 ```sh
 sudo vim /etc/modprobe.d/igb.conf
@@ -41,7 +41,7 @@ options igb max_vfs=4
 
 ## Grub
 
-To enable IOMMU, change the Grub configuration and add kernel options.
+IOMMU を有効にするために Grub の設定を変更して，カーネルオプションを追加します．
 
 ```sh
 sudo vim /etc/default/grub
@@ -57,9 +57,9 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 reboot
 ```
 
-### When the Error Occurs
+### エラーが発生した場合
 
-Here is what to do if you get an error in dmesg.
+dmesg でエラーが確認された場合の対処法です．
 
 ```sh
 sudo dmesg | grep igb
@@ -87,7 +87,7 @@ sudo dmesg | grep igb
 [  705.005251] igb 0000:01:00.0: can't enable 1 VFs (bus 02 out of range of [bus 01])
 ```
 
-Add the following options to the kernel options in grub configuration.
+Grub のカーネルオプションに次のオプションを追加します．
 
 ```diff
 -GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet intel_iommu=on iommu=pt"
@@ -98,7 +98,7 @@ Add the following options to the kernel options in grub configuration.
 >
 > <https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html>
 
-Create grub config file and reboot.
+Grub の設定ファイルを生成して再起動します．
 
 ```sh
 sudo grub-mkconfig -o /boot/grub/grub.cfg
@@ -113,7 +113,7 @@ reboot
 
 ## Check support for ACS (Access Control Services)
 
-The following is the list of PCI devices.
+PCI デバイスのリストを出力すると下記のようになっています，
 
 ```sh
 lspci | grep Ethernet
@@ -133,7 +133,7 @@ lspci | grep Ethernet
 04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 15)
 ```
 
-Check if ACS is supported.
+ACS をサポートしているか確認します．
 
 ```sh
 sudo lspci -vv | grep "Access Control Services" -C 5
@@ -169,19 +169,19 @@ sudo lspci -vv | grep "Access Control Services" -C 5
                 ACSCtl: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
 ```
 
-ACSCap is the ACS Capability, +/- indicates supported/not supported.
+ACSCap は ACS Capability の意味で +/- で サポートしている/していない を表しています.
 
-ACSCtl is the ACS capability that is enabled, +/- indicates enabled/disabled.
+ACSCtl は有効になっている ACS capability の意味で +/- で 有効/無効 を表しています.
 
 ## ACS Override Patch
 
-Install linux-vfio and overwrite ACS.
+linux-vfio をインストールして ACS を上書きします．
 
 ```sh
 paru -S linux-vfio
 ```
 
-Add kernel options and update the grub configuration.
+カーネルオプションを追加して grub の設定を更新します．
 
 ```sh
 sudo vim /etc/default/grub
@@ -199,7 +199,7 @@ reboot
 
 ## Create VMs
 
-Create a VM in Virtual Machine Manager.
+Virtual Machine Manager で VM を作成します．
 
 ![Overview](ubuntu-vm-overview.png)
 
@@ -213,7 +213,7 @@ Create a VM in Virtual Machine Manager.
 
 ## IP info
 
-The network information before and after starting the VM is as follows.
+VM 起動前と起動後のネットワークの情報を確認すると次のようになっています．
 
 - Before:
 
@@ -271,7 +271,7 @@ ip a | grep enp1s
 
 ## Speedtest
 
-I ran a speed test on the host and VM to check the speed. I was expecting to get near-native speed with SR-IOV, but the overhead was unexpectedly large.
+Host と VM でスピードテストを実行して速度を確認します．SR−IOV でネイティブに近い速度が出ると期待していましたが，オーバヘッドは意外と大きくなってしまいました．
 
 - Host
 

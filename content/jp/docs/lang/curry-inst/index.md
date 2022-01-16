@@ -1,14 +1,14 @@
 ---
-title: "Install Curry"
+title: "Curry 言語の実行環境構築"
 draft: false
 weight: 80
 ---
 
-# Install Curry
+# Curry 言語の実行環境構築
 
-PAKCS is an interpreter that can execute programs written in the Curry language. Curry is a language that combines features of both functional and logic programming languages, and PAKCS converts Curry code into Prolog for execution.
+Curry は関数型プログラミング言語と論理型プログラミング言語の特徴を併せ持つ言語で，PAKCS は Curry 言語で書かれたプログラムを実行することができるインタープリタです．PAKCS は Curry のコードを Prolog に変換して実行します。
 
-## Install
+## インストール
 
 {{< tabs "install" >}}
 {{< tab "Arch" >}}
@@ -32,7 +32,7 @@ sudo apt install pakcs
 
 [download site](https://www.informatik.uni-kiel.de/~pakcs/download.html)
 
-## Basic Usage
+## 使い方
 
 - Sample program:
 

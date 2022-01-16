@@ -1,10 +1,10 @@
 ---
-title: "Install KVM"
+title: "KVM のインストールと設定"
 draft: false
 weight: 10
 ---
 
-# Install KVM
+# KVM のインストールと設定
 
 ## Install
 
@@ -29,14 +29,14 @@ sudo apt install qemu-kvm libvirt-daemon-system \
 
 ## Configrations
 
-Configure the systemd service to automatically enable the libvirt daemon.
+libvirt の daemon を自動で有効にするように systemd のサービスを設定します．
 
 ```sh
 sudo systemctl enable libvirtd.service
 sudo systemctl start libvirtd.service
 ```
 
-Create an xml file to configure the port and IP address settings.
+ネットワークの設定を行います．xml ファイルを作成して，ポートや IP アドレスの設定を行います．
 
 ```sh
 sudo vim br0.xml
@@ -59,7 +59,7 @@ sudo vim br0.xml
 </network>
 ```
 
-Register the information of the created network.
+作成したネットワークの情報を登録します．
 
 ```sh
 sudo virsh net-define br0.xml

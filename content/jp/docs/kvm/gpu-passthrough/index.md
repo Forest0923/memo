@@ -1,14 +1,14 @@
 ---
-title: "Configurations for Gpu Passthrough"
+title: "KVM における GPU パススルーの設定"
 draft: false
 weight: 30
 ---
 
-# Configurations for Gpu Passthrough
+# KVM における GPU パススルーの設定
 
-GPU passthrough is a technology that allows VMs to directly access hardware (GPU), and is expected to provide high graphics performance even in a virtualized environment. This page describes how to pass-through an Nvidia GPU to Windows 10 on KVM.
+GPU パススルーは VM が直接ハードウェア（GPU）にアクセスすることができるようにする技術で仮想化環境でも高いグラフィック性能が期待できます．このページでは KVM 上の Windows 10 に Nvidia の GPU をパススルーする方法をメモしています．
 
-## System
+## 環境
 
 - Host: Arch Linux
 - Guest: Windows 10
@@ -18,7 +18,7 @@ GPU passthrough is a technology that allows VMs to directly access hardware (GPU
 
 ## Grub
 
-Change the Grub configuration and generate a config file with grub-mkconfig.
+Grub の設定を変更して，grub-mkconfig で config ファイルを生成します．
 
 ```sh
 sudo vim /etc/default/grub
@@ -50,7 +50,7 @@ reboot
 
 ## Isolating the GPU
 
-Find the ID of the device you want to pass through. NVIDIA's PCI devices can be found as follows.
+パススルーしたいデバイスの ID を見つけます．PCI デバイスの NVIDIA と書かれたデバイスは下記のように探すことができます．
 
 ```sh
 lspci -nn | grep NVIDIA
@@ -63,7 +63,7 @@ lspci -nn | grep NVIDIA
 01:00.3 Serial bus controller [0c80]: NVIDIA Corporation TU106 USB Type-C UCSI Controller [10de:1adb] (rev a1)
 ```
 
-From this output, we know that the IDs are `10de:1f08`, `10de:10f9`, `10de:1ada`, and `10de:1adb`. Based on this, we can configure vfio.
+この出力から，ID は `10de:1f08`, `10de:10f9`, `10de:1ada`, `10de:1adb` だとわかります．これをもとに vfio の設定を行います．
 
 ```sh
 sudo vim /etc/modprobe.d/vfio.conf
@@ -82,7 +82,7 @@ sudo vim /etc/mkinitcpio.conf
 + MODULES=(btrfs vfio vfio_iommu_type1 vfio_pci vfio_virqfd nouveau)
 ```
 
-Create initial ramdisk and reboot.
+Initial ramdisk を作成して再起動します．
 
 ```sh
 sudo mkinitcpio -g /boot/linux-custom.img
@@ -91,7 +91,7 @@ Reboot
 
 ## Create VM
 
-Create a VM using the Virtual Machine Manager. The setting is as follows.
+Virtual Machine Manager を用いて VM を作成します．設定内容は下記のとおりです．
 
 - Overview
   - Chipset: Q35
@@ -110,7 +110,7 @@ Create a VM using the Virtual Machine Manager. The setting is as follows.
 - Add usb devices for VM.
 - Add PCI devices (GPU).
 
-Since Nvidia GPUs are designed to stop running when they detect that they are running in a virtualized environment, we will edit the XML to prevent detection.
+Nvidia の GPU は仮想化環境で動作していることを検知すると動作を停止する仕様があるため，XML を編集して検知されないように設定します．
 
 ```diff
   <features>
@@ -132,7 +132,7 @@ Since Nvidia GPUs are designed to stop running when they detect that they are ru
 
 ## Benchmark
 
-The following is a comparison of the scores for the native and virtualized environments when running FFBench.
+FFBench を実行したときのネイティブと仮想化環境のスコアを比較すると次のようになります．
 
 - Native:
 
@@ -143,7 +143,7 @@ The following is a comparison of the scores for the native and virtualized envir
 ![Core-i9-9900K-VM](ffbench_i9-9900k_vm_h.png)
 ![Core-i9-9900K-VM-taskmanager](ffbench_i9-9900k_vm_h_taskmanager.png)
 
-In games that require network communication, even if only the GPU is passed through, the game will not run comfortably due to network slowdown. In such cases, you can pass through the NIC as well, so that the game can run in almost the same environment as the native.
+通信が必要なゲームなどでは GPU のみをパススルーしてもネットワーク速度の低下により快適に動作しません．その場合には NIC もパススルーすることでほぼネイティブと同等の環境で動作させることができます．
 
 ---
 

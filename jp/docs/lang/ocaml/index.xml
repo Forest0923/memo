@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OCaml on Memo</title><link>http://forest0923.github.io/memo/jp/docs/lang/ocaml/</link><description>Recent content in OCaml on Memo</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="http://forest0923.github.io/memo/jp/docs/lang/ocaml/index.xml" rel="self" type="application/rss+xml"/><item><title>OCaml 環境構築</title><link>http://forest0923.github.io/memo/jp/docs/lang/ocaml/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/lang/ocaml/install/</guid><description>OCaml 環境構築 # Install # OCaml のパッケージマネージャである opam をインストールします．
+sudo pacman -S opam OCaml のビルドツールである dune は opam を使ってインストールします．
+opam install dune Basic Usage # REPL は ocaml を実行すると使用できます．
+% ocaml OCaml version 4.13.1 # 1+1;; - : int = 2 # exit 0;; Dune を使う場合は dune init を実行します．
+dune init exe myproj . ├── _build │ └── log ├── dune └── myproj.ml dune build を実行してビルドします．
+. ├── _build │ ├── default │ │ ├── dune │ │ ├── myproj.</description></item></channel></rss>

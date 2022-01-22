@@ -1,6 +1,6 @@
 ---
-title: "Programming Languages"
-weight: 80
+title: "Curry"
+weight: 50
 bookFlatSection: false
 bookCollapseSection: true
 ---

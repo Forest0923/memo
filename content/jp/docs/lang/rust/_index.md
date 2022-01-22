@@ -1,6 +1,6 @@
 ---
-title: "Programming Languages"
-weight: 80
+title: "Rust"
+weight: 20
 bookFlatSection: false
 bookCollapseSection: true
 ---

@@ -1,6 +1,6 @@
 ---
-title: "Programming Languages"
-weight: 80
+title: "OCaml"
+weight: 60
 bookFlatSection: false
 bookCollapseSection: true
 ---

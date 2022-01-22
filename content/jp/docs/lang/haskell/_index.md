@@ -1,6 +1,6 @@
 ---
-title: "Programming Languages"
-weight: 80
+title: "Haskell"
+weight: 30
 bookFlatSection: false
 bookCollapseSection: true
 ---

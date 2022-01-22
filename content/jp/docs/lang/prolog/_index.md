@@ -1,6 +1,6 @@
 ---
-title: "Programming Languages"
-weight: 80
+title: "Prolog"
+weight: 40
 bookFlatSection: false
 bookCollapseSection: true
 ---

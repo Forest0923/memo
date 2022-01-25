@@ -6,27 +6,34 @@ weight: 999
 
 # Keymaps
 
-## System
+This is a note on how to assign other keys to keys such as Caps lock.
 
-- Arch Linux
+## Create Custom Key Mapping
 
-## Create custom key mapping
-
-- Get original key maps:
+Create a directory to store the keymap.
 
 ```sh
 sudo mkdir -p /usr/local/share/kbd/keymaps
+```
+
+Use dumpkeys to get the original keymaps and save it in my-keymaps.map.
+
+```sh
 sudo dumpkeys | sudo tee /usr/local/share/kbd/keymaps/my-keymaps.map
 ```
 
-- Change caps-lock into ctrl:
+Modify `/usr/local/share/kbd/keymaps/my-keymaps.map` to change Caps lock to control.
+
+```sh
+sudo vim /usr/local/share/kbd/keymaps/my-keymaps.map
+```
 
 ```diff
 - keycode  58 = Caps_Lock
 + keycode  58 = Control
 ```
 
-- Create /etc/vconsole.conf:
+Create `/etc/vconsole.conf` and load `my-keymaps.map`.
 
 ```diff
 + KEYMAP=/usr/local/share/kbd/keymaps/my-keymaps.map

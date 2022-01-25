@@ -1,19 +1,19 @@
 ---
-title: "Japanese Input"
+title: "日本語入力"
 draft: false
 weight: 999
 ---
 
-# Japanese Input
+# 日本語入力
 
-This is a memo on how to set up Japanese input using Fcitx (Flexible Input Method Framework) and Mozc.
+Fcitx（Flexible Input Method Framework）と Mozc を用いた日本語入力の設定のメモです．
 
-## Install
+## インストール
 
 {{< tabs "japanese-input" >}}
 {{< tab "fcitx5" >}}
 
-fcitx5 is a successor to fcitx.
+fcitx5 は fcitx の後継のソフトウェアです．
 
 ```sh
 sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool
@@ -29,9 +29,9 @@ sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
 {{< /tab >}}
 {{< /tabs >}}
 
-## Configurations
+## 設定
 
-Add Mozc to the input method in fcitx configuration tool. Then, create `~/.pam_environment`.
+fcitx configuration の入力メソッドに Mozc を追加し，`~/.pam_environment` を作成します．
 
 ```sh
 vim ~/.pam_environment
@@ -44,7 +44,7 @@ vim ~/.pam_environment
 + SDL_IM_MODULE DEFAULT=fcitx
 ```
 
-If this does not work, execute the following command.
+これで上手く行かない場合は下記のコマンドを実行します．
 
 ```sh
 gsettings set org.gnome.settings-daemon.plugins.xsettings overrides "{'Gtk/IMModule':<'fcitx'>}"

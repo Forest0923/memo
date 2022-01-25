@@ -1,14 +1,14 @@
 ---
-title: "Gnome Configurations"
+title: "Gnome の設定"
 draft: false
 weight: 999
 ---
 
-# Gnome Configurations
+# Gnome の設定
 
-## Disable wayland
+## Wayland の無効化
 
-Edit `/etc/gdm/custom.conf` as follows.
+`/etc/gdm/custom.conf` を下記のように編集します．
 
 ```diff
 - #WaylandEnable=false
@@ -16,13 +16,13 @@ Edit `/etc/gdm/custom.conf` as follows.
 + DefaultSession=gnome-xorg.desktop
 ```
 
-Otherwise run `/usr/lib/gdm-disable-wayland` as root.
+`/usr/lib/gdm-disable-wayland` を root 権限で実行してもOKです．
 
 ```sh
 sudo /usr/lib/gdm-disable-wayland
 ```
 
-## Turn off alert
+## アラート音を消す
 
 ```sh
 dconf write /org/gnome/desktop/sound/event-sounds "false"

@@ -2,18 +2,25 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Japanese Input #  System #   Arch Linux Gnome  Commands #   Case 1: fcitx + mozc  sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool  Case 2: fcitx5 + mozc  sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool  Create .pam_environment in user home directory:  + GTK_IM_MODULE DEFAULT=fcitx + QT_IM_MODULE DEFAULT=fcitx + XMODIFIERS DEFAULT=\@im=fcitx + SDL_IM_MODULE DEFAULT=fcitx  If mozc does not work, try the following command:  gsettings set org.">
+<meta name=description content="Japanese Input #  This is a memo on how to set up Japanese input using Fcitx (Flexible Input Method Framework) and Mozc.
+Install #  fcitx5 fcitx5 is a successor to fcitx.
+sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool fcitx sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool  Configurations #  Add Mozc to the input method in fcitx configuration tool. Then, create ~/.pam_environment.
+vim ~/.pam_environment + GTK_IM_MODULE DEFAULT=fcitx + QT_IM_MODULE DEFAULT=fcitx + XMODIFIERS DEFAULT=\@im=fcitx + SDL_IM_MODULE DEFAULT=fcitx If this does not work, execute the following command.">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Japanese Input">
-<meta property="og:description" content="Japanese Input #  System #   Arch Linux Gnome  Commands #   Case 1: fcitx + mozc  sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool  Case 2: fcitx5 + mozc  sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool  Create .pam_environment in user home directory:  + GTK_IM_MODULE DEFAULT=fcitx + QT_IM_MODULE DEFAULT=fcitx + XMODIFIERS DEFAULT=\@im=fcitx + SDL_IM_MODULE DEFAULT=fcitx  If mozc does not work, try the following command:  gsettings set org.">
+<meta property="og:description" content="Japanese Input #  This is a memo on how to set up Japanese input using Fcitx (Flexible Input Method Framework) and Mozc.
+Install #  fcitx5 fcitx5 is a successor to fcitx.
+sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool fcitx sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool  Configurations #  Add Mozc to the input method in fcitx configuration tool. Then, create ~/.pam_environment.
+vim ~/.pam_environment + GTK_IM_MODULE DEFAULT=fcitx + QT_IM_MODULE DEFAULT=fcitx + XMODIFIERS DEFAULT=\@im=fcitx + SDL_IM_MODULE DEFAULT=fcitx If this does not work, execute the following command.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/linux-cfg/japanese-input/"><meta property="article:section" content="docs">
 <title>Japanese Input | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/linux-cfg/japanese-input/ title=日本語入力>
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.72073def90872f9050c5b71a0b13060327623ba3cbfdce6a9171e4c969d9d4bc.js integrity="sha256-cgc975CHL5BQxbcaCxMGAydiO6PL/c5qkXHkyWnZ1Lw=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.ac4506dbc6bbd60c47f6f9a5076bb66e7aef31e0ef0bd88a7246ace381de1e3a.js integrity="sha256-rEUG28a71gxH9vmlB2u2bnrvMeDvC9iKckas44HeHjo=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +49,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-cfg/japanese-input/>
 Japanese
 </a>
 </li>
@@ -426,8 +433,8 @@ Posts
 <ul>
 <li><a href=#japanese-input>Japanese Input</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#install>Install</a></li>
+<li><a href=#configurations>Configurations</a></li>
 </ul>
 </li>
 </ul>
@@ -438,36 +445,30 @@ Posts
 Japanese Input
 <a class=anchor href=#japanese-input>#</a>
 </h1>
-<h2 id=system>
-System
-<a class=anchor href=#system>#</a>
+<p>This is a memo on how to set up Japanese input using Fcitx (Flexible Input Method Framework) and Mozc.</p>
+<h2 id=install>
+Install
+<a class=anchor href=#install>#</a>
 </h2>
-<ul>
-<li>Arch Linux</li>
-<li>Gnome</li>
-</ul>
-<h2 id=commands>
-Commands
-<a class=anchor href=#commands>#</a>
-</h2>
-<ul>
-<li>Case 1: fcitx + mozc</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
-</code></pre></div><ul>
-<li>Case 2: fcitx5 + mozc</li>
-</ul>
+<div class=book-tabs><input type=radio class=toggle name=tabs-japanese-input id=tabs-japanese-input-0 checked>
+<label for=tabs-japanese-input-0>fcitx5</label>
+<div class="book-tabs-content markdown-inner"><p>fcitx5 is a successor to fcitx.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool
-</code></pre></div><ul>
-<li>Create <code>.pam_environment</code> in user home directory:</li>
-</ul>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ GTK_IM_MODULE DEFAULT=fcitx
+</code></pre></div></div><input type=radio class=toggle name=tabs-japanese-input id=tabs-japanese-input-1>
+<label for=tabs-japanese-input-1>fcitx</label>
+<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
+</code></pre></div></div></div>
+<h2 id=configurations>
+Configurations
+<a class=anchor href=#configurations>#</a>
+</h2>
+<p>Add Mozc to the input method in fcitx configuration tool. Then, create <code>~/.pam_environment</code>.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim ~/.pam_environment
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ GTK_IM_MODULE DEFAULT=fcitx
 </span><span style=color:#a6e22e>+ QT_IM_MODULE  DEFAULT=fcitx
 </span><span style=color:#a6e22e>+ XMODIFIERS    DEFAULT=\@im=fcitx
 </span><span style=color:#a6e22e>+ SDL_IM_MODULE DEFAULT=fcitx
-</span></code></pre></div><ul>
-<li>If mozc does not work, try the following command:</li>
-</ul>
+</span></code></pre></div><p>If this does not work, execute the following command.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>gsettings set org.gnome.settings-daemon.plugins.xsettings overrides <span style=color:#e6db74>&#34;{&#39;Gtk/IMModule&#39;:&lt;&#39;fcitx&#39;&gt;}&#34;</span>
 </code></pre></div></article>
 <footer class=book-footer>
@@ -485,8 +486,8 @@ Commands
 <ul>
 <li><a href=#japanese-input>Japanese Input</a>
 <ul>
-<li><a href=#system>System</a></li>
-<li><a href=#commands>Commands</a></li>
+<li><a href=#install>Install</a></li>
+<li><a href=#configurations>Configurations</a></li>
 </ul>
 </li>
 </ul>

@@ -2,18 +2,23 @@
 <head>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Gnome Configurations #  Disable wayland #   Edit /etc/gdm/custom.conf:  - #WaylandEnable=false + WaylandEnable=false + DefaultSession=gnome-xorg.desktop  Otherwise run /usr/lib/gdm-disable-wayland as root:  sudo /usr/lib/gdm-disable-wayland  WaylandEnable=false will be written into /run/gdm/custom.conf and it overrides /etc/gdm/custom.conf.  Turn off alert #  dconf write /org/gnome/desktop/sound/event-sounds &#34;false&#34; ">
+<meta name=description content="Gnome Configurations #  Disable wayland #  Edit /etc/gdm/custom.conf as follows.
+- #WaylandEnable=false + WaylandEnable=false + DefaultSession=gnome-xorg.desktop Otherwise run /usr/lib/gdm-disable-wayland as root.
+sudo /usr/lib/gdm-disable-wayland Turn off alert #  dconf write /org/gnome/desktop/sound/event-sounds &#34;false&#34; ">
 <meta name=theme-color content="#FFFFFF">
 <meta name=color-scheme content="light dark"><meta property="og:title" content="Gnome Configurations">
-<meta property="og:description" content="Gnome Configurations #  Disable wayland #   Edit /etc/gdm/custom.conf:  - #WaylandEnable=false + WaylandEnable=false + DefaultSession=gnome-xorg.desktop  Otherwise run /usr/lib/gdm-disable-wayland as root:  sudo /usr/lib/gdm-disable-wayland  WaylandEnable=false will be written into /run/gdm/custom.conf and it overrides /etc/gdm/custom.conf.  Turn off alert #  dconf write /org/gnome/desktop/sound/event-sounds &#34;false&#34; ">
+<meta property="og:description" content="Gnome Configurations #  Disable wayland #  Edit /etc/gdm/custom.conf as follows.
+- #WaylandEnable=false + WaylandEnable=false + DefaultSession=gnome-xorg.desktop Otherwise run /usr/lib/gdm-disable-wayland as root.
+sudo /usr/lib/gdm-disable-wayland Turn off alert #  dconf write /org/gnome/desktop/sound/event-sounds &#34;false&#34; ">
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://forest0923.github.io/memo/docs/linux-cfg/gnome/"><meta property="article:section" content="docs">
 <title>Gnome Configurations | Memo</title>
 <link rel=manifest href=/memo/manifest.json>
 <link rel=icon href=/memo/favicon.png type=image/x-icon>
+<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/linux-cfg/gnome/ title="Gnome の設定">
 <link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
 <script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.72073def90872f9050c5b71a0b13060327623ba3cbfdce6a9171e4c969d9d4bc.js integrity="sha256-cgc975CHL5BQxbcaCxMGAydiO6PL/c5qkXHkyWnZ1Lw=" crossorigin=anonymous></script>
+<script defer src=/memo/en.search.min.ac4506dbc6bbd60c47f6f9a5076bb66e7aef31e0ef0bd88a7246ace381de1e3a.js integrity="sha256-rEUG28a71gxH9vmlB2u2bnrvMeDvC9iKckas44HeHjo=" crossorigin=anonymous></script>
 </head>
 <body dir=ltr>
 <input type=checkbox class="hidden toggle" id=menu-control>
@@ -42,7 +47,7 @@ English
 </label>
 <ul>
 <li>
-<a href=http://forest0923.github.io/memo/jp/>
+<a href=http://forest0923.github.io/memo/jp/docs/linux-cfg/gnome/>
 Japanese
 </a>
 </li>
@@ -442,20 +447,13 @@ Gnome Configurations
 Disable wayland
 <a class=anchor href=#disable-wayland>#</a>
 </h2>
-<ul>
-<li>Edit <code>/etc/gdm/custom.conf</code>:</li>
-</ul>
+<p>Edit <code>/etc/gdm/custom.conf</code> as follows.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- #WaylandEnable=false
 </span><span style=color:#f92672></span><span style=color:#a6e22e>+ WaylandEnable=false
 </span><span style=color:#a6e22e>+ DefaultSession=gnome-xorg.desktop
-</span></code></pre></div><ul>
-<li>Otherwise run <code>/usr/lib/gdm-disable-wayland</code> as root:</li>
-</ul>
+</span></code></pre></div><p>Otherwise run <code>/usr/lib/gdm-disable-wayland</code> as root.</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo /usr/lib/gdm-disable-wayland
-</code></pre></div><ul>
-<li><code>WaylandEnable=false</code> will be written into <code>/run/gdm/custom.conf</code> and it overrides <code>/etc/gdm/custom.conf</code>.</li>
-</ul>
-<h2 id=turn-off-alert>
+</code></pre></div><h2 id=turn-off-alert>
 Turn off alert
 <a class=anchor href=#turn-off-alert>#</a>
 </h2>

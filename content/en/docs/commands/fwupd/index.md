@@ -1,26 +1,30 @@
 ---
-title: "Filmware Update with fwupd"
+title: "fwupd"
 draft: false
 weight: 50
 ---
 
-# Filmware Update with fwupd
-
-## System
-
-- OS: Ubuntu 18.04 (64bit), Arch
-- Device: Thinkpad X1 Carbon (6th)
+# fwupd
 
 ## Install
 
-- Install `fwupd` with:
+
+{{< tabs "install" >}}
+{{< tab "Arch" >}}
 
 ```sh
-# Ubuntu
-sudo apt install fwupd
-# Arch
 sudo pacman -S fwupd
 ```
+
+{{< /tab >}}
+{{< tab "Ubuntu" >}}
+
+```sh
+sudo apt install fwupd
+```
+
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Usage
 
@@ -42,7 +46,7 @@ fwupdmgr get-updates
 fwupdmgr update
 ```
 
-## Tips
+## Troubleshooting
 
 - If the update does not apply, follow the steps below.
 

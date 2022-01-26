@@ -1,12 +1,12 @@
 ---
-title: "Creating Bootable USB with dd"
+title: "dd"
 draft: false
 weight: 80
 ---
 
-# Creating Bootable USB with dd
+# dd
 
-## Commands
+## Bootable USB
 
 ```sh
 dd bs=4M if=/path/to/archlinux.iso of=/dev/sdx status=progress && sync

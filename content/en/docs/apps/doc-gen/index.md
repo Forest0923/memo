@@ -4,9 +4,12 @@ draft: false
 weight: 70
 ---
 
-# Document Generator (doxygen, sourcetrail)
+# Document Generator
 
-## Documentation Generator
+## Doxygen
 
 - [Doxygen](http://www.doxygen.jp/)
+
+## Sourcetrail
+
 - [Sourcetrail](https://www.sourcetrail.com/documentation/)

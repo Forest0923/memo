@@ -1,16 +1,29 @@
 ---
-title: "File Encoding with nkf"
+title: "nkf"
 draft: false
 weight: 20
 ---
 
-# File Encoding with nkf
+# nkf
 
-## Installation
+## Install
+
+{{< tabs "install" >}}
+{{< tab "Arch" >}}
+
+```sh
+paru -S nkf
+```
+
+{{< /tab >}}
+{{< tab "Ubuntu" >}}
 
 ```sh
 sudo apt install nkf
 ```
+
+{{< /tab >}}
+{{< /tabs >}}
 
 ## Usage
 

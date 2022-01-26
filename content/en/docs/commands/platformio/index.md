@@ -1,12 +1,12 @@
 ---
-title: "Embedded System Development with platformio"
+title: "platformio"
 draft: false
 weight: 40
 ---
 
-# Embedded System Development with platformio
+# platformio
 
-## Installation
+## Install
 
 - PlatformIO is written in Python. You can install following command:
 

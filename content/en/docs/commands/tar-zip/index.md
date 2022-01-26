@@ -1,10 +1,10 @@
 ---
-title: "File Compression and Decompression (tar, zip, lzh, bz2)"
+title: "File Compression (tar, zip, lzh, bz2)"
 draft: false
 weight: 10
 ---
 
-# File Compression and Decompression (tar, zip, lzh, bz2)
+# File Compression (tar, zip, lzh, bz2)
 
 ## Usage
 

@@ -1,6 +1,6 @@
 ---
-title: "My Man Pages"
-weight: 20
+title: "App Settings and Usage"
+weight: 67
 bookFlatSection: false
 bookCollapseSection: true
 ---

@@ -43,6 +43,7 @@ sudo apt install flex bison libssl-dev libelf-dev
 
 ```sh
 make olddefconfig
+make localmodconfig
 ```
 
 最後にmake でコンパイルを行います．`-j4`はスレッド数でマシンのCPUによってスレッド数を増やすと高速にコンパイルを行うことができます．

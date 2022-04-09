@@ -43,6 +43,7 @@ Then change directory to `linux-5.4.1` and create `.config` file with the follow
 
 ```sh
 make olddefconfig
+make localmodconfig
 ```
 
 Finally, compile with the following command. `4` indicate how many thread do you use.

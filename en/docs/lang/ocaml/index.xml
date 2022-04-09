@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OCaml on Memo</title><link>http://forest0923.github.io/memo/en/docs/lang/ocaml/</link><description>Recent content in OCaml on Memo</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="http://forest0923.github.io/memo/en/docs/lang/ocaml/index.xml" rel="self" type="application/rss+xml"/><item><title>Install OCaml</title><link>http://forest0923.github.io/memo/en/docs/lang/ocaml/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/lang/ocaml/install/</guid><description>Install OCaml # Install # Install opam, the package manager for OCaml.
+sudo pacman -S opam Dune, the OCaml build tool, is installed using opam.
+opam install dune Basic Usage # REPL can be used by running ocaml.
+% ocaml OCaml version 4.13.1 # 1+1;; - : int = 2 # exit 0;; To create a new project using Dune, run dune init.
+dune init exe myproj .</description></item></channel></rss>

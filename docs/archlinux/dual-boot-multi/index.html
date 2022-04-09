@@ -1,735 +1,125 @@
-<!doctype html><html lang=en dir=ltr>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Dual Booting (multi-disk + Windows10 and Arch Linux) #  System #   Preinstalled OS: Windows 10 (64 bit Home) CPU: Intel GPU: Nvidia Storage:  /dev/sda: Windows sub /dev/sdb: Windows main /dev/sdc: Linux    Install #  Change Keymaps #  Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.
-loadkeys jp106 Time Settings #  Execute the following command to use the NTP (Network Time Protocol).">
-<meta name=theme-color content="#FFFFFF">
-<meta name=color-scheme content="light dark"><meta property="og:title" content="Dual Booting (multi-disk + Windows10 and Arch Linux)">
-<meta property="og:description" content="Dual Booting (multi-disk + Windows10 and Arch Linux) #  System #   Preinstalled OS: Windows 10 (64 bit Home) CPU: Intel GPU: Nvidia Storage:  /dev/sda: Windows sub /dev/sdb: Windows main /dev/sdc: Linux    Install #  Change Keymaps #  Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.
-loadkeys jp106 Time Settings #  Execute the following command to use the NTP (Network Time Protocol).">
-<meta property="og:type" content="article">
-<meta property="og:url" content="http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/"><meta property="article:section" content="docs">
-<title>Dual Booting (multi-disk + Windows10 and Arch Linux) | Memo</title>
-<link rel=manifest href=/memo/manifest.json>
-<link rel=icon href=/memo/favicon.png type=image/x-icon>
-<link rel=alternate hreflang=jp href=http://forest0923.github.io/memo/jp/docs/archlinux/dual-boot-multi/ title="Dual Booting (multi-disk + Windows10 and Arch Linux)">
-<link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous>
-<script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/en.search.min.84dc53670acbcb984c121da3da43473eebda73c74a58231affc8e81f88cb36f1.js integrity="sha256-hNxTZwrLy5hMEh2j2kNHPuvac8dKWCMa/8joH4jLNvE=" crossorigin=anonymous></script>
-</head>
-<body dir=ltr>
-<input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control>
-<main class="container flex">
-<aside class=book-menu>
-<div class=book-menu-content>
-<nav>
-<h2 class=book-brand>
-<a class="flex align-center" href=/memo/><span>Memo</span>
-</a>
-</h2>
-<div class=book-search>
-<input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/>
-<div class="book-search-spinner hidden"></div>
-<ul id=book-search-results></ul>
-</div>
-<ul class=book-languages>
-<li>
-<input type=checkbox id=languages class=toggle>
-<label for=languages class="flex justify-between">
-<a role=button class="flex align-center">
-<img src=/memo/svg/translate.svg class=book-icon alt=Languages>
-English
-</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/jp/docs/archlinux/dual-boot-multi/>
-Japanese
-</a>
-</li>
-</ul>
-</li>
-</ul>
-<h2>Links</h2>
-<ul>
-<li>
-<a href=https://github.com/Forest0923 target=_blank rel=noopener>
-GitHub
-</a>
-</li>
-<li>
-<a href=https://gitlab.com/forest0923 target=_blank rel=noopener>
-GitLab
-</a>
-</li>
-</ul>
-<h2>Documents</h2>
-<ul>
-<li>
-<input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
-<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between">
-<a role=button>Linux Kernel Development</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/linux-dev/inst-kernel/>Install Kernel</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/linux-dev/rm-kernel/>Remove Kernel</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/linux-dev/impl-systemcall/>Implementing Original Systemcalls</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/linux-dev/impl-hypercall/>Implementing Original Hypercalls</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-e7f7b78c1b08d611bac4551c02978c8f class=toggle>
-<label for=section-e7f7b78c1b08d611bac4551c02978c8f class="flex justify-between">
-<a role=button>Linux Configurations</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/linux-cfg/compress-initramfs/>Compress initramfs</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/linux-cfg/gnome/>Gnome Configurations</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/linux-cfg/japanese-input/>Japanese Input</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/linux-cfg/keymaps/>Keymaps</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/linux-cfg/l2tp-ipsec/>L2TP IPsec</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-af9f8fce9fee3f548c5751a8a2f5ece1 class=toggle>
-<label for=section-af9f8fce9fee3f548c5751a8a2f5ece1 class="flex justify-between">
-<a role=button>KVM</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/kvm/install/>Install KVM</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/kvm/virsh/>How to Use virsh</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/kvm/gpu-passthrough/>Configurations for Gpu Passthrough</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/kvm/sriov/>Configurations for Single Root I/O Virtualization</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-fb51f89dbec2637fe7d4c9b6287148ed class=toggle checked>
-<label for=section-fb51f89dbec2637fe7d4c9b6287148ed class="flex justify-between">
-<a role=button>Arch Linux</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux (BTRFS + Timeshift)</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux (Multi-disks + BTRFS + Snapper)</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/ class=active>Dual Booting (multi-disk + Windows10 and Arch Linux)</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/desktop-env/>Desktop Environment</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>Installing BSPWM</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>Install Applications</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/power-mgr/>Power Management</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/abs/>Arch Build System</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/archlinux/spotify/>Configurations for Spotify</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
-<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between">
-<a role=button>Ubuntu</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/ubuntu/initial-settings/>Initial Settings for Ubuntu</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/ubuntu/haribote-os/>Introduction to Creating Your Own OS with Ubuntu</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
-<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between">
-<a role=button>Android</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/android/inst-x86/>Android x86</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/android/apk/>Reverse Engineering (APK)</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-3fb225060dbc6eb1fda04fb19c520b9e class=toggle>
-<label for=section-3fb225060dbc6eb1fda04fb19c520b9e class="flex justify-between">
-<a role=button>Command Usage</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/commands/tar-zip/>File Compression (tar, zip, lzh, bz2)</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/commands/nkf/>nkf</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/commands/ffmpeg/>ffmpeg</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/commands/platformio/>platformio</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/commands/fwupd/>fwupd</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/commands/find-grep/>find and grep</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/commands/dd/>dd</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-2e26f9e2ae19cd498a963518e51406e6 class=toggle>
-<label for=section-2e26f9e2ae19cd498a963518e51406e6 class="flex justify-between">
-<a role=button>App Settings and Usage</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/apps/doc-gen/>Document Generator (doxygen, sourcetrail)</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle>
-<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between">
-<a role=button>Git</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/git/github-cli/>GitHub CLI</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/git/github-ssh/>Connect to GitHub with SSH</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/git/usecases/>Usecases of Git</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/git/submodule/>Submodule</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/git/lfs/>LFS (Large File Storage)</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/git/links/>Useful Links for Studying Git</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-65032103456e8d3264e1b113fe868d5f class=toggle>
-<label for=section-65032103456e8d3264e1b113fe868d5f class="flex justify-between">
-<a role=button>Programming Languages</a>
-</label>
-<ul>
-<li>
-<input type=checkbox id=section-f70978c5f727d4978906748e79108232 class=toggle>
-<label for=section-f70978c5f727d4978906748e79108232 class="flex justify-between">
-<a role=button>Shell Script</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/lang/shellscript/sh-cs/>Shell Script Cheat Sheet</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-1b54b54415d809c14988a95e591bf734 class=toggle>
-<label for=section-1b54b54415d809c14988a95e591bf734 class="flex justify-between">
-<a role=button>Rust</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/lang/rust/install/>Install Rust</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/lang/rust/asm/>Inline Assembly</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/lang/rust/systemcall/>System Call</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/lang/rust/cheatsheet/>Rust Cheat Sheet</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-b7c3dca92cbee13c82905b4e496d39d1 class=toggle>
-<label for=section-b7c3dca92cbee13c82905b4e496d39d1 class="flex justify-between">
-<a role=button>Haskell</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/lang/haskell/install/>Install Haskell</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-6506110d97b7d034e17c0bc99c200b40 class=toggle>
-<label for=section-6506110d97b7d034e17c0bc99c200b40 class="flex justify-between">
-<a role=button>Prolog</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/lang/prolog/install/>Install Prolog</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-7655143f89038a3ff57de743cd803721 class=toggle>
-<label for=section-7655143f89038a3ff57de743cd803721 class="flex justify-between">
-<a role=button>Curry</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/lang/curry/install/>Install Curry</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-70016dc0551fceb969630dfaea2a9fbb class=toggle>
-<label for=section-70016dc0551fceb969630dfaea2a9fbb class="flex justify-between">
-<a role=button>OCaml</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/lang/ocaml/install/>Install OCaml</a>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
-<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between">
-<a role=button>LaTeX</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/latex/inst-tex-live/>Install TeX Live</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/latex/latex-cs/>LaTeX Cheat Sheet</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/latex/sty/>Using Custom Style File</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/latex/minted/>Using minted for Syntax Highlighting</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
-<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between">
-<a role=button>Web Development</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/web/code-highlight/>Syntax Highlighting</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/web/latex/>Expressions like LaTeX</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/web/mermaid/>Mermaid</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/web/webtools/>Web Tools</a>
-</li>
-</ul>
-</li>
-<li>
-<input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
-<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between">
-<a role=button>Security</a>
-</label>
-<ul>
-<li>
-<a href=http://forest0923.github.io/memo/docs/security/pkc/>Public Key Cryptography</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/security/gpg/>GPG Key</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/security/ssh/>SSH</a>
-</li>
-<li>
-<a href=http://forest0923.github.io/memo/docs/security/hack/>Hack</a>
-</li>
-</ul>
-</li>
-</ul>
-<h2>Blog Posts</h2>
-<ul>
-<li>
-<a href=/memo/posts/>
-Posts
-</a>
-</li>
-</ul>
-</nav>
-<script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
-</div>
-</aside>
-<div class=book-page>
-<header class=book-header>
-<div class="flex align-center justify-between">
-<label for=menu-control>
-<img src=/memo/svg/menu.svg class=book-icon alt=Menu>
-</label>
+<!doctype html><html lang=jp dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Dual Booting (multi-disk + Windows10 and Arch Linux) #  環境 #   Preinstalled OS: Windows 10 (64 bit Home) CPU: Intel GPU: Nvidia Storage:  /dev/sda: Windows sub /dev/sdb: Windows main /dev/sdc: Linux    インストール #  キーマップの変更 #  インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．
+loadkeys jp106 時間設定 #  NTP（Network Time Protocol）を使用するために次のコマンドを実行します．
+timedatectl set-ntp true ミラーリストの最適化 #  インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．
+pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Dual Booting (multi-disk + Windows10 and Arch Linux)"><meta property="og:description" content="Dual Booting (multi-disk + Windows10 and Arch Linux) #  環境 #   Preinstalled OS: Windows 10 (64 bit Home) CPU: Intel GPU: Nvidia Storage:  /dev/sda: Windows sub /dev/sdb: Windows main /dev/sdc: Linux    インストール #  キーマップの変更 #  インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．
+loadkeys jp106 時間設定 #  NTP（Network Time Protocol）を使用するために次のコマンドを実行します．
+timedatectl set-ntp true ミラーリストの最適化 #  インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．
+pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman."><meta property="og:type" content="article"><meta property="og:url" content="http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/"><meta property="article:section" content="docs"><title>Dual Booting (multi-disk + Windows10 and Arch Linux) | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=http://forest0923.github.io/memo/en/docs/archlinux/dual-boot-multi/ title="Dual Booting (multi-disk + Windows10 and Arch Linux)"><link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.828c1476db254b43f5efe29974dc997290c6a33d16dc6929f5249e116b9470a3.js integrity="sha256-gowUdtslS0P17+KZdNyZcpDGoz0W3Gkp9SSeEWuUcKM=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/memo/><span>Memo</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul class=book-languages><li><input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between"><a role=button class="flex align-center"><img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/docs/archlinux/dual-boot-multi/>English</a></li></ul></li></ul><h2>Links</h2><ul><li><a href=https://github.com/Forest0923 target=_blank rel=noopener>GitHub</a></li><li><a href=https://gitlab.com/forest0923 target=_blank rel=noopener>GitLab</a></li></ul><h2>Documents</h2><ul><li><input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between"><a role=button>Linux カーネル開発</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/linux-dev/inst-kernel/>カーネルのインストール</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-dev/rm-kernel/>カーネルの削除</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-dev/impl-systemcall/>システムコールの追加</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-dev/impl-hypercall/>ハイパーコールの実装</a></li></ul></li><li><input type=checkbox id=section-e7f7b78c1b08d611bac4551c02978c8f class=toggle>
+<label for=section-e7f7b78c1b08d611bac4551c02978c8f class="flex justify-between"><a role=button>Linux の設定いろいろ</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/gnome/>Gnome の設定</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/compress-initramfs/>initramfs の圧縮</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/l2tp-ipsec/>L2TP IPsec</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/keymaps/>キーマッピング</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/japanese-input/>日本語入力</a></li></ul></li><li><input type=checkbox id=section-af9f8fce9fee3f548c5751a8a2f5ece1 class=toggle>
+<label for=section-af9f8fce9fee3f548c5751a8a2f5ece1 class="flex justify-between"><a role=button>KVM</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/kvm/install/>KVM のインストールと設定</a></li><li><a href=http://forest0923.github.io/memo/docs/kvm/virsh/>virsh の使い方</a></li><li><a href=http://forest0923.github.io/memo/docs/kvm/gpu-passthrough/>KVM における GPU パススルーの設定</a></li><li><a href=http://forest0923.github.io/memo/docs/kvm/sriov/>SR-IOV の設定</a></li></ul></li><li><input type=checkbox id=section-fb51f89dbec2637fe7d4c9b6287148ed class=toggle checked>
+<label for=section-fb51f89dbec2637fe7d4c9b6287148ed class="flex justify-between"><a role=button>Arch Linux</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Arch Linux のインストール（BTRFS + Timeshift）</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/ class=active>Dual Booting (multi-disk + Windows10 and Arch Linux)</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/desktop-env/>デスクトップ環境</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>BSPWM のインストール</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>アプリケーションのインストール</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/power-mgr/>電源管理</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/abs/>Arch Build System</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/spotify/>Spotify の設定</a></li></ul></li><li><input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between"><a role=button>Ubuntu</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/ubuntu/initial-settings/>Ubuntu の初期設定</a></li><li><a href=http://forest0923.github.io/memo/docs/ubuntu/haribote-os/>自作 OS 入門 with Ubuntu</a></li></ul></li><li><input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between"><a role=button>Android</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/android/inst-x86/>Android x86</a></li><li><a href=http://forest0923.github.io/memo/docs/android/apk/>リバースエンジニアリング（APK）</a></li></ul></li><li><input type=checkbox id=section-3fb225060dbc6eb1fda04fb19c520b9e class=toggle>
+<label for=section-3fb225060dbc6eb1fda04fb19c520b9e class="flex justify-between"><a role=button>コマンド</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/commands/tar-zip/>File Compression (tar, zip, lzh, bz2)</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/nkf/>nkf</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/ffmpeg/>ffmpeg</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/platformio/>platformio</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/fwupd/>fwupd</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/find-grep/>find and grep</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/dd/>dd</a></li></ul></li><li><input type=checkbox id=section-2e26f9e2ae19cd498a963518e51406e6 class=toggle>
+<label for=section-2e26f9e2ae19cd498a963518e51406e6 class="flex justify-between"><a role=button>アプリの設定など</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/apps/doc-gen/>Document Generator (doxygen, sourcetrail)</a></li></ul></li><li><input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between"><a role=button>Git</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/git/github-cli/>GitHub CLI</a></li><li><a href=http://forest0923.github.io/memo/docs/git/github-ssh/>GitHub への SSH 接続</a></li><li><a href=http://forest0923.github.io/memo/docs/git/usecases/>Git の使い方（使用例）</a></li><li><a href=http://forest0923.github.io/memo/docs/git/submodule/>サブモジュール</a></li><li><a href=http://forest0923.github.io/memo/docs/git/lfs/>LFS (Large File Storage)</a></li><li><a href=http://forest0923.github.io/memo/docs/git/links/>Git を学ぶ上で参考になるリンク集</a></li></ul></li><li><input type=checkbox id=section-65032103456e8d3264e1b113fe868d5f class=toggle>
+<label for=section-65032103456e8d3264e1b113fe868d5f class="flex justify-between"><a role=button>プログラミング言語</a></label><ul><li><input type=checkbox id=section-f70978c5f727d4978906748e79108232 class=toggle>
+<label for=section-f70978c5f727d4978906748e79108232 class="flex justify-between"><a role=button>Shell Script</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/shellscript/sh-cs/>Shell Script Cheat Sheet</a></li></ul></li><li><input type=checkbox id=section-1b54b54415d809c14988a95e591bf734 class=toggle>
+<label for=section-1b54b54415d809c14988a95e591bf734 class="flex justify-between"><a role=button>Rust</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/rust/install/>Rust 環境構築</a></li><li><a href=http://forest0923.github.io/memo/docs/lang/rust/asm/>Inline Assembly</a></li><li><a href=http://forest0923.github.io/memo/docs/lang/rust/systemcall/>System Call</a></li><li><a href=http://forest0923.github.io/memo/docs/lang/rust/cheatsheet/>Rust Cheat Sheet</a></li></ul></li><li><input type=checkbox id=section-b7c3dca92cbee13c82905b4e496d39d1 class=toggle>
+<label for=section-b7c3dca92cbee13c82905b4e496d39d1 class="flex justify-between"><a role=button>Haskell</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/haskell/install/>Haskell 環境構築</a></li></ul></li><li><input type=checkbox id=section-6506110d97b7d034e17c0bc99c200b40 class=toggle>
+<label for=section-6506110d97b7d034e17c0bc99c200b40 class="flex justify-between"><a role=button>Prolog</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/prolog/install/>Prolog 環境構築</a></li></ul></li><li><input type=checkbox id=section-7655143f89038a3ff57de743cd803721 class=toggle>
+<label for=section-7655143f89038a3ff57de743cd803721 class="flex justify-between"><a role=button>Curry</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/curry/install/>Curry 環境構築</a></li></ul></li><li><input type=checkbox id=section-70016dc0551fceb969630dfaea2a9fbb class=toggle>
+<label for=section-70016dc0551fceb969630dfaea2a9fbb class="flex justify-between"><a role=button>OCaml</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/ocaml/install/>OCaml 環境構築</a></li></ul></li></ul></li><li><input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between"><a role=button>LaTeX</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/latex/inst-tex-live/>LaTeX スタートアップ：TeX Live のインストール</a></li><li><a href=http://forest0923.github.io/memo/docs/latex/latex-cs/>LaTeX Cheat Sheet</a></li><li><a href=http://forest0923.github.io/memo/docs/latex/sty/>自作の sty ファイルの作り方</a></li><li><a href=http://forest0923.github.io/memo/docs/latex/minted/>minted を使用したシンタックスハイライト</a></li></ul></li><li><input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between"><a role=button>Web 開発</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/web/code-highlight/>シンタックスハイライト</a></li><li><a href=http://forest0923.github.io/memo/docs/web/latex/>きれいな数式の表示</a></li><li><a href=http://forest0923.github.io/memo/docs/web/mermaid/>Mermaid</a></li><li><a href=http://forest0923.github.io/memo/docs/web/webtools/>Web Tools</a></li></ul></li><li><input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between"><a role=button>Security</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/security/pkc/>公開鍵暗号</a></li><li><a href=http://forest0923.github.io/memo/docs/security/gpg/>GNU Privacy Guard</a></li><li><a href=http://forest0923.github.io/memo/docs/security/ssh/>SSH</a></li><li><a href=http://forest0923.github.io/memo/docs/security/hack/>Hack</a></li></ul></li></ul><h2>Blog Posts</h2><ul><li><a href=/memo/posts/>Posts</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/memo/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>Dual Booting (multi-disk + Windows10 and Arch Linux)</strong>
-<label for=toc-control>
-<img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents">
-</label>
-</div>
-<aside class="hidden clearfix">
-<nav id=TableOfContents>
-<ul>
-<li><a href=#dual-booting-multi-disk--windows10-and-arch-linux>Dual Booting (multi-disk + Windows10 and Arch Linux)</a>
-<ul>
-<li><a href=#system>System</a></li>
-<li><a href=#install>Install</a>
-<ul>
-<li><a href=#change-keymaps><strong>Change Keymaps</strong></a></li>
-<li><a href=#time-settings><strong>Time Settings</strong></a></li>
-<li><a href=#optimizing-mirrorlist><strong>Optimizing Mirrorlist</strong></a></li>
-<li><a href=#disk-partitioning-and-formatting><strong>Disk Partitioning and Formatting</strong></a></li>
-<li><a href=#base-install><strong>Base install</strong></a></li>
-<li><a href=#fstab><strong>fstab</strong></a></li>
-<li><a href=#change-the-root-directory><strong>Change the Root Directory</strong></a></li>
-<li><a href=#localization><strong>Localization</strong></a></li>
-<li><a href=#hostname><strong>Hostname</strong></a></li>
-<li><a href=#root-password><strong>Root Password</strong></a></li>
-<li><a href=#install-additional-packages><strong>Install Additional Packages</strong></a></li>
-<li><a href=#bootloader><strong>Bootloader</strong></a></li>
-<li><a href=#systemd><strong>Systemd</strong></a></li>
-<li><a href=#add-user><strong>Add User</strong></a></li>
-<li><a href=#reboot><strong>Reboot</strong></a></li>
-<li><a href=#graphic-driver><strong>Graphic Driver</strong></a></li>
-<li><a href=#fonts><strong>Fonts</strong></a></li>
-<li><a href=#install-desktop-environment><strong>Install Desktop Environment</strong></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</nav>
-</aside>
-</header>
-<article class=markdown><h1 id=dual-booting-multi-disk--windows10-and-arch-linux>
-Dual Booting (multi-disk + Windows10 and Arch Linux)
-<a class=anchor href=#dual-booting-multi-disk--windows10-and-arch-linux>#</a>
-</h1>
-<h2 id=system>
-System
-<a class=anchor href=#system>#</a>
-</h2>
-<ul>
-<li>Preinstalled OS: Windows 10 (64 bit Home)</li>
-<li>CPU: Intel</li>
-<li>GPU: Nvidia</li>
-<li>Storage:
-<ul>
-<li><code>/dev/sda</code>: Windows sub</li>
-<li><code>/dev/sdb</code>: Windows main</li>
-<li><code>/dev/sdc</code>: Linux</li>
-</ul>
-</li>
-</ul>
-<h2 id=install>
-Install
-<a class=anchor href=#install>#</a>
-</h2>
-<h3 id=change-keymaps>
-<strong>Change Keymaps</strong>
-<a class=anchor href=#change-keymaps>#</a>
-</h3>
-<p>Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>loadkeys jp106
-</code></pre></div><h3 id=time-settings>
-<strong>Time Settings</strong>
-<a class=anchor href=#time-settings>#</a>
-</h3>
-<p>Execute the following command to use the NTP (Network Time Protocol).</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>timedatectl set-ntp true
-</code></pre></div><h3 id=optimizing-mirrorlist>
-<strong>Optimizing Mirrorlist</strong>
-<a class=anchor href=#optimizing-mirrorlist>#</a>
-</h3>
-<p>Optimize the mirror list using reflector to access mirror servers with fast access during installation.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -Syy
-pacman -S reflector <span style=color:#75715e># `python` might be required</span>
-reflector -c Japan --sort rate -a <span style=color:#ae81ff>6</span> --save /etc/pacman.d/mirrorlist
-</code></pre></div><p>The meaning of the reflector option is as follows.</p>
-<table>
-<thead>
-<tr>
-<th>Options</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-c Japan</code></td>
-<td>Restrict mirrors to selected countries.</td>
-</tr>
-<tr>
-<td><code>--sort rate</code></td>
-<td>Sort by download rate.</td>
-</tr>
-<tr>
-<td><code>-a 6</code></td>
-<td>Restrict to servers synchronized within 6 hours.</td>
-</tr>
-<tr>
-<td><code>--save /etc/pacman.d/mirrorlist</code></td>
-<td>Save the mirror list to the specified path.</td>
-</tr>
-</tbody>
-</table>
-<h3 id=disk-partitioning-and-formatting>
-<strong>Disk Partitioning and Formatting</strong>
-<a class=anchor href=#disk-partitioning-and-formatting>#</a>
-</h3>
-<p>First, find the EFI partition in Windows. Use the following command to find the devices allocated as an EFI partition.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>fdisk -l
-</code></pre></div><p>In this example, we assume that <code>/dev/sdb1</code> is the EFI partition. The size of the partition is a bit small (100MB), but it is no problem for now. We will use <code>/dev/sdc</code> as the Linux Filesystem.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
-sda      8:0    0 931.5G  0 disk
-└─sda1   8:1    0 931.5G  0 part /windows_d
-sdb      8:16   0 238.5G  0 disk
-├─sdb1   8:17   0   100M  0 part /boot/efi
-├─sdb2   8:18   0    16M  0 part
-├─sdb3   8:19   0 237.4G  0 part /windows_c
-└─sdb4   8:20   0   990M  0 part
-sdc      8:32   0 476.9G  0 disk
-└─sdc1   8:33   0 476.9G  0 part /
-sr0     11:0    1  1024M  0 rom
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>fdisk /dev/sdc
-</code></pre></div><p>Format with BTRFS.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mkfs.btrfs /dev/sdc1
-</code></pre></div><p>Create subvolume and mount devices.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>mount /dev/sdc1 /mnt
-btrfs su cr /mnt/@
-umount /mnt
-mount -o compress<span style=color:#f92672>=</span>lzo,subvol<span style=color:#f92672>=</span>@ /dev/sdc1 /mnt
-mkdir -p /mnt/boot/efi
-mount /dev/sdb2 /mnt/boot/efi
-
-mkdir /mnt/windows_c
-mount /dev/sdb4 /mnt/windows_c
-
-mkdir /mnt/windows_d
-mount /dev/sdb1 /mnt/windows_d
-</code></pre></div><h3 id=base-install>
-<strong>Base install</strong>
-<a class=anchor href=#base-install>#</a>
-</h3>
-<p>Install the package in the root directory, <code>/mnt</code>.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacstrap /mnt base linux linux-firmware vim intel-ucode
-</code></pre></div><h3 id=fstab>
-<strong>fstab</strong>
-<a class=anchor href=#fstab>#</a>
-</h3>
-<p>Generate the fstab file, which holds the information about which device to mount.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
-</code></pre></div><h3 id=change-the-root-directory>
-<strong>Change the Root Directory</strong>
-<a class=anchor href=#change-the-root-directory>#</a>
-</h3>
-<p>Use chroot to set <code>/mnt</code> as the root directory.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>arch-chroot /mnt
-</code></pre></div><h3 id=localization>
-<strong>Localization</strong>
-<a class=anchor href=#localization>#</a>
-</h3>
-<p>Create a symbolic link to <code>/etc/localtime</code> to change the time zone.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-</code></pre></div><p>Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>hwclock --systohc
-</code></pre></div><p>To set the locale, first generate the locale. Uncomment the entries you want to use in <code>/etc/locale.gen</code> and run <code>locale-gen</code>.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/locale.gen
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- # en_US.UTF-8 UTF-8
-</span><span style=color:#f92672></span><span style=color:#a6e22e>+ en_US.UTF-8 UTF-8
-</span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>locale-gen
-</code></pre></div><p>Execute the following command to set the locale of the system.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>echo LANG<span style=color:#f92672>=</span>en_US.UTF-8 &gt;&gt; /etc/locale.conf
-echo KEYMAP<span style=color:#f92672>=</span>jp106 &gt;&gt; /etc/vconsole.conf
-</code></pre></div><h3 id=hostname>
-<strong>Hostname</strong>
-<a class=anchor href=#hostname>#</a>
-</h3>
-<p>Register hostname in <code>/etc/hostname</code>.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/hostname
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ arch
-</span></code></pre></div><p>Edit <code>/etc/hosts</code> and set IP address corresponding to hostname.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>vim /etc/hosts
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#a6e22e>+ 127.0.0.1   localhost
-</span><span style=color:#a6e22e>+ ::1         localhost
-</span><span style=color:#a6e22e>+ 127.0.1.1   arch.localdomain    arch
-</span></code></pre></div><h3 id=root-password>
-<strong>Root Password</strong>
-<a class=anchor href=#root-password>#</a>
-</h3>
-<p>Set the password of root user.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>passwd
-</code></pre></div><h3 id=install-additional-packages>
-<strong>Install Additional Packages</strong>
-<a class=anchor href=#install-additional-packages>#</a>
-</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>pacman -S grub efibootmgr networkmanager network-manager-applet wireless_tools <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>wpa_supplicant dialog os-prober mtools dosfstools base-devel linux-headers git <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>reflector bluez bluez-utils pulseaudio-bluetooth ntfs-3g xdg-utils xdg-user-dirs
-</code></pre></div><h3 id=bootloader>
-<strong>Bootloader</strong>
-<a class=anchor href=#bootloader>#</a>
-</h3>
-<p>Install Grub and create config file.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>grub-install --target<span style=color:#f92672>=</span>x86_64-efi --efi-directory<span style=color:#f92672>=</span>/boot/efi --bootloader-id<span style=color:#f92672>=</span>GRUB
-grub-mkconfig -o /boot/grub/grub.cfg
-</code></pre></div><h3 id=systemd>
-<strong>Systemd</strong>
-<a class=anchor href=#systemd>#</a>
-</h3>
-<p>Enables NetworkManager.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable NetworkManager
-</code></pre></div><p>Enables Bluetooth.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable bluetooth
-</code></pre></div><p>Enables reflector. The execution options are written in <code>/etc/xdg/reflector/reflector.conf</code>.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable reflector.service  <span style=color:#75715e># update mirrorlist every boot</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>systemctl enable reflector.timer    <span style=color:#75715e># update mirrorlist weekly</span>
-</code></pre></div><h3 id=add-user>
-<strong>Add User</strong>
-<a class=anchor href=#add-user>#</a>
-</h3>
-<p>Add user with useradd and set the password.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>useradd -mG wheel mori
-passwd mori
-</code></pre></div><p>Give the user priviledges.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>EDITOR<span style=color:#f92672>=</span>vim visudo
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=color:#f92672>- # %wheel ALL=(ALL) ALL
-</span><span style=color:#f92672></span><span style=color:#a6e22e>+ %wheel ALL=(ALL) ALL
-</span></code></pre></div><h3 id=reboot>
-<strong>Reboot</strong>
-<a class=anchor href=#reboot>#</a>
-</h3>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>exit
-umount -a
-reboot
-</code></pre></div><h3 id=graphic-driver>
-<strong>Graphic Driver</strong>
-<a class=anchor href=#graphic-driver>#</a>
-</h3>
-<div class=book-tabs><input type=radio class=toggle name=tabs-gpu-driver id=tabs-gpu-driver-0 checked>
-<label for=tabs-gpu-driver-0>Nvidia</label>
-<div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo pacman -S nvidia nvidia-utils nvidia-dkms
-</code></pre></div></div></div>
-<h3 id=fonts>
-<strong>Fonts</strong>
-<a class=anchor href=#fonts>#</a>
-</h3>
-<p>Copy fonts from windows partition.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>sudo mkdir /usr/share/fonts/WindowsFonts
-sudo cp /windows/Windows/Fonts/* /usr/share/fonts/WindowsFonts/
-sudo chmod <span style=color:#ae81ff>644</span> /usr/share/fonts/WindowsFonts/*
-fc-cache -f
-</code></pre></div><h3 id=install-desktop-environment>
-<strong>Install Desktop Environment</strong>
-<a class=anchor href=#install-desktop-environment>#</a>
-</h3>
-<p><a href=../desktop-env/>Desktop Environment</a></p>
-</article>
-<footer class=book-footer>
-<div class="flex flex-wrap justify-between">
-</div>
-<script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
-</footer>
-<div class=book-comments>
-</div>
-<label for=menu-control class="hidden book-menu-overlay"></label>
-</div>
-<aside class=book-toc>
-<div class=book-toc-content>
-<nav id=TableOfContents>
-<ul>
-<li><a href=#dual-booting-multi-disk--windows10-and-arch-linux>Dual Booting (multi-disk + Windows10 and Arch Linux)</a>
-<ul>
-<li><a href=#system>System</a></li>
-<li><a href=#install>Install</a>
-<ul>
-<li><a href=#change-keymaps><strong>Change Keymaps</strong></a></li>
-<li><a href=#time-settings><strong>Time Settings</strong></a></li>
-<li><a href=#optimizing-mirrorlist><strong>Optimizing Mirrorlist</strong></a></li>
-<li><a href=#disk-partitioning-and-formatting><strong>Disk Partitioning and Formatting</strong></a></li>
-<li><a href=#base-install><strong>Base install</strong></a></li>
-<li><a href=#fstab><strong>fstab</strong></a></li>
-<li><a href=#change-the-root-directory><strong>Change the Root Directory</strong></a></li>
-<li><a href=#localization><strong>Localization</strong></a></li>
-<li><a href=#hostname><strong>Hostname</strong></a></li>
-<li><a href=#root-password><strong>Root Password</strong></a></li>
-<li><a href=#install-additional-packages><strong>Install Additional Packages</strong></a></li>
-<li><a href=#bootloader><strong>Bootloader</strong></a></li>
-<li><a href=#systemd><strong>Systemd</strong></a></li>
-<li><a href=#add-user><strong>Add User</strong></a></li>
-<li><a href=#reboot><strong>Reboot</strong></a></li>
-<li><a href=#graphic-driver><strong>Graphic Driver</strong></a></li>
-<li><a href=#fonts><strong>Fonts</strong></a></li>
-<li><a href=#install-desktop-environment><strong>Install Desktop Environment</strong></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</nav>
-</div>
-</aside>
-</main>
-</body>
-</html>
+<label for=toc-control><img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#dual-booting-multi-disk--windows10-and-arch-linux>Dual Booting (multi-disk + Windows10 and Arch Linux)</a><ul><li><a href=#環境>環境</a></li><li><a href=#インストール>インストール</a><ul><li><a href=#キーマップの変更><strong>キーマップの変更</strong></a></li><li><a href=#時間設定><strong>時間設定</strong></a></li><li><a href=#ミラーリストの最適化><strong>ミラーリストの最適化</strong></a></li><li><a href=#ディスクパーティショニングとフォーマット><strong>ディスクパーティショニングとフォーマット</strong></a></li><li><a href=#ベースのインストール><strong>ベースのインストール</strong></a></li><li><a href=#fstab><strong>fstab</strong></a></li><li><a href=#root-ディレクトリの変更><strong>Root ディレクトリの変更</strong></a></li><li><a href=#ローカライズ><strong>ローカライズ</strong></a></li><li><a href=#ホスト名><strong>ホスト名</strong></a></li><li><a href=#root-のパスワード><strong>Root のパスワード</strong></a></li><li><a href=#追加パッケージのインストール><strong>追加パッケージのインストール</strong></a></li><li><a href=#ブートローダ><strong>ブートローダ</strong></a></li><li><a href=#systemd><strong>Systemd</strong></a></li><li><a href=#ユーザの追加><strong>ユーザの追加</strong></a></li><li><a href=#reboot><strong>Reboot</strong></a></li><li><a href=#グラフィックドライバ><strong>グラフィックドライバ</strong></a></li><li><a href=#フォント><strong>フォント</strong></a></li><li><a href=#デスクトップ環境のインストール><strong>デスクトップ環境のインストール</strong></a></li></ul></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=dual-booting-multi-disk--windows10-and-arch-linux>Dual Booting (multi-disk + Windows10 and Arch Linux)
+<a class=anchor href=#dual-booting-multi-disk--windows10-and-arch-linux>#</a></h1><h2 id=環境>環境
+<a class=anchor href=#%e7%92%b0%e5%a2%83>#</a></h2><ul><li>Preinstalled OS: Windows 10 (64 bit Home)</li><li>CPU: Intel</li><li>GPU: Nvidia</li><li>Storage:<ul><li><code>/dev/sda</code>: Windows sub</li><li><code>/dev/sdb</code>: Windows main</li><li><code>/dev/sdc</code>: Linux</li></ul></li></ul><h2 id=インストール>インストール
+<a class=anchor href=#%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a></h2><h3 id=キーマップの変更><strong>キーマップの変更</strong>
+<a class=anchor href=#%e3%82%ad%e3%83%bc%e3%83%9e%e3%83%83%e3%83%97%e3%81%ae%e5%a4%89%e6%9b%b4>#</a></h3><p>インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>loadkeys jp106
+</span></span></code></pre></div><h3 id=時間設定><strong>時間設定</strong>
+<a class=anchor href=#%e6%99%82%e9%96%93%e8%a8%ad%e5%ae%9a>#</a></h3><p>NTP（Network Time Protocol）を使用するために次のコマンドを実行します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>timedatectl set-ntp true
+</span></span></code></pre></div><h3 id=ミラーリストの最適化><strong>ミラーリストの最適化</strong>
+<a class=anchor href=#%e3%83%9f%e3%83%a9%e3%83%bc%e3%83%aa%e3%82%b9%e3%83%88%e3%81%ae%e6%9c%80%e9%81%a9%e5%8c%96>#</a></h3><p>インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>pacman -Syy
+</span></span><span style=display:flex><span>pacman -S reflector <span style=color:#75715e># `python` might be required</span>
+</span></span><span style=display:flex><span>reflector -c Japan --sort rate -a <span style=color:#ae81ff>6</span> --save /etc/pacman.d/mirrorlist
+</span></span></code></pre></div><p>reflector のオプションの意味は次のようになっています．</p><table><thead><tr><th>Options</th><th>Description</th></tr></thead><tbody><tr><td><code>-c Japan</code></td><td>日本のミラーサーバのみに制限する</td></tr><tr><td><code>--sort rate</code></td><td>ダウンロード速度でソートする</td></tr><tr><td><code>-a 6</code></td><td>6時間以内に同期したサーバに制限する</td></tr><tr><td><code>--save /etc/pacman.d/mirrorlist</code></td><td>ミラーリストを指定したパスに保存する</td></tr></tbody></table><h3 id=ディスクパーティショニングとフォーマット><strong>ディスクパーティショニングとフォーマット</strong>
+<a class=anchor href=#%e3%83%87%e3%82%a3%e3%82%b9%e3%82%af%e3%83%91%e3%83%bc%e3%83%86%e3%82%a3%e3%82%b7%e3%83%a7%e3%83%8b%e3%83%b3%e3%82%b0%e3%81%a8%e3%83%95%e3%82%a9%e3%83%bc%e3%83%9e%e3%83%83%e3%83%88>#</a></h3><p>最初にWindows の EFI パーティションを見つけます．下記のコマンドで EFI パーティションとして割り当てられたデバイスを探します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>fdisk -l
+</span></span></code></pre></div><p>ここでは，<code>/dev/sdb1</code> が EFI パーティションとします．サイズが 100MB と若干小さめですが，とりあえず問題はないです．<code>/dev/sdc</code> を Linux Filesystem として使用します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+</span></span><span style=display:flex><span>sda      8:0    0 931.5G  0 disk
+</span></span><span style=display:flex><span>└─sda1   8:1    0 931.5G  0 part /windows_d
+</span></span><span style=display:flex><span>sdb      8:16   0 238.5G  0 disk
+</span></span><span style=display:flex><span>├─sdb1   8:17   0   100M  0 part /boot/efi
+</span></span><span style=display:flex><span>├─sdb2   8:18   0    16M  0 part
+</span></span><span style=display:flex><span>├─sdb3   8:19   0 237.4G  0 part /windows_c
+</span></span><span style=display:flex><span>└─sdb4   8:20   0   990M  0 part
+</span></span><span style=display:flex><span>sdc      8:32   0 476.9G  0 disk
+</span></span><span style=display:flex><span>└─sdc1   8:33   0 476.9G  0 part /
+</span></span><span style=display:flex><span>sr0     11:0    1  1024M  0 rom
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>fdisk /dev/sdc
+</span></span></code></pre></div><p>BTRFS でフォーマットします．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>mkfs.btrfs /dev/sdc1
+</span></span></code></pre></div><p>BTRFS のサブボリュームを作成して，マウントします．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>mount /dev/sdc1 /mnt
+</span></span><span style=display:flex><span>btrfs su cr /mnt/@
+</span></span><span style=display:flex><span>umount /mnt
+</span></span><span style=display:flex><span>mount -o compress<span style=color:#f92672>=</span>lzo,subvol<span style=color:#f92672>=</span>@ /dev/sdc1 /mnt
+</span></span><span style=display:flex><span>mkdir -p /mnt/boot/efi
+</span></span><span style=display:flex><span>mount /dev/sdb2 /mnt/boot/efi
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir /mnt/windows_c
+</span></span><span style=display:flex><span>mount /dev/sdb4 /mnt/windows_c
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir /mnt/windows_d
+</span></span><span style=display:flex><span>mount /dev/sdb1 /mnt/windows_d
+</span></span></code></pre></div><h3 id=ベースのインストール><strong>ベースのインストール</strong>
+<a class=anchor href=#%e3%83%99%e3%83%bc%e3%82%b9%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a></h3><p>Root ディレクトリとなる <code>/mnt</code> にパッケージをインストールします．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>pacstrap /mnt base linux linux-firmware vim intel-ucode
+</span></span></code></pre></div><h3 id=fstab><strong>fstab</strong>
+<a class=anchor href=#fstab>#</a></h3><p>fstab ファイルを生成します．fstab ファイルはどのデバイスをマウントするかという情報を保持するファイルです．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab
+</span></span></code></pre></div><h3 id=root-ディレクトリの変更><strong>Root ディレクトリの変更</strong>
+<a class=anchor href=#root-%e3%83%87%e3%82%a3%e3%83%ac%e3%82%af%e3%83%88%e3%83%aa%e3%81%ae%e5%a4%89%e6%9b%b4>#</a></h3><p>chroot で root ディレクトリを <code>/mnt</code> に変更します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>arch-chroot /mnt
+</span></span></code></pre></div><h3 id=ローカライズ><strong>ローカライズ</strong>
+<a class=anchor href=#%e3%83%ad%e3%83%bc%e3%82%ab%e3%83%a9%e3%82%a4%e3%82%ba>#</a></h3><p><code>/etc/localtime</code> にシンボリックリンクを作成してタイムゾーンを変更します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+</span></span></code></pre></div><p>ハードウェアクロックを現在のシステムクロックに合わせます．システムクロックは OS が管理する時計のことで，ハードウェアクロックはマザーボード（ハードウェア）が管理する時計のことです．OS が再起動されたときは，メモリに展開されたシステムクロックが失われるのでハードウェアクロックから時刻を取得します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>hwclock --systohc
+</span></span></code></pre></div><p>locale を設定するためにまずは locale を生成します．<code>/etc/locale.gen</code> の使用するエントリをアンコメントして <code>locale-gen</code> を実行します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>vim /etc/locale.gen
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=display:flex><span><span style=color:#f92672>- # en_US.UTF-8 UTF-8
+</span></span></span><span style=display:flex><span><span style=color:#f92672></span><span style=color:#a6e22e>+ en_US.UTF-8 UTF-8
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>locale-gen
+</span></span></code></pre></div><p>システムの locale を設定するために次のコマンドを実行します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>echo LANG<span style=color:#f92672>=</span>en_US.UTF-8 &gt;&gt; /etc/locale.conf
+</span></span><span style=display:flex><span>echo KEYMAP<span style=color:#f92672>=</span>jp106 &gt;&gt; /etc/vconsole.conf
+</span></span></code></pre></div><h3 id=ホスト名><strong>ホスト名</strong>
+<a class=anchor href=#%e3%83%9b%e3%82%b9%e3%83%88%e5%90%8d>#</a></h3><p>ホスト名を <code>/etc/hostname</code> に登録します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>vim /etc/hostname
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=display:flex><span><span style=color:#a6e22e>+ arch
+</span></span></span></code></pre></div><p><code>/etc/hosts</code> を編集してホスト名に対応する IP アドレスを設定します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>vim /etc/hosts
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=display:flex><span><span style=color:#a6e22e>+ 127.0.0.1   localhost
+</span></span></span><span style=display:flex><span><span style=color:#a6e22e>+ ::1         localhost
+</span></span></span><span style=display:flex><span><span style=color:#a6e22e>+ 127.0.1.1   arch.localdomain    arch
+</span></span></span></code></pre></div><h3 id=root-のパスワード><strong>Root のパスワード</strong>
+<a class=anchor href=#root-%e3%81%ae%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89>#</a></h3><p>Root ユーザのパスワードを設定します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>passwd
+</span></span></code></pre></div><h3 id=追加パッケージのインストール><strong>追加パッケージのインストール</strong>
+<a class=anchor href=#%e8%bf%bd%e5%8a%a0%e3%83%91%e3%83%83%e3%82%b1%e3%83%bc%e3%82%b8%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>pacman -S grub efibootmgr networkmanager network-manager-applet wireless_tools <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>wpa_supplicant dialog os-prober mtools dosfstools base-devel linux-headers git <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>reflector bluez bluez-utils pulseaudio-bluetooth ntfs-3g xdg-utils xdg-user-dirs
+</span></span></code></pre></div><h3 id=ブートローダ><strong>ブートローダ</strong>
+<a class=anchor href=#%e3%83%96%e3%83%bc%e3%83%88%e3%83%ad%e3%83%bc%e3%83%80>#</a></h3><p>Grub をインストールして設定ファイルを生成します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>grub-install --target<span style=color:#f92672>=</span>x86_64-efi --efi-directory<span style=color:#f92672>=</span>/boot/efi --bootloader-id<span style=color:#f92672>=</span>GRUB
+</span></span><span style=display:flex><span>grub-mkconfig -o /boot/grub/grub.cfg
+</span></span></code></pre></div><h3 id=systemd><strong>Systemd</strong>
+<a class=anchor href=#systemd>#</a></h3><p>NetworkManager を有効化．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>systemctl enable NetworkManager
+</span></span></code></pre></div><p>Bluetooth を有効化．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>systemctl enable bluetooth
+</span></span></code></pre></div><p>reflector の有効化．実行オプションは <code>/etc/xdg/reflector/reflector.conf</code> に記述します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>systemctl enable reflector.service  <span style=color:#75715e># update mirrorlist every boot</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>systemctl enable reflector.timer    <span style=color:#75715e># update mirrorlist weekly</span>
+</span></span></code></pre></div><h3 id=ユーザの追加><strong>ユーザの追加</strong>
+<a class=anchor href=#%e3%83%a6%e3%83%bc%e3%82%b6%e3%81%ae%e8%bf%bd%e5%8a%a0>#</a></h3><p>useradd で追加してパスワードを設定します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>useradd -mG wheel mori
+</span></span><span style=display:flex><span>passwd mori
+</span></span></code></pre></div><p>ユーザに特権を追加します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>EDITOR<span style=color:#f92672>=</span>vim visudo
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-diff data-lang=diff><span style=display:flex><span><span style=color:#f92672>- # %wheel ALL=(ALL) ALL
+</span></span></span><span style=display:flex><span><span style=color:#f92672></span><span style=color:#a6e22e>+ %wheel ALL=(ALL) ALL
+</span></span></span></code></pre></div><h3 id=reboot><strong>Reboot</strong>
+<a class=anchor href=#reboot>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>exit
+</span></span><span style=display:flex><span>umount -a
+</span></span><span style=display:flex><span>reboot
+</span></span></code></pre></div><h3 id=グラフィックドライバ><strong>グラフィックドライバ</strong>
+<a class=anchor href=#%e3%82%b0%e3%83%a9%e3%83%95%e3%82%a3%e3%83%83%e3%82%af%e3%83%89%e3%83%a9%e3%82%a4%e3%83%90>#</a></h3><div class=book-tabs><input type=radio class=toggle name=tabs-gpu-driver id=tabs-gpu-driver-0 checked>
+<label for=tabs-gpu-driver-0>Nvidia</label><div class="book-tabs-content markdown-inner"><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>sudo pacman -S nvidia nvidia-utils nvidia-dkms
+</span></span></code></pre></div></div></div><h3 id=フォント><strong>フォント</strong>
+<a class=anchor href=#%e3%83%95%e3%82%a9%e3%83%b3%e3%83%88>#</a></h3><p>Windows のパーティションからフォントをコピーします．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>sudo mkdir /usr/share/fonts/WindowsFonts
+</span></span><span style=display:flex><span>sudo cp /windows/Windows/Fonts/* /usr/share/fonts/WindowsFonts/
+</span></span><span style=display:flex><span>sudo chmod <span style=color:#ae81ff>644</span> /usr/share/fonts/WindowsFonts/*
+</span></span><span style=display:flex><span>fc-cache -f
+</span></span></code></pre></div><h3 id=デスクトップ環境のインストール><strong>デスクトップ環境のインストール</strong>
+<a class=anchor href=#%e3%83%87%e3%82%b9%e3%82%af%e3%83%88%e3%83%83%e3%83%97%e7%92%b0%e5%a2%83%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab>#</a></h3><p><a href=../desktop-env/>デスクトップ環境</a></p></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(n){const e=window.getSelection(),t=document.createRange();t.selectNodeContents(n),e.removeAllRanges(),e.addRange(t)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#dual-booting-multi-disk--windows10-and-arch-linux>Dual Booting (multi-disk + Windows10 and Arch Linux)</a><ul><li><a href=#環境>環境</a></li><li><a href=#インストール>インストール</a><ul><li><a href=#キーマップの変更><strong>キーマップの変更</strong></a></li><li><a href=#時間設定><strong>時間設定</strong></a></li><li><a href=#ミラーリストの最適化><strong>ミラーリストの最適化</strong></a></li><li><a href=#ディスクパーティショニングとフォーマット><strong>ディスクパーティショニングとフォーマット</strong></a></li><li><a href=#ベースのインストール><strong>ベースのインストール</strong></a></li><li><a href=#fstab><strong>fstab</strong></a></li><li><a href=#root-ディレクトリの変更><strong>Root ディレクトリの変更</strong></a></li><li><a href=#ローカライズ><strong>ローカライズ</strong></a></li><li><a href=#ホスト名><strong>ホスト名</strong></a></li><li><a href=#root-のパスワード><strong>Root のパスワード</strong></a></li><li><a href=#追加パッケージのインストール><strong>追加パッケージのインストール</strong></a></li><li><a href=#ブートローダ><strong>ブートローダ</strong></a></li><li><a href=#systemd><strong>Systemd</strong></a></li><li><a href=#ユーザの追加><strong>ユーザの追加</strong></a></li><li><a href=#reboot><strong>Reboot</strong></a></li><li><a href=#グラフィックドライバ><strong>グラフィックドライバ</strong></a></li><li><a href=#フォント><strong>フォント</strong></a></li><li><a href=#デスクトップ環境のインストール><strong>デスクトップ環境のインストール</strong></a></li></ul></li></ul></li></ul></nav></div></aside></main></body></html>

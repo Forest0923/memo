@@ -175,4 +175,42 @@ doxygen foo/bar/Doxygen
 
 ## Sourcetrail
 
-- [Sourcetrail](https://www.sourcetrail.com/documentation/)
+### Install
+
+Arch Linux の場合は AUR からインストールできます．Ubuntu では [GitHub: CoatiSoftware/Sourcetrail](https://github.com/CoatiSoftware/Sourcetrail/releases) からダウンロードする必要があります．
+
+{{< tabs "Install" >}}
+{{< tab "Arch">}}
+
+```sh
+paru -S sourcetrail
+```
+
+{{< /tab>}}
+{{< /tabs>}}
+
+### Create Projects
+
+Sourcetrail を起動すると次のような画面が表示されるので，プロジェクトの名前とソースコードが入っているディレクトリを指定します．ここでは doxygen の例と同様に RISC-V 版の xv6 についてドキュメントを作成してみます．
+
+![](sourcetrail01.png)
+
+`Add Source Group` を押すと次の画面が表示されるのでソースコードに適したものを選んで `Next` を押します．
+
+![](sourcetrail02.png)
+
+次の画面でドキュメントを作りたいディレクトリや無視したいディレクトリなどを指定します．
+
+![](sourcetrail03.png)
+
+ファイルの拡張子の指定なども可能です．
+
+![](sourcetrail04.png)
+
+最後に `Create` を押すとドキュメントが作られていきます．
+
+### Sample
+
+Doxygen のように HTML で出力することはできないようですが，グラフィカルにソースコードを見ることができます．
+
+![](sourcetrail05.png)

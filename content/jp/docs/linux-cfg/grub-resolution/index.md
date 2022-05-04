@@ -24,7 +24,7 @@ weight: 999
 
 ## 解像度の設定
 
-確認した解像度のリストを参考に /etc/default/grub を修正して解像度を設定します．基本的には GRUB_GFXMODE と GRUB_GFX_PAYLOAD_LINUX を下記のように変更すれば良いはずですが，私の実行環境ではGRUB_CMDLINE_LINUX_DEFAULT に nomodeset を追加しないとカーネル起動時に解像度が低いままになってしまいました．
+確認した解像度のリストを参考に /etc/default/grub を修正して解像度を設定します．基本的には GRUB_GFXMODE と GRUB_GFX_PAYLOAD_LINUX を下記のように変更すれば良いはずですが，私の実行環境ではGRUB_CMDLINE_LINUX_DEFAULT に nomodeset を追加しないとカーネル起動後に解像度が低いままになってしまいました．
 
 ```text
 ...

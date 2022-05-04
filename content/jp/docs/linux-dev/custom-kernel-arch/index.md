@@ -1,10 +1,10 @@
 ---
-title: "Custom Kernel"
+title: "カーネルのインストール（Arch Linux 版）"
 draft: false
-weight: 999
+weight: 11
 ---
 
-# Custom Kernel
+# カーネルのインストール（Arch Linux 版）
 
 Arch Linux で Linux カーネルの開発をしたときのメモです．基本的に研究では無難に Ubuntu を使用していますが，なんとなく Arch Linux にカスタムカーネルをインストールしようとしたら Ubuntu と同じ手順ではうまく行かないことがわかりました．Arch Build System を使う方法もありますが，ここでは PKGBUILD などは使わずにコンパイル，インストールする方法を紹介します．
 
@@ -56,7 +56,9 @@ cp arch/x86/boot/bzImage /boot/vmlinuz-linux517
 
 ### initramfs
 
-initramfs のイメージを作成するために設定ファイルを 2 つ作成します．1 つ目は /etc/mkinitcpio.conf をコピーして作ったファイルで，モジュールや圧縮形式の変更をします．vfat を入れなかったときに FAT32 でフォーマットした EFI パーティション /boot のマウントが失敗したので vfat を追加しています．また，/boot のパーティションにあまり大きな領域を割り当てておらず，ディスク容量が足りなくなってしまったため圧縮率の高い xz で圧縮するように指定しています．
+initramfs のイメージを作成するために設定ファイルを 2 つ作成します．1 つ目は /etc/mkinitcpio.conf をコピーして作ったファイルで，モジュールや圧縮形式の変更をします．
+
+vfat を入れなかったときに FAT32 でフォーマットした EFI パーティション /boot のマウントが失敗したので vfat を追加しています．また，/boot のパーティションにあまり大きな領域を割り当てておらず，ディスク容量が足りなくなってしまったため圧縮率の高い xz で圧縮するように指定しています．
 
 ```sh
 cp /etc/mkinitcpio.conf /etc/mkinitcpio-linux517.conf
@@ -70,7 +72,7 @@ cp /etc/mkinitcpio.conf /etc/mkinitcpio-linux517.conf
 + COMPRESSION="xz"
 ```
 
-2 つ目の設定ファイルとして /etc/mkinitcpio.d/linux517.preset を作成します．これは mkinitcpio で initramfs を作成するときのテンプレートのようなもので，もともとある linux.preset を修正して使います．変更点としてはカーネルイメージのファイルパスや /etc/mkinitcpio-linux517.conf のファイルパスを変える点です．
+2 つ目の設定ファイルとして /etc/mkinitcpio.d/linux517.preset を作成します．これは mkinitcpio で initramfs を作成するときのテンプレートのようなもので，もともとある linux.preset を修正して使います．変更点はカーネルイメージのファイルパスや /etc/mkinitcpio-linux517.conf のファイルパスを変える点です．
 
 ```sh
 cp /etc/mkinitcpio.d/linux.preset /etc/mkinitcpio.d/linux517.preset

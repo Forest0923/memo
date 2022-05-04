@@ -9,7 +9,7 @@ categories = [
   "Linux Code Reading"
 ]
 menu = "main"
-draft = true
+draft = false
 +++
 
 ## Segfault

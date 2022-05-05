@@ -6,7 +6,7 @@ tags = [
   "Linux", "KPTI", "Meltdown"
 ]
 categories = [
-  "Source Code Reading"
+  "Linux Code Reading"
 ]
 menu = "main"
 +++

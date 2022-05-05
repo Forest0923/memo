@@ -6,7 +6,7 @@ tags = [
   "Linux"
 ]
 categories = [
-  "Source Code Reading"
+  "Linux Code Reading"
 ]
 menu = "main"
 draft = false

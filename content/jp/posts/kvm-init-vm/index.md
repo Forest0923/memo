@@ -6,7 +6,7 @@ tags = [
   "Linux", "QEMU/KVM"
 ]
 categories = [
-  "Source Code Reading"
+  "Linux Code Reading"
 ]
 menu = "main"
 draft = true

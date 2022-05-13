@@ -95,7 +95,7 @@ core-y		+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscalls/
 [Install new kernel](../inst-kernel).
 
 ```sh
-make -j8 && make modules_install && make instal
+make -j8 && make modules_install && make install
 grub-mkconfig -o /boot/grub/grub.cfg
 reboot
 ```

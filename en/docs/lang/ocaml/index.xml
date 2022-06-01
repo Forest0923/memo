@@ -2,4 +2,4 @@
 sudo pacman -S opam Dune, the OCaml build tool, is installed using opam.
 opam install dune Basic Usage # REPL can be used by running ocaml.
 % ocaml OCaml version 4.13.1 # 1+1;; - : int = 2 # exit 0;; To create a new project using Dune, run dune init.
-dune init exe myproj .</description></item></channel></rss>
+dune init exe myproj . ├── _build │ └── log ├── dune └── myproj.</description></item></channel></rss>

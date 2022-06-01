@@ -2,4 +2,5 @@
 sudo pacman -S opam OCaml のビルドツールである dune は opam を使ってインストールします．
 opam install dune Basic Usage # REPL は ocaml を実行すると使用できます．
 % ocaml OCaml version 4.13.1 # 1+1;; - : int = 2 # exit 0;; Dune を使う場合は dune init を実行します．
-dune init exe myproj . ├── _build │ └── log ├── dune └── myproj.ml dune build を実行してビルドします．</description></item></channel></rss>
+dune init exe myproj . ├── _build │ └── log ├── dune └── myproj.ml dune build を実行してビルドします．
+. ├── _build │ ├── default │ │ ├── dune │ │ ├── myproj.</description></item></channel></rss>

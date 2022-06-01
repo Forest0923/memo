@@ -1,23 +1,25 @@
-<!doctype html><html lang=jp dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="サブモジュール #  サブモジュールはレポジトリ内に Git 管理している別のリポジトリをサブディレクトリとして含めることができる機能です．ライブラリや自分が開発している他のプロジェクトの内容を使いたい場合にメインのプロジェクトとは別で管理しながらプロジェクト内に組み込むことができます．
-サブモジュールの追加 #  サブモジュールを追加するには次のコマンドを使用します．
+<!doctype html><html lang=jp dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="サブモジュール # サブモジュールはレポジトリ内に Git 管理している別のリポジトリをサブディレクトリとして含めることができる機能です．ライブラリや自分が開発している他のプロジェクトの内容を使いたい場合にメインのプロジェクトとは別で管理しながらプロジェクト内に組み込むことができます．
+サブモジュールの追加 # サブモジュールを追加するには次のコマンドを使用します．
 git submodule add サブモジュールとして追加したリポジトリの情報は .gitmodules に記述されます．
-サブモジュールを含んだリポジトリのクローン #  サブモジュールを含んだリポジトリを通常のリポジトリと同様に clone すると，サブモジュールのディレクトリは空の状態になります．サブモジュールも一緒にクローンしたい場合は次のように --recursive オプションを使います．
+サブモジュールを含んだリポジトリのクローン # サブモジュールを含んだリポジトリを通常のリポジトリと同様に clone すると，サブモジュールのディレクトリは空の状態になります．サブモジュールも一緒にクローンしたい場合は次のように --recursive オプションを使います．
 git clone --recursive git@github.com:user/repo.git すでに git clone していてサブモジュールの中身をクローンしたい場合は次のコマンドを実行します．
-git submodule init git submodule update サブモジュールのアップデート #  サブモジュールのアップデートを適用する1つ目の方法はサブモジュールのディレクトリに移動して fetch，merge する方法です．
+git submodule init git submodule update サブモジュールのアップデート # サブモジュールのアップデートを適用する1つ目の方法はサブモジュールのディレクトリに移動して fetch，merge する方法です．
 cd submod git fetch git merge 2つ目は次のように update を使用する方法です．
 git submodule update --remote Local のサブモジュールを更新した場合はサブモジュールのディレクトリに移動してコミット，プッシュします．
-サブモジュールの削除 #  サブモジュールを削除したい場合はまず deinit を実行します．
-git submodule deinit submoddir 次に下記のコマンドで git からサブディレクトリを取り除きます．"><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="サブモジュール"><meta property="og:description" content="サブモジュール #  サブモジュールはレポジトリ内に Git 管理している別のリポジトリをサブディレクトリとして含めることができる機能です．ライブラリや自分が開発している他のプロジェクトの内容を使いたい場合にメインのプロジェクトとは別で管理しながらプロジェクト内に組み込むことができます．
-サブモジュールの追加 #  サブモジュールを追加するには次のコマンドを使用します．
+サブモジュールの削除 # サブモジュールを削除したい場合はまず deinit を実行します．
+git submodule deinit submoddir 次に下記のコマンドで git からサブディレクトリを取り除きます．
+git rm --cached submoddir 最後にコミットして変更を反映させます．"><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="サブモジュール"><meta property="og:description" content="サブモジュール # サブモジュールはレポジトリ内に Git 管理している別のリポジトリをサブディレクトリとして含めることができる機能です．ライブラリや自分が開発している他のプロジェクトの内容を使いたい場合にメインのプロジェクトとは別で管理しながらプロジェクト内に組み込むことができます．
+サブモジュールの追加 # サブモジュールを追加するには次のコマンドを使用します．
 git submodule add サブモジュールとして追加したリポジトリの情報は .gitmodules に記述されます．
-サブモジュールを含んだリポジトリのクローン #  サブモジュールを含んだリポジトリを通常のリポジトリと同様に clone すると，サブモジュールのディレクトリは空の状態になります．サブモジュールも一緒にクローンしたい場合は次のように --recursive オプションを使います．
+サブモジュールを含んだリポジトリのクローン # サブモジュールを含んだリポジトリを通常のリポジトリと同様に clone すると，サブモジュールのディレクトリは空の状態になります．サブモジュールも一緒にクローンしたい場合は次のように --recursive オプションを使います．
 git clone --recursive git@github.com:user/repo.git すでに git clone していてサブモジュールの中身をクローンしたい場合は次のコマンドを実行します．
-git submodule init git submodule update サブモジュールのアップデート #  サブモジュールのアップデートを適用する1つ目の方法はサブモジュールのディレクトリに移動して fetch，merge する方法です．
+git submodule init git submodule update サブモジュールのアップデート # サブモジュールのアップデートを適用する1つ目の方法はサブモジュールのディレクトリに移動して fetch，merge する方法です．
 cd submod git fetch git merge 2つ目は次のように update を使用する方法です．
 git submodule update --remote Local のサブモジュールを更新した場合はサブモジュールのディレクトリに移動してコミット，プッシュします．
-サブモジュールの削除 #  サブモジュールを削除したい場合はまず deinit を実行します．
-git submodule deinit submoddir 次に下記のコマンドで git からサブディレクトリを取り除きます．"><meta property="og:type" content="article"><meta property="og:url" content="http://forest0923.github.io/memo/docs/git/submodule/"><meta property="article:section" content="docs"><title>サブモジュール | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=http://forest0923.github.io/memo/en/docs/git/submodule/ title=Submodule><link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/jp.search.min.2df971708090e139014da64c0fd18da34fb5db9382996aaac3b5b32cb1f65409.js integrity="sha256-LflxcICQ4TkBTaZMD9GNo0+125OCmWqqw7WzLLH2VAk=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+サブモジュールの削除 # サブモジュールを削除したい場合はまず deinit を実行します．
+git submodule deinit submoddir 次に下記のコマンドで git からサブディレクトリを取り除きます．
+git rm --cached submoddir 最後にコミットして変更を反映させます．"><meta property="og:type" content="article"><meta property="og:url" content="http://forest0923.github.io/memo/docs/git/submodule/"><meta property="article:section" content="docs"><title>サブモジュール | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=alternate hreflang=en href=http://forest0923.github.io/memo/en/docs/git/submodule/ title=Submodule><link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.c796b30ff6f96fe5f98bb3cde2ea7e0eec8c0665a4224e1ff0db421de95fcab8.js integrity="sha256-x5azD/b5b+X5i7PN4up+DuyMBmWkIk4f8NtCHelfyrg=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/memo/><span>Memo</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul class=book-languages><li><input type=checkbox id=languages class=toggle>
 <label for=languages class="flex justify-between"><a role=button class="flex align-center"><img src=/memo/svg/translate.svg class=book-icon alt=Languages>
 Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/docs/git/submodule/>English</a></li></ul></li></ul><h2>Links</h2><ul><li><a href=https://github.com/Forest0923 target=_blank rel=noopener>GitHub</a></li><li><a href=https://gitlab.com/forest0923 target=_blank rel=noopener>GitLab</a></li></ul><h2>Documents</h2><ul><li><input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>

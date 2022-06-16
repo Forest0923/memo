@@ -19,45 +19,26 @@ draft = false
 ## Definition1
 
 ```c
-// libio/bits/stdio2.h
-__fortify_function int
-printf (const char *__restrict __fmt, ...)
-{
-  return __printf_chk (__USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ());
-}
-```
-
-```c
-// sysdeps/ieee754/ldbl-opt/nldbl-printf_chk.c
+// stdio-common/printf.c
 int
-attribute_hidden
-__printf_chk (int flag, const char *fmt, ...)
+__printf (const char *format, ...)
 {
   va_list arg;
   int done;
 
-  va_start (arg, fmt);
-  done = __nldbl___vfprintf_chk (stdout, flag, fmt, arg);
+  va_start (arg, format);
+  done = __vfprintf_internal (stdout, format, arg, 0);
   va_end (arg);
 
   return done;
 }
+
+#undef _IO_printf
+ldbl_strong_alias (__printf, printf);
+ldbl_strong_alias (__printf, _IO_printf);
 ```
 
 ```c
-// sysdeps/ieee754/ldbl-opt/nldbl-compat.c
-int
-attribute_compat_text_section
-__nldbl___vfprintf_chk (FILE *s, int flag, const char *fmt, va_list ap)
-{
-  unsigned int mode = PRINTF_LDBL_IS_DBL;
-  if (flag > 0)
-    mode |= PRINTF_FORTIFY;
-
-  return __vfprintf_internal (s, fmt, ap, mode);
-}
-```
-
 ```c
 // stdio-common/vfprintf-internal.c
 # define vfprintf	__vfprintf_internal
@@ -500,6 +481,48 @@ do_positional:
 ```
 
 ## Definition2
+
+```c
+// libio/bits/stdio2.h
+__fortify_function int
+printf (const char *__restrict __fmt, ...)
+{
+  return __printf_chk (__USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ());
+}
+```
+
+```c
+// sysdeps/ieee754/ldbl-opt/nldbl-printf_chk.c
+int
+attribute_hidden
+__printf_chk (int flag, const char *fmt, ...)
+{
+  va_list arg;
+  int done;
+
+  va_start (arg, fmt);
+  done = __nldbl___vfprintf_chk (stdout, flag, fmt, arg);
+  va_end (arg);
+
+  return done;
+}
+```
+
+```c
+// sysdeps/ieee754/ldbl-opt/nldbl-compat.c
+int
+attribute_compat_text_section
+__nldbl___vfprintf_chk (FILE *s, int flag, const char *fmt, va_list ap)
+{
+  unsigned int mode = PRINTF_LDBL_IS_DBL;
+  if (flag > 0)
+    mode |= PRINTF_FORTIFY;
+
+  return __vfprintf_internal (s, fmt, ap, mode);
+}
+```
+
+## Definition3
 
 ```c
 // sysdeps/ieee754/ldbl-opt/nldbl-printf.c

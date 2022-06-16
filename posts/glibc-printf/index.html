@@ -1,0 +1,520 @@
+<!doctype html><html lang=jp dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Version # glibc v2.35 Definition1 # // libio/bits/stdio2.h __fortify_function int printf (const char *__restrict __fmt, ...) { return __printf_chk (__USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ()); } // sysdeps/ieee754/ldbl-opt/nldbl-printf_chk.c int attribute_hidden __printf_chk (int flag, const char *fmt, ...) { va_list arg; int done; va_start (arg, fmt); done = __nldbl___vfprintf_chk (stdout, flag, fmt, arg); va_end (arg); return done; } // sysdeps/ieee754/ldbl-opt/nldbl-compat.c int attribute_compat_text_section __nldbl___vfprintf_chk (FILE *s, int flag, const char *fmt, va_list ap) { unsigned int mode = PRINTF_LDBL_IS_DBL; if (flag > 0) mode |= PRINTF_FORTIFY; return __vfprintf_internal (s, fmt, ap, mode); } // stdio-common/vfprintf-internal."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="glibc printf"><meta property="og:description" content="Version # glibc v2.35 Definition1 # // libio/bits/stdio2.h __fortify_function int printf (const char *__restrict __fmt, ...) { return __printf_chk (__USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ()); } // sysdeps/ieee754/ldbl-opt/nldbl-printf_chk.c int attribute_hidden __printf_chk (int flag, const char *fmt, ...) { va_list arg; int done; va_start (arg, fmt); done = __nldbl___vfprintf_chk (stdout, flag, fmt, arg); va_end (arg); return done; } // sysdeps/ieee754/ldbl-opt/nldbl-compat.c int attribute_compat_text_section __nldbl___vfprintf_chk (FILE *s, int flag, const char *fmt, va_list ap) { unsigned int mode = PRINTF_LDBL_IS_DBL; if (flag > 0) mode |= PRINTF_FORTIFY; return __vfprintf_internal (s, fmt, ap, mode); } // stdio-common/vfprintf-internal."><meta property="og:type" content="article"><meta property="og:url" content="http://forest0923.github.io/memo/posts/glibc-printf/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-06-16T13:16:58+09:00"><meta property="article:modified_time" content="2022-06-16T13:16:58+09:00"><title>glibc printf | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.16bfd5e065dd0e7cdb3ecc2ee459ddd6cda69fc1db0840241a69596798da6d13.js integrity="sha256-Fr/V4GXdDnzbPswu5Fnd1s2mn8HbCEAkGmlZZ5jabRM=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/memo/><span>Memo</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul class=book-languages><li><input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between"><a role=button class="flex align-center"><img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/>English</a></li></ul></li></ul><h2>Links</h2><ul><li><a href=https://github.com/Forest0923 target=_blank rel=noopener>GitHub</a></li><li><a href=https://gitlab.com/forest0923 target=_blank rel=noopener>GitLab</a></li></ul><h2>Documents</h2><ul><li><input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between"><a role=button>Linux カーネル開発</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/linux-dev/inst-kernel/>カーネルのインストール</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-dev/custom-kernel-arch/>カーネルのインストール（Arch Linux 版）</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-dev/rm-kernel/>カーネルの削除</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-dev/impl-systemcall/>システムコールの追加</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-dev/impl-hypercall/>ハイパーコールの実装</a></li></ul></li><li><input type=checkbox id=section-e7f7b78c1b08d611bac4551c02978c8f class=toggle>
+<label for=section-e7f7b78c1b08d611bac4551c02978c8f class="flex justify-between"><a role=button>Linux の設定いろいろ</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/gnome/>Gnome の設定</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/grub-resolution/>GRUB の解像度設定</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/compress-initramfs/>initramfs の圧縮</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/l2tp-ipsec/>L2TP IPsec</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/keymaps/>キーマッピング</a></li><li><a href=http://forest0923.github.io/memo/docs/linux-cfg/japanese-input/>日本語入力</a></li></ul></li><li><input type=checkbox id=section-af9f8fce9fee3f548c5751a8a2f5ece1 class=toggle>
+<label for=section-af9f8fce9fee3f548c5751a8a2f5ece1 class="flex justify-between"><a role=button>KVM</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/kvm/install/>KVM のインストールと設定</a></li><li><a href=http://forest0923.github.io/memo/docs/kvm/virsh/>virsh の使い方</a></li><li><a href=http://forest0923.github.io/memo/docs/kvm/gpu-passthrough/>KVM における GPU パススルーの設定</a></li><li><a href=http://forest0923.github.io/memo/docs/kvm/sriov/>SR-IOV の設定</a></li></ul></li><li><input type=checkbox id=section-fb51f89dbec2637fe7d4c9b6287148ed class=toggle>
+<label for=section-fb51f89dbec2637fe7d4c9b6287148ed class="flex justify-between"><a role=button>Arch Linux</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/>Arch Linux のインストール（BTRFS + Timeshift）</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/>Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/>Dual Booting (multi-disk + Windows10 and Arch Linux)</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/desktop-env/>デスクトップ環境</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/bspwm/>BSPWM のインストール</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/common-apps/>アプリケーションのインストール</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/power-mgr/>電源管理</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/abs/>Arch Build System</a></li><li><a href=http://forest0923.github.io/memo/docs/archlinux/spotify/>Spotify の設定</a></li></ul></li><li><input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between"><a role=button>Ubuntu</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/ubuntu/initial-settings/>Ubuntu の初期設定</a></li><li><a href=http://forest0923.github.io/memo/docs/ubuntu/haribote-os/>自作 OS 入門 with Ubuntu</a></li></ul></li><li><input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between"><a role=button>Android</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/android/inst-x86/>Android x86</a></li><li><a href=http://forest0923.github.io/memo/docs/android/apk/>リバースエンジニアリング（APK）</a></li></ul></li><li><input type=checkbox id=section-3fb225060dbc6eb1fda04fb19c520b9e class=toggle>
+<label for=section-3fb225060dbc6eb1fda04fb19c520b9e class="flex justify-between"><a role=button>コマンド</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/commands/tar-zip/>File Compression (tar, zip, lzh, bz2)</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/nkf/>nkf</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/ffmpeg/>ffmpeg</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/platformio/>platformio</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/fwupd/>fwupd</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/find-grep/>find and grep</a></li><li><a href=http://forest0923.github.io/memo/docs/commands/dd/>dd</a></li></ul></li><li><input type=checkbox id=section-2e26f9e2ae19cd498a963518e51406e6 class=toggle>
+<label for=section-2e26f9e2ae19cd498a963518e51406e6 class="flex justify-between"><a role=button>アプリの設定など</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/apps/doc-gen/>Document Generator (doxygen, sourcetrail)</a></li></ul></li><li><input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between"><a role=button>Git</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/git/github-cli/>GitHub CLI</a></li><li><a href=http://forest0923.github.io/memo/docs/git/github-ssh/>GitHub への SSH 接続</a></li><li><a href=http://forest0923.github.io/memo/docs/git/usecases/>Git の使い方（使用例）</a></li><li><a href=http://forest0923.github.io/memo/docs/git/submodule/>サブモジュール</a></li><li><a href=http://forest0923.github.io/memo/docs/git/lfs/>LFS (Large File Storage)</a></li><li><a href=http://forest0923.github.io/memo/docs/git/links/>Git を学ぶ上で参考になるリンク集</a></li></ul></li><li><input type=checkbox id=section-65032103456e8d3264e1b113fe868d5f class=toggle>
+<label for=section-65032103456e8d3264e1b113fe868d5f class="flex justify-between"><a role=button>プログラミング言語</a></label><ul><li><input type=checkbox id=section-f70978c5f727d4978906748e79108232 class=toggle>
+<label for=section-f70978c5f727d4978906748e79108232 class="flex justify-between"><a role=button>Shell Script</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/shellscript/sh-cs/>Shell Script Cheat Sheet</a></li></ul></li><li><input type=checkbox id=section-1b54b54415d809c14988a95e591bf734 class=toggle>
+<label for=section-1b54b54415d809c14988a95e591bf734 class="flex justify-between"><a role=button>Rust</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/rust/install/>Rust 環境構築</a></li><li><a href=http://forest0923.github.io/memo/docs/lang/rust/asm/>Inline Assembly</a></li><li><a href=http://forest0923.github.io/memo/docs/lang/rust/systemcall/>System Call</a></li><li><a href=http://forest0923.github.io/memo/docs/lang/rust/cheatsheet/>Rust Cheat Sheet</a></li></ul></li><li><input type=checkbox id=section-b7c3dca92cbee13c82905b4e496d39d1 class=toggle>
+<label for=section-b7c3dca92cbee13c82905b4e496d39d1 class="flex justify-between"><a role=button>Haskell</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/haskell/install/>Haskell 環境構築</a></li></ul></li><li><input type=checkbox id=section-6506110d97b7d034e17c0bc99c200b40 class=toggle>
+<label for=section-6506110d97b7d034e17c0bc99c200b40 class="flex justify-between"><a role=button>Prolog</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/prolog/install/>Prolog 環境構築</a></li></ul></li><li><input type=checkbox id=section-7655143f89038a3ff57de743cd803721 class=toggle>
+<label for=section-7655143f89038a3ff57de743cd803721 class="flex justify-between"><a role=button>Curry</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/curry/install/>Curry 環境構築</a></li></ul></li><li><input type=checkbox id=section-70016dc0551fceb969630dfaea2a9fbb class=toggle>
+<label for=section-70016dc0551fceb969630dfaea2a9fbb class="flex justify-between"><a role=button>OCaml</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/lang/ocaml/install/>OCaml 環境構築</a></li></ul></li></ul></li><li><input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between"><a role=button>LaTeX</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/latex/inst-tex-live/>LaTeX スタートアップ：TeX Live のインストール</a></li><li><a href=http://forest0923.github.io/memo/docs/latex/latex-cs/>LaTeX Cheat Sheet</a></li><li><a href=http://forest0923.github.io/memo/docs/latex/sty/>自作の sty ファイルの作り方</a></li><li><a href=http://forest0923.github.io/memo/docs/latex/minted/>minted を使用したシンタックスハイライト</a></li></ul></li><li><input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between"><a role=button>Web 開発</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/web/code-highlight/>シンタックスハイライト</a></li><li><a href=http://forest0923.github.io/memo/docs/web/latex/>きれいな数式の表示</a></li><li><a href=http://forest0923.github.io/memo/docs/web/mermaid/>Mermaid</a></li><li><a href=http://forest0923.github.io/memo/docs/web/webtools/>Web Tools</a></li></ul></li><li><input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between"><a role=button>Security</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/security/pkc/>公開鍵暗号</a></li><li><a href=http://forest0923.github.io/memo/docs/security/gpg/>GNU Privacy Guard</a></li><li><a href=http://forest0923.github.io/memo/docs/security/ssh/>SSH</a></li><li><a href=http://forest0923.github.io/memo/docs/security/hack/>Hack</a></li></ul></li></ul><h2>Blog Posts</h2><ul><li><a href=/memo/posts/>Posts</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/memo/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>glibc printf</strong>
+<label for=toc-control><img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><ul><li><a href=#version>Version</a></li><li><a href=#definition1>Definition1</a></li><li><a href=#definition2>Definition2</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1><a href=/memo/posts/glibc-printf/>glibc printf</a></h1><h5>June 16, 2022</h5><div><a href=/memo/categories/glibc-code-reading/>glibc Code Reading</a></div><div><a href=/memo/tags/glibc/>glibc</a></div><h2 id=version>Version
+<a class=anchor href=#version>#</a></h2><ul><li>glibc v2.35</li></ul><h2 id=definition1>Definition1
+<a class=anchor href=#definition1>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// libio/bits/stdio2.h
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>__fortify_function <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>printf</span> (<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>__restrict __fmt, ...)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> __printf_chk (__USE_FORTIFY_LEVEL <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>, __fmt, __va_arg_pack ());
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// sysdeps/ieee754/ldbl-opt/nldbl-printf_chk.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>attribute_hidden
+</span></span><span style=display:flex><span><span style=color:#a6e22e>__printf_chk</span> (<span style=color:#66d9ef>int</span> flag, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>fmt, ...)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  va_list arg;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> done;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  va_start (arg, fmt);
+</span></span><span style=display:flex><span>  done <span style=color:#f92672>=</span> __nldbl___vfprintf_chk (stdout, flag, fmt, arg);
+</span></span><span style=display:flex><span>  va_end (arg);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> done;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// sysdeps/ieee754/ldbl-opt/nldbl-compat.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>attribute_compat_text_section
+</span></span><span style=display:flex><span><span style=color:#a6e22e>__nldbl___vfprintf_chk</span> (FILE <span style=color:#f92672>*</span>s, <span style=color:#66d9ef>int</span> flag, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>fmt, va_list ap)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> mode <span style=color:#f92672>=</span> PRINTF_LDBL_IS_DBL;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (flag <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>    mode <span style=color:#f92672>|=</span> PRINTF_FORTIFY;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> __vfprintf_internal (s, fmt, ap, mode);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// stdio-common/vfprintf-internal.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e># define vfprintf	__vfprintf_internal
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>...
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>vfprintf (FILE <span style=color:#f92672>*</span>s, <span style=color:#66d9ef>const</span> CHAR_T <span style=color:#f92672>*</span>format, va_list ap, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> mode_flags)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* The character used as thousands separator.  */</span>
+</span></span><span style=display:flex><span>  THOUSANDS_SEP_T thousands_sep <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* The string describing the size of groups of digits.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>grouping;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Place to accumulate the result.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> done;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Current character in format string.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> UCHAR_T <span style=color:#f92672>*</span>f;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* End of leading constant string.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> UCHAR_T <span style=color:#f92672>*</span>lead_str_end;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Points to next format specifier.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> UCHAR_T <span style=color:#f92672>*</span>end_of_spec;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Buffer intermediate results.  */</span>
+</span></span><span style=display:flex><span>  CHAR_T work_buffer[WORK_BUFFER_SIZE];
+</span></span><span style=display:flex><span>  CHAR_T <span style=color:#f92672>*</span>workend;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* We have to save the original argument pointer.  */</span>
+</span></span><span style=display:flex><span>  va_list ap_save;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Count number of specifiers we already processed.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> nspecs_done;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* For the %m format we may need the current `errno&#39; value.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> save_errno <span style=color:#f92672>=</span> errno;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* 1 if format is in read-only memory, -1 if it is in writable memory,
+</span></span></span><span style=display:flex><span><span style=color:#75715e>     0 if unknown.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> readonly_format <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Orient the stream.  */</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef ORIENT
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  ORIENT;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Sanity check of arguments.  */</span>
+</span></span><span style=display:flex><span>  ARGCHECK (s, format);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef ORIENT
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#75715e>/* Check for correct orientation.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (_IO_vtable_offset (s) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&amp;&amp;</span> _IO_fwide (s, <span style=color:#66d9ef>sizeof</span> (CHAR_T) <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>?</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span> <span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>      <span style=color:#f92672>!=</span> (<span style=color:#66d9ef>sizeof</span> (CHAR_T) <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>?</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span> <span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>))
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* The stream is already oriented otherwise.  */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> EOF;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (UNBUFFERED_P (s))
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* Use a helper function which will allocate a local temporary buffer
+</span></span></span><span style=display:flex><span><span style=color:#75715e>       for the stream and then call us again.  */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> buffered_vfprintf (s, format, ap, mode_flags);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Initialize local variables.  */</span>
+</span></span><span style=display:flex><span>  done <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  grouping <span style=color:#f92672>=</span> (<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>) <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef __va_copy
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#75715e>/* This macro will be available soon in gcc&#39;s &lt;stdarg.h&gt;.  We need it
+</span></span></span><span style=display:flex><span><span style=color:#75715e>     since on some systems `va_list&#39; is not an integral type.  */</span>
+</span></span><span style=display:flex><span>  __va_copy (ap_save, ap);
+</span></span><span style=display:flex><span><span style=color:#75715e>#else
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  ap_save <span style=color:#f92672>=</span> ap;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  nspecs_done <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef COMPILE_WPRINTF
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#75715e>/* Find the first format specifier.  */</span>
+</span></span><span style=display:flex><span>  f <span style=color:#f92672>=</span> lead_str_end <span style=color:#f92672>=</span> __find_specwc ((<span style=color:#66d9ef>const</span> UCHAR_T <span style=color:#f92672>*</span>) format);
+</span></span><span style=display:flex><span><span style=color:#75715e>#else
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#75715e>/* Find the first format specifier.  */</span>
+</span></span><span style=display:flex><span>  f <span style=color:#f92672>=</span> lead_str_end <span style=color:#f92672>=</span> __find_specmb ((<span style=color:#66d9ef>const</span> UCHAR_T <span style=color:#f92672>*</span>) format);
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Lock stream.  */</span>
+</span></span><span style=display:flex><span>  _IO_cleanup_region_start ((<span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>) (<span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>)) <span style=color:#f92672>&amp;</span>_IO_funlockfile, s);
+</span></span><span style=display:flex><span>  _IO_flockfile (s);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Write the literal text before the first format.  */</span>
+</span></span><span style=display:flex><span>  outstring ((<span style=color:#66d9ef>const</span> UCHAR_T <span style=color:#f92672>*</span>) format,
+</span></span><span style=display:flex><span>	     lead_str_end <span style=color:#f92672>-</span> (<span style=color:#66d9ef>const</span> UCHAR_T <span style=color:#f92672>*</span>) format);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* If we only have to print a simple string, return now.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>*</span>f <span style=color:#f92672>==</span> L_(<span style=color:#e6db74>&#39;\0&#39;</span>))
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>goto</span> all_done;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Use the slow path in case any printf handler is registered.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (__glibc_unlikely (__printf_function_table <span style=color:#f92672>!=</span> NULL
+</span></span><span style=display:flex><span>			<span style=color:#f92672>||</span> __printf_modifier_table <span style=color:#f92672>!=</span> NULL
+</span></span><span style=display:flex><span>			<span style=color:#f92672>||</span> __printf_va_arg_table <span style=color:#f92672>!=</span> NULL))
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>goto</span> do_positional;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Process whole format string.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>      STEP0_3_TABLE;
+</span></span><span style=display:flex><span>      STEP4_TABLE;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> is_negative;	<span style=color:#75715e>/* Flag for negative number.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>union</span>
+</span></span><span style=display:flex><span>      {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>int</span> longlong;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>int</span> word;
+</span></span><span style=display:flex><span>      } number;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> base;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>union</span> printf_arg the_arg;
+</span></span><span style=display:flex><span>      CHAR_T <span style=color:#f92672>*</span>string;	<span style=color:#75715e>/* Pointer to argument string.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> alt <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;	<span style=color:#75715e>/* Alternate format.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> space <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;	<span style=color:#75715e>/* Use space prefix if no sign is needed.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> left <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;	<span style=color:#75715e>/* Left-justify output.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> showsign <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;	<span style=color:#75715e>/* Always begin with plus or minus sign.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> group <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;	<span style=color:#75715e>/* Print numbers according grouping rules.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Argument is long double/long long int.  Only used if
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	 double/long double or long int/long long int are distinct.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> is_long_double <span style=color:#a6e22e>__attribute__</span> ((unused)) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> is_short <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;	<span style=color:#75715e>/* Argument is short int.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> is_long <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;	<span style=color:#75715e>/* Argument is long int.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> is_char <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;	<span style=color:#75715e>/* Argument is promoted (unsigned) char.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> width <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;	<span style=color:#75715e>/* Width of output; 0 means none specified.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> prec <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;	<span style=color:#75715e>/* Precision of output; -1 means none specified.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* This flag is set by the &#39;I&#39; modifier and selects the use of the
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	 `outdigits&#39; as determined by the current locale.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>int</span> use_outdigits <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>      UCHAR_T pad <span style=color:#f92672>=</span> L_(<span style=color:#e6db74>&#39; &#39;</span>);<span style=color:#75715e>/* Padding character.  */</span>
+</span></span><span style=display:flex><span>      CHAR_T spec;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      workend <span style=color:#f92672>=</span> work_buffer <span style=color:#f92672>+</span> WORK_BUFFER_SIZE;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Get current character in format string.  */</span>
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step0_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* &#39; &#39; flag.  */</span>
+</span></span><span style=display:flex><span>    LABEL (flag_space)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      space <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step0_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* &#39;+&#39; flag.  */</span>
+</span></span><span style=display:flex><span>    LABEL (flag_plus)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      showsign <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step0_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* The &#39;-&#39; flag.  */</span>
+</span></span><span style=display:flex><span>    LABEL (flag_minus)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      left <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      pad <span style=color:#f92672>=</span> L_(<span style=color:#e6db74>&#39; &#39;</span>);
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step0_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* The &#39;#&#39; flag.  */</span>
+</span></span><span style=display:flex><span>    LABEL (flag_hash)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      alt <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step0_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* The &#39;0&#39; flag.  */</span>
+</span></span><span style=display:flex><span>    LABEL (flag_zero)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>left)
+</span></span><span style=display:flex><span>	pad <span style=color:#f92672>=</span> L_(<span style=color:#e6db74>&#39;0&#39;</span>);
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step0_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* The &#39;\&#39;&#39; flag.  */</span>
+</span></span><span style=display:flex><span>    LABEL (flag_quote)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      group <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (grouping <span style=color:#f92672>==</span> (<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>) <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef COMPILE_WPRINTF
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	  thousands_sep <span style=color:#f92672>=</span> _NL_CURRENT_WORD (LC_NUMERIC,
+</span></span><span style=display:flex><span>					    _NL_NUMERIC_THOUSANDS_SEP_WC);
+</span></span><span style=display:flex><span><span style=color:#75715e>#else
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	  thousands_sep <span style=color:#f92672>=</span> _NL_CURRENT (LC_NUMERIC, THOUSANDS_SEP);
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>	  grouping <span style=color:#f92672>=</span> _NL_CURRENT (LC_NUMERIC, GROUPING);
+</span></span><span style=display:flex><span>	  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>*</span>grouping <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;\0&#39;</span> <span style=color:#f92672>||</span> <span style=color:#f92672>*</span>grouping <span style=color:#f92672>==</span> CHAR_MAX
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef COMPILE_WPRINTF
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	      <span style=color:#f92672>||</span> thousands_sep <span style=color:#f92672>==</span> <span style=color:#e6db74>L</span><span style=color:#e6db74>&#39;\0&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#else
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	      <span style=color:#f92672>||</span> <span style=color:#f92672>*</span>thousands_sep <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;\0&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	      )
+</span></span><span style=display:flex><span>	    grouping <span style=color:#f92672>=</span> NULL;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step0_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    LABEL (flag_i18n)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      use_outdigits <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step0_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Get width from argument.  */</span>
+</span></span><span style=display:flex><span>    LABEL (width_asterics)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>const</span> UCHAR_T <span style=color:#f92672>*</span>tmp;	<span style=color:#75715e>/* Temporary value.  */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	tmp <span style=color:#f92672>=</span> <span style=color:#f92672>++</span>f;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (ISDIGIT (<span style=color:#f92672>*</span>tmp))
+</span></span><span style=display:flex><span>	  {
+</span></span><span style=display:flex><span>	    <span style=color:#66d9ef>int</span> pos <span style=color:#f92672>=</span> read_int (<span style=color:#f92672>&amp;</span>tmp);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	    <span style=color:#66d9ef>if</span> (pos <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	      {
+</span></span><span style=display:flex><span>		__set_errno (EOVERFLOW);
+</span></span><span style=display:flex><span>		done <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> all_done;
+</span></span><span style=display:flex><span>	      }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	    <span style=color:#66d9ef>if</span> (pos <span style=color:#f92672>&amp;&amp;</span> <span style=color:#f92672>*</span>tmp <span style=color:#f92672>==</span> L_(<span style=color:#e6db74>&#39;$&#39;</span>))
+</span></span><span style=display:flex><span>	      <span style=color:#75715e>/* The width comes from a positional parameter.  */</span>
+</span></span><span style=display:flex><span>	      <span style=color:#66d9ef>goto</span> do_positional;
+</span></span><span style=display:flex><span>	  }
+</span></span><span style=display:flex><span>	width <span style=color:#f92672>=</span> va_arg (ap, <span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* Negative width means left justified.  */</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (width <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>	  {
+</span></span><span style=display:flex><span>	    width <span style=color:#f92672>=</span> <span style=color:#f92672>-</span>width;
+</span></span><span style=display:flex><span>	    pad <span style=color:#f92672>=</span> L_(<span style=color:#e6db74>&#39; &#39;</span>);
+</span></span><span style=display:flex><span>	    left <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>	  }
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*</span>f, step1_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Given width in format string.  */</span>
+</span></span><span style=display:flex><span>    LABEL (width)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      width <span style=color:#f92672>=</span> read_int (<span style=color:#f92672>&amp;</span>f);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (__glibc_unlikely (width <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>))
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>	  __set_errno (EOVERFLOW);
+</span></span><span style=display:flex><span>	  done <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>	  <span style=color:#66d9ef>goto</span> all_done;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (<span style=color:#f92672>*</span>f <span style=color:#f92672>==</span> L_(<span style=color:#e6db74>&#39;$&#39;</span>))
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* Oh, oh.  The argument comes from a positional parameter.  */</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>goto</span> do_positional;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*</span>f, step1_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    LABEL (precision)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>++</span>f;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (<span style=color:#f92672>*</span>f <span style=color:#f92672>==</span> L_(<span style=color:#e6db74>&#39;*&#39;</span>))
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>	  <span style=color:#66d9ef>const</span> UCHAR_T <span style=color:#f92672>*</span>tmp;	<span style=color:#75715e>/* Temporary value.  */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	  tmp <span style=color:#f92672>=</span> <span style=color:#f92672>++</span>f;
+</span></span><span style=display:flex><span>	  <span style=color:#66d9ef>if</span> (ISDIGIT (<span style=color:#f92672>*</span>tmp))
+</span></span><span style=display:flex><span>	    {
+</span></span><span style=display:flex><span>	      <span style=color:#66d9ef>int</span> pos <span style=color:#f92672>=</span> read_int (<span style=color:#f92672>&amp;</span>tmp);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	      <span style=color:#66d9ef>if</span> (pos <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>		{
+</span></span><span style=display:flex><span>		  __set_errno (EOVERFLOW);
+</span></span><span style=display:flex><span>		  done <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>		  <span style=color:#66d9ef>goto</span> all_done;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	      <span style=color:#66d9ef>if</span> (pos <span style=color:#f92672>&amp;&amp;</span> <span style=color:#f92672>*</span>tmp <span style=color:#f92672>==</span> L_(<span style=color:#e6db74>&#39;$&#39;</span>))
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* The precision comes from a positional parameter.  */</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> do_positional;
+</span></span><span style=display:flex><span>	    }
+</span></span><span style=display:flex><span>	  prec <span style=color:#f92672>=</span> va_arg (ap, <span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	  <span style=color:#75715e>/* If the precision is negative the precision is omitted.  */</span>
+</span></span><span style=display:flex><span>	  <span style=color:#66d9ef>if</span> (prec <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>	    prec <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (ISDIGIT (<span style=color:#f92672>*</span>f))
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span>	  prec <span style=color:#f92672>=</span> read_int (<span style=color:#f92672>&amp;</span>f);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	  <span style=color:#75715e>/* The precision was specified in this case as an extremely
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	     large positive value.  */</span>
+</span></span><span style=display:flex><span>	  <span style=color:#66d9ef>if</span> (prec <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	    {
+</span></span><span style=display:flex><span>	      __set_errno (EOVERFLOW);
+</span></span><span style=display:flex><span>	      done <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>	      <span style=color:#66d9ef>goto</span> all_done;
+</span></span><span style=display:flex><span>	    }
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>	prec <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*</span>f, step2_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Process &#39;h&#39; modifier.  There might another &#39;h&#39; following.  */</span>
+</span></span><span style=display:flex><span>    LABEL (mod_half)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      is_short <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step3a_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Process &#39;hh&#39; modifier.  */</span>
+</span></span><span style=display:flex><span>    LABEL (mod_halfhalf)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      is_short <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>      is_char <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step4_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Process &#39;l&#39; modifier.  There might another &#39;l&#39; following.  */</span>
+</span></span><span style=display:flex><span>    LABEL (mod_long)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      is_long <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step3b_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Process &#39;L&#39;, &#39;q&#39;, or &#39;ll&#39; modifier.  No other modifier is
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	 allowed to follow.  */</span>
+</span></span><span style=display:flex><span>    LABEL (mod_longlong)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      is_long_double <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      is_long <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step4_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    LABEL (mod_size_t)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      is_long_double <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span> (size_t) <span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>sizeof</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>      is_long <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span> (size_t) <span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>sizeof</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step4_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    LABEL (mod_ptrdiff_t)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      is_long_double <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span> (ptrdiff_t) <span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>sizeof</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>      is_long <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span> (ptrdiff_t) <span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>sizeof</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step4_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    LABEL (mod_intmax_t)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>      is_long_double <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span> (intmax_t) <span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>sizeof</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>      is_long <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span> (intmax_t) <span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>sizeof</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>      JUMP (<span style=color:#f92672>*++</span>f, step4_jumps);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Process current format.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>while</span> (<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	{
+</span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_int() va_arg (ap, int)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_long_int() va_arg (ap, long int)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_long_long_int() va_arg (ap, long long int)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_pointer() va_arg (ap, void *)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_string() va_arg (ap, const char *)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_unsigned_int() va_arg (ap, unsigned int)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_unsigned_long_int() va_arg (ap, unsigned long int)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_unsigned_long_long_int() va_arg (ap, unsigned long long int)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_wchar_t() va_arg (ap, wchar_t)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define process_arg_wstring() va_arg (ap, const wchar_t *)
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	  process_arg ();
+</span></span><span style=display:flex><span>	  process_string_arg ();
+</span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_int
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_long_int
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_long_long_int
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_pointer
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_string
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_unsigned_int
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_unsigned_long_int
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_unsigned_long_long_int
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_wchar_t
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#undef process_arg_wstring
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>	LABEL (form_float)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>	LABEL (form_floathex)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>	  {
+</span></span><span style=display:flex><span>	    <span style=color:#66d9ef>if</span> (__glibc_unlikely ((mode_flags <span style=color:#f92672>&amp;</span> PRINTF_LDBL_IS_DBL) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>))
+</span></span><span style=display:flex><span>	      is_long_double <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	    <span style=color:#66d9ef>struct</span> printf_info info <span style=color:#f92672>=</span>
+</span></span><span style=display:flex><span>	      {
+</span></span><span style=display:flex><span>		.prec <span style=color:#f92672>=</span> prec,
+</span></span><span style=display:flex><span>		.width <span style=color:#f92672>=</span> width,
+</span></span><span style=display:flex><span>		.spec <span style=color:#f92672>=</span> spec,
+</span></span><span style=display:flex><span>		.is_long_double <span style=color:#f92672>=</span> is_long_double,
+</span></span><span style=display:flex><span>		.is_short <span style=color:#f92672>=</span> is_short,
+</span></span><span style=display:flex><span>		.is_long <span style=color:#f92672>=</span> is_long,
+</span></span><span style=display:flex><span>		.alt <span style=color:#f92672>=</span> alt,
+</span></span><span style=display:flex><span>		.space <span style=color:#f92672>=</span> space,
+</span></span><span style=display:flex><span>		.left <span style=color:#f92672>=</span> left,
+</span></span><span style=display:flex><span>		.showsign <span style=color:#f92672>=</span> showsign,
+</span></span><span style=display:flex><span>		.group <span style=color:#f92672>=</span> group,
+</span></span><span style=display:flex><span>		.pad <span style=color:#f92672>=</span> pad,
+</span></span><span style=display:flex><span>		.extra <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>,
+</span></span><span style=display:flex><span>		.i18n <span style=color:#f92672>=</span> use_outdigits,
+</span></span><span style=display:flex><span>		.wide <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span> (CHAR_T) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>1</span>,
+</span></span><span style=display:flex><span>		.is_binary128 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>	      };
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	    PARSE_FLOAT_VA_ARG_EXTENDED (info);
+</span></span><span style=display:flex><span>	    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>ptr <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>the_arg;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	    <span style=color:#66d9ef>int</span> function_done <span style=color:#f92672>=</span> __printf_fp_spec (s, <span style=color:#f92672>&amp;</span>info, <span style=color:#f92672>&amp;</span>ptr);
+</span></span><span style=display:flex><span>	    <span style=color:#66d9ef>if</span> (function_done <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>	      {
+</span></span><span style=display:flex><span>		done <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> all_done;
+</span></span><span style=display:flex><span>	      }
+</span></span><span style=display:flex><span>	    done_add (function_done);
+</span></span><span style=display:flex><span>	  }
+</span></span><span style=display:flex><span>	  <span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	LABEL (form_unknown)<span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>	  <span style=color:#66d9ef>if</span> (spec <span style=color:#f92672>==</span> L_(<span style=color:#e6db74>&#39;\0&#39;</span>))
+</span></span><span style=display:flex><span>	    {
+</span></span><span style=display:flex><span>	      <span style=color:#75715e>/* The format string ended before the specifier is complete.  */</span>
+</span></span><span style=display:flex><span>	      __set_errno (EINVAL);
+</span></span><span style=display:flex><span>	      done <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>	      <span style=color:#66d9ef>goto</span> all_done;
+</span></span><span style=display:flex><span>	    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	  <span style=color:#75715e>/* If we are in the fast loop force entering the complicated
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	     one.  */</span>
+</span></span><span style=display:flex><span>	  <span style=color:#66d9ef>goto</span> do_positional;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* The format is correctly handled.  */</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>++</span>nspecs_done;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Look for next format specifier.  */</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef COMPILE_WPRINTF
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>      f <span style=color:#f92672>=</span> __find_specwc ((end_of_spec <span style=color:#f92672>=</span> <span style=color:#f92672>++</span>f));
+</span></span><span style=display:flex><span><span style=color:#75715e>#else
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>      f <span style=color:#f92672>=</span> __find_specmb ((end_of_spec <span style=color:#f92672>=</span> <span style=color:#f92672>++</span>f));
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>      <span style=color:#75715e>/* Write the following constant string.  */</span>
+</span></span><span style=display:flex><span>      outstring (end_of_spec, f <span style=color:#f92672>-</span> end_of_spec);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span> (<span style=color:#f92672>*</span>f <span style=color:#f92672>!=</span> L_(<span style=color:#e6db74>&#39;\0&#39;</span>));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Unlock stream and return.  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>goto</span> all_done;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Hand off processing for positional parameters.  */</span>
+</span></span><span style=display:flex><span>do_positional:
+</span></span><span style=display:flex><span>  done <span style=color:#f92672>=</span> printf_positional (s, format, readonly_format, ap, <span style=color:#f92672>&amp;</span>ap_save,
+</span></span><span style=display:flex><span>			    done, nspecs_done, lead_str_end, work_buffer,
+</span></span><span style=display:flex><span>			    save_errno, grouping, thousands_sep, mode_flags);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> all_done:
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* Unlock the stream.  */</span>
+</span></span><span style=display:flex><span>  _IO_funlockfile (s);
+</span></span><span style=display:flex><span>  _IO_cleanup_region_end (<span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> done;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=definition2>Definition2
+<a class=anchor href=#definition2>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// sysdeps/ieee754/ldbl-opt/nldbl-printf.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>attribute_hidden
+</span></span><span style=display:flex><span><span style=color:#a6e22e>printf</span> (<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>fmt, ...)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  va_list arg;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> done;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  va_start (arg, fmt);
+</span></span><span style=display:flex><span>  done <span style=color:#f92672>=</span> __nldbl_vfprintf (stdout, fmt, arg);
+</span></span><span style=display:flex><span>  va_end (arg);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> done;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// sysdeps/ieee754/ldbl-opt/nldbl-compat.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>attribute_compat_text_section
+</span></span><span style=display:flex><span><span style=color:#a6e22e>__nldbl_vfprintf</span> (FILE <span style=color:#f92672>*</span>s, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>fmt, va_list ap)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> __vfprintf_internal (s, fmt, ap, PRINTF_LDBL_IS_DBL);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>strong_alias (__nldbl_vfprintf, __nldbl__IO_vfprintf)
+</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(n){const e=window.getSelection(),t=document.createRange();t.selectNodeContents(n),e.removeAllRanges(),e.addRange(t)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#version>Version</a></li><li><a href=#definition1>Definition1</a></li><li><a href=#definition2>Definition2</a></li></ul></li></ul></nav></div></aside></main></body></html>

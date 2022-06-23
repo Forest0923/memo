@@ -52,7 +52,7 @@ do_positional:
 			    done, nspecs_done, lead_str_end, work_buffer,
 			    save_errno, grouping, thousands_sep, mode_flags);
 
- all_done:
+all_done:
   /* Unlock the stream.  */
   _IO_funlockfile (s);
   _IO_cleanup_region_end (0);
@@ -94,80 +94,4 @@ outstring_func (FILE *s, const UCHAR_T *string, size_t length, int done)
 	goto all_done;							\
     }									\
    while (0)
-```
-
-```c
-
-```
-
-## Definition2
-
-```c
-// libio/bits/stdio2.h
-__fortify_function int
-printf (const char *__restrict __fmt, ...)
-{
-  return __printf_chk (__USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ());
-}
-```
-
-```c
-// sysdeps/ieee754/ldbl-opt/nldbl-printf_chk.c
-int
-attribute_hidden
-__printf_chk (int flag, const char *fmt, ...)
-{
-  va_list arg;
-  int done;
-
-  va_start (arg, fmt);
-  done = __nldbl___vfprintf_chk (stdout, flag, fmt, arg);
-  va_end (arg);
-
-  return done;
-}
-```
-
-```c
-// sysdeps/ieee754/ldbl-opt/nldbl-compat.c
-int
-attribute_compat_text_section
-__nldbl___vfprintf_chk (FILE *s, int flag, const char *fmt, va_list ap)
-{
-  unsigned int mode = PRINTF_LDBL_IS_DBL;
-  if (flag > 0)
-    mode |= PRINTF_FORTIFY;
-
-  return __vfprintf_internal (s, fmt, ap, mode);
-}
-```
-
-## Definition3
-
-```c
-// sysdeps/ieee754/ldbl-opt/nldbl-printf.c
-int
-attribute_hidden
-printf (const char *fmt, ...)
-{
-  va_list arg;
-  int done;
-
-  va_start (arg, fmt);
-  done = __nldbl_vfprintf (stdout, fmt, arg);
-  va_end (arg);
-
-  return done;
-}
-```
-
-```c
-// sysdeps/ieee754/ldbl-opt/nldbl-compat.c
-int
-attribute_compat_text_section
-__nldbl_vfprintf (FILE *s, const char *fmt, va_list ap)
-{
-  return __vfprintf_internal (s, fmt, ap, PRINTF_LDBL_IS_DBL);
-}
-strong_alias (__nldbl_vfprintf, __nldbl__IO_vfprintf)
 ```

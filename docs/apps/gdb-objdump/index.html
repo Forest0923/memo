@@ -1,5 +1,11 @@
-<!doctype html><html lang=jp dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content=" Debugging with gdb and objdump # gdb # LD_PRELOAD # gdb ./a.out (gdb) set envirnment LD_PRELOAD ./hook.so (gdb) start Memory Dump # (gdb) x/[size]s [address] objdump # objdump [option] [executable file] Options Descriptions -f -p "><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Debugging with gdb and objdump"><meta property="og:description" content=" Debugging with gdb and objdump # gdb # LD_PRELOAD # gdb ./a.out (gdb) set envirnment LD_PRELOAD ./hook.so (gdb) start Memory Dump # (gdb) x/[size]s [address] objdump # objdump [option] [executable file] Options Descriptions -f -p "><meta property="og:type" content="article"><meta property="og:url" content="http://forest0923.github.io/memo/docs/apps/gdb-objdump/"><meta property="article:section" content="docs"><title>Debugging with gdb and objdump | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/jp.search.min.a2a7ee7b12106c3ca44bd87a9cad4c778be309c97588d1a4db550de7cf20f693.js integrity="sha256-oqfuexIQbDykS9h6nK1Md4vjCcl1iNGk21UN588g9pM=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<!doctype html><html lang=jp dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Debugging with gdb and objdump # gdb # Preparations # ここでは下記のコード（hello.c）を gdb でデバッグして行きます．
+#include <stdio.h> int main() { printf(&#34;hello\n&#34;); } コンパイルするときにデバッグ情報を入れるために -g オプションをつけてコンパイルします．
+gcc hello.c -g Start # 引数にデバッグ対象の実行ファイルを渡して gdb を起動します．
+gdb a.out % gdb a.out GNU gdb (GDB) 12.1 Copyright (C) 2022 Free Software Foundation, Inc. License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html> This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Debugging with gdb and objdump"><meta property="og:description" content="Debugging with gdb and objdump # gdb # Preparations # ここでは下記のコード（hello.c）を gdb でデバッグして行きます．
+#include <stdio.h> int main() { printf(&#34;hello\n&#34;); } コンパイルするときにデバッグ情報を入れるために -g オプションをつけてコンパイルします．
+gcc hello.c -g Start # 引数にデバッグ対象の実行ファイルを渡して gdb を起動します．
+gdb a.out % gdb a.out GNU gdb (GDB) 12.1 Copyright (C) 2022 Free Software Foundation, Inc. License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html> This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law."><meta property="og:type" content="article"><meta property="og:url" content="http://forest0923.github.io/memo/docs/apps/gdb-objdump/"><meta property="article:section" content="docs"><title>Debugging with gdb and objdump | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/jp.search.min.41c6f5212062a519f2372af45e69d666c15b4b57775cad48fb0ee9176b236bc6.js integrity="sha256-Qcb1ISBipRnyNyr0XmnWZsFbS1d3XK1I+w7pF2sja8Y=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/memo/><span>Memo</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul class=book-languages><li><input type=checkbox id=languages class=toggle>
 <label for=languages class="flex justify-between"><a role=button class="flex align-center"><img src=/memo/svg/translate.svg class=book-icon alt=Languages>
 Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/>English</a></li></ul></li></ul><h2>Links</h2><ul><li><a href=https://github.com/Forest0923 target=_blank rel=noopener>GitHub</a></li><li><a href=https://gitlab.com/forest0923 target=_blank rel=noopener>GitLab</a></li></ul><h2>Documents</h2><ul><li><input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
@@ -23,14 +29,235 @@ Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/>English
 <label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between"><a role=button>Web 開発</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/web/code-highlight/>シンタックスハイライト</a></li><li><a href=http://forest0923.github.io/memo/docs/web/latex/>きれいな数式の表示</a></li><li><a href=http://forest0923.github.io/memo/docs/web/mermaid/>Mermaid</a></li><li><a href=http://forest0923.github.io/memo/docs/web/webtools/>Web Tools</a></li></ul></li><li><input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
 <label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between"><a role=button>Security</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/security/pkc/>公開鍵暗号</a></li><li><a href=http://forest0923.github.io/memo/docs/security/gpg/>GNU Privacy Guard</a></li><li><a href=http://forest0923.github.io/memo/docs/security/ssh/>SSH</a></li><li><a href=http://forest0923.github.io/memo/docs/security/hack/>Hack</a></li></ul></li></ul><h2>Blog Posts</h2><ul><li><a href=/memo/posts/>Posts</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/memo/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>Debugging with gdb and objdump</strong>
-<label for=toc-control><img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#debugging-with-gdb-and-objdump>Debugging with gdb and objdump</a><ul><li><a href=#gdb>gdb</a><ul><li><a href=#ld_preload>LD_PRELOAD</a></li><li><a href=#memory-dump>Memory Dump</a></li></ul></li><li><a href=#objdump>objdump</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=debugging-with-gdb-and-objdump>Debugging with gdb and objdump
+<label for=toc-control><img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#debugging-with-gdb-and-objdump>Debugging with gdb and objdump</a><ul><li><a href=#gdb>gdb</a><ul><li><a href=#preparations>Preparations</a></li><li><a href=#start>Start</a></li><li><a href=#arguments>Arguments</a></li><li><a href=#environment-variables-ld_preload>Environment Variables (LD_PRELOAD)</a></li><li><a href=#exec>Exec</a></li><li><a href=#break-points>Break Points</a></li><li><a href=#memory-mappings>Memory Mappings</a></li><li><a href=#disassemble>Disassemble</a></li><li><a href=#step>Step</a></li><li><a href=#memory-dump>Memory Dump</a></li></ul></li><li><a href=#objdump>objdump</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=debugging-with-gdb-and-objdump>Debugging with gdb and objdump
 <a class=anchor href=#debugging-with-gdb-and-objdump>#</a></h1><h2 id=gdb>gdb
-<a class=anchor href=#gdb>#</a></h2><h3 id=ld_preload>LD_PRELOAD
-<a class=anchor href=#ld_preload>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>gdb ./a.out
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) set envirnment LD_PRELOAD ./hook.so
-</span></span><span style=display:flex><span>(gdb) start
-</span></span></code></pre></div><h3 id=memory-dump>Memory Dump
-<a class=anchor href=#memory-dump>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) x/[size]s [address]
+<a class=anchor href=#gdb>#</a></h2><h3 id=preparations>Preparations
+<a class=anchor href=#preparations>#</a></h3><p>ここでは下記のコード（hello.c）を gdb でデバッグして行きます．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	printf(<span style=color:#e6db74>&#34;hello</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>コンパイルするときにデバッグ情報を入れるために -g オプションをつけてコンパイルします．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>gcc hello.c -g
+</span></span></code></pre></div><h3 id=start>Start
+<a class=anchor href=#start>#</a></h3><p>引数にデバッグ対象の実行ファイルを渡して gdb を起動します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>gdb a.out
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>% gdb a.out
+</span></span><span style=display:flex><span>GNU gdb (GDB) 12.1
+</span></span><span style=display:flex><span>Copyright (C) 2022 Free Software Foundation, Inc.
+</span></span><span style=display:flex><span>License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+</span></span><span style=display:flex><span>This is free software: you are free to change and redistribute it.
+</span></span><span style=display:flex><span>There is NO WARRANTY, to the extent permitted by law.
+</span></span><span style=display:flex><span>Type &#34;show copying&#34; and &#34;show warranty&#34; for details.
+</span></span><span style=display:flex><span>This GDB was configured as &#34;x86_64-pc-linux-gnu&#34;.
+</span></span><span style=display:flex><span>Type &#34;show configuration&#34; for configuration details.
+</span></span><span style=display:flex><span>For bug reporting instructions, please see:
+</span></span><span style=display:flex><span>&lt;https://www.gnu.org/software/gdb/bugs/&gt;.
+</span></span><span style=display:flex><span>Find the GDB manual and other documentation resources online at:
+</span></span><span style=display:flex><span>    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>For help, type &#34;help&#34;.
+</span></span><span style=display:flex><span>Type &#34;apropos word&#34; to search for commands related to &#34;word&#34;...
+</span></span><span style=display:flex><span>Reading symbols from a.out...
+</span></span><span style=display:flex><span>(gdb)
+</span></span></code></pre></div><p>この段階ではまだプログラムはスタートしていないので，ここで引数や環境変数の設定を行います．</p><h3 id=arguments>Arguments
+<a class=anchor href=#arguments>#</a></h3><p>引数が必要な場合は下記のように <code>set args</code> を使って追加します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) set args [arg0] [arg1] ...
+</span></span></code></pre></div><h3 id=environment-variables-ld_preload>Environment Variables (LD_PRELOAD)
+<a class=anchor href=#environment-variables-ld_preload>#</a></h3><p>環境変数を設定する場合は <code>set environment</code> を使います．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) set envirnment LD_PRELOAD ./hook.so
+</span></span></code></pre></div><p>ここでは下記の hook.c というファイルをコンパイルして LD_PRELOAD に指定し，main() のフックを行います．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * gcc hook.c -o hook.so -fPIC -shared -ldl
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#define _GNU_SOURCE
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;dlfcn.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;unistd.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#a6e22e>int</span> (<span style=color:#f92672>*</span>main_orig)(<span style=color:#66d9ef>int</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main_hook</span>(<span style=color:#66d9ef>int</span> argc, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>argv, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>envp)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	printf(<span style=color:#e6db74>&#34;---Before main()---</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int</span> ret <span style=color:#f92672>=</span> main_orig(argc, argv, envp);
+</span></span><span style=display:flex><span>	printf(<span style=color:#e6db74>&#34;---After main()----</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> ret;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>__libc_start_main</span>(
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>main)(<span style=color:#66d9ef>int</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>),
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>int</span> argc,
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>argv,
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>init)(<span style=color:#66d9ef>int</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>),
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>fini)(<span style=color:#66d9ef>void</span>),
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>rtld_fini)(<span style=color:#66d9ef>void</span>),
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>stack_end)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	main_orig <span style=color:#f92672>=</span> main;
+</span></span><span style=display:flex><span>	typeof(<span style=color:#f92672>&amp;</span>__libc_start_main) orig <span style=color:#f92672>=</span> dlsym(RTLD_NEXT, <span style=color:#e6db74>&#34;__libc_start_main&#34;</span>);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> orig(main_hook, argc, argv, init, fini, rtld_fini, stack_end);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=exec>Exec
+<a class=anchor href=#exec>#</a></h3><p>プログラムをスタートさせるときは run か start を使用します．run は ブレークポイントを設定した位置まで実行されます．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) run
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) run
+</span></span><span style=display:flex><span>Starting program: /home/mori/exp/a.out
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>[Thread debugging using libthread_db enabled]
+</span></span><span style=display:flex><span>Using host libthread_db library &#34;/usr/lib/libthread_db.so.1&#34;.
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>hello
+</span></span><span style=display:flex><span>---After main()----
+</span></span><span style=display:flex><span>[Inferior 1 (process 18048) exited normally]
+</span></span></code></pre></div><p>start を実行すると main() の最初の処理で停止します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) start
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) start
+</span></span><span style=display:flex><span>Temporary breakpoint 1 at 0x55555555513d: file hello.c, line 4.
+</span></span><span style=display:flex><span>Starting program: /home/mori/exp/a.out
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>[Thread debugging using libthread_db enabled]
+</span></span><span style=display:flex><span>Using host libthread_db library &#34;/usr/lib/libthread_db.so.1&#34;.
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Temporary breakpoint 1, main () at hello.c:4
+</span></span><span style=display:flex><span>4               printf(&#34;hello\n&#34;);
+</span></span></code></pre></div><h3 id=break-points>Break Points
+<a class=anchor href=#break-points>#</a></h3><p>ブレークポイントは break で設定します．プログラムの行数や関数名，アドレスを指定してブレークポイントにできます．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) b 5
+</span></span><span style=display:flex><span>(gdb) syscall
+</span></span><span style=display:flex><span>(gdb) 0x0000555555555144
+</span></span></code></pre></div><p>設定したブレークポイントは下記のように確認が可能です．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) info breakpoints
+</span></span><span style=display:flex><span>Num     Type           Disp Enb Address            What
+</span></span><span style=display:flex><span>2       breakpoint     keep y   0x00007ffff7e942f0 &lt;syscall&gt;
+</span></span></code></pre></div><p>削除するには <code>info b</code> でリスト表示されたブレークポイントの番号を使用します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) delete 2
+</span></span></code></pre></div><h3 id=memory-mappings>Memory Mappings
+<a class=anchor href=#memory-mappings>#</a></h3><p>メモリマッピングは下記のように出力します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) info proc mappings
+</span></span><span style=display:flex><span>process 18156
+</span></span><span style=display:flex><span>Mapped address spaces:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>          Start Addr           End Addr       Size     Offset  Perms  objfile
+</span></span><span style=display:flex><span>      0x555555554000     0x555555555000     0x1000        0x0  r--p   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555555000     0x555555556000     0x1000     0x1000  r-xp   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555556000     0x555555557000     0x1000     0x2000  r--p   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555557000     0x555555558000     0x1000     0x2000  r--p   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555558000     0x555555559000     0x1000     0x3000  rw-p   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555559000     0x55555557a000    0x21000        0x0  rw-p   [heap]
+</span></span><span style=display:flex><span>      0x7ffff7d86000     0x7ffff7d89000     0x3000        0x0  rw-p
+</span></span><span style=display:flex><span>      0x7ffff7d89000     0x7ffff7db1000    0x28000        0x0  r--p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7db1000     0x7ffff7f29000   0x178000    0x28000  r-xp   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f29000     0x7ffff7f81000    0x58000   0x1a0000  r--p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f81000     0x7ffff7f82000     0x1000   0x1f8000  ---p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f82000     0x7ffff7f86000     0x4000   0x1f8000  r--p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f86000     0x7ffff7f88000     0x2000   0x1fc000  rw-p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f88000     0x7ffff7f95000     0xd000        0x0  rw-p
+</span></span><span style=display:flex><span>      0x7ffff7fb9000     0x7ffff7fba000     0x1000        0x0  r--p   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fba000     0x7ffff7fbb000     0x1000     0x1000  r-xp   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fbb000     0x7ffff7fbc000     0x1000     0x2000  r--p   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fbc000     0x7ffff7fbd000     0x1000     0x2000  r--p   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fbd000     0x7ffff7fbe000     0x1000     0x3000  rw-p   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fbe000     0x7ffff7fc0000     0x2000        0x0  rw-p
+</span></span><span style=display:flex><span>      0x7ffff7fc0000     0x7ffff7fc4000     0x4000        0x0  r--p   [vvar]
+</span></span><span style=display:flex><span>      0x7ffff7fc4000     0x7ffff7fc6000     0x2000        0x0  r-xp   [vdso]
+</span></span><span style=display:flex><span>      0x7ffff7fc6000     0x7ffff7fc8000     0x2000        0x0  r--p   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffff7fc8000     0x7ffff7fef000    0x27000     0x2000  r-xp   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffff7fef000     0x7ffff7ffa000     0xb000    0x29000  r--p   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffff7ffb000     0x7ffff7ffd000     0x2000    0x34000  r--p   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffff7ffd000     0x7ffff7fff000     0x2000    0x36000  rw-p   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffffffde000     0x7ffffffff000    0x21000        0x0  rw-p   [stack]
+</span></span><span style=display:flex><span>  0xffffffffff600000 0xffffffffff601000     0x1000        0x0  --xp   [vsyscall]
+</span></span></code></pre></div><h3 id=disassemble>Disassemble
+<a class=anchor href=#disassemble>#</a></h3><p>現在のアセンブリ言語レベルでの実行位置を表示するために disas を使用します．<code>=></code> が現在の位置です．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) disassemble
+</span></span><span style=display:flex><span>Dump of assembler code for function main:
+</span></span><span style=display:flex><span>   0x0000555555555139 &lt;+0&gt;:     push   %rbp
+</span></span><span style=display:flex><span>   0x000055555555513a &lt;+1&gt;:     mov    %rsp,%rbp
+</span></span><span style=display:flex><span>=&gt; 0x000055555555513d &lt;+4&gt;:     lea    0xec0(%rip),%rax        # 0x555555556004
+</span></span><span style=display:flex><span>   0x0000555555555144 &lt;+11&gt;:    mov    %rax,%rdi
+</span></span><span style=display:flex><span>   0x0000555555555147 &lt;+14&gt;:    call   0x555555555030 &lt;puts@plt&gt;
+</span></span><span style=display:flex><span>   0x000055555555514c &lt;+19&gt;:    mov    $0x0,%eax
+</span></span><span style=display:flex><span>   0x0000555555555151 &lt;+24&gt;:    pop    %rbp
+</span></span><span style=display:flex><span>   0x0000555555555152 &lt;+25&gt;:    ret
+</span></span><span style=display:flex><span>End of assembler dump.
+</span></span></code></pre></div><p><code>layout asm</code> でも現在の実行位置とその周辺のアセンブリコードを見ることができます．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+</span></span><span style=display:flex><span>│    0x555555555139 &lt;main&gt;           push   %rbp                                                                                                                                 │
+</span></span><span style=display:flex><span>│    0x55555555513a &lt;main+1&gt;         mov    %rsp,%rbp                                                                                                                            │
+</span></span><span style=display:flex><span>│  &gt; 0x55555555513d &lt;main+4&gt;         lea    0xec0(%rip),%rax        # 0x555555556004                                                                                             │
+</span></span><span style=display:flex><span>│    0x555555555144 &lt;main+11&gt;        mov    %rax,%rdi                                                                                                                            │
+</span></span><span style=display:flex><span>│    0x555555555147 &lt;main+14&gt;        call   0x555555555030 &lt;puts@plt&gt;                                                                                                            │
+</span></span><span style=display:flex><span>│    0x55555555514c &lt;main+19&gt;        mov    $0x0,%eax                                                                                                                            │
+</span></span><span style=display:flex><span>│    0x555555555151 &lt;main+24&gt;        pop    %rbp                                                                                                                                 │
+</span></span><span style=display:flex><span>│    0x555555555152 &lt;main+25&gt;        ret                                                                                                                                         │
+</span></span><span style=display:flex><span>│    0x555555555153                  add    %dh,%bl                                                                                                                              │
+</span></span><span style=display:flex><span>│    0x555555555155 &lt;_fini+1&gt;        nop    %edx                                                                                                                                 │
+</span></span><span style=display:flex><span>│    0x555555555158 &lt;_fini+4&gt;        sub    $0x8,%rsp                                                                                                                            │
+</span></span><span style=display:flex><span>│    0x55555555515c &lt;_fini+8&gt;        add    $0x8,%rsp                                                                                                                            │
+</span></span><span style=display:flex><span>│    0x555555555160 &lt;_fini+12&gt;       ret                                                                                                                                         │
+</span></span><span style=display:flex><span>│    0x555555555161                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555163                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555165                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555167                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555169                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x55555555516b                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x55555555516d                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x55555555516f                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555171                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555173                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555175                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555177                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555179                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+</span></span><span style=display:flex><span>multi-thre Thread 0x7ffff7d867 In: main                                                                                                                  L4    PC: 0x55555555513d
+</span></span><span style=display:flex><span>(gdb) layout asm
+</span></span></code></pre></div><p>ちなみに <code>layout src</code> にするとソースコードレベルでも位置を確認できます．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>┌─hello.c────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+</span></span><span style=display:flex><span>│        1  #include &lt;stdio.h&gt;                                                                                                                                                   │
+</span></span><span style=display:flex><span>│        2                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│        3  int main() {                                                                                                                                                         │
+</span></span><span style=display:flex><span>│  &gt;     4          printf(&#34;hello\n&#34;);                                                                                                                                           │
+</span></span><span style=display:flex><span>│        5  }                                                                                                                                                                    │
+</span></span><span style=display:flex><span>│        6                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│        7                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│        8                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│        9                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       10                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       11                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       12                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       13                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       14                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       15                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       16                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       17                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       18                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       19                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       20                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       21                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       22                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       23                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       24                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       25                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       26                                                                                                                                                                       │
+</span></span><span style=display:flex><span>└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+</span></span><span style=display:flex><span>multi-thre Thread 0x7ffff7d867 In: main                                                                                                                  L4    PC: 0x55555555513d
+</span></span><span style=display:flex><span>(gdb) layout src
+</span></span></code></pre></div><p>layout の画面を終了させるには <code>Ctrl+x a</code> を入力します．</p><h3 id=step>Step
+<a class=anchor href=#step>#</a></h3><p>プログラムのステップ実行には複数の種類があり，まとめると次のようになります．</p><table><thead><tr><th>Commands</th><th>Descriptions</th></tr></thead><tbody><tr><td>next</td><td>次の関数までステップ実行（関数の中には入らない）</td></tr><tr><td>step</td><td>次の関数までステップ実行（関数の中に入る）</td></tr><tr><td>ni</td><td>アセンブリの命令レベルでステップ実行（call 先までは入らない）</td></tr><tr><td>si</td><td>アセンブリの命令レベルでステップ実行（call 先まで入る）</td></tr></tbody></table><p><code>si</code> や <code>ni</code> などを実行しながら <code>disas</code> を実行して行くとアセンブリレベルでどのようにコードが呼ばれているのかがよくわかります．</p><h3 id=memory-dump>Memory Dump
+<a class=anchor href=#memory-dump>#</a></h3><p>メモリの中身を見たいときは <code>x</code> を使用します．size で address からどこまで出力するかを指定して format に出力形式を入力します．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) x/[size][format] [address]
+</span></span></code></pre></div><p>下記の例では string のフォーマットで &ldquo;hello&rdquo; が入ったメモリアドレスをダンプしています．</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) start
+</span></span><span style=display:flex><span>Temporary breakpoint 3 at 0x55555555513d: file hello.c, line 4.
+</span></span><span style=display:flex><span>Starting program: /home/mori/exp/a.out
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>[Thread debugging using libthread_db enabled]
+</span></span><span style=display:flex><span>Using host libthread_db library &#34;/usr/lib/libthread_db.so.1&#34;.
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Temporary breakpoint 3, main () at hello.c:4
+</span></span><span style=display:flex><span>4               printf(&#34;hello\n&#34;);
+</span></span><span style=display:flex><span>(gdb) disas
+</span></span><span style=display:flex><span>Dump of assembler code for function main:
+</span></span><span style=display:flex><span>   0x0000555555555139 &lt;+0&gt;:     push   %rbp
+</span></span><span style=display:flex><span>   0x000055555555513a &lt;+1&gt;:     mov    %rsp,%rbp
+</span></span><span style=display:flex><span>=&gt; 0x000055555555513d &lt;+4&gt;:     lea    0xec0(%rip),%rax        # 0x555555556004
+</span></span><span style=display:flex><span>   0x0000555555555144 &lt;+11&gt;:    mov    %rax,%rdi
+</span></span><span style=display:flex><span>   0x0000555555555147 &lt;+14&gt;:    call   0x555555555030 &lt;puts@plt&gt;
+</span></span><span style=display:flex><span>   0x000055555555514c &lt;+19&gt;:    mov    $0x0,%eax
+</span></span><span style=display:flex><span>   0x0000555555555151 &lt;+24&gt;:    pop    %rbp
+</span></span><span style=display:flex><span>   0x0000555555555152 &lt;+25&gt;:    ret
+</span></span><span style=display:flex><span>End of assembler dump.
+</span></span><span style=display:flex><span>(gdb) x/s 0x555555556004
+</span></span><span style=display:flex><span>0x555555556004: &#34;hello&#34;
+</span></span><span style=display:flex><span>(gdb) x/ 0x555555556004
+</span></span><span style=display:flex><span>0x555555556004: &#34;hello&#34;
 </span></span></code></pre></div><h2 id=objdump>objdump
 <a class=anchor href=#objdump>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>objdump <span style=color:#f92672>[</span>option<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>executable file<span style=color:#f92672>]</span>
-</span></span></code></pre></div><table><thead><tr><th>Options</th><th>Descriptions</th></tr></thead><tbody><tr><td>-f</td><td></td></tr><tr><td>-p</td><td></td></tr></tbody></table></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#debugging-with-gdb-and-objdump>Debugging with gdb and objdump</a><ul><li><a href=#gdb>gdb</a><ul><li><a href=#ld_preload>LD_PRELOAD</a></li><li><a href=#memory-dump>Memory Dump</a></li></ul></li><li><a href=#objdump>objdump</a></li></ul></li></ul></nav></div></aside></main></body></html>
+</span></span></code></pre></div><table><thead><tr><th>Options</th><th>Descriptions</th></tr></thead><tbody><tr><td>-f</td><td></td></tr><tr><td>-p</td><td></td></tr></tbody></table></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#debugging-with-gdb-and-objdump>Debugging with gdb and objdump</a><ul><li><a href=#gdb>gdb</a><ul><li><a href=#preparations>Preparations</a></li><li><a href=#start>Start</a></li><li><a href=#arguments>Arguments</a></li><li><a href=#environment-variables-ld_preload>Environment Variables (LD_PRELOAD)</a></li><li><a href=#exec>Exec</a></li><li><a href=#break-points>Break Points</a></li><li><a href=#memory-mappings>Memory Mappings</a></li><li><a href=#disassemble>Disassemble</a></li><li><a href=#step>Step</a></li><li><a href=#memory-dump>Memory Dump</a></li></ul></li><li><a href=#objdump>objdump</a></li></ul></li></ul></nav></div></aside></main></body></html>

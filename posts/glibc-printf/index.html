@@ -1,5 +1,5 @@
 <!doctype html><html lang=jp dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Version # glibc v2.35 Definition1 # // stdio-common/printf.c int __printf (const char *format, ...) { va_list arg; int done; va_start (arg, format); done = __vfprintf_internal (stdout, format, arg, 0); va_end (arg); return done; } #undef _IO_printf ldbl_strong_alias (__printf, printf); ldbl_strong_alias (__printf, _IO_printf); // stdio-common/vfprintf-internal.c # define vfprintf	__vfprintf_internal ... int vfprintf (FILE *s, const CHAR_T *format, va_list ap, unsigned int mode_flags) { ... /* Hand off processing for positional parameters."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="glibc printf"><meta property="og:description" content="Version # glibc v2.35 Definition1 # // stdio-common/printf.c int __printf (const char *format, ...) { va_list arg; int done; va_start (arg, format); done = __vfprintf_internal (stdout, format, arg, 0); va_end (arg); return done; } #undef _IO_printf ldbl_strong_alias (__printf, printf); ldbl_strong_alias (__printf, _IO_printf); // stdio-common/vfprintf-internal.c # define vfprintf	__vfprintf_internal ... int vfprintf (FILE *s, const CHAR_T *format, va_list ap, unsigned int mode_flags) { ... /* Hand off processing for positional parameters."><meta property="og:type" content="article"><meta property="og:url" content="http://forest0923.github.io/memo/posts/glibc-printf/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-06-16T13:16:58+09:00"><meta property="article:modified_time" content="2022-06-16T13:16:58+09:00"><title>glibc printf | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=stylesheet href=/memo/book.min.c2e3eda9442e013e8358d37201da972ea02c82b24e7615ac8d6a0a83fbb854b3.css integrity="sha256-wuPtqUQuAT6DWNNyAdqXLqAsgrJOdhWsjWoKg/u4VLM=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/jp.search.min.a2a7ee7b12106c3ca44bd87a9cad4c778be309c97588d1a4db550de7cf20f693.js integrity="sha256-oqfuexIQbDykS9h6nK1Md4vjCcl1iNGk21UN588g9pM=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<script defer src=/memo/jp.search.min.41c6f5212062a519f2372af45e69d666c15b4b57775cad48fb0ee9176b236bc6.js integrity="sha256-Qcb1ISBipRnyNyr0XmnWZsFbS1d3XK1I+w7pF2sja8Y=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/memo/><span>Memo</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul class=book-languages><li><input type=checkbox id=languages class=toggle>
 <label for=languages class="flex justify-between"><a role=button class="flex align-center"><img src=/memo/svg/translate.svg class=book-icon alt=Languages>
 Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/>English</a></li></ul></li></ul><h2>Links</h2><ul><li><a href=https://github.com/Forest0923 target=_blank rel=noopener>GitHub</a></li><li><a href=https://gitlab.com/forest0923 target=_blank rel=noopener>GitLab</a></li></ul><h2>Documents</h2><ul><li><input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
@@ -23,7 +23,7 @@ Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/>English
 <label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between"><a role=button>Web 開発</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/web/code-highlight/>シンタックスハイライト</a></li><li><a href=http://forest0923.github.io/memo/docs/web/latex/>きれいな数式の表示</a></li><li><a href=http://forest0923.github.io/memo/docs/web/mermaid/>Mermaid</a></li><li><a href=http://forest0923.github.io/memo/docs/web/webtools/>Web Tools</a></li></ul></li><li><input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
 <label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between"><a role=button>Security</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/security/pkc/>公開鍵暗号</a></li><li><a href=http://forest0923.github.io/memo/docs/security/gpg/>GNU Privacy Guard</a></li><li><a href=http://forest0923.github.io/memo/docs/security/ssh/>SSH</a></li><li><a href=http://forest0923.github.io/memo/docs/security/hack/>Hack</a></li></ul></li></ul><h2>Blog Posts</h2><ul><li><a href=/memo/posts/>Posts</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/memo/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>glibc printf</strong>
-<label for=toc-control><img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><ul><li><a href=#version>Version</a></li><li><a href=#definition1>Definition1</a></li><li><a href=#definition2>Definition2</a></li><li><a href=#definition3>Definition3</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1><a href=/memo/posts/glibc-printf/>glibc printf</a></h1><h5>June 16, 2022</h5><div><a href=/memo/categories/glibc-code-reading/>glibc Code Reading</a></div><div><a href=/memo/tags/glibc/>glibc</a></div><h2 id=version>Version
+<label for=toc-control><img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><ul><li><a href=#version>Version</a></li><li><a href=#definition1>Definition1</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1><a href=/memo/posts/glibc-printf/>glibc printf</a></h1><h5>June 16, 2022</h5><div><a href=/memo/categories/glibc-code-reading/>glibc Code Reading</a></div><div><a href=/memo/tags/glibc/>glibc</a></div><h2 id=version>Version
 <a class=anchor href=#version>#</a></h2><ul><li>glibc v2.35</li></ul><h2 id=definition1>Definition1
 <a class=anchor href=#definition1>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// stdio-common/printf.c
 </span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span>
@@ -55,7 +55,7 @@ Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/>English
 </span></span><span style=display:flex><span>			    done, nspecs_done, lead_str_end, work_buffer,
 </span></span><span style=display:flex><span>			    save_errno, grouping, thousands_sep, mode_flags);
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span> all_done:
+</span></span><span style=display:flex><span>all_done:
 </span></span><span style=display:flex><span>  <span style=color:#75715e>/* Unlock the stream.  */</span>
 </span></span><span style=display:flex><span>  _IO_funlockfile (s);
 </span></span><span style=display:flex><span>  _IO_cleanup_region_end (<span style=color:#ae81ff>0</span>);
@@ -91,59 +91,4 @@ Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/>English
 </span></span></span><span style=display:flex><span><span style=color:#75715e>	goto all_done;							\
 </span></span></span><span style=display:flex><span><span style=color:#75715e>    }									\
 </span></span></span><span style=display:flex><span><span style=color:#75715e>   while (0)
-</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c></code></pre></div><h2 id=definition2>Definition2
-<a class=anchor href=#definition2>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// libio/bits/stdio2.h
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>__fortify_function <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span><span style=color:#a6e22e>printf</span> (<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>__restrict __fmt, ...)
-</span></span><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> __printf_chk (__USE_FORTIFY_LEVEL <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>, __fmt, __va_arg_pack ());
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// sysdeps/ieee754/ldbl-opt/nldbl-printf_chk.c
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>attribute_hidden
-</span></span><span style=display:flex><span><span style=color:#a6e22e>__printf_chk</span> (<span style=color:#66d9ef>int</span> flag, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>fmt, ...)
-</span></span><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  va_list arg;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> done;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  va_start (arg, fmt);
-</span></span><span style=display:flex><span>  done <span style=color:#f92672>=</span> __nldbl___vfprintf_chk (stdout, flag, fmt, arg);
-</span></span><span style=display:flex><span>  va_end (arg);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> done;
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// sysdeps/ieee754/ldbl-opt/nldbl-compat.c
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>attribute_compat_text_section
-</span></span><span style=display:flex><span><span style=color:#a6e22e>__nldbl___vfprintf_chk</span> (FILE <span style=color:#f92672>*</span>s, <span style=color:#66d9ef>int</span> flag, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>fmt, va_list ap)
-</span></span><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> mode <span style=color:#f92672>=</span> PRINTF_LDBL_IS_DBL;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (flag <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>)
-</span></span><span style=display:flex><span>    mode <span style=color:#f92672>|=</span> PRINTF_FORTIFY;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> __vfprintf_internal (s, fmt, ap, mode);
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><h2 id=definition3>Definition3
-<a class=anchor href=#definition3>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// sysdeps/ieee754/ldbl-opt/nldbl-printf.c
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>attribute_hidden
-</span></span><span style=display:flex><span><span style=color:#a6e22e>printf</span> (<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>fmt, ...)
-</span></span><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  va_list arg;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> done;
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  va_start (arg, fmt);
-</span></span><span style=display:flex><span>  done <span style=color:#f92672>=</span> __nldbl_vfprintf (stdout, fmt, arg);
-</span></span><span style=display:flex><span>  va_end (arg);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> done;
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// sysdeps/ieee754/ldbl-opt/nldbl-compat.c
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>attribute_compat_text_section
-</span></span><span style=display:flex><span><span style=color:#a6e22e>__nldbl_vfprintf</span> (FILE <span style=color:#f92672>*</span>s, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>fmt, va_list ap)
-</span></span><span style=display:flex><span>{
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> __vfprintf_internal (s, fmt, ap, PRINTF_LDBL_IS_DBL);
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>strong_alias (__nldbl_vfprintf, __nldbl__IO_vfprintf)
-</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#version>Version</a></li><li><a href=#definition1>Definition1</a></li><li><a href=#definition2>Definition2</a></li><li><a href=#definition3>Definition3</a></li></ul></li></ul></nav></div></aside></main></body></html>
+</span></span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#version>Version</a></li><li><a href=#definition1>Definition1</a></li></ul></li></ul></nav></div></aside></main></body></html>

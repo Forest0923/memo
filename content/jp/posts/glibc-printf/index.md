@@ -1,6 +1,6 @@
 +++
 title = "glibc printf"
-description = ""
+description = "glibc における printf() の実装を調査する"
 date = 2022-06-16T13:16:58+09:00
 tags = [
   "glibc"

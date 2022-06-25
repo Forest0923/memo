@@ -1,6 +1,6 @@
 +++
 title = "Linux Segfault"
-description = ""
+description = "Linux でセグメンテーションフォルトが発生したときの処理を調査する"
 date = 2022-04-22T07:56:26+09:00
 tags = [
   "Linux"

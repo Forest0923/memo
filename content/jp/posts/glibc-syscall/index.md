@@ -1,6 +1,6 @@
 +++
 title = "glibc syscall"
-description = ""
+description = "glibc における syscall() の実装を調査する"
 date = 2022-06-20T13:35:51+09:00
 tags = [
   "glibc"

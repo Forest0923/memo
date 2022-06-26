@@ -15,7 +15,7 @@ This is a tutorial of implementing new systemcalls.
 
 ## Step-by-step instructions
 
-### 1. Register New Systemcall
+### Register New Systemcall
 
 Add a new entry in the `arch/x86/entry/syscalls/syscall_64.tbl`. You can use empty systemcall number and register `hello_syscall` as follows.
 
@@ -29,7 +29,7 @@ Add a new entry in the `arch/x86/entry/syscalls/syscall_64.tbl`. You can use emp
  # x32-specific system call numbers start at 512 to avoid cache impact
 ```
 
-### 2. Implementing Body of New Systemcall
+## Implementing Body of New Systemcall
 
 In this article, I wrote a new systemcall in the `my_syscall/` directory. The body of `hello_syscall` is written in the `my_syscalls/my_syscalls.c` using `SYSCALL_DEFINEk` macro as follows. `k` indicates thw number of arguments.
 
@@ -74,7 +74,7 @@ asmlinkage long sys_hello_syscall(void);
   */
 ```
 
-### 3. Modifying Makefile
+### Modifying Makefile
 
 First, create `my_syscalls/Makefile` like this.
 
@@ -88,7 +88,7 @@ Second, modify `Makefile` to add `my_syscalls/` directory to kernel.
 core-y		+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscalls/
 ```
 
-### 4. Compile and Install
+### Compile and Install
 
 [Install new kernel](../inst-kernel).
 
@@ -98,7 +98,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 reboot
 ```
 
-### 5. Test
+### Test
 
 Test program:
 

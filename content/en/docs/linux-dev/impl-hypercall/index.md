@@ -16,7 +16,7 @@ This is a tutorial of implementing new hypercalls.
 
 ## Step-by-step instructions
 
-### 1. Add new hypercall entry in KVM
+### Add new hypercall entry in KVM
 
 Register new hypercall number at the `include/uapi/linux/kvm_para.h`.
 
@@ -48,7 +48,7 @@ Hypercall occurs VMCALL that is one of the reason of VM Exit. The handler of VMC
  		break;
 ```
 
-### 2. Implementing systemcall to call hypercall
+### Implementing systemcall to call hypercall
 
 A hypercall can be called using `kvm_hypercall0()` and so on as follows. The maximum number of arguments is 4.
 
@@ -165,7 +165,7 @@ index 000000000000..04bf6fbd4efb
 +asmlinkage long hello_hypercall1(int arg1);
 ```
 
-### 3. Test
+### Test
 
 Call hypercall from guest:
 

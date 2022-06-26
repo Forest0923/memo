@@ -16,7 +16,7 @@ This is a step-by-step guide on how to install kernel for those who are new to k
 
 ## Step-by-step Instructions
 
-### 1. Preparing Source Code
+### Preparing Source Code
 
 In this article, I assume that `/usr/src` is a working directory. First of all, change directory to `/usr/src` and download kernel source code with the following command.
 
@@ -31,7 +31,7 @@ Decompress the code with `tar` command.
 tar -xvf linux-5.4.1.tar.gz
 ```
 
-### 2. Compiling
+### Compiling
 
 Before compiling you have to install some packages.
 
@@ -52,7 +52,7 @@ Finally, compile with the following command. `4` indicate how many thread do you
 make -j 4
 ```
 
-### 3. Installing
+### Installing
 
 Install modules and kernel image with the following command.
 
@@ -60,7 +60,7 @@ Install modules and kernel image with the following command.
 make modules_install && make install
 ```
 
-### 4. Updating Config for Bootloader
+### Updating Config for Bootloader
 
 Update grub configuration with the following command.
 
@@ -70,7 +70,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 - Reboot.
 
-### 5. Option: Change Default Kernel Version
+### Option: Change Default Kernel Version
 
 If you need to change default kernel, you can select kernel by editting `/etc/default/grub` as follows.
 

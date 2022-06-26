@@ -15,7 +15,7 @@ weight: 30
 
 ## チュートリアル
 
-### 1. システムコールの登録
+### システムコールの登録
 
 `arch/x86/entry/syscalls/syscall_64.tbl` に新しいシステムコールのエントリを追加します．使われていないシステムコール番号を使って次のように `hello_syscall` を追加します．
 
@@ -29,7 +29,7 @@ weight: 30
  # x32-specific system call numbers start at 512 to avoid cache impact
 ```
 
-### 2. 新しいシステムコールの本体の追加
+### 新しいシステムコールの本体の追加
 
 ここでは新たなシステムコールを `my_syscall/` ディレクトリに追加する前提で話を進めます．システムコールの本体の処理は `my_syscalls/my_syscalls.c` に `SYSCALL_DEFINEk` マクロを使用して次のように記述します．
 
@@ -76,7 +76,7 @@ asmlinkage long sys_hello_syscall(void);
   */
 ```
 
-### 3. Makefile の修正
+### Makefile の修正
 
 最初に次の内容の `my_syscalls/Makefile` を追加します．
 
@@ -90,7 +90,7 @@ obj-y:=my_syscalls.o
 core-y		+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscalls/
 ```
 
-### 4. コンパイルとインストール
+### コンパイルとインストール
 
 [Install new kernel](../inst-kernel).
 
@@ -100,7 +100,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 reboot
 ```
 
-### 5. テスト
+### テスト
 
 確認用のプログラム：
 

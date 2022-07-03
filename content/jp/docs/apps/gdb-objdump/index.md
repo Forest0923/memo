@@ -354,6 +354,41 @@ End of assembler dump.
 0x555555556004: "hello"
 ```
 
+### Symbol Table
+
+GDB では関数名などのシンボル情報を symtab という構造体に保存しています．
+通常の場合はやる必要のない処理ですが，このシンボルテーブルを削除したり，実行ファイルからシンボルを追加したい場合に symbol-file というコマンドを使用します．
+
+シンボルを削除するには引数なしで下記のように実行します．
+
+```text
+(gdb) symbol-file
+Discard symbol table from `/path/to/exec/file'? (y or n) y
+No symbol file now.
+```
+
+別の実行ファイルからシンボルを読み取るにはファイルパスを指定します．
+
+```text
+(gdb) symbol-file a.out
+Reading symbols from a.out...
+Reading symbols from /usr/lib/libc.so.6...
+(No debugging symbols found in /usr/lib/libc.so.6)
+Reading symbols from /lib64/ld-linux-x86-64.so.2...
+(No debugging symbols found in /lib64/ld-linux-x86-64.so.2)
+```
+
+オフセットが必要な場合はオプションでオフセットサイズを指定します．
+
+```text
+(gdb) symbol-file -o 0x555555554000 a.out
+Reading symbols from a.out...
+Reading symbols from /usr/lib/libc.so.6...
+(No debugging symbols found in /usr/lib/libc.so.6)
+Reading symbols from /lib64/ld-linux-x86-64.so.2...
+(No debugging symbols found in /lib64/ld-linux-x86-64.so.2)
+```
+
 ## objdump
 
 ```sh

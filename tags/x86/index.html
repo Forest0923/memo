@@ -1,5 +1,5 @@
 <!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="x86"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="http://forest0923.github.io/memo/tags/x86/"><title>x86 | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=stylesheet href=/memo/book.min.90647a7d9a055c284c8bbc78cb3291a8e09c4637f8c80b70f0086d2d17b30b5f.css integrity="sha256-kGR6fZoFXChMi7x4yzKRqOCcRjf4yAtw8AhtLRezC18=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
-<script defer src=/memo/jp.search.min.f3056fc1b65dcee0d824f3902a638bc00c1eabdffcf384a4d9d546e2487f0237.js integrity="sha256-8wVvwbZdzuDYJPOQKmOLwAweq9/884Sk2dVG4kh/Ajc=" crossorigin=anonymous></script>
+<script defer src=/memo/jp.search.min.a8d7285ed848a34143eed2a56e53e25eb5268162d3e85cba8812c8fadaa531e5.js integrity="sha256-qNcoXthIo0FD7tKlblPiXrUmgWLT6Fy6iBLI+tqlMeU=" crossorigin=anonymous></script>
 <link rel=alternate type=application/rss+xml href=http://forest0923.github.io/memo/tags/x86/index.xml title=Memo></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/memo/><span>Memo</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=検索 aria-label=検索 maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul class=book-languages><li><input type=checkbox id=languages class=toggle>
 <label for=languages class="flex justify-between"><a role=button class="flex align-center"><img src=/memo/svg/translate.svg class=book-icon alt=Languages>
@@ -25,18 +25,18 @@ Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/>English
 <label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between"><a role=button>Security</a></label><ul><li><a href=/memo/docs/security/pkc/>公開鍵暗号</a></li><li><a href=/memo/docs/security/gpg/>GNU Privacy Guard</a></li><li><a href=/memo/docs/security/ssh/>SSH</a></li><li><a href=/memo/docs/security/hack/>Hack</a></li></ul></li></ul><h2>Blog Posts</h2><ul><li><a href=/memo/posts/>Posts</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/memo/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>x86</strong>
 <label for=toc-control><img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav><ul><li class=book-section-flat><strong>Categories</strong><ul><li class="flex justify-between"><a href=/memo/categories/linux-code-reading/>Linux Code Reading</a>
-<span>5</span></li><li class="flex justify-between"><a href=/memo/categories/x86/>x86</a>
+<span>6</span></li><li class="flex justify-between"><a href=/memo/categories/x86/>x86</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/categories/gdb-code-reading/>GDB Code Reading</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/categories/glibc-code-reading/>glibc Code Reading</a>
 <span>2</span></li><li class="flex justify-between"><a href=/memo/categories/paper-reading/>Paper Reading</a>
-<span>2</span></li></ul></li><li class=book-section-flat><strong>Tags</strong><ul><li class="flex justify-between"><a href=/memo/tags/segment/>Segment</a>
+<span>2</span></li></ul></li><li class=book-section-flat><strong>Tags</strong><ul><li class="flex justify-between"><a href=/memo/tags/linux/>Linux</a>
+<span>5</span></li><li class="flex justify-between"><a href=/memo/tags/segment/>Segment</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/thread-local-storage/>Thread Local Storage</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/x86/>x86</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/debug/>debug</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/gdb/>GDB</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/glibc/>glibc</a>
-<span>2</span></li><li class="flex justify-between"><a href=/memo/tags/linux/>Linux</a>
-<span>4</span></li><li class="flex justify-between"><a href=/memo/tags/ept/>EPT</a>
+<span>2</span></li><li class="flex justify-between"><a href=/memo/tags/ept/>EPT</a>
 <span>2</span></li><li class="flex justify-between"><a href=/memo/tags/kpti/>KPTI</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/meltdown/>Meltdown</a>
 <span>2</span></li><li class="flex justify-between"><a href=/memo/tags/mulware/>Mulware</a>
@@ -47,18 +47,18 @@ Japanese</a></label><ul><li><a href=http://forest0923.github.io/memo/en/>English
 <a href=/memo/categories/x86/>x86</a></div><div><a href=/memo/tags/segment/>Segment</a>,
 <a href=/memo/tags/thread-local-storage/>Thread Local Storage</a>,
 <a href=/memo/tags/x86/>x86</a></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav><ul><li class=book-section-flat><strong>Categories</strong><ul><li class="flex justify-between"><a href=/memo/categories/linux-code-reading/>Linux Code Reading</a>
-<span>5</span></li><li class="flex justify-between"><a href=/memo/categories/x86/>x86</a>
+<span>6</span></li><li class="flex justify-between"><a href=/memo/categories/x86/>x86</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/categories/gdb-code-reading/>GDB Code Reading</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/categories/glibc-code-reading/>glibc Code Reading</a>
 <span>2</span></li><li class="flex justify-between"><a href=/memo/categories/paper-reading/>Paper Reading</a>
-<span>2</span></li></ul></li><li class=book-section-flat><strong>Tags</strong><ul><li class="flex justify-between"><a href=/memo/tags/segment/>Segment</a>
+<span>2</span></li></ul></li><li class=book-section-flat><strong>Tags</strong><ul><li class="flex justify-between"><a href=/memo/tags/linux/>Linux</a>
+<span>5</span></li><li class="flex justify-between"><a href=/memo/tags/segment/>Segment</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/thread-local-storage/>Thread Local Storage</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/x86/>x86</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/debug/>debug</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/gdb/>GDB</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/glibc/>glibc</a>
-<span>2</span></li><li class="flex justify-between"><a href=/memo/tags/linux/>Linux</a>
-<span>4</span></li><li class="flex justify-between"><a href=/memo/tags/ept/>EPT</a>
+<span>2</span></li><li class="flex justify-between"><a href=/memo/tags/ept/>EPT</a>
 <span>2</span></li><li class="flex justify-between"><a href=/memo/tags/kpti/>KPTI</a>
 <span>1</span></li><li class="flex justify-between"><a href=/memo/tags/meltdown/>Meltdown</a>
 <span>2</span></li><li class="flex justify-between"><a href=/memo/tags/mulware/>Mulware</a>

@@ -1,9 +1,9 @@
 +++
-title = "Data Structures of Files in Linux"
+title = "Data Structures Related to File I/O in Linux"
 description = "ファイルのオープンなどを行ったときのカーネル空間のデータ構造について調査する"
 date = 2022-07-04T13:18:29+09:00
 tags = [
-  "Linux"
+  "Linux", "File I/O"
 ]
 categories = [
   "Linux Code Reading"
@@ -11,10 +11,6 @@ categories = [
 menu = "main"
 draft = false
 +++
-
-## Instructions
-
-- open
 
 ## Data Structures
 

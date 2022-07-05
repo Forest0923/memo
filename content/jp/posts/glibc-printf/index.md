@@ -16,7 +16,7 @@ draft = false
 
 - glibc v2.35
 
-## Definition1
+## Definition
 
 ```c
 // stdio-common/printf.c

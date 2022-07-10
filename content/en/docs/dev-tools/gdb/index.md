@@ -1,16 +1,16 @@
 ---
-title: "Debugging with gdb and objdump"
+title: "Debugging with gdb"
 draft: false
 weight: 999
 ---
 
-# Debugging with gdb and objdump
+# Debugging with gdb
 
-## gdb
+In this page, I will describe how to debug programs with gdb.
 
-### Preparations
+## Preparations
 
-ここでは下記のコード（hello.c）を gdb でデバッグして行きます．
+Here we will debug the following code (hello.c) with gdb.
 
 ```c
 #include <stdio.h>
@@ -20,15 +20,15 @@ int main() {
 }
 ```
 
-コンパイルするときにデバッグ情報を入れるために -g オプションをつけてコンパイルします．
+Compile with the -g option to include debugging information when compiling.
 
 ```sh
 gcc hello.c -g
 ```
 
-### Start
+## Start
 
-引数にデバッグ対象の実行ファイルを渡して gdb を起動します．
+Starts gdb with the executable file as an argument.
 
 ```sh
 gdb a.out
@@ -55,25 +55,25 @@ Reading symbols from a.out...
 (gdb)
 ```
 
-この段階ではまだプログラムはスタートしていないので，ここで引数や環境変数の設定を行います．
+At this time, the program has not yet been started. You can set arguments and environment variables at this point.
 
-### Arguments
+## Arguments
 
-引数が必要な場合は下記のように `set args` を使って追加します．
+If arguments are required, they can be added using `set args` as shown below.
 
 ```text
 (gdb) set args [arg0] [arg1] ...
 ```
 
-### Environment Variables (LD_PRELOAD)
+## Environment Variables (LD_PRELOAD)
 
-環境変数を設定する場合は `set environment` を使います．
+Use `set environment` to set environment variables.
 
 ```text
 (gdb) set envirnment LD_PRELOAD ./hook.so
 ```
 
-ここでは下記の hook.c というファイルをコンパイルして LD_PRELOAD に指定し，main() のフックを行います．
+In this example, the following file hook.c is compiled and specified as LD_PRELOAD to hook main().
 
 ```c
 /*
@@ -109,9 +109,9 @@ int __libc_start_main(
 }
 ```
 
-### Exec
+## Exec
 
-プログラムをスタートさせるときは run か start を使用します．run は ブレークポイントを設定した位置まで実行されます．
+Use `run` or `start` to start the program. `run` will run to the point where the breakpoint is set.
 
 ```text
 (gdb) run
@@ -129,7 +129,7 @@ hello
 [Inferior 1 (process 18048) exited normally]
 ```
 
-start を実行すると main() の最初の処理で停止します．
+If start is executed, it will stop at the first step of main().
 
 ```text
 (gdb) start
@@ -148,9 +148,9 @@ Temporary breakpoint 1, main () at hello.c:4
 4               printf("hello\n");
 ```
 
-### Break Points
+## Break Points
 
-ブレークポイントは break で設定します．プログラムの行数や関数名，アドレスを指定してブレークポイントにできます．
+Breakpoints are set with `break`. The number of lines of the program, function name, or address can be specified as a breakpoint.
 
 ```text
 (gdb) b 5
@@ -158,7 +158,7 @@ Temporary breakpoint 1, main () at hello.c:4
 (gdb) 0x0000555555555144
 ```
 
-設定したブレークポイントは下記のように確認が可能です．
+The set breakpoints can be checked as follows.
 
 ```text
 (gdb) info breakpoints
@@ -166,15 +166,15 @@ Num     Type           Disp Enb Address            What
 2       breakpoint     keep y   0x00007ffff7e942f0 <syscall>
 ```
 
-削除するには `info b` でリスト表示されたブレークポイントの番号を使用します．
+To delete a breakpoint, use the number of the breakpoint listed in `info b`.
 
 ```text
 (gdb) delete 2
 ```
 
-### Memory Mappings
+## Memory Mappings
 
-メモリマッピングは下記のように出力します．
+Memory mapping can be output as follows.
 
 ```text
 (gdb) info proc mappings
@@ -213,9 +213,9 @@ Mapped address spaces:
   0xffffffffff600000 0xffffffffff601000     0x1000        0x0  --xp   [vsyscall]
 ```
 
-### Disassemble
+## Disassemble
 
-現在のアセンブリ言語レベルでの実行位置を表示するために disas を使用します．`=>` が現在の位置です．
+Use disas to display the current execution position at the assembly language level. `=>` is the current position.
 
 ```text
 (gdb) disassemble
@@ -231,7 +231,7 @@ Dump of assembler code for function main:
 End of assembler dump.
 ```
 
-`layout asm` でも現在の実行位置とその周辺のアセンブリコードを見ることができます．
+`layout asm` also shows the current execution position and the surrounding assembly code.
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -266,7 +266,7 @@ multi-thre Thread 0x7ffff7d867 In: main                                         
 (gdb) layout asm
 ```
 
-ちなみに `layout src` にするとソースコードレベルでも位置を確認できます．
+`layout src` to check the location at the source code level as well.
 
 ```text
 ┌─hello.c────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -301,30 +301,28 @@ multi-thre Thread 0x7ffff7d867 In: main                                         
 (gdb) layout src
 ```
 
-layout の画面を終了させるには `Ctrl+x a` を入力します．
+To exit the TUI screen, type `Ctrl+x a`.
 
-### Step
+## Step
 
-プログラムのステップ実行には複数の種類があり，まとめると次のようになります．
+There are several types of program step execution, which can be summarized as follows
 
-| Commands | Descriptions                                                  |
-| -------- | ------------------------------------------------------------- |
-| next     | 次の関数までステップ実行（関数の中には入らない）              |
-| step     | 次の関数までステップ実行（関数の中に入る）                    |
-| ni       | アセンブリの命令レベルでステップ実行（call 先までは入らない） |
-| si       | アセンブリの命令レベルでステップ実行（call 先まで入る）       |
+| Commands | Descriptions                                                               |
+| -------- | -------------------------------------------------------------------------- |
+| next     | Step execution at the function level (don't enter the function)            |
+| step     | Step execution at the function level (do enter the function)               |
+| ni       | Step execution at the instruction level of assembly (don't go beyond call) |
+| si       | Step execution at the instruction level of assembly (do go beyond call)    |
 
-`si` や `ni` などを実行しながら `disas` を実行して行くとアセンブリレベルでどのようにコードが呼ばれているのかがよくわかります．
+## Memory Dump
 
-### Memory Dump
-
-メモリの中身を見たいときは `x` を使用します．size で address からどこまで出力するかを指定して format に出力形式を入力します．
+Use `x` to see the contents of memory. Specify `size`, start `address` and output `format`.
 
 ```text
 (gdb) x/[size][format] [address]
 ```
 
-下記の例では string のフォーマットで "hello" が入ったメモリアドレスをダンプしています．
+The following example dumps a memory address containing "hello" in string format.
 
 ```text
 (gdb) start
@@ -354,12 +352,13 @@ End of assembler dump.
 0x555555556004: "hello"
 ```
 
-### Symbol Table
+## Symbol Table
 
-GDB では関数名などのシンボル情報を symtab という構造体に保存しています．
-通常の場合はやる必要のない処理ですが，このシンボルテーブルを削除したり，実行ファイルからシンボルを追加したい場合に symbol-file というコマンドを使用します．
+GDB stores symbol information such as function names in a structure called `symtab`.
 
-シンボルを削除するには引数なしで下記のように実行します．
+In normal cases, you do not need to do this, but if you want to delete a symbol table or add a symbol from an executable file, you can use the command `symbol-file`.
+
+To delete a symbol, execute the following command with no arguments.
 
 ```text
 (gdb) symbol-file
@@ -367,7 +366,7 @@ Discard symbol table from `/path/to/exec/file'? (y or n) y
 No symbol file now.
 ```
 
-別の実行ファイルからシンボルを読み取るにはファイルパスを指定します．
+To read a symbol from another executable, specify the file path.
 
 ```text
 (gdb) symbol-file a.out
@@ -378,7 +377,7 @@ Reading symbols from /lib64/ld-linux-x86-64.so.2...
 (No debugging symbols found in /lib64/ld-linux-x86-64.so.2)
 ```
 
-オフセットが必要な場合はオプションでオフセットサイズを指定します．
+If an offset is required, specify the offset size as an option.
 
 ```text
 (gdb) symbol-file -o 0x555555554000 a.out
@@ -388,14 +387,3 @@ Reading symbols from /usr/lib/libc.so.6...
 Reading symbols from /lib64/ld-linux-x86-64.so.2...
 (No debugging symbols found in /lib64/ld-linux-x86-64.so.2)
 ```
-
-## objdump
-
-```sh
-objdump [option] [executable file]
-```
-
-| Options | Descriptions |
-| ------- | ------------ |
-| -f      |              |
-| -p      |              |

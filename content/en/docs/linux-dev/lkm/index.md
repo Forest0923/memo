@@ -8,25 +8,25 @@ weight: 999
 
 ## About
 
-このページでは Linux 上での Loadable Kernel Module の実装について説明します．
+This page describes the implementation of the Loadable Kernel Module on Linux.
 
-そもそも LKM はカーネルのコアではなく，insmod や rmmod によってあとから追加・削除できるモジュールを指します．
+LKM is not a kernel core. It is a  module that can be added or removed by insmod or rmmod.
 
-Linux カーネルにシステムコールを追加する場合などはカーネルのビルドをやり直す必要がありますが，LKM ではそれが不要なので実験や簡単な確認などを行う場合には効率よく作業ができます．
+Adding system calls to the Linux kernel requires rebuilding the kernel, but LKM does not.
 
-以下では LKM の作り方について Linux v5.17.0 を対象に説明していきます．
+The following explains how to create an LKM for Linux v5.17.0.
 
 ## Examples
 
-下記のサンプルモジュールの実装例を紹介していきます．
+The following sample modules are examples of LKM.
 
-- hello.ko: insmod, rmmod 時にログを出力するだけの LKM
-- mulfile.ko: 複数のファイルに分割された LKM
-- getargs.ko: insmod 時に引数を渡す LKM
+- hello.ko: LKM that only outputs logs when executed insmod and rmmod
+- mulfile.ko: LKM consisting of multiple files
+- getargs.ko: LKM that passes arguments when calling insmod
 
 ### hello.ko
 
-モジュールの中身を記述する hello.c とビルドするための Makefile を作成します．
+Create hello.c for the body of the module and a Makefile to build it.
 
 ```text
 .
@@ -34,9 +34,9 @@ Linux カーネルにシステムコールを追加する場合などはカー�
 └── Makefile
 ```
 
-hello.c は下記のような内容です．
+hello.c is as follows.
 
-`module_init([func]);` で指定した関数が insmod 時に実行され，`module_exit([func]);` で指定した関数が rmmod 時に実行されます．
+The function specified by `module_init([func]);` is executed on insmod, and the function specified by `module_exit([func]);` is executed on rmmod.
 
 ```c
 #include <linux/module.h>
@@ -61,7 +61,7 @@ module_init(hello_init);
 module_exit(hello_exit);
 ```
 
-Makefile は下記のように作成しました．
+The Makefile was created as follows.
 
 ```makefile
 KDIR            := /lib/modules/`uname -r`/build
@@ -75,7 +75,7 @@ clean:
         make -C $(KDIR) M=`pwd` clean
 ```
 
-`make (all)` を実行するとビルドされます．
+Run `make (all)` to build hello module.
 
 ```text
 SSHmori@arch hello % make
@@ -102,7 +102,7 @@ SSHmori@arch hello % tree
 0 directories, 9 files
 ```
 
-`make clean` で生成されたオブジェクトファイルなどを削除します．
+Run `make clean` to cleanup directory.
 
 ```text
 SSHmori@arch hello % make clean
@@ -112,7 +112,7 @@ make[1]: Entering directory '/usr/src/linux-5.17'
 make[1]: Leaving directory '/usr/src/linux-5.17'
 ```
 
-insmod でモジュールをインストールして，dmesg でログを確認すると下記のようにログを確認できました．
+I installed the module with insmod and checked the logs with dmesg as shown below.
 
 ```text
 SSHmori@arch hello % sudo insmod hello.ko
@@ -123,7 +123,7 @@ SSHmori@arch hello % sudo dmesg | grep hello
 [ 2000.350086] hello: init
 ```
 
-rmmod の場合も同様に確認できました．
+The following is the output when running rmmod.
 
 ```text
 SSHmori@arch hello % sudo rmmod hello
@@ -136,7 +136,9 @@ SSHmori@arch hello % sudo dmesg | grep hello
 
 ### mulfile.ko
 
-モジュールをわかりやすくするために複数のファイルに分割したい場合があると思います．ここでは下記のようにファイルを分割しています．
+Sometimes you may want to split a module into multiple files to make it easier to understand.
+
+In this example, the files are divided as follows.
 
 ```text
 .
@@ -146,7 +148,7 @@ SSHmori@arch hello % sudo dmesg | grep hello
 └── Makefile
 ```
 
-それぞれの C ファイルは次のようになっています．
+All C files is as follows.
 
 - init.c
 
@@ -195,7 +197,7 @@ void mymodule_sub(void) {
 }
 ```
 
-Makefile は次のように作成します．
+I created Makefile like below.
 
 ```makefile
 KDIR            := /lib/modules/`uname -r`/build
@@ -211,7 +213,7 @@ clean:
         make -C $(KDIR) M=`pwd` clean
 ```
 
-insmod, rmmod を実行したあとにログを確認すると呼び出せていることがわかります．
+After running insmod and rmmod, I looked at the log and found that the it was successful.
 
 ```text
 SSHmori@arch build % sudo dmesg | grep -e my_mod -e mymod
@@ -222,19 +224,19 @@ SSHmori@arch build % sudo dmesg | grep -e my_mod -e mymod
 
 ### getargs.ko
 
-カーネルモジュールに対してロード時に次のようにパラメータを渡すことができます．
+You can pass parameters to the kernel module at load time.
 
 ```sh
 sudo insmod mod.ko [param]=[value]
 ```
 
-パラメータは LKM のコード内で `module_param()` などを用いて定義します．
+Parameters are defined in LKM code using `module_param()` and so on.
 
 - `module_param([name], [type], [perm])`
 
-\[type\] には byte, short, ushort, int, uint, long, ulong, charp, bool, invbool が使用できます．
+"type" can be byte, short, ushort, int, uint, long, ulong, charp, bool, or invbool.
 
-\[perm\] には sysfs での権限を設定します．例えば `0644` のように指定すると，/sys/module/getargs/parameters の中にパラメータのファイルが作成され，権限が 644 で作成されます．`0` と指定すればファイルは作成されず，直接 sysfs にアクセスして値を変えられなくなります．
+perm is set to the permissions in sysfs. For example, `0644` will create a parameter file in /sys/module/getargs/parameters with permission 644. If you specify `0`, no file will be created and user will not be able to access sysfs directly to change values.
 
 ```text
 $ sudo insmod getargs.ko
@@ -247,13 +249,13 @@ $ cat /sys/module/getargs/parameters/intparam
 0
 ```
 
-パラメータの定義には他にも `module_param_named()`，`module_param_string()`，`module_param_array()` などがあります．
+Parameters can also be defined by `module_param_named()`, `module_param_string()`, or `module_param_array()` .
 
 - `module_param_named([parm name], [var name], [type], [perm])`
 - `module_param_string([param name], [var name], [length], [perm])`
 - `module_param_array([name], [type], [arr ptr], [perm])`
 
-例として様々なパラメータを設定して init の際に出力する LKM を下記のように作成しました．
+I will show you an example of LKM that is output various parameters during initialization.
 
 ```c
 #include <linux/module.h>
@@ -302,7 +304,7 @@ module_init(getargs_init);
 module_exit(getargs_exit);
 ```
 
-次のようにモジュールをインストールして，引数が取得できていることを確認できました．
+The module is installed as follows, and we have confirmed that the arguments have been obtained.
 
 ```sh
 sudo insmod getargs.ko

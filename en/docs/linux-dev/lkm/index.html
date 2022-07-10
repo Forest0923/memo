@@ -1,0 +1,238 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Loadable Kernel Module # About # This page describes the implementation of the Loadable Kernel Module on Linux.
+LKM is not a kernel core. It is a module that can be added or removed by insmod or rmmod.
+Adding system calls to the Linux kernel requires rebuilding the kernel, but LKM does not.
+The following explains how to create an LKM for Linux v5.17.0.
+Examples # The following sample modules are examples of LKM."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Loadable Kernel Module"><meta property="og:description" content="Loadable Kernel Module # About # This page describes the implementation of the Loadable Kernel Module on Linux.
+LKM is not a kernel core. It is a module that can be added or removed by insmod or rmmod.
+Adding system calls to the Linux kernel requires rebuilding the kernel, but LKM does not.
+The following explains how to create an LKM for Linux v5.17.0.
+Examples # The following sample modules are examples of LKM."><meta property="og:type" content="article"><meta property="og:url" content="http://forest0923.github.io/memo/en/docs/linux-dev/lkm/"><meta property="article:section" content="docs"><title>Loadable Kernel Module | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=alternate hreflang=en-us href=http://forest0923.github.io/memo/docs/linux-dev/lkm/ title="Loadable Kernel Module"><link rel=stylesheet href=/memo/book.min.90647a7d9a055c284c8bbc78cb3291a8e09c4637f8c80b70f0086d2d17b30b5f.css integrity="sha256-kGR6fZoFXChMi7x4yzKRqOCcRjf4yAtw8AhtLRezC18=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/en.search.min.fd82e5ad4536ee1f49937e1f97ece86d423bda8317b5e27a11feebbb9a767c90.js integrity="sha256-/YLlrUU27h9Jk34fl+zobUI72oMXteJ6Ef7ru5p2fJA=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/memo/en/><span>Memo</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul class=book-languages><li><input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between"><a role=button class="flex align-center"><img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+English</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/linux-dev/lkm/>Japanese</a></li></ul></li></ul><h2>Links</h2><ul><li><a href=https://github.com/Forest0923 target=_blank rel=noopener>GitHub</a></li><li><a href=https://gitlab.com/forest0923 target=_blank rel=noopener>GitLab</a></li></ul><h2>Documents</h2><ul><li><input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle checked>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between"><a role=button>Linux Kernel Development</a></label><ul><li><a href=/memo/en/docs/linux-dev/inst-kernel/>Install Kernel</a></li><li><a href=/memo/en/docs/linux-dev/custom-kernel-arch/>Install Kernel (Arch Linux ver.)</a></li><li><a href=/memo/en/docs/linux-dev/rm-kernel/>Remove Kernel</a></li><li><a href=/memo/en/docs/linux-dev/impl-systemcall/>Implementing Original Systemcalls</a></li><li><a href=/memo/en/docs/linux-dev/impl-hypercall/>Implementing Original Hypercalls</a></li><li><a href=/memo/en/docs/linux-dev/lkm/ class=active>Loadable Kernel Module</a></li></ul></li><li><input type=checkbox id=section-e7f7b78c1b08d611bac4551c02978c8f class=toggle>
+<label for=section-e7f7b78c1b08d611bac4551c02978c8f class="flex justify-between"><a role=button>Linux Configurations</a></label><ul><li><a href=/memo/en/docs/linux-cfg/compress-initramfs/>Compress initramfs</a></li><li><a href=/memo/en/docs/linux-cfg/gnome/>Gnome Configurations</a></li><li><a href=/memo/en/docs/linux-cfg/grub-resolution/>GRUB Resolution Settings</a></li><li><a href=/memo/en/docs/linux-cfg/japanese-input/>Japanese Input</a></li><li><a href=/memo/en/docs/linux-cfg/keymaps/>Keymaps</a></li><li><a href=/memo/en/docs/linux-cfg/l2tp-ipsec/>L2TP IPsec</a></li></ul></li><li><input type=checkbox id=section-af9f8fce9fee3f548c5751a8a2f5ece1 class=toggle>
+<label for=section-af9f8fce9fee3f548c5751a8a2f5ece1 class="flex justify-between"><a role=button>KVM</a></label><ul><li><a href=/memo/en/docs/kvm/install/>Install KVM</a></li><li><a href=/memo/en/docs/kvm/virsh/>How to Use virsh</a></li><li><a href=/memo/en/docs/kvm/gpu-passthrough/>Configurations for Gpu Passthrough</a></li><li><a href=/memo/en/docs/kvm/sriov/>Configurations for Single Root I/O Virtualization</a></li></ul></li><li><input type=checkbox id=section-fb51f89dbec2637fe7d4c9b6287148ed class=toggle>
+<label for=section-fb51f89dbec2637fe7d4c9b6287148ed class="flex justify-between"><a role=button>Arch Linux</a></label><ul><li><a href=/memo/en/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux (BTRFS + Timeshift)</a></li><li><a href=/memo/en/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux (Multi-disks + BTRFS + Snapper)</a></li><li><a href=/memo/en/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a></li><li><a href=/memo/en/docs/archlinux/dual-boot-multi/>Dual Booting (multi-disk + Windows10 and Arch Linux)</a></li><li><a href=/memo/en/docs/archlinux/desktop-env/>Desktop Environment</a></li><li><a href=/memo/en/docs/archlinux/bspwm/>Installing BSPWM</a></li><li><a href=/memo/en/docs/archlinux/common-apps/>Install Applications</a></li><li><a href=/memo/en/docs/archlinux/power-mgr/>Power Management</a></li><li><a href=/memo/en/docs/archlinux/abs/>Arch Build System</a></li><li><a href=/memo/en/docs/archlinux/spotify/>Configurations for Spotify</a></li></ul></li><li><input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between"><a role=button>Ubuntu</a></label><ul><li><a href=/memo/en/docs/ubuntu/initial-settings/>Initial Settings for Ubuntu</a></li><li><a href=/memo/en/docs/ubuntu/haribote-os/>Introduction to Creating Your Own OS with Ubuntu</a></li></ul></li><li><input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between"><a role=button>Android</a></label><ul><li><a href=/memo/en/docs/android/inst-x86/>Android x86</a></li><li><a href=/memo/en/docs/android/apk/>Reverse Engineering (APK)</a></li></ul></li><li><input type=checkbox id=section-3fb225060dbc6eb1fda04fb19c520b9e class=toggle>
+<label for=section-3fb225060dbc6eb1fda04fb19c520b9e class="flex justify-between"><a role=button>Command Usage</a></label><ul><li><a href=/memo/en/docs/commands/tar-zip/>File Compression (tar, zip, lzh, bz2)</a></li><li><a href=/memo/en/docs/commands/nkf/>nkf</a></li><li><a href=/memo/en/docs/commands/ffmpeg/>ffmpeg</a></li><li><a href=/memo/en/docs/commands/platformio/>platformio</a></li><li><a href=/memo/en/docs/commands/fwupd/>fwupd</a></li><li><a href=/memo/en/docs/commands/find-grep/>find and grep</a></li><li><a href=/memo/en/docs/commands/dd/>dd</a></li></ul></li><li><input type=checkbox id=section-5f67b105d26e99eae616b0e2e5749817 class=toggle>
+<label for=section-5f67b105d26e99eae616b0e2e5749817 class="flex justify-between"><a role=button>App Settings and Tool Usages</a></label><ul><li><a href=/memo/en/docs/dev-tools/doc-gen/>Document Generator (doxygen, sourcetrail)</a></li><li><a href=/memo/en/docs/dev-tools/gdb/>Debugging with gdb</a></li></ul></li><li><input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between"><a role=button>Git</a></label><ul><li><a href=/memo/en/docs/git/github-cli/>GitHub CLI</a></li><li><a href=/memo/en/docs/git/github-ssh/>Connect to GitHub with SSH</a></li><li><a href=/memo/en/docs/git/usecases/>Usecases of Git</a></li><li><a href=/memo/en/docs/git/submodule/>Submodule</a></li><li><a href=/memo/en/docs/git/lfs/>LFS (Large File Storage)</a></li><li><a href=/memo/en/docs/git/links/>Useful Links for Studying Git</a></li></ul></li><li><input type=checkbox id=section-65032103456e8d3264e1b113fe868d5f class=toggle>
+<label for=section-65032103456e8d3264e1b113fe868d5f class="flex justify-between"><a role=button>Programming Languages</a></label><ul><li><input type=checkbox id=section-f70978c5f727d4978906748e79108232 class=toggle>
+<label for=section-f70978c5f727d4978906748e79108232 class="flex justify-between"><a role=button>Shell Script</a></label><ul><li><a href=/memo/en/docs/lang/shellscript/sh-cs/>Shell Script Cheat Sheet</a></li></ul></li><li><input type=checkbox id=section-1b54b54415d809c14988a95e591bf734 class=toggle>
+<label for=section-1b54b54415d809c14988a95e591bf734 class="flex justify-between"><a role=button>Rust</a></label><ul><li><a href=/memo/en/docs/lang/rust/install/>Install Rust</a></li><li><a href=/memo/en/docs/lang/rust/asm/>Inline Assembly</a></li><li><a href=/memo/en/docs/lang/rust/systemcall/>System Call</a></li><li><a href=/memo/en/docs/lang/rust/cheatsheet/>Rust Cheat Sheet</a></li></ul></li><li><input type=checkbox id=section-b7c3dca92cbee13c82905b4e496d39d1 class=toggle>
+<label for=section-b7c3dca92cbee13c82905b4e496d39d1 class="flex justify-between"><a role=button>Haskell</a></label><ul><li><a href=/memo/en/docs/lang/haskell/install/>Install Haskell</a></li></ul></li><li><input type=checkbox id=section-6506110d97b7d034e17c0bc99c200b40 class=toggle>
+<label for=section-6506110d97b7d034e17c0bc99c200b40 class="flex justify-between"><a role=button>Prolog</a></label><ul><li><a href=/memo/en/docs/lang/prolog/install/>Install Prolog</a></li></ul></li><li><input type=checkbox id=section-7655143f89038a3ff57de743cd803721 class=toggle>
+<label for=section-7655143f89038a3ff57de743cd803721 class="flex justify-between"><a role=button>Curry</a></label><ul><li><a href=/memo/en/docs/lang/curry/install/>Install Curry</a></li></ul></li><li><input type=checkbox id=section-70016dc0551fceb969630dfaea2a9fbb class=toggle>
+<label for=section-70016dc0551fceb969630dfaea2a9fbb class="flex justify-between"><a role=button>OCaml</a></label><ul><li><a href=/memo/en/docs/lang/ocaml/install/>Install OCaml</a></li></ul></li></ul></li><li><input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between"><a role=button>LaTeX</a></label><ul><li><a href=/memo/en/docs/latex/inst-tex-live/>Install TeX Live</a></li><li><a href=/memo/en/docs/latex/latex-cs/>LaTeX Cheat Sheet</a></li><li><a href=/memo/en/docs/latex/sty/>Using Custom Style File</a></li><li><a href=/memo/en/docs/latex/minted/>Using minted for Syntax Highlighting</a></li></ul></li><li><input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between"><a role=button>Web Development</a></label><ul><li><a href=/memo/en/docs/web/code-highlight/>Syntax Highlighting</a></li><li><a href=/memo/en/docs/web/latex/>Expressions like LaTeX</a></li><li><a href=/memo/en/docs/web/mermaid/>Mermaid</a></li><li><a href=/memo/en/docs/web/webtools/>Web Tools</a></li></ul></li><li><input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between"><a role=button>Security</a></label><ul><li><a href=/memo/en/docs/security/pkc/>Public Key Cryptography</a></li><li><a href=/memo/en/docs/security/gpg/>GPG Key</a></li><li><a href=/memo/en/docs/security/ssh/>SSH</a></li><li><a href=/memo/en/docs/security/hack/>Hack</a></li></ul></li></ul><h2>Blog Posts</h2><ul><li><a href=/memo/en/posts/>Posts</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/memo/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>Loadable Kernel Module</strong>
+<label for=toc-control><img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#about>About</a></li><li><a href=#examples>Examples</a><ul><li><a href=#helloko>hello.ko</a></li><li><a href=#mulfileko>mulfile.ko</a></li><li><a href=#getargsko>getargs.ko</a></li></ul></li></ul></nav></aside></header><article class=markdown><h1 id=loadable-kernel-module>Loadable Kernel Module
+<a class=anchor href=#loadable-kernel-module>#</a></h1><h2 id=about>About
+<a class=anchor href=#about>#</a></h2><p>This page describes the implementation of the Loadable Kernel Module on Linux.</p><p>LKM is not a kernel core. It is a module that can be added or removed by insmod or rmmod.</p><p>Adding system calls to the Linux kernel requires rebuilding the kernel, but LKM does not.</p><p>The following explains how to create an LKM for Linux v5.17.0.</p><h2 id=examples>Examples
+<a class=anchor href=#examples>#</a></h2><p>The following sample modules are examples of LKM.</p><ul><li>hello.ko: LKM that only outputs logs when executed insmod and rmmod</li><li>mulfile.ko: LKM consisting of multiple files</li><li>getargs.ko: LKM that passes arguments when calling insmod</li></ul><h3 id=helloko>hello.ko
+<a class=anchor href=#helloko>#</a></h3><p>Create hello.c for the body of the module and a Makefile to build it.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>.
+</span></span><span style=display:flex><span>├── hello.c
+</span></span><span style=display:flex><span>└── Makefile
+</span></span></code></pre></div><p>hello.c is as follows.</p><p>The function specified by <code>module_init([func]);</code> is executed on insmod, and the function specified by <code>module_exit([func]);</code> is executed on rmmod.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/module.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>MODULE_DESCRIPTION(<span style=color:#e6db74>&#34;hello module&#34;</span>);
+</span></span><span style=display:flex><span>MODULE_AUTHOR(<span style=color:#e6db74>&#34;Mori&#34;</span>);
+</span></span><span style=display:flex><span>MODULE_LICENSE(<span style=color:#e6db74>&#34;GPL&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>hello_init</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;hello: init</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>hello_exit</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;hello: exit</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>module_init(hello_init);
+</span></span><span style=display:flex><span>module_exit(hello_exit);
+</span></span></code></pre></div><p>The Makefile was created as follows.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-makefile data-lang=makefile><span style=display:flex><span>KDIR            <span style=color:#f92672>:=</span> /lib/modules/<span style=color:#e6db74>`</span>uname -r<span style=color:#e6db74>`</span>/build
+</span></span><span style=display:flex><span>MODNAME         <span style=color:#f92672>:=</span> hello
+</span></span><span style=display:flex><span>obj-m           <span style=color:#f92672>:=</span> <span style=color:#66d9ef>$(</span>MODNAME<span style=color:#66d9ef>)</span>.o
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>all</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>        make -C <span style=color:#66d9ef>$(</span>KDIR<span style=color:#66d9ef>)</span> M<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>pwd<span style=color:#e6db74>`</span> modules
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>clean</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>        make -C <span style=color:#66d9ef>$(</span>KDIR<span style=color:#66d9ef>)</span> M<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>pwd<span style=color:#e6db74>`</span> clean
+</span></span></code></pre></div><p>Run <code>make (all)</code> to build hello module.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>SSHmori@arch hello % make
+</span></span><span style=display:flex><span>make -C /lib/modules/`uname -r`/build M=`pwd` modules
+</span></span><span style=display:flex><span>make[1]: Entering directory &#39;/usr/src/linux-5.17&#39;
+</span></span><span style=display:flex><span>  CC [M]  /home/mori/build/hello/hello.o
+</span></span><span style=display:flex><span>  MODPOST /home/mori/build/hello/Module.symvers
+</span></span><span style=display:flex><span>  CC [M]  /home/mori/build/hello/hello.mod.o
+</span></span><span style=display:flex><span>  LD [M]  /home/mori/build/hello/hello.ko
+</span></span><span style=display:flex><span>  BTF [M] /home/mori/build/hello/hello.ko
+</span></span><span style=display:flex><span>make[1]: Leaving directory &#39;/usr/src/linux-5.17&#39;
+</span></span><span style=display:flex><span>SSHmori@arch hello % tree
+</span></span><span style=display:flex><span>.
+</span></span><span style=display:flex><span>├── hello.c
+</span></span><span style=display:flex><span>├── hello.ko
+</span></span><span style=display:flex><span>├── hello.mod
+</span></span><span style=display:flex><span>├── hello.mod.c
+</span></span><span style=display:flex><span>├── hello.mod.o
+</span></span><span style=display:flex><span>├── hello.o
+</span></span><span style=display:flex><span>├── Makefile
+</span></span><span style=display:flex><span>├── modules.order
+</span></span><span style=display:flex><span>└── Module.symvers
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>0 directories, 9 files
+</span></span></code></pre></div><p>Run <code>make clean</code> to cleanup directory.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>SSHmori@arch hello % make clean
+</span></span><span style=display:flex><span>make -C /lib/modules/`uname -r`/build M=`pwd` clean
+</span></span><span style=display:flex><span>make[1]: Entering directory &#39;/usr/src/linux-5.17&#39;
+</span></span><span style=display:flex><span>  CLEAN   /home/mori/build/hello/Module.symvers
+</span></span><span style=display:flex><span>make[1]: Leaving directory &#39;/usr/src/linux-5.17&#39;
+</span></span></code></pre></div><p>I installed the module with insmod and checked the logs with dmesg as shown below.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>SSHmori@arch hello % sudo insmod hello.ko
+</span></span><span style=display:flex><span>[sudo] password for mori:
+</span></span><span style=display:flex><span>SSHmori@arch hello % sudo dmesg | grep hello
+</span></span><span style=display:flex><span>[ 2000.349162] hello: loading out-of-tree module taints kernel.
+</span></span><span style=display:flex><span>[ 2000.349265] hello: module verification failed: signature and/or required key missing - tainting kernel
+</span></span><span style=display:flex><span>[ 2000.350086] hello: init
+</span></span></code></pre></div><p>The following is the output when running rmmod.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>SSHmori@arch hello % sudo rmmod hello
+</span></span><span style=display:flex><span>SSHmori@arch hello % sudo dmesg | grep hello
+</span></span><span style=display:flex><span>[ 2000.349162] hello: loading out-of-tree module taints kernel.
+</span></span><span style=display:flex><span>[ 2000.349265] hello: module verification failed: signature and/or required key missing - tainting kernel
+</span></span><span style=display:flex><span>[ 2000.350086] hello: init
+</span></span><span style=display:flex><span>[ 2024.857552] hello: exit
+</span></span></code></pre></div><h3 id=mulfileko>mulfile.ko
+<a class=anchor href=#mulfileko>#</a></h3><p>Sometimes you may want to split a module into multiple files to make it easier to understand.</p><p>In this example, the files are divided as follows.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>.
+</span></span><span style=display:flex><span>├── init.c    &lt;-- init
+</span></span><span style=display:flex><span>├── exit.c    &lt;-- exit
+</span></span><span style=display:flex><span>├── print.c   &lt;-- printk
+</span></span><span style=display:flex><span>└── Makefile
+</span></span></code></pre></div><p>All C files is as follows.</p><ul><li>init.c</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/kernel.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/module.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>MODULE_DESCRIPTION(<span style=color:#e6db74>&#34;My Module&#34;</span>);
+</span></span><span style=display:flex><span>MODULE_AUTHOR(<span style=color:#e6db74>&#34;Mori&#34;</span>);
+</span></span><span style=display:flex><span>MODULE_LICENSE(<span style=color:#e6db74>&#34;GPL&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>mymodule_sub</span>(<span style=color:#66d9ef>void</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>mymod_init</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;my_module: init</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>        mymodule_sub();
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>module_init(mymod_init);
+</span></span></code></pre></div><ul><li>exit.c</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/kernel.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/module.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>mymod_exit</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;my_module: exit</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>module_exit(mymod_exit);
+</span></span></code></pre></div><ul><li>print.c</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/kernel.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/module.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>mymodule_sub</span>(<span style=color:#66d9ef>void</span>) {
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;mymodule_sub: called</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>I created Makefile like below.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-makefile data-lang=makefile><span style=display:flex><span>KDIR            <span style=color:#f92672>:=</span> /lib/modules/<span style=color:#e6db74>`</span>uname -r<span style=color:#e6db74>`</span>/build
+</span></span><span style=display:flex><span>MODNAME         <span style=color:#f92672>:=</span> mymodule
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>obj-m           <span style=color:#f92672>:=</span> <span style=color:#66d9ef>$(</span>MODNAME<span style=color:#66d9ef>)</span>.o
+</span></span><span style=display:flex><span>$(MODNAME)-objs <span style=color:#f92672>:=</span> init.o exit.o print.o
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>all</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>        make -C <span style=color:#66d9ef>$(</span>KDIR<span style=color:#66d9ef>)</span> M<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>pwd<span style=color:#e6db74>`</span> modules
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>clean</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>        make -C <span style=color:#66d9ef>$(</span>KDIR<span style=color:#66d9ef>)</span> M<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>pwd<span style=color:#e6db74>`</span> clean
+</span></span></code></pre></div><p>After running insmod and rmmod, I looked at the log and found that the it was successful.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>SSHmori@arch build % sudo dmesg | grep -e my_mod -e mymod
+</span></span><span style=display:flex><span>[ 6832.006826] my_module: init
+</span></span><span style=display:flex><span>[ 6832.006831] mymodule_sub: called
+</span></span><span style=display:flex><span>[ 6869.413859] my_module: exit
+</span></span></code></pre></div><h3 id=getargsko>getargs.ko
+<a class=anchor href=#getargsko>#</a></h3><p>You can pass parameters to the kernel module at load time.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>sudo insmod mod.ko <span style=color:#f92672>[</span>param<span style=color:#f92672>]=[</span>value<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>Parameters are defined in LKM code using <code>module_param()</code> and so on.</p><ul><li><code>module_param([name], [type], [perm])</code></li></ul><p>&ldquo;type&rdquo; can be byte, short, ushort, int, uint, long, ulong, charp, bool, or invbool.</p><p>perm is set to the permissions in sysfs. For example, <code>0644</code> will create a parameter file in /sys/module/getargs/parameters with permission 644. If you specify <code>0</code>, no file will be created and user will not be able to access sysfs directly to change values.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>$ sudo insmod getargs.ko
+</span></span><span style=display:flex><span>$ ll /sys/module/getargs/parameters
+</span></span><span style=display:flex><span>total 0
+</span></span><span style=display:flex><span>drwxr-xr-x 2 root root    0 Jul 10 13:09 ./
+</span></span><span style=display:flex><span>drwxr-xr-x 6 root root    0 Jul 10 13:08 ../
+</span></span><span style=display:flex><span>-rw-r--r-- 1 root root 4.0K Jul 10 13:09 intparam
+</span></span><span style=display:flex><span>$ cat /sys/module/getargs/parameters/intparam
+</span></span><span style=display:flex><span>0
+</span></span></code></pre></div><p>Parameters can also be defined by <code>module_param_named()</code>, <code>module_param_string()</code>, or <code>module_param_array()</code> .</p><ul><li><code>module_param_named([parm name], [var name], [type], [perm])</code></li><li><code>module_param_string([param name], [var name], [length], [perm])</code></li><li><code>module_param_array([name], [type], [arr ptr], [perm])</code></li></ul><p>I will show you an example of LKM that is output various parameters during initialization.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/module.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#define BUF_SIZE        8
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#define FILE_PATH_MAX   128
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>MODULE_DESCRIPTION(<span style=color:#e6db74>&#34;getargs module&#34;</span>);
+</span></span><span style=display:flex><span>MODULE_AUTHOR(<span style=color:#e6db74>&#34;Mori&#34;</span>);
+</span></span><span style=display:flex><span>MODULE_LICENSE(<span style=color:#e6db74>&#34;GPL&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> intparam, intparam2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>file, file2[FILE_PATH_MAX];
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> array[BUF_SIZE], nr_arr;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>module_param(intparam, <span style=color:#66d9ef>int</span>, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>module_param(file, charp, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>module_param_named(arg, intparam2, <span style=color:#66d9ef>int</span>, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>module_param_string(filepath, file2, <span style=color:#ae81ff>128</span>, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>module_param_array(array, <span style=color:#66d9ef>int</span>, <span style=color:#f92672>&amp;</span>nr_arr, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>getargs_init</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>int</span> i;
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;getargs: init</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;getargs: =&gt; intparam</span><span style=color:#ae81ff>\t</span><span style=color:#e6db74>= %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, intparam);
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;getargs: =&gt; intparam2</span><span style=color:#ae81ff>\t</span><span style=color:#e6db74>= %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, intparam2);
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (file)
+</span></span><span style=display:flex><span>                pr_info(<span style=color:#e6db74>&#34;getargs: =&gt; file</span><span style=color:#ae81ff>\t</span><span style=color:#e6db74>= %s</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, file);
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;getargs: =&gt; file2</span><span style=color:#ae81ff>\t</span><span style=color:#e6db74>= %s</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, file2);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        pr_info(<span style=color:#e6db74>&#34;getargs: =&gt; array</span><span style=color:#ae81ff>\t</span><span style=color:#e6db74>= [&#34;</span>);
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> BUF_SIZE; i<span style=color:#f92672>++</span>)
+</span></span><span style=display:flex><span>                pr_cont(<span style=color:#e6db74>&#34; %d&#34;</span>, array[i]);
+</span></span><span style=display:flex><span>        pr_cont(<span style=color:#e6db74>&#34;]</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>getargs_exit</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>module_init(getargs_init);
+</span></span><span style=display:flex><span>module_exit(getargs_exit);
+</span></span></code></pre></div><p>The module is installed as follows, and we have confirmed that the arguments have been obtained.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>sudo insmod getargs.ko
+</span></span><span style=display:flex><span>sudo rmmod getargs
+</span></span><span style=display:flex><span>sudo insmod getargs.ko intparam<span style=color:#f92672>=</span><span style=color:#ae81ff>123</span> arg<span style=color:#f92672>=</span><span style=color:#ae81ff>456</span> file<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>pwd<span style=color:#e6db74>`</span>/getargs.c filepath<span style=color:#f92672>=</span><span style=color:#e6db74>`</span>pwd<span style=color:#e6db74>`</span>/getargs.ko
+</span></span><span style=display:flex><span>sudo rmmod getargs
+</span></span><span style=display:flex><span>sudo insmod getargs.ko array<span style=color:#f92672>=</span>12,23,34,45,56
+</span></span><span style=display:flex><span>sudo rmmod getargs
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>[14218.501390] getargs: init
+</span></span><span style=display:flex><span>[14218.501392] getargs: =&gt; intparam     = 0
+</span></span><span style=display:flex><span>[14218.501393] getargs: =&gt; intparam2    = 0
+</span></span><span style=display:flex><span>[14218.501394] getargs: =&gt; file2        =
+</span></span><span style=display:flex><span>[14218.501394] getargs: =&gt; array        = [ 0 0 0 0 0 0 0 0]
+</span></span><span style=display:flex><span>[14457.464244] getargs: init
+</span></span><span style=display:flex><span>[14457.464246] getargs: =&gt; intparam     = 123
+</span></span><span style=display:flex><span>[14457.464247] getargs: =&gt; intparam2    = 456
+</span></span><span style=display:flex><span>[14457.464248] getargs: =&gt; file = /home/mori/build/hello/getargs.c
+</span></span><span style=display:flex><span>[14457.464249] getargs: =&gt; file2        = /home/mori/build/hello/getargs.ko
+</span></span><span style=display:flex><span>[14457.464250] getargs: =&gt; array        = [ 0 0 0 0 0 0 0 0]
+</span></span><span style=display:flex><span>[14585.508189] getargs: init
+</span></span><span style=display:flex><span>[14585.508191] getargs: =&gt; intparam     = 0
+</span></span><span style=display:flex><span>[14585.508192] getargs: =&gt; intparam2    = 0
+</span></span><span style=display:flex><span>[14585.508193] getargs: =&gt; file2        =
+</span></span><span style=display:flex><span>[14585.508194] getargs: =&gt; array        = [ 12 23 34 45 56 0 0 0]
+</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#about>About</a></li><li><a href=#examples>Examples</a><ul><li><a href=#helloko>hello.ko</a></li><li><a href=#mulfileko>mulfile.ko</a></li><li><a href=#getargsko>getargs.ko</a></li></ul></li></ul></nav></div></aside></main></body></html>

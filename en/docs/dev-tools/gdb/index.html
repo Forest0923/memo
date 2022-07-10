@@ -1,0 +1,278 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Debugging with gdb # In this page, I will describe how to debug programs with gdb.
+Preparations # Here we will debug the following code (hello.c) with gdb.
+#include <stdio.h> int main() { printf(&#34;hello\n&#34;); } Compile with the -g option to include debugging information when compiling.
+gcc hello.c -g Start # Starts gdb with the executable file as an argument.
+gdb a.out % gdb a.out GNU gdb (GDB) 12.1 Copyright (C) 2022 Free Software Foundation, Inc."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Debugging with gdb"><meta property="og:description" content="Debugging with gdb # In this page, I will describe how to debug programs with gdb.
+Preparations # Here we will debug the following code (hello.c) with gdb.
+#include <stdio.h> int main() { printf(&#34;hello\n&#34;); } Compile with the -g option to include debugging information when compiling.
+gcc hello.c -g Start # Starts gdb with the executable file as an argument.
+gdb a.out % gdb a.out GNU gdb (GDB) 12.1 Copyright (C) 2022 Free Software Foundation, Inc."><meta property="og:type" content="article"><meta property="og:url" content="http://forest0923.github.io/memo/en/docs/dev-tools/gdb/"><meta property="article:section" content="docs"><title>Debugging with gdb | Memo</title><link rel=manifest href=/memo/manifest.json><link rel=icon href=/memo/favicon.png type=image/x-icon><link rel=alternate hreflang=en-us href=http://forest0923.github.io/memo/docs/dev-tools/gdb/ title="Debugging with gdb"><link rel=stylesheet href=/memo/book.min.90647a7d9a055c284c8bbc78cb3291a8e09c4637f8c80b70f0086d2d17b30b5f.css integrity="sha256-kGR6fZoFXChMi7x4yzKRqOCcRjf4yAtw8AhtLRezC18=" crossorigin=anonymous><script defer src=/memo/flexsearch.min.js></script>
+<script defer src=/memo/en.search.min.fd82e5ad4536ee1f49937e1f97ece86d423bda8317b5e27a11feebbb9a767c90.js integrity="sha256-/YLlrUU27h9Jk34fl+zobUI72oMXteJ6Ef7ru5p2fJA=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/memo/en/><span>Memo</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul class=book-languages><li><input type=checkbox id=languages class=toggle>
+<label for=languages class="flex justify-between"><a role=button class="flex align-center"><img src=/memo/svg/translate.svg class=book-icon alt=Languages>
+English</a></label><ul><li><a href=http://forest0923.github.io/memo/docs/dev-tools/gdb/>Japanese</a></li></ul></li></ul><h2>Links</h2><ul><li><a href=https://github.com/Forest0923 target=_blank rel=noopener>GitHub</a></li><li><a href=https://gitlab.com/forest0923 target=_blank rel=noopener>GitLab</a></li></ul><h2>Documents</h2><ul><li><input type=checkbox id=section-8972c992ad8e687ccedbee48f85bf76e class=toggle>
+<label for=section-8972c992ad8e687ccedbee48f85bf76e class="flex justify-between"><a role=button>Linux Kernel Development</a></label><ul><li><a href=/memo/en/docs/linux-dev/inst-kernel/>Install Kernel</a></li><li><a href=/memo/en/docs/linux-dev/custom-kernel-arch/>Install Kernel (Arch Linux ver.)</a></li><li><a href=/memo/en/docs/linux-dev/rm-kernel/>Remove Kernel</a></li><li><a href=/memo/en/docs/linux-dev/impl-systemcall/>Implementing Original Systemcalls</a></li><li><a href=/memo/en/docs/linux-dev/impl-hypercall/>Implementing Original Hypercalls</a></li><li><a href=/memo/en/docs/linux-dev/lkm/>Loadable Kernel Module</a></li></ul></li><li><input type=checkbox id=section-e7f7b78c1b08d611bac4551c02978c8f class=toggle>
+<label for=section-e7f7b78c1b08d611bac4551c02978c8f class="flex justify-between"><a role=button>Linux Configurations</a></label><ul><li><a href=/memo/en/docs/linux-cfg/compress-initramfs/>Compress initramfs</a></li><li><a href=/memo/en/docs/linux-cfg/gnome/>Gnome Configurations</a></li><li><a href=/memo/en/docs/linux-cfg/grub-resolution/>GRUB Resolution Settings</a></li><li><a href=/memo/en/docs/linux-cfg/japanese-input/>Japanese Input</a></li><li><a href=/memo/en/docs/linux-cfg/keymaps/>Keymaps</a></li><li><a href=/memo/en/docs/linux-cfg/l2tp-ipsec/>L2TP IPsec</a></li></ul></li><li><input type=checkbox id=section-af9f8fce9fee3f548c5751a8a2f5ece1 class=toggle>
+<label for=section-af9f8fce9fee3f548c5751a8a2f5ece1 class="flex justify-between"><a role=button>KVM</a></label><ul><li><a href=/memo/en/docs/kvm/install/>Install KVM</a></li><li><a href=/memo/en/docs/kvm/virsh/>How to Use virsh</a></li><li><a href=/memo/en/docs/kvm/gpu-passthrough/>Configurations for Gpu Passthrough</a></li><li><a href=/memo/en/docs/kvm/sriov/>Configurations for Single Root I/O Virtualization</a></li></ul></li><li><input type=checkbox id=section-fb51f89dbec2637fe7d4c9b6287148ed class=toggle>
+<label for=section-fb51f89dbec2637fe7d4c9b6287148ed class="flex justify-between"><a role=button>Arch Linux</a></label><ul><li><a href=/memo/en/docs/archlinux/inst-btrfs-timeshift/>Install Arch Linux (BTRFS + Timeshift)</a></li><li><a href=/memo/en/docs/archlinux/inst-btrfs-snapper/>Install Arch Linux (Multi-disks + BTRFS + Snapper)</a></li><li><a href=/memo/en/docs/archlinux/dual-boot-mono/>Dual Booting (mono disk + Windows10 and Arch Linux)</a></li><li><a href=/memo/en/docs/archlinux/dual-boot-multi/>Dual Booting (multi-disk + Windows10 and Arch Linux)</a></li><li><a href=/memo/en/docs/archlinux/desktop-env/>Desktop Environment</a></li><li><a href=/memo/en/docs/archlinux/bspwm/>Installing BSPWM</a></li><li><a href=/memo/en/docs/archlinux/common-apps/>Install Applications</a></li><li><a href=/memo/en/docs/archlinux/power-mgr/>Power Management</a></li><li><a href=/memo/en/docs/archlinux/abs/>Arch Build System</a></li><li><a href=/memo/en/docs/archlinux/spotify/>Configurations for Spotify</a></li></ul></li><li><input type=checkbox id=section-b2e7ec66854b66623291b3f342776975 class=toggle>
+<label for=section-b2e7ec66854b66623291b3f342776975 class="flex justify-between"><a role=button>Ubuntu</a></label><ul><li><a href=/memo/en/docs/ubuntu/initial-settings/>Initial Settings for Ubuntu</a></li><li><a href=/memo/en/docs/ubuntu/haribote-os/>Introduction to Creating Your Own OS with Ubuntu</a></li></ul></li><li><input type=checkbox id=section-0b4b4a390a3bab85ad2cc4b614828dcd class=toggle>
+<label for=section-0b4b4a390a3bab85ad2cc4b614828dcd class="flex justify-between"><a role=button>Android</a></label><ul><li><a href=/memo/en/docs/android/inst-x86/>Android x86</a></li><li><a href=/memo/en/docs/android/apk/>Reverse Engineering (APK)</a></li></ul></li><li><input type=checkbox id=section-3fb225060dbc6eb1fda04fb19c520b9e class=toggle>
+<label for=section-3fb225060dbc6eb1fda04fb19c520b9e class="flex justify-between"><a role=button>Command Usage</a></label><ul><li><a href=/memo/en/docs/commands/tar-zip/>File Compression (tar, zip, lzh, bz2)</a></li><li><a href=/memo/en/docs/commands/nkf/>nkf</a></li><li><a href=/memo/en/docs/commands/ffmpeg/>ffmpeg</a></li><li><a href=/memo/en/docs/commands/platformio/>platformio</a></li><li><a href=/memo/en/docs/commands/fwupd/>fwupd</a></li><li><a href=/memo/en/docs/commands/find-grep/>find and grep</a></li><li><a href=/memo/en/docs/commands/dd/>dd</a></li></ul></li><li><input type=checkbox id=section-5f67b105d26e99eae616b0e2e5749817 class=toggle checked>
+<label for=section-5f67b105d26e99eae616b0e2e5749817 class="flex justify-between"><a role=button>App Settings and Tool Usages</a></label><ul><li><a href=/memo/en/docs/dev-tools/doc-gen/>Document Generator (doxygen, sourcetrail)</a></li><li><a href=/memo/en/docs/dev-tools/gdb/ class=active>Debugging with gdb</a></li></ul></li><li><input type=checkbox id=section-67d27e1a8d86ba193c16cb332eedc1db class=toggle>
+<label for=section-67d27e1a8d86ba193c16cb332eedc1db class="flex justify-between"><a role=button>Git</a></label><ul><li><a href=/memo/en/docs/git/github-cli/>GitHub CLI</a></li><li><a href=/memo/en/docs/git/github-ssh/>Connect to GitHub with SSH</a></li><li><a href=/memo/en/docs/git/usecases/>Usecases of Git</a></li><li><a href=/memo/en/docs/git/submodule/>Submodule</a></li><li><a href=/memo/en/docs/git/lfs/>LFS (Large File Storage)</a></li><li><a href=/memo/en/docs/git/links/>Useful Links for Studying Git</a></li></ul></li><li><input type=checkbox id=section-65032103456e8d3264e1b113fe868d5f class=toggle>
+<label for=section-65032103456e8d3264e1b113fe868d5f class="flex justify-between"><a role=button>Programming Languages</a></label><ul><li><input type=checkbox id=section-f70978c5f727d4978906748e79108232 class=toggle>
+<label for=section-f70978c5f727d4978906748e79108232 class="flex justify-between"><a role=button>Shell Script</a></label><ul><li><a href=/memo/en/docs/lang/shellscript/sh-cs/>Shell Script Cheat Sheet</a></li></ul></li><li><input type=checkbox id=section-1b54b54415d809c14988a95e591bf734 class=toggle>
+<label for=section-1b54b54415d809c14988a95e591bf734 class="flex justify-between"><a role=button>Rust</a></label><ul><li><a href=/memo/en/docs/lang/rust/install/>Install Rust</a></li><li><a href=/memo/en/docs/lang/rust/asm/>Inline Assembly</a></li><li><a href=/memo/en/docs/lang/rust/systemcall/>System Call</a></li><li><a href=/memo/en/docs/lang/rust/cheatsheet/>Rust Cheat Sheet</a></li></ul></li><li><input type=checkbox id=section-b7c3dca92cbee13c82905b4e496d39d1 class=toggle>
+<label for=section-b7c3dca92cbee13c82905b4e496d39d1 class="flex justify-between"><a role=button>Haskell</a></label><ul><li><a href=/memo/en/docs/lang/haskell/install/>Install Haskell</a></li></ul></li><li><input type=checkbox id=section-6506110d97b7d034e17c0bc99c200b40 class=toggle>
+<label for=section-6506110d97b7d034e17c0bc99c200b40 class="flex justify-between"><a role=button>Prolog</a></label><ul><li><a href=/memo/en/docs/lang/prolog/install/>Install Prolog</a></li></ul></li><li><input type=checkbox id=section-7655143f89038a3ff57de743cd803721 class=toggle>
+<label for=section-7655143f89038a3ff57de743cd803721 class="flex justify-between"><a role=button>Curry</a></label><ul><li><a href=/memo/en/docs/lang/curry/install/>Install Curry</a></li></ul></li><li><input type=checkbox id=section-70016dc0551fceb969630dfaea2a9fbb class=toggle>
+<label for=section-70016dc0551fceb969630dfaea2a9fbb class="flex justify-between"><a role=button>OCaml</a></label><ul><li><a href=/memo/en/docs/lang/ocaml/install/>Install OCaml</a></li></ul></li></ul></li><li><input type=checkbox id=section-a7bf5468f483fd7222967f135a5003c0 class=toggle>
+<label for=section-a7bf5468f483fd7222967f135a5003c0 class="flex justify-between"><a role=button>LaTeX</a></label><ul><li><a href=/memo/en/docs/latex/inst-tex-live/>Install TeX Live</a></li><li><a href=/memo/en/docs/latex/latex-cs/>LaTeX Cheat Sheet</a></li><li><a href=/memo/en/docs/latex/sty/>Using Custom Style File</a></li><li><a href=/memo/en/docs/latex/minted/>Using minted for Syntax Highlighting</a></li></ul></li><li><input type=checkbox id=section-bbf404e4b94d6101c7bf1ae47e3efc25 class=toggle>
+<label for=section-bbf404e4b94d6101c7bf1ae47e3efc25 class="flex justify-between"><a role=button>Web Development</a></label><ul><li><a href=/memo/en/docs/web/code-highlight/>Syntax Highlighting</a></li><li><a href=/memo/en/docs/web/latex/>Expressions like LaTeX</a></li><li><a href=/memo/en/docs/web/mermaid/>Mermaid</a></li><li><a href=/memo/en/docs/web/webtools/>Web Tools</a></li></ul></li><li><input type=checkbox id=section-6ce8ef21c020ccdb7ed73156795b30be class=toggle>
+<label for=section-6ce8ef21c020ccdb7ed73156795b30be class="flex justify-between"><a role=button>Security</a></label><ul><li><a href=/memo/en/docs/security/pkc/>Public Key Cryptography</a></li><li><a href=/memo/en/docs/security/gpg/>GPG Key</a></li><li><a href=/memo/en/docs/security/ssh/>SSH</a></li><li><a href=/memo/en/docs/security/hack/>Hack</a></li></ul></li></ul><h2>Blog Posts</h2><ul><li><a href=/memo/en/posts/>Posts</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/memo/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>Debugging with gdb</strong>
+<label for=toc-control><img src=/memo/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#preparations>Preparations</a></li><li><a href=#start>Start</a></li><li><a href=#arguments>Arguments</a></li><li><a href=#environment-variables-ld_preload>Environment Variables (LD_PRELOAD)</a></li><li><a href=#exec>Exec</a></li><li><a href=#break-points>Break Points</a></li><li><a href=#memory-mappings>Memory Mappings</a></li><li><a href=#disassemble>Disassemble</a></li><li><a href=#step>Step</a></li><li><a href=#memory-dump>Memory Dump</a></li><li><a href=#symbol-table>Symbol Table</a></li></ul></nav></aside></header><article class=markdown><h1 id=debugging-with-gdb>Debugging with gdb
+<a class=anchor href=#debugging-with-gdb>#</a></h1><p>In this page, I will describe how to debug programs with gdb.</p><h2 id=preparations>Preparations
+<a class=anchor href=#preparations>#</a></h2><p>Here we will debug the following code (hello.c) with gdb.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	printf(<span style=color:#e6db74>&#34;hello</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Compile with the -g option to include debugging information when compiling.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>gcc hello.c -g
+</span></span></code></pre></div><h2 id=start>Start
+<a class=anchor href=#start>#</a></h2><p>Starts gdb with the executable file as an argument.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>gdb a.out
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>% gdb a.out
+</span></span><span style=display:flex><span>GNU gdb (GDB) 12.1
+</span></span><span style=display:flex><span>Copyright (C) 2022 Free Software Foundation, Inc.
+</span></span><span style=display:flex><span>License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+</span></span><span style=display:flex><span>This is free software: you are free to change and redistribute it.
+</span></span><span style=display:flex><span>There is NO WARRANTY, to the extent permitted by law.
+</span></span><span style=display:flex><span>Type &#34;show copying&#34; and &#34;show warranty&#34; for details.
+</span></span><span style=display:flex><span>This GDB was configured as &#34;x86_64-pc-linux-gnu&#34;.
+</span></span><span style=display:flex><span>Type &#34;show configuration&#34; for configuration details.
+</span></span><span style=display:flex><span>For bug reporting instructions, please see:
+</span></span><span style=display:flex><span>&lt;https://www.gnu.org/software/gdb/bugs/&gt;.
+</span></span><span style=display:flex><span>Find the GDB manual and other documentation resources online at:
+</span></span><span style=display:flex><span>    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>For help, type &#34;help&#34;.
+</span></span><span style=display:flex><span>Type &#34;apropos word&#34; to search for commands related to &#34;word&#34;...
+</span></span><span style=display:flex><span>Reading symbols from a.out...
+</span></span><span style=display:flex><span>(gdb)
+</span></span></code></pre></div><p>At this time, the program has not yet been started. You can set arguments and environment variables at this point.</p><h2 id=arguments>Arguments
+<a class=anchor href=#arguments>#</a></h2><p>If arguments are required, they can be added using <code>set args</code> as shown below.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) set args [arg0] [arg1] ...
+</span></span></code></pre></div><h2 id=environment-variables-ld_preload>Environment Variables (LD_PRELOAD)
+<a class=anchor href=#environment-variables-ld_preload>#</a></h2><p>Use <code>set environment</code> to set environment variables.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) set envirnment LD_PRELOAD ./hook.so
+</span></span></code></pre></div><p>In this example, the following file hook.c is compiled and specified as LD_PRELOAD to hook main().</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * gcc hook.c -o hook.so -fPIC -shared -ldl
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#define _GNU_SOURCE
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;dlfcn.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;unistd.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#a6e22e>int</span> (<span style=color:#f92672>*</span>main_orig)(<span style=color:#66d9ef>int</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main_hook</span>(<span style=color:#66d9ef>int</span> argc, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>argv, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>envp)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	printf(<span style=color:#e6db74>&#34;---Before main()---</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int</span> ret <span style=color:#f92672>=</span> main_orig(argc, argv, envp);
+</span></span><span style=display:flex><span>	printf(<span style=color:#e6db74>&#34;---After main()----</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> ret;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>__libc_start_main</span>(
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>main)(<span style=color:#66d9ef>int</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>),
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>int</span> argc,
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>argv,
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>init)(<span style=color:#66d9ef>int</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>),
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>fini)(<span style=color:#66d9ef>void</span>),
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>rtld_fini)(<span style=color:#66d9ef>void</span>),
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>stack_end)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	main_orig <span style=color:#f92672>=</span> main;
+</span></span><span style=display:flex><span>	typeof(<span style=color:#f92672>&amp;</span>__libc_start_main) orig <span style=color:#f92672>=</span> dlsym(RTLD_NEXT, <span style=color:#e6db74>&#34;__libc_start_main&#34;</span>);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> orig(main_hook, argc, argv, init, fini, rtld_fini, stack_end);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=exec>Exec
+<a class=anchor href=#exec>#</a></h2><p>Use <code>run</code> or <code>start</code> to start the program. <code>run</code> will run to the point where the breakpoint is set.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) run
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) run
+</span></span><span style=display:flex><span>Starting program: /home/mori/exp/a.out
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>[Thread debugging using libthread_db enabled]
+</span></span><span style=display:flex><span>Using host libthread_db library &#34;/usr/lib/libthread_db.so.1&#34;.
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>hello
+</span></span><span style=display:flex><span>---After main()----
+</span></span><span style=display:flex><span>[Inferior 1 (process 18048) exited normally]
+</span></span></code></pre></div><p>If start is executed, it will stop at the first step of main().</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) start
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) start
+</span></span><span style=display:flex><span>Temporary breakpoint 1 at 0x55555555513d: file hello.c, line 4.
+</span></span><span style=display:flex><span>Starting program: /home/mori/exp/a.out
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>[Thread debugging using libthread_db enabled]
+</span></span><span style=display:flex><span>Using host libthread_db library &#34;/usr/lib/libthread_db.so.1&#34;.
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Temporary breakpoint 1, main () at hello.c:4
+</span></span><span style=display:flex><span>4               printf(&#34;hello\n&#34;);
+</span></span></code></pre></div><h2 id=break-points>Break Points
+<a class=anchor href=#break-points>#</a></h2><p>Breakpoints are set with <code>break</code>. The number of lines of the program, function name, or address can be specified as a breakpoint.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) b 5
+</span></span><span style=display:flex><span>(gdb) syscall
+</span></span><span style=display:flex><span>(gdb) 0x0000555555555144
+</span></span></code></pre></div><p>The set breakpoints can be checked as follows.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) info breakpoints
+</span></span><span style=display:flex><span>Num     Type           Disp Enb Address            What
+</span></span><span style=display:flex><span>2       breakpoint     keep y   0x00007ffff7e942f0 &lt;syscall&gt;
+</span></span></code></pre></div><p>To delete a breakpoint, use the number of the breakpoint listed in <code>info b</code>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) delete 2
+</span></span></code></pre></div><h2 id=memory-mappings>Memory Mappings
+<a class=anchor href=#memory-mappings>#</a></h2><p>Memory mapping can be output as follows.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) info proc mappings
+</span></span><span style=display:flex><span>process 18156
+</span></span><span style=display:flex><span>Mapped address spaces:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>          Start Addr           End Addr       Size     Offset  Perms  objfile
+</span></span><span style=display:flex><span>      0x555555554000     0x555555555000     0x1000        0x0  r--p   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555555000     0x555555556000     0x1000     0x1000  r-xp   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555556000     0x555555557000     0x1000     0x2000  r--p   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555557000     0x555555558000     0x1000     0x2000  r--p   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555558000     0x555555559000     0x1000     0x3000  rw-p   /home/mori/exp/a.out
+</span></span><span style=display:flex><span>      0x555555559000     0x55555557a000    0x21000        0x0  rw-p   [heap]
+</span></span><span style=display:flex><span>      0x7ffff7d86000     0x7ffff7d89000     0x3000        0x0  rw-p
+</span></span><span style=display:flex><span>      0x7ffff7d89000     0x7ffff7db1000    0x28000        0x0  r--p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7db1000     0x7ffff7f29000   0x178000    0x28000  r-xp   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f29000     0x7ffff7f81000    0x58000   0x1a0000  r--p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f81000     0x7ffff7f82000     0x1000   0x1f8000  ---p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f82000     0x7ffff7f86000     0x4000   0x1f8000  r--p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f86000     0x7ffff7f88000     0x2000   0x1fc000  rw-p   /usr/lib/libc.so.6
+</span></span><span style=display:flex><span>      0x7ffff7f88000     0x7ffff7f95000     0xd000        0x0  rw-p
+</span></span><span style=display:flex><span>      0x7ffff7fb9000     0x7ffff7fba000     0x1000        0x0  r--p   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fba000     0x7ffff7fbb000     0x1000     0x1000  r-xp   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fbb000     0x7ffff7fbc000     0x1000     0x2000  r--p   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fbc000     0x7ffff7fbd000     0x1000     0x2000  r--p   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fbd000     0x7ffff7fbe000     0x1000     0x3000  rw-p   /home/mori/exp/hook.so
+</span></span><span style=display:flex><span>      0x7ffff7fbe000     0x7ffff7fc0000     0x2000        0x0  rw-p
+</span></span><span style=display:flex><span>      0x7ffff7fc0000     0x7ffff7fc4000     0x4000        0x0  r--p   [vvar]
+</span></span><span style=display:flex><span>      0x7ffff7fc4000     0x7ffff7fc6000     0x2000        0x0  r-xp   [vdso]
+</span></span><span style=display:flex><span>      0x7ffff7fc6000     0x7ffff7fc8000     0x2000        0x0  r--p   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffff7fc8000     0x7ffff7fef000    0x27000     0x2000  r-xp   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffff7fef000     0x7ffff7ffa000     0xb000    0x29000  r--p   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffff7ffb000     0x7ffff7ffd000     0x2000    0x34000  r--p   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffff7ffd000     0x7ffff7fff000     0x2000    0x36000  rw-p   /usr/lib/ld-linux-x86-64.so.2
+</span></span><span style=display:flex><span>      0x7ffffffde000     0x7ffffffff000    0x21000        0x0  rw-p   [stack]
+</span></span><span style=display:flex><span>  0xffffffffff600000 0xffffffffff601000     0x1000        0x0  --xp   [vsyscall]
+</span></span></code></pre></div><h2 id=disassemble>Disassemble
+<a class=anchor href=#disassemble>#</a></h2><p>Use disas to display the current execution position at the assembly language level. <code>=></code> is the current position.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) disassemble
+</span></span><span style=display:flex><span>Dump of assembler code for function main:
+</span></span><span style=display:flex><span>   0x0000555555555139 &lt;+0&gt;:     push   %rbp
+</span></span><span style=display:flex><span>   0x000055555555513a &lt;+1&gt;:     mov    %rsp,%rbp
+</span></span><span style=display:flex><span>=&gt; 0x000055555555513d &lt;+4&gt;:     lea    0xec0(%rip),%rax        # 0x555555556004
+</span></span><span style=display:flex><span>   0x0000555555555144 &lt;+11&gt;:    mov    %rax,%rdi
+</span></span><span style=display:flex><span>   0x0000555555555147 &lt;+14&gt;:    call   0x555555555030 &lt;puts@plt&gt;
+</span></span><span style=display:flex><span>   0x000055555555514c &lt;+19&gt;:    mov    $0x0,%eax
+</span></span><span style=display:flex><span>   0x0000555555555151 &lt;+24&gt;:    pop    %rbp
+</span></span><span style=display:flex><span>   0x0000555555555152 &lt;+25&gt;:    ret
+</span></span><span style=display:flex><span>End of assembler dump.
+</span></span></code></pre></div><p><code>layout asm</code> also shows the current execution position and the surrounding assembly code.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+</span></span><span style=display:flex><span>│    0x555555555139 &lt;main&gt;           push   %rbp                                                                                                                                 │
+</span></span><span style=display:flex><span>│    0x55555555513a &lt;main+1&gt;         mov    %rsp,%rbp                                                                                                                            │
+</span></span><span style=display:flex><span>│  &gt; 0x55555555513d &lt;main+4&gt;         lea    0xec0(%rip),%rax        # 0x555555556004                                                                                             │
+</span></span><span style=display:flex><span>│    0x555555555144 &lt;main+11&gt;        mov    %rax,%rdi                                                                                                                            │
+</span></span><span style=display:flex><span>│    0x555555555147 &lt;main+14&gt;        call   0x555555555030 &lt;puts@plt&gt;                                                                                                            │
+</span></span><span style=display:flex><span>│    0x55555555514c &lt;main+19&gt;        mov    $0x0,%eax                                                                                                                            │
+</span></span><span style=display:flex><span>│    0x555555555151 &lt;main+24&gt;        pop    %rbp                                                                                                                                 │
+</span></span><span style=display:flex><span>│    0x555555555152 &lt;main+25&gt;        ret                                                                                                                                         │
+</span></span><span style=display:flex><span>│    0x555555555153                  add    %dh,%bl                                                                                                                              │
+</span></span><span style=display:flex><span>│    0x555555555155 &lt;_fini+1&gt;        nop    %edx                                                                                                                                 │
+</span></span><span style=display:flex><span>│    0x555555555158 &lt;_fini+4&gt;        sub    $0x8,%rsp                                                                                                                            │
+</span></span><span style=display:flex><span>│    0x55555555515c &lt;_fini+8&gt;        add    $0x8,%rsp                                                                                                                            │
+</span></span><span style=display:flex><span>│    0x555555555160 &lt;_fini+12&gt;       ret                                                                                                                                         │
+</span></span><span style=display:flex><span>│    0x555555555161                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555163                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555165                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555167                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555169                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x55555555516b                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x55555555516d                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x55555555516f                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555171                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555173                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555175                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555177                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>│    0x555555555179                  add    %al,(%rax)                                                                                                                           │
+</span></span><span style=display:flex><span>└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+</span></span><span style=display:flex><span>multi-thre Thread 0x7ffff7d867 In: main                                                                                                                  L4    PC: 0x55555555513d
+</span></span><span style=display:flex><span>(gdb) layout asm
+</span></span></code></pre></div><p><code>layout src</code> to check the location at the source code level as well.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>┌─hello.c────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+</span></span><span style=display:flex><span>│        1  #include &lt;stdio.h&gt;                                                                                                                                                   │
+</span></span><span style=display:flex><span>│        2                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│        3  int main() {                                                                                                                                                         │
+</span></span><span style=display:flex><span>│  &gt;     4          printf(&#34;hello\n&#34;);                                                                                                                                           │
+</span></span><span style=display:flex><span>│        5  }                                                                                                                                                                    │
+</span></span><span style=display:flex><span>│        6                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│        7                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│        8                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│        9                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       10                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       11                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       12                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       13                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       14                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       15                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       16                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       17                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       18                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       19                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       20                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       21                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       22                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       23                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       24                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       25                                                                                                                                                                       │
+</span></span><span style=display:flex><span>│       26                                                                                                                                                                       │
+</span></span><span style=display:flex><span>└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+</span></span><span style=display:flex><span>multi-thre Thread 0x7ffff7d867 In: main                                                                                                                  L4    PC: 0x55555555513d
+</span></span><span style=display:flex><span>(gdb) layout src
+</span></span></code></pre></div><p>To exit the TUI screen, type <code>Ctrl+x a</code>.</p><h2 id=step>Step
+<a class=anchor href=#step>#</a></h2><p>There are several types of program step execution, which can be summarized as follows</p><table><thead><tr><th>Commands</th><th>Descriptions</th></tr></thead><tbody><tr><td>next</td><td>Step execution at the function level (don&rsquo;t enter the function)</td></tr><tr><td>step</td><td>Step execution at the function level (do enter the function)</td></tr><tr><td>ni</td><td>Step execution at the instruction level of assembly (don&rsquo;t go beyond call)</td></tr><tr><td>si</td><td>Step execution at the instruction level of assembly (do go beyond call)</td></tr></tbody></table><h2 id=memory-dump>Memory Dump
+<a class=anchor href=#memory-dump>#</a></h2><p>Use <code>x</code> to see the contents of memory. Specify <code>size</code>, start <code>address</code> and output <code>format</code>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) x/[size][format] [address]
+</span></span></code></pre></div><p>The following example dumps a memory address containing &ldquo;hello&rdquo; in string format.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) start
+</span></span><span style=display:flex><span>Temporary breakpoint 3 at 0x55555555513d: file hello.c, line 4.
+</span></span><span style=display:flex><span>Starting program: /home/mori/exp/a.out
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>[Thread debugging using libthread_db enabled]
+</span></span><span style=display:flex><span>Using host libthread_db library &#34;/usr/lib/libthread_db.so.1&#34;.
+</span></span><span style=display:flex><span>---Before main()---
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Temporary breakpoint 3, main () at hello.c:4
+</span></span><span style=display:flex><span>4               printf(&#34;hello\n&#34;);
+</span></span><span style=display:flex><span>(gdb) disas
+</span></span><span style=display:flex><span>Dump of assembler code for function main:
+</span></span><span style=display:flex><span>   0x0000555555555139 &lt;+0&gt;:     push   %rbp
+</span></span><span style=display:flex><span>   0x000055555555513a &lt;+1&gt;:     mov    %rsp,%rbp
+</span></span><span style=display:flex><span>=&gt; 0x000055555555513d &lt;+4&gt;:     lea    0xec0(%rip),%rax        # 0x555555556004
+</span></span><span style=display:flex><span>   0x0000555555555144 &lt;+11&gt;:    mov    %rax,%rdi
+</span></span><span style=display:flex><span>   0x0000555555555147 &lt;+14&gt;:    call   0x555555555030 &lt;puts@plt&gt;
+</span></span><span style=display:flex><span>   0x000055555555514c &lt;+19&gt;:    mov    $0x0,%eax
+</span></span><span style=display:flex><span>   0x0000555555555151 &lt;+24&gt;:    pop    %rbp
+</span></span><span style=display:flex><span>   0x0000555555555152 &lt;+25&gt;:    ret
+</span></span><span style=display:flex><span>End of assembler dump.
+</span></span><span style=display:flex><span>(gdb) x/s 0x555555556004
+</span></span><span style=display:flex><span>0x555555556004: &#34;hello&#34;
+</span></span><span style=display:flex><span>(gdb) x/ 0x555555556004
+</span></span><span style=display:flex><span>0x555555556004: &#34;hello&#34;
+</span></span></code></pre></div><h2 id=symbol-table>Symbol Table
+<a class=anchor href=#symbol-table>#</a></h2><p>GDB stores symbol information such as function names in a structure called <code>symtab</code>.</p><p>In normal cases, you do not need to do this, but if you want to delete a symbol table or add a symbol from an executable file, you can use the command <code>symbol-file</code>.</p><p>To delete a symbol, execute the following command with no arguments.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) symbol-file
+</span></span><span style=display:flex><span>Discard symbol table from `/path/to/exec/file&#39;? (y or n) y
+</span></span><span style=display:flex><span>No symbol file now.
+</span></span></code></pre></div><p>To read a symbol from another executable, specify the file path.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) symbol-file a.out
+</span></span><span style=display:flex><span>Reading symbols from a.out...
+</span></span><span style=display:flex><span>Reading symbols from /usr/lib/libc.so.6...
+</span></span><span style=display:flex><span>(No debugging symbols found in /usr/lib/libc.so.6)
+</span></span><span style=display:flex><span>Reading symbols from /lib64/ld-linux-x86-64.so.2...
+</span></span><span style=display:flex><span>(No debugging symbols found in /lib64/ld-linux-x86-64.so.2)
+</span></span></code></pre></div><p>If an offset is required, specify the offset size as an option.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>(gdb) symbol-file -o 0x555555554000 a.out
+</span></span><span style=display:flex><span>Reading symbols from a.out...
+</span></span><span style=display:flex><span>Reading symbols from /usr/lib/libc.so.6...
+</span></span><span style=display:flex><span>(No debugging symbols found in /usr/lib/libc.so.6)
+</span></span><span style=display:flex><span>Reading symbols from /lib64/ld-linux-x86-64.so.2...
+</span></span><span style=display:flex><span>(No debugging symbols found in /lib64/ld-linux-x86-64.so.2)
+</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#preparations>Preparations</a></li><li><a href=#start>Start</a></li><li><a href=#arguments>Arguments</a></li><li><a href=#environment-variables-ld_preload>Environment Variables (LD_PRELOAD)</a></li><li><a href=#exec>Exec</a></li><li><a href=#break-points>Break Points</a></li><li><a href=#memory-mappings>Memory Mappings</a></li><li><a href=#disassemble>Disassemble</a></li><li><a href=#step>Step</a></li><li><a href=#memory-dump>Memory Dump</a></li><li><a href=#symbol-table>Symbol Table</a></li></ul></nav></div></aside></main></body></html>

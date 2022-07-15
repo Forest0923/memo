@@ -10,7 +10,7 @@ Curry is a language that has features of both functional and logic programming l
 
 ## Install
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -28,7 +28,7 @@ sudo apt install pakcs
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 [download site](https://www.informatik.uni-kiel.de/~pakcs/download.html)
 

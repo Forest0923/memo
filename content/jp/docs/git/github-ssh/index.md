@@ -10,7 +10,7 @@ weight: 20
 
 ssh-keygen を用いて下記のようにコマンドを実行すると選択したアルゴリズムで鍵が生成されます．
 
-{{< tabs "ssh-keygen" >}}
+{{< tabpane "ssh-keygen" >}}
 {{< tab "EdDSA" >}}
 
 ```sh
@@ -32,7 +32,7 @@ ssh-keygen -t ecdsa -b 521
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 生成時に特に変更を加えなければ `~/.ssh` に秘密鍵の `id_[algorithm]` と公開鍵の `id_[algorithm].pub` が生成されます．
 

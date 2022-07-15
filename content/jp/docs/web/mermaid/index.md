@@ -43,10 +43,10 @@ flowchart TB
 
 <--->
 
-{{< mermaid >}}
+```mermaid
 flowchart TB
     A-->B
-{{< /mermaid >}}
+```
 
 {{< /columns >}}
 
@@ -59,9 +59,9 @@ flowchart RL
 
 <--->
 
-{{< mermaid >}}
+```mermaid
 flowchart RL
     A-->B
-{{< /mermaid >}}
+```
 
 {{< /columns >}}

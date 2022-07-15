@@ -14,7 +14,7 @@ BSPWM という Tile 型のウィンドウマネージャをインストール�
 
 グラフィックドライバをインストールします．
 
-{{< tabs "gpu-driver" >}}
+{{< tabpane "gpu-driver" >}}
 {{< tab "Intel" >}}
 
 ```sh
@@ -31,7 +31,7 @@ sudo pacman -S nvidia nvidia-utils nvidia-dkms
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **BSPWM**
 

@@ -12,7 +12,7 @@ Haskell を Stack を用いてインストールするためのメモです．
 
 Stack は haskell のプロジェクトを管理するためのツールでコンパイラやパッケージのインストール，プロジェクトのビルドなどを行えます．インストールは下記のように行います．
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -28,7 +28,7 @@ stack upgrade
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Basic Usage
 

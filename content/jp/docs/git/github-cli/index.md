@@ -12,7 +12,7 @@ weight: 10
 
 下記のコマンドでインストールします．
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -33,7 +33,7 @@ sudo snap install gh
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## 設定
 

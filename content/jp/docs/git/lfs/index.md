@@ -13,7 +13,7 @@ GitHub にアップロードできる最大のファイルサイズはデフォ�
 
 下記コマンドでインストールします．
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -28,7 +28,7 @@ sudo apt install git-lfs
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 インストールできたことを下記のコマンドで確認します．
 

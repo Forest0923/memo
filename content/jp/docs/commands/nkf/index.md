@@ -8,7 +8,7 @@ weight: 20
 
 ## Install
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -23,7 +23,7 @@ sudo apt install nkf
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Usage
 

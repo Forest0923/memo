@@ -10,7 +10,7 @@ This is a memo on how to set up Japanese input using Fcitx (Flexible Input Metho
 
 ## Install
 
-{{< tabs "japanese-input" >}}
+{{< tabpane "japanese-input" >}}
 {{< tab "fcitx5" >}}
 
 fcitx5 is a successor to fcitx.
@@ -27,7 +27,7 @@ sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Configurations
 

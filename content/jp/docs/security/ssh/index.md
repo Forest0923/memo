@@ -12,7 +12,7 @@ SSH は Secure Shell の略で，リモートから安全にコンピュータ�
 
 ### インストール
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -27,13 +27,13 @@ sudo apt install openssh-client
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### 鍵の生成
 
 ssh-keygen で鍵を生成します．
 
-{{< tabs "ssh-keygen" >}}
+{{< tabpane "ssh-keygen" >}}
 {{< tab "RSA" >}}
 
 ```sh
@@ -55,6 +55,6 @@ ssh-keygen -t ed25519
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 デフォルトでは `~/.ssh/` に公開鍵 `id_[algorithm].pub` と秘密鍵 `id_[algorithm]` が作られるので，SSH サーバに公開鍵を登録することでパスワード認証せずに通信を行うことができます．

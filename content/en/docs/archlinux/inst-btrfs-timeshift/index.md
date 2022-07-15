@@ -317,7 +317,7 @@ reboot
 
 Install Timeshift with AUR helper.
 
-{{< tabs "aurhelper" >}}
+{{< tabpane "aurhelper" >}}
 {{< tab "paru" >}}
 
 ```sh
@@ -336,7 +336,7 @@ makepkg -si
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ```sh
 paru -S timeshift

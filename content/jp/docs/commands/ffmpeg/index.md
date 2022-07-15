@@ -8,7 +8,7 @@ weight: 30
 
 ## Install
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -23,7 +23,7 @@ sudo apt install ffmpeg
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## MP4 Manipulation with ffmpeg
 

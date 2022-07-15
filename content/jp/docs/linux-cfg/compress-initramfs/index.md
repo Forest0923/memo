@@ -26,7 +26,7 @@ sudo vim /etc/initramfs-tools/initramfs.conf
 
 xz-utils をインストールして initramfs をアップデートします．
 
-{{< tabs "update-initramfs" >}}
+{{< tabpane "update-initramfs" >}}
 {{< tab "Ubuntu" >}}
 
 ```sh
@@ -35,4 +35,4 @@ sudo update-initramfs -u -k all
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}

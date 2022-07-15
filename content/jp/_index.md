@@ -14,4 +14,4 @@ type: docs
 
 ## Recent Posts
 
-{{< recent-posts >}}
+\{\{< recent-posts >}}

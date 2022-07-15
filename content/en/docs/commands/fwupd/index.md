@@ -9,7 +9,7 @@ weight: 50
 ## Install
 
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -24,7 +24,7 @@ sudo apt install fwupd
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Usage
 

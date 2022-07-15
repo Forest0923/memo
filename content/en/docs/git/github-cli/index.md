@@ -12,7 +12,7 @@ In this page, I will explain how to install, configure and use the GitHub CLI.
 
 Use the following command to install GitHub CLI.
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -33,7 +33,7 @@ sudo snap install gh
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## **Configuration**
 

@@ -12,7 +12,7 @@ SSH stands for Secure Shell, a protocol that allows you to communicate with a co
 
 ### Install
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -27,13 +27,13 @@ sudo apt install openssh-client
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Key Generation
 
 Generate a key with ssh-keygen.
 
-{{< tabs "ssh-keygen" >}}
+{{< tabpane "ssh-keygen" >}}
 {{< tab "RSA" >}}
 
 ```sh
@@ -55,6 +55,6 @@ ssh-keygen -t ed25519
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 By default, the public key `id_[algorithm].pub` and the private key `id_[algorithm]` are created in `~/.ssh/`. You can communicate without password authentication by registering a public key with the SSH server.

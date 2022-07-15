@@ -10,7 +10,7 @@ Curry は関数型プログラミング言語と論理型プログラミング�
 
 ## インストール
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -28,7 +28,7 @@ sudo apt install pakcs
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 [download site](https://www.informatik.uni-kiel.de/~pakcs/download.html)
 

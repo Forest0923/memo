@@ -25,7 +25,7 @@ chmod +x ubuntu-initial-settings.sh
 
 Set the time as follows.
 
-{{< tabs "sleep" >}}
+{{< tabpane "sleep" >}}
 {{< tab "Never">}}
 
 ```sh
@@ -40,7 +40,7 @@ gsettings set org.gnome.desktop.session idle-delay 3600
 ```
 
 {{< /tab>}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Customize Dock**
 
@@ -58,7 +58,7 @@ gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
 
 ### **Change Server for apt**
 
-{{< tabs "apt_server" >}}
+{{< tabpane "apt_server" >}}
 {{< tab "JAIST">}}
 
 ```sh
@@ -73,7 +73,7 @@ sudo sed -i.bak -e 's%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagat
 ```
 
 {{< /tab>}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Reduce the Time to Shutdown**
 
@@ -121,7 +121,7 @@ sudo sed -i 's/# set bell-style none/set bell-style none/' /etc/inputrc
 
 ### **Editor**
 
-{{< tabs "editor" >}}
+{{< tabpane "editor" >}}
 {{< tab "Vim" >}}
 
 ```sh
@@ -144,7 +144,7 @@ sudo apt install emacs-nox
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Terminal Multiplexer**
 

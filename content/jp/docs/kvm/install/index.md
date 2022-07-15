@@ -8,7 +8,7 @@ weight: 10
 
 ## Install
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -25,7 +25,7 @@ sudo apt install qemu-kvm libvirt-daemon-system \
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Configrations
 

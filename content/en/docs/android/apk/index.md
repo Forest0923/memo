@@ -14,7 +14,7 @@ This is a page about tools for analyzing APK files, which are application packag
 
 A tool for reverse engineering APKs.
 
-{{< tabs "Apktool" >}}
+{{< tabpane "Apktool" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -26,13 +26,13 @@ paru -S android-apktool-git
 ```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### **dex2jar**
 
 A tool to convert Android's dex format to Java's class.
 
-{{< tabs "dex2jar" >}}
+{{< tabpane "dex2jar" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -44,13 +44,13 @@ paru -S dex2jar-git
 ```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### **jd-cli**
 
 CLI tool for Java Decompiler.
 
-{{< tabs "jd-cli" >}}
+{{< tabpane "jd-cli" >}}
 {{< tab "Black Arch" >}}
 
 ```sh
@@ -58,13 +58,13 @@ paru -S jd-cli
 ```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### **jd-gui**
 
 GUI tool for Java Decompiler.
 
-{{< tabs "jd-gui" >}}
+{{< tabpane "jd-gui" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -87,7 +87,7 @@ paru -S jd-gui
 ```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ## How to Use
 

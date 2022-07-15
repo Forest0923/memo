@@ -10,7 +10,7 @@ Fcitx（Flexible Input Method Framework）と Mozc を用いた日本語入力�
 
 ## インストール
 
-{{< tabs "japanese-input" >}}
+{{< tabpane "japanese-input" >}}
 {{< tab "fcitx5" >}}
 
 fcitx5 は fcitx の後継のソフトウェアです．
@@ -27,7 +27,7 @@ sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## 設定
 

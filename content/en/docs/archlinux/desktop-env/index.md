@@ -14,7 +14,7 @@ This is a tutorial for installing desktop environment.
 
 Install graphics driver.
 
-{{< tabs "gpu-driver" >}}
+{{< tabpane "gpu-driver" >}}
 {{< tab "Intel" >}}
 
 ```sh
@@ -31,7 +31,7 @@ sudo pacman -S nvidia nvidia-utils nvidia-dkms
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Display Server**
 
@@ -45,7 +45,7 @@ sudo pacman -S xorg
 
 Install the Display Manager to use the GUI for login.
 
-{{< tabs "display-manager" >}}
+{{< tabpane "display-manager" >}}
 {{< tab "lightdm" >}}
 
 ```sh
@@ -60,11 +60,11 @@ sudo pacman -S gdm
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Desktop Environment**
 
-{{< tabs "desktop-environment" >}}
+{{< tabpane "desktop-environment" >}}
 {{< tab "xfce" >}}
 
 ```sh
@@ -86,13 +86,13 @@ sudo pacman -S budgie-desktop gnome
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Systemd**
 
 Set systemd to start the display manager automatically.
 
-{{< tabs "systemd" >}}
+{{< tabpane "systemd" >}}
 {{< tab "lightdm" >}}
 
 ```sh
@@ -107,4 +107,4 @@ systemctl enable gdm
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}

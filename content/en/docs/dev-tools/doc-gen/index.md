@@ -10,7 +10,7 @@ weight: 70
 
 ### Install
 
-{{< tabs "install" >}}
+{{< tabpane "install" >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -25,7 +25,7 @@ sudo apt install doxygen
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Configuration
 
@@ -179,7 +179,7 @@ doxygen foo/bar/Doxygen
 
 For Arch Linux, you can install it from the AUR. For Ubuntu, you need to download it from [GitHub: CoatiSoftware/Sourcetrail](https://github.com/CoatiSoftware/Sourcetrail/releases).
 
-{{< tabs "Install" >}}
+{{< tabpane "Install" >}}
 {{< tab "Arch">}}
 
 ```sh
@@ -187,7 +187,7 @@ paru -S sourcetrail
 ```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### Create Projects
 

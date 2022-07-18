@@ -3,9 +3,6 @@ title: "SSH"
 draft: false
 weight: 40
 ---
-
-# SSH
-
 SSH は Secure Shell の略で，リモートから安全にコンピュータと通信することができるプロトコルを指します．
 
 ## SSH の使い方（クライアント）

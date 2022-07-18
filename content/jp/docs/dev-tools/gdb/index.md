@@ -3,9 +3,6 @@ title: "Debugging with gdb"
 draft: false
 weight: 999
 ---
-
-# Debugging with gdb
-
 ## Preparations
 
 ここでは下記のコード（hello.c）を gdb でデバッグして行きます．

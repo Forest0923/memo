@@ -3,9 +3,6 @@ title: "Usecases of Git"
 draft: false
 weight: 30
 ---
-
-# Usecases of Git
-
 ## Cancel `git add`
 
 ```sh

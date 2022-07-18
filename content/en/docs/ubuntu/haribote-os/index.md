@@ -3,9 +3,6 @@ title: "Introduction to Creating Your Own OS with Ubuntu"
 draft: false
 weight: 30
 ---
-
-# Introduction to Creating Your Own OS with Ubuntu
-
 This article is tips for creating HariboteOS.
 
 > [My HariboteOS](https://github.com/Forest0923/my-haribote-os)

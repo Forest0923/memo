@@ -3,9 +3,6 @@ title: "Install Arch Linux (BTRFS + Timeshift)"
 draft: false
 weight: 10
 ---
-
-# Install Arch Linux (BTRFS + Timeshift)
-
 Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Timeshift.
 
 ## System

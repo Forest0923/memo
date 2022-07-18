@@ -3,9 +3,6 @@ title: "Implementing Original Systemcalls"
 draft: false
 weight: 30
 ---
-
-# Implementing Original Systemcalls
-
 This is a tutorial of implementing new systemcalls.
 
 ## System Setup

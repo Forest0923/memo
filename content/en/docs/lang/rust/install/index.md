@@ -3,9 +3,6 @@ title: "Install Rust"
 draft: false
 weight: 10
 ---
-
-# Install Rust
-
 ## Install
 
 Use rustup to install and version control rust.

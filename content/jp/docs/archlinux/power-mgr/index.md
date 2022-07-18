@@ -3,9 +3,6 @@ title: "電源管理"
 draft: false
 weight: 80
 ---
-
-# 電源管理
-
 電源管理に関するメモです．
 
 ## TLP

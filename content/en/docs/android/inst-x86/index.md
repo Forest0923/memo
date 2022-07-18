@@ -3,9 +3,6 @@ title: "Android x86"
 draft: false
 weight: 10
 ---
-
-# Android x86
-
 ## System Setup
 
 - Host: Linux KVM

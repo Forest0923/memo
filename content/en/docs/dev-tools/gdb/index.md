@@ -3,9 +3,6 @@ title: "Debugging with gdb"
 draft: false
 weight: 999
 ---
-
-# Debugging with gdb
-
 In this page, I will describe how to debug programs with gdb.
 
 ## Preparations

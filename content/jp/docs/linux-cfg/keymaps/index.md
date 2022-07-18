@@ -3,9 +3,6 @@ title: "キーマッピング"
 draft: false
 weight: 999
 ---
-
-# キーマッピング
-
 Caps lock などのキーに他のキーを割り当てる方法をメモします．
 
 ## Create Custom Key Mapping

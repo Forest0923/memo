@@ -3,9 +3,6 @@ title: "KVM のインストールと設定"
 draft: false
 weight: 10
 ---
-
-# KVM のインストールと設定
-
 ## Install
 
 {{< tabpane "install" >}}

@@ -3,9 +3,6 @@ title: "Arch Linux のインストール（BTRFS + Timeshift）"
 draft: false
 weight: 10
 ---
-
-# Arch Linux のインストール（BTRFS + Timeshift）
-
 Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Timeshift でスナップショットを保存する方法を紹介します．
 
 ## 環境

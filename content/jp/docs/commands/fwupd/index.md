@@ -3,9 +3,6 @@ title: "fwupd"
 draft: false
 weight: 50
 ---
-
-# fwupd
-
 ## Install
 
 

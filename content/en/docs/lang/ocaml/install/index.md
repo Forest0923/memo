@@ -3,9 +3,6 @@ title: "Install OCaml"
 draft: false
 weight: 10
 ---
-
-# Install OCaml
-
 ## Install
 
 Install opam, the package manager for OCaml.

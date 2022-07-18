@@ -3,9 +3,6 @@ title: "SR-IOV の設定"
 draft: false
 weight: 40
 ---
-
-# SR-IOV の設定
-
 SR-IOV（Single Root I/O Virtualization）は一つの物理的なデバイスをハイパーバイザなどから複数の別のデバイスのように認識させることができるハードウェアの機能です．例えば SR-IOV に対応した一つの NIC を搭載したマシンで SR-IOV を用いると複数の NIC を搭載しているかのように認識させることができ，個々の NIC をそれぞれ VM にパススルーすることもできます．
 
 このページでは KVM で SR-IOV を使用する際のメモをまとめています．

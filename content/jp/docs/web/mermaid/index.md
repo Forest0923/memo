@@ -3,9 +3,6 @@ title: "Mermaid"
 draft: false
 weight: 30
 ---
-
-# Mermaid
-
 Mermaid.js は Markdown のようなテキストベースで図形やグラフを表示するツールです．ここでは導入方法と文法を紹介します．
 
 ## 導入方法

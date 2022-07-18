@@ -3,9 +3,6 @@ title: "LFS (Large File Storage)"
 draft: false
 weight: 50
 ---
-
-# LFS (Large File Storage)
-
 The maximum file size that can be uploaded to github is 100MB.
 Git Large File Storage enables to upload large file that is larger than 100MB.
 

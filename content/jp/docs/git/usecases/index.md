@@ -3,9 +3,6 @@ title: "Git の使い方（使用例）"
 draft: false
 weight: 30
 ---
-
-# Git の使い方（使用例）
-
 ## git add を取り消す
 
 ```sh

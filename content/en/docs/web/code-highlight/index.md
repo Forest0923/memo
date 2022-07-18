@@ -3,9 +3,6 @@ title: "Syntax Highlighting"
 draft: false
 weight: 10
 ---
-
-# Syntax Highlighting
-
 How to post the source code with syntax highlighting.
 
 ## **Gist**

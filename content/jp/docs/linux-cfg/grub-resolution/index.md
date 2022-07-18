@@ -3,9 +3,6 @@ title: "GRUB の解像度設定"
 draft: false
 weight: 999
 ---
-
-# GRUB の解像度設定
-
 ## 環境
 
 - Arch

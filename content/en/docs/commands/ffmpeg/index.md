@@ -3,9 +3,6 @@ title: "ffmpeg"
 draft: false
 weight: 30
 ---
-
-# ffmpeg
-
 ## Install
 
 {{< tabpane "install" >}}

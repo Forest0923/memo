@@ -3,9 +3,6 @@ title: "Mermaid"
 draft: false
 weight: 30
 ---
-
-# Mermaid
-
 Mermaid.js is a tool for displaying diagrams or graphs in a text-based format similar to Markdown. This article explains how to install it and its syntax.
 
 ## Setup

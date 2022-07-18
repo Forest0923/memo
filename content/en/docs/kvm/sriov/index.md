@@ -3,9 +3,6 @@ title: "Configurations for Single Root I/O Virtualization"
 draft: false
 weight: 40
 ---
-
-# Configurations for Single Root I/O Virtualization
-
 SR-IOV (Single Root I/O Virtualization) is a hardware feature that allows a single physical device to be recognized by a hypervisor as if it were multiple separate devices. For example, a machine with a single NIC that supports SR-IOV can be recognized as if it has multiple NICs by using SR-IOV, and each NIC can be passed through to the VM.
 
 This page contains some notes on using SR-IOV with KVM.

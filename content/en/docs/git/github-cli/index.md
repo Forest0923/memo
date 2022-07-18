@@ -3,9 +3,6 @@ title: "GitHub CLI"
 draft: false
 weight: 10
 ---
-
-# GitHub CLI
-
 In this page, I will explain how to install, configure and use the GitHub CLI.
 
 ## **Install**

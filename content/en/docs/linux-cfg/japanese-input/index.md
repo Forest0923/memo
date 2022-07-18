@@ -3,9 +3,6 @@ title: "Japanese Input"
 draft: false
 weight: 999
 ---
-
-# Japanese Input
-
 This is a memo on how to set up Japanese input using Fcitx (Flexible Input Method Framework) and Mozc.
 
 ## Install

@@ -3,9 +3,6 @@ title: "GNU Privacy Guard"
 draft: false
 weight: 20
 ---
-
-# GNU Privacy Guard
-
 GnuPG は OpenPGP 標準の暗号化規格でデータや通信に暗号化を行ったり署名をしたりすることができます．
 
 ## GnuPG の使い方

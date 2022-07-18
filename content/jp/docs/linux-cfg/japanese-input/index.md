@@ -3,9 +3,6 @@ title: "日本語入力"
 draft: false
 weight: 999
 ---
-
-# 日本語入力
-
 Fcitx（Flexible Input Method Framework）と Mozc を用いた日本語入力の設定のメモです．
 
 ## インストール

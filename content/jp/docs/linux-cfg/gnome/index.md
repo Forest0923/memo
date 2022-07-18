@@ -3,9 +3,6 @@ title: "Gnome の設定"
 draft: false
 weight: 999
 ---
-
-# Gnome の設定
-
 ## Wayland の無効化
 
 `/etc/gdm/custom.conf` を下記のように編集します．

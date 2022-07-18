@@ -3,9 +3,6 @@ title: "GPG Key"
 draft: false
 weight: 20
 ---
-
-# GNU Privacy Guard
-
 GnuPG is the OpenPGP standard for encrypting and signing data and communications.
 
 ## How to Use GnuPG

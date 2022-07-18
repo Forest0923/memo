@@ -3,9 +3,6 @@ title: "GRUB Resolution Settings"
 draft: false
 weight: 999
 ---
-
-# GRUB Resolution Settings
-
 ## System
 
 - Arch

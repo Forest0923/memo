@@ -3,9 +3,6 @@ title: "Rust 環境構築"
 draft: false
 weight: 10
 ---
-
-# Rust 環境構築
-
 ## Install
 
 rustup を用いて rust のインストールやバージョン管理を行います．

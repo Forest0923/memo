@@ -3,9 +3,6 @@ title: "OCaml 環境構築"
 draft: false
 weight: 10
 ---
-
-# OCaml 環境構築
-
 ## Install
 
 OCaml のパッケージマネージャである opam をインストールします．

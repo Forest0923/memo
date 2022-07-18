@@ -3,9 +3,6 @@ title: "Connect to GitHub with SSH"
 draft: false
 weight: 20
 ---
-
-# Connect to GitHub with SSH
-
 ## SSH Key Generation
 
 Executing ssh-keygen as follows will generate a key using the algorithm you have selected.

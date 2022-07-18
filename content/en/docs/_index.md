@@ -1,4 +1,6 @@
 ---
 title : "Docs"
-bookFlatSection: false
+menu:
+  main:
+    weight: 50
 ---

@@ -3,9 +3,6 @@ title: "Install TeX Live"
 draft: false
 weight: 10
 ---
-
-# Install TeX Live
-
 This is a startup guide for using LaTeX.
 
 ## System Environment

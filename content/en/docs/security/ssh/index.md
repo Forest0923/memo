@@ -3,9 +3,6 @@ title: "SSH"
 draft: false
 weight: 40
 ---
-
-# SSH
-
 SSH stands for Secure Shell, a protocol that allows you to communicate with a computer securely from a remote location.
 
 ## How to use SSH (client)

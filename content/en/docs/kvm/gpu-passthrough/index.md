@@ -3,9 +3,6 @@ title: "Configurations for Gpu Passthrough"
 draft: false
 weight: 30
 ---
-
-# Configurations for Gpu Passthrough
-
 GPU passthrough is a technology that allows VMs to directly access hardware (GPU), and is expected to provide high graphics performance even in a virtualized environment. This page describes how to pass-through an Nvidia GPU to Windows 10 on KVM.
 
 ## System

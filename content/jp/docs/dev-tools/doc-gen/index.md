@@ -3,9 +3,6 @@ title: "Document Generator (doxygen, sourcetrail)"
 draft: false
 weight: 70
 ---
-
-# Document Generator
-
 ## Doxygen
 
 ### Install

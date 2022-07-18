@@ -3,9 +3,6 @@ title: "アプリケーションのインストール"
 draft: false
 weight: 70
 ---
-
-# アプリケーションのインストール
-
 ## Package Manager
 
 - Paru

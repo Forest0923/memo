@@ -3,9 +3,6 @@ title: "Using minted for Syntax Highlighting"
 draft: false
 weight: 40
 ---
-
-# Using minted for Syntax highlighting
-
 ## About
 
 minted is a package that enable to add syntax highlight by using Pygments library.

@@ -3,9 +3,6 @@ title: "GitHub CLI"
 draft: false
 weight: 10
 ---
-
-# GitHub CLI
-
 このページでは GitHub CLI のインストール，設定，使い方をまとめます．
 
 ## インストール

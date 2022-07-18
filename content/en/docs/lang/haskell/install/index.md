@@ -3,9 +3,6 @@ title: "Install Haskell"
 draft: false
 weight: 10
 ---
-
-# Install Haskell
-
 This is a guide to installing Haskell using Stack.
 
 ## Install Stack

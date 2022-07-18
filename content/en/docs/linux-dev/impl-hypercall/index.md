@@ -3,9 +3,6 @@ title: "Implementing Original Hypercalls"
 draft: false
 weight: 40
 ---
-
-# Implementing Original Hypercalls
-
 This is a tutorial of implementing new hypercalls.
 
 ## System Setup

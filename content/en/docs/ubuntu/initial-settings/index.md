@@ -3,9 +3,6 @@ title: "Initial Settings for Ubuntu"
 draft: false
 weight: 10
 ---
-
-# Initial Settings for Ubuntu
-
 This article is a guide to help you quickly configure the initial settings when you install the desktop version of Ubuntu in VirtualBox. It is assumed that English is selected as the language setting during installation, and Minimal Install is selected.
 
 ```sh

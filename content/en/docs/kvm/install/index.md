@@ -3,9 +3,6 @@ title: "Install KVM"
 draft: false
 weight: 10
 ---
-
-# Install KVM
-
 ## Install
 
 {{< tabpane "install" >}}

@@ -3,9 +3,6 @@ title: "Expressions like LaTeX"
 draft: false
 weight: 20
 ---
-
-# Beautiful Mathmatical Expressions
-
 ## **MathJax**
 
 [MathJax](https://www.mathjax.org/) is a library for displaying beautiful mathematical expressions like LaTeX. To use it, you need to add the following code.

@@ -3,9 +3,6 @@ title: "Using Custom Style File"
 draft: false
 weight: 30
 ---
-
-# Using Custom Style File
-
 ## Create style file (~.sty)
 
 ### Create new command

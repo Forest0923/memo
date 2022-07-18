@@ -3,9 +3,6 @@ title: "BSPWM のインストール"
 draft: false
 weight: 60
 ---
-
-# BSPWM のインストール
-
 BSPWM という Tile 型のウィンドウマネージャをインストールして，カスタマイズを行います．
 
 ## Install and Configurations

@@ -3,9 +3,6 @@ title: "platformio"
 draft: false
 weight: 40
 ---
-
-# platformio
-
 ## Install
 
 - PlatformIO is written in Python. You can install following command:

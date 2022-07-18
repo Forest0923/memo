@@ -3,9 +3,6 @@ title: "Ubuntu の初期設定"
 draft: false
 weight: 10
 ---
-
-# Ubuntu の初期設定
-
 VirtualBox にデスクトップ版の Ubuntu を入れたときに初期設定をすぐにできるようにまとめたものです．GUI なしで設定できるようにしているので，Ubuntu インストール後にターミナルで下記のコマンドを実行すればすべて設定可能です．インストール時の言語設定は English を選択し，Minimal Install を選択した場合を想定しています．
 
 ```sh

@@ -3,9 +3,6 @@ title: "きれいな数式の表示"
 draft: false
 weight: 20
 ---
-
-# きれいな数式の表示
-
 ## **MathJax**
 
 [MathJax](https://www.mathjax.org/) は LaTeX のようなきれいな数式を表示するためのライブラリです．使用する場合は以下のタグを読み込む必要があります．

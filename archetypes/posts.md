@@ -8,7 +8,6 @@ tags = [
 categories = [
 
 ]
-menu = "main"
 draft = true
 +++
 

@@ -3,9 +3,6 @@ title: "Gnome Configurations"
 draft: false
 weight: 999
 ---
-
-# Gnome Configurations
-
 ## Disable wayland
 
 Edit `/etc/gdm/custom.conf` as follows.

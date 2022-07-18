@@ -3,9 +3,6 @@ title: "GitHub への SSH 接続"
 draft: false
 weight: 20
 ---
-
-# GitHub への SSH 接続
-
 ## SSH Key の生成
 
 ssh-keygen を用いて下記のようにコマンドを実行すると選択したアルゴリズムで鍵が生成されます．

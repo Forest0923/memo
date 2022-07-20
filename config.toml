@@ -1,10 +1,9 @@
-baseURL = "/"
-title = "Memo"
-description = "Technical notes written by Forest0923"
+baseURL = 'http://forest0923.github.io/memo/'
+title = 'Memo'
+description = 'Technical notes written by Forest0923'
+theme = 'docsy'
 
-theme = ["docsy"]
-
-defaultContentLanguage = "en"
+defaultContentLanguage = 'jp'
 defaultContentLanguageInSubdir = false
 enableMissingTranslationPlaceholders = true
 enableRobotsTXT = true

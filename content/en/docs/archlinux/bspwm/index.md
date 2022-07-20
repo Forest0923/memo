@@ -3,9 +3,6 @@ title: "Installing BSPWM"
 draft: false
 weight: 60
 ---
-
-# Installing BSPWM
-
 Install and customize a Tile-type window manager called BSPWM.
 
 ## Install and Configurations
@@ -14,24 +11,20 @@ Install and customize a Tile-type window manager called BSPWM.
 
 Install graphics driver.
 
-{{< tabs "gpu-driver" >}}
-{{< tab "Intel" >}}
+{{< tabpane >}}
+{{< tab header="Intel" lang="sh" >}}
 
-```sh
 sudo pacman -S xf86-video-intel
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
-```
 
 {{< /tab >}}
-{{< tab "Nvidia" >}}
+{{< tab header="Nvidia" lang="sh" >}}
 
-```sh
 sudo pacman -S xf86-video-intel
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
-```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **BSPWM**
 

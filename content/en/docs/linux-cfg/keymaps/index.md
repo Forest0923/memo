@@ -3,9 +3,6 @@ title: "Keymaps"
 draft: false
 weight: 999
 ---
-
-# Keymaps
-
 This is a note on how to assign other keys to keys such as Caps lock.
 
 ## Create Custom Key Mapping

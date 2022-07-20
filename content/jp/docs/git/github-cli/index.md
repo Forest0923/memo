@@ -3,16 +3,13 @@ title: "GitHub CLI"
 draft: false
 weight: 10
 ---
-
-# GitHub CLI
-
 このページでは GitHub CLI のインストール，設定，使い方をまとめます．
 
 ## インストール
 
 下記のコマンドでインストールします．
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -33,7 +30,7 @@ sudo snap install gh
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## 設定
 

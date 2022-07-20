@@ -4,9 +4,6 @@ draft: false
 weight: 20
 katex: true
 ---
-
-# LaTeX Cheat Sheet
-
 ## 数式
 
 ### **式番号**

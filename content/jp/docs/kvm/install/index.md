@@ -3,12 +3,9 @@ title: "KVM のインストールと設定"
 draft: false
 weight: 10
 ---
-
-# KVM のインストールと設定
-
 ## Install
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -25,7 +22,7 @@ sudo apt install qemu-kvm libvirt-daemon-system \
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Configrations
 

@@ -3,9 +3,6 @@ title: "Install Applications"
 draft: false
 weight: 70
 ---
-
-# Install Applications
-
 ## Package Manager
 
 - Paru

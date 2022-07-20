@@ -3,9 +3,6 @@ title: "Arch Linux のインストール（Multi-disks + BTRFS + Snapper）"
 draft: false
 weight: 20
 ---
-
-# Arch Linux のインストール（Multi-disks + BTRFS + Snapper）
-
 Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Snapper でスナップショットを保存する方法を紹介します．
 
 ## 環境

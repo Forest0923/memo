@@ -4,9 +4,6 @@ draft: false
 weight: 10
 katex: true
 ---
-
-# Public Key Cryptography
-
 Public key cryptography is a cryptographic scheme that uses two keys, a public key and a private key. It is used for signature, key exchange and etc.
 
 The security is ensured by using the difficulty of the calculation.

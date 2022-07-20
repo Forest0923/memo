@@ -3,9 +3,6 @@ title: "dd"
 draft: false
 weight: 80
 ---
-
-# dd
-
 ## Bootable USB
 
 ```sh

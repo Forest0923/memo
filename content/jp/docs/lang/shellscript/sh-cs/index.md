@@ -3,9 +3,6 @@ title: "Shell Script Cheat Sheet"
 draft: false
 weight: 10
 ---
-
-# Shell Script Cheat Sheet
-
 ## Array
 
 - Test code:

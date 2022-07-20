@@ -3,9 +3,6 @@ title: "BSPWM のインストール"
 draft: false
 weight: 60
 ---
-
-# BSPWM のインストール
-
 BSPWM という Tile 型のウィンドウマネージャをインストールして，カスタマイズを行います．
 
 ## Install and Configurations
@@ -14,7 +11,7 @@ BSPWM という Tile 型のウィンドウマネージャをインストール�
 
 グラフィックドライバをインストールします．
 
-{{< tabs "gpu-driver" >}}
+{{< tabpane >}}
 {{< tab "Intel" >}}
 
 ```sh
@@ -31,7 +28,7 @@ sudo pacman -S nvidia nvidia-utils nvidia-dkms
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **BSPWM**
 

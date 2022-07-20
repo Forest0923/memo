@@ -3,9 +3,6 @@ title: "File Compression (tar, zip, lzh, bz2)"
 draft: false
 weight: 10
 ---
-
-# File Compression (tar, zip, lzh, bz2)
-
 ## Usage
 
 | Extension | Compression | Decompression |

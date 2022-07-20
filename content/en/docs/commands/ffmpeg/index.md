@@ -3,27 +3,20 @@ title: "ffmpeg"
 draft: false
 weight: 30
 ---
-
-# ffmpeg
-
 ## Install
 
-{{< tabs "install" >}}
-{{< tab "Arch" >}}
+{{< tabpane >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S ffmpeg
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install ffmpeg
-```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## MP4 Manipulation with ffmpeg
 

@@ -3,9 +3,6 @@ title: "Inline Assembly"
 draft: false
 weight: 20
 ---
-
-# Inline Assembly in Rust
-
 ## `llvm_asm!()`
 
 - Sample code:

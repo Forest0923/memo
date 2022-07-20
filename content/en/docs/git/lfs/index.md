@@ -3,9 +3,6 @@ title: "LFS (Large File Storage)"
 draft: false
 weight: 50
 ---
-
-# LFS (Large File Storage)
-
 The maximum file size that can be uploaded to github is 100MB.
 Git Large File Storage enables to upload large file that is larger than 100MB.
 
@@ -13,7 +10,7 @@ Git Large File Storage enables to upload large file that is larger than 100MB.
 
 Install git-lfs with following commands.
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -28,7 +25,7 @@ sudo apt install git-lfs
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 Use the following command to confirm that the installation is complete.
 

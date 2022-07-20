@@ -3,9 +3,6 @@ title: "Reverse Engineering (APK)"
 draft: false
 weight: 20
 ---
-
-# Reverse Engineering (APK)
-
 This is a page about tools for analyzing APK files, which are application packages for Android, and how to use them.
 
 ## Tools
@@ -14,80 +11,62 @@ This is a page about tools for analyzing APK files, which are application packag
 
 A tool for reverse engineering APKs.
 
-{{< tabs "Apktool" >}}
-{{< tab "Arch" >}}
+{{< tabpane >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 paru -S android-apktool
-```
-
-```sh
+# or
 paru -S android-apktool-git
-```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### **dex2jar**
 
 A tool to convert Android's dex format to Java's class.
 
-{{< tabs "dex2jar" >}}
-{{< tab "Arch" >}}
+{{< tabpane >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 paru -S dex2jar
-```
-
-```sh
+# or
 paru -S dex2jar-git
-```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### **jd-cli**
 
 CLI tool for Java Decompiler.
 
-{{< tabs "jd-cli" >}}
-{{< tab "Black Arch" >}}
+{{< tabpane >}}
+{{< tab header="Black Arch" lang="sh" >}}
 
-```sh
 paru -S jd-cli
-```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### **jd-gui**
 
 GUI tool for Java Decompiler.
 
-{{< tabs "jd-gui" >}}
-{{< tab "Arch" >}}
+{{< tabpane >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 paru -S jd-gui
-```
-
-```sh
+# or
 paru -S jd-gui-git
-```
-
-```sh
+# or
 paru -S jd-gui-bin
-```
 
 {{< /tab>}}
-{{< tab "Black Arch" >}}
+{{< tab header="Black Arch" lang="sh" >}}
 
-```sh
 paru -S jd-gui
-```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ## How to Use
 

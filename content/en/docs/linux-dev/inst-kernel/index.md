@@ -3,9 +3,6 @@ title: "Install Kernel"
 draft: false
 weight: 10
 ---
-
-# Install Kernel
-
 This is a step-by-step guide on how to install kernel for those who are new to kernel development.
 
 ## System Setup

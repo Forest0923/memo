@@ -3,9 +3,6 @@ title: "Remove Kernel"
 draft: false
 weight: 20
 ---
-
-# Remove Kernel
-
 If the installed kernel no longer in use, you may want to remove it. This is introduction to remove kernel.
 
 ## How to remove kernel

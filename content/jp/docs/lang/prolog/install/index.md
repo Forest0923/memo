@@ -3,9 +3,6 @@ title: "Prolog 環境構築"
 draft: false
 weight: 10
 ---
-
-# Prolog 環境構築
-
 ## Install
 
 - Commands:

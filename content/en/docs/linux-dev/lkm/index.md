@@ -3,9 +3,6 @@ title: "Loadable Kernel Module"
 draft: false
 weight: 999
 ---
-
-# Loadable Kernel Module
-
 ## About
 
 This page describes the implementation of the Loadable Kernel Module on Linux.

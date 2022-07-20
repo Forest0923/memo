@@ -3,9 +3,6 @@ title: "LFS (Large File Storage)"
 draft: false
 weight: 50
 ---
-
-# LFS (Large File Storage)
-
 GitHub にアップロードできる最大のファイルサイズはデフォルトでは 100 MB となっています．
 その制限を超えるサイズのファイルを Git で管理したい場合には Git LFS を用いる必要があり，ここではその使い方を説明します．
 
@@ -13,7 +10,7 @@ GitHub にアップロードできる最大のファイルサイズはデフォ�
 
 下記コマンドでインストールします．
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -28,7 +25,7 @@ sudo apt install git-lfs
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 インストールできたことを下記のコマンドで確認します．
 

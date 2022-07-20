@@ -3,9 +3,6 @@ title: "Desktop Environment"
 draft: false
 weight: 50
 ---
-
-# Desktop Environment
-
 This is a tutorial for installing desktop environment.
 
 ## Install
@@ -14,24 +11,20 @@ This is a tutorial for installing desktop environment.
 
 Install graphics driver.
 
-{{< tabs "gpu-driver" >}}
-{{< tab "Intel" >}}
+{{< tabpane >}}
+{{< tab header="Intel" lang="sh" >}}
 
-```sh
 sudo pacman -S xf86-video-intel
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
-```
 
 {{< /tab >}}
-{{< tab "Nvidia" >}}
+{{< tab header="Nvidia" lang="sh" >}}
 
-```sh
 sudo pacman -S xf86-video-intel
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
-```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Display Server**
 
@@ -45,66 +38,52 @@ sudo pacman -S xorg
 
 Install the Display Manager to use the GUI for login.
 
-{{< tabs "display-manager" >}}
-{{< tab "lightdm" >}}
+{{< tabpane >}}
+{{< tab header="lightdm" lang="sh" >}}
 
-```sh
 sudo pacman -S lightdm lightdm-gtk-greeter
-```
 
 {{< /tab >}}
-{{< tab "gdm" >}}
+{{< tab header="gdm" lang="sh" >}}
 
-```sh
 sudo pacman -S gdm
-```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Desktop Environment**
 
-{{< tabs "desktop-environment" >}}
-{{< tab "xfce" >}}
+{{< tabpane >}}
+{{< tab header="xfce" lang="sh" >}}
 
-```sh
 sudo pacman -S xfce4 xfce4-goodies
-```
 
 {{< /tab >}}
-{{< tab "gnome" >}}
+{{< tab header="gnome" lang="sh" >}}
 
-```sh
 sudo pacman -S gnome gnome-tweaks
-```
 
 {{< /tab >}}
-{{< tab "budgie" >}}
+{{< tab header="budgie" lang="sh" >}}
 
-```sh
 sudo pacman -S budgie-desktop gnome
-```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Systemd**
 
 Set systemd to start the display manager automatically.
 
-{{< tabs "systemd" >}}
-{{< tab "lightdm" >}}
+{{< tabpane >}}
+{{< tab header="lightdm" lang="sh" >}}
 
-```sh
 systemctl enable lightdm
-```
 
 {{< /tab >}}
-{{< tab "gdm" >}}
+{{< tab header="gdm" lang="sh" >}}
 
-```sh
 systemctl enable gdm
-```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}

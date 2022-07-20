@@ -3,14 +3,11 @@ title: "Connect to GitHub with SSH"
 draft: false
 weight: 20
 ---
-
-# Connect to GitHub with SSH
-
 ## SSH Key Generation
 
 Executing ssh-keygen as follows will generate a key using the algorithm you have selected.
 
-{{< tabs "ssh-keygen" >}}
+{{< tabpane >}}
 {{< tab "EdDSA" >}}
 
 ```sh
@@ -32,7 +29,7 @@ ssh-keygen -t ecdsa -b 521
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 If you do not make any changes during the generation, the private key `id_[algorithm]` and the public key `id_[algorithm].pub` will be generated in `~/.ssh`.
 

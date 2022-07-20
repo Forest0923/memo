@@ -3,15 +3,12 @@ title: "Rust 環境構築"
 draft: false
 weight: 10
 ---
-
-# Rust 環境構築
-
 ## Install
 
 rustup を用いて rust のインストールやバージョン管理を行います．
 rustup をインストールしたら `$HOME/.cargo/bin` を PATH に追加します．
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -26,7 +23,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## rustup
 
@@ -52,7 +49,7 @@ rustup self uninstall
 
 新しいプロジェクトは `cargo new` で作成します．
 
-{{< tabs "cargo new" >}}
+{{< tabpane >}}
 {{< tab "executable" >}}
 
 ```sh
@@ -67,7 +64,7 @@ cargo new dir_name --lib
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 git などのバージョン管理を行わない場合は `--vcs none` をつけます．
 

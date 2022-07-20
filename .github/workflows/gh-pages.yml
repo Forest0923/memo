@@ -9,13 +9,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          submodules: true
+          submodules: recursive
 
-      - name: Setup
+      - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
           extended: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      
+      - run: npm install
+      - run: |
+             cd themes/docsy
+             npm install
+             cd ../..
 
       - name: Build
         run: hugo --minify

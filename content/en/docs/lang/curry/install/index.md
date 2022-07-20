@@ -3,14 +3,11 @@ title: "Install Curry"
 draft: false
 weight: 10
 ---
-
-# Install Curry
-
 Curry is a language that has features of both functional and logic programming languages. PAKCS is an interpreter that can execute programs written in Curry. PAKCS converts Curry code into Prolog and executes it.
 
 ## Install
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -28,7 +25,7 @@ sudo apt install pakcs
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 [download site](https://www.informatik.uni-kiel.de/~pakcs/download.html)
 

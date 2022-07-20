@@ -3,9 +3,6 @@ title: "Install Kernel (Arch Linux ver.)"
 draft: false
 weight: 11
 ---
-
-# Install Kernel (Arch Linux ver.)
-
 This is a note of my development of a Linux kernel on Arch Linux. Basically, I use Ubuntu for my research, but when I tried to install a custom kernel on Arch Linux, I found that the same procedure as on Ubuntu did not work. I will show you how to compile and install without using PKGBUILD.
 
 ## Download Source Code

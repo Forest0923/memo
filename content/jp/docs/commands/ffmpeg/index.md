@@ -3,12 +3,9 @@ title: "ffmpeg"
 draft: false
 weight: 30
 ---
-
-# ffmpeg
-
 ## Install
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -23,7 +20,7 @@ sudo apt install ffmpeg
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## MP4 Manipulation with ffmpeg
 

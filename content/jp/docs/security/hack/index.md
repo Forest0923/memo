@@ -3,9 +3,6 @@ title: "Hack"
 draft: false
 weight: 999
 ---
-
-# Hack
-
 ## Links
 
 - [Try Hack Me](https://tryhackme.com/)

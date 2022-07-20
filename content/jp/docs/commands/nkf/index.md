@@ -3,12 +3,9 @@ title: "nkf"
 draft: false
 weight: 20
 ---
-
-# nkf
-
 ## Install
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -23,7 +20,7 @@ sudo apt install nkf
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Usage
 

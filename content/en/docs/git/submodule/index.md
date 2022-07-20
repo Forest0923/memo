@@ -3,9 +3,6 @@ title: "Submodule"
 draft: false
 weight: 40
 ---
-
-# Submodule
-
 The submodule is a feature that allows you to include another Git repository as a sub directory in your repository. If you want to use the contents of a library or another project you are developing, you can include it in the project while managing it separately from the main project.
 
 ### **Adding Submodule**

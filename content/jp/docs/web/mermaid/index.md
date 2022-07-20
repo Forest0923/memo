@@ -3,9 +3,6 @@ title: "Mermaid"
 draft: false
 weight: 30
 ---
-
-# Mermaid
-
 Mermaid.js は Markdown のようなテキストベースで図形やグラフを表示するツールです．ここでは導入方法と文法を紹介します．
 
 ## 導入方法
@@ -43,10 +40,10 @@ flowchart TB
 
 <--->
 
-{{< mermaid >}}
+```mermaid
 flowchart TB
     A-->B
-{{< /mermaid >}}
+```
 
 {{< /columns >}}
 
@@ -59,9 +56,9 @@ flowchart RL
 
 <--->
 
-{{< mermaid >}}
+```mermaid
 flowchart RL
     A-->B
-{{< /mermaid >}}
+```
 
 {{< /columns >}}

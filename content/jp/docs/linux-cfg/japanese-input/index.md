@@ -3,14 +3,11 @@ title: "日本語入力"
 draft: false
 weight: 999
 ---
-
-# 日本語入力
-
 Fcitx（Flexible Input Method Framework）と Mozc を用いた日本語入力の設定のメモです．
 
 ## インストール
 
-{{< tabs "japanese-input" >}}
+{{< tabpane >}}
 {{< tab "fcitx5" >}}
 
 fcitx5 は fcitx の後継のソフトウェアです．
@@ -27,7 +24,7 @@ sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## 設定
 

@@ -3,9 +3,6 @@ title: "System Call"
 draft: false
 weight: 30
 ---
-
-# System Call
-
 ## Use `system-call` crate
 
 - Add a dependency to `Cargo.toml`:

@@ -3,9 +3,6 @@ title: "自作 OS 入門 with Ubuntu"
 draft: false
 weight: 30
 ---
-
-# 自作 OS 入門 with Ubuntu
-
 「自作 OS 入門」を Ubuntu で行う際の Tips をまとめました．
 
 > [My HariboteOS](https://github.com/Forest0923/my-haribote-os)

@@ -3,9 +3,6 @@ title: "minted を使用したシンタックスハイライト"
 draft: false
 weight: 40
 ---
-
-# minted を使用したシンタックスハイライト
-
 minted は Python 製の Pygments ライブラリを用いたシンタックスハイライティングを行うパッケージです．
 
 ## インストール

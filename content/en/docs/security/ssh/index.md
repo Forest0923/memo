@@ -3,16 +3,13 @@ title: "SSH"
 draft: false
 weight: 40
 ---
-
-# SSH
-
 SSH stands for Secure Shell, a protocol that allows you to communicate with a computer securely from a remote location.
 
 ## How to use SSH (client)
 
 ### Install
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -27,13 +24,13 @@ sudo apt install openssh-client
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Key Generation
 
 Generate a key with ssh-keygen.
 
-{{< tabs "ssh-keygen" >}}
+{{< tabpane >}}
 {{< tab "RSA" >}}
 
 ```sh
@@ -55,6 +52,6 @@ ssh-keygen -t ed25519
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 By default, the public key `id_[algorithm].pub` and the private key `id_[algorithm]` are created in `~/.ssh/`. You can communicate without password authentication by registering a public key with the SSH server.

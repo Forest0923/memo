@@ -3,9 +3,6 @@ title: "デスクトップ環境"
 draft: false
 weight: 50
 ---
-
-# デスクトップ環境
-
 デスクトップ環境をインストールするチュートリアルです．
 
 ## Install
@@ -14,7 +11,7 @@ weight: 50
 
 グラフィックドライバをインストールします．
 
-{{< tabs "gpu-driver" >}}
+{{< tabpane >}}
 {{< tab "Intel" >}}
 
 ```sh
@@ -31,7 +28,7 @@ sudo pacman -S nvidia nvidia-utils nvidia-dkms
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Display Server**
 
@@ -45,7 +42,7 @@ sudo pacman -S xorg
 
 ログインを GUI で行うためにディスプレイマネージャをインストールします．
 
-{{< tabs "display-manager" >}}
+{{< tabpane >}}
 {{< tab "lightdm" >}}
 
 ```sh
@@ -60,11 +57,11 @@ sudo pacman -S gdm
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Desktop Environment**
 
-{{< tabs "desktop-environment" >}}
+{{< tabpane >}}
 {{< tab "xfce" >}}
 
 ```sh
@@ -86,13 +83,13 @@ sudo pacman -S budgie-desktop gnome
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **Systemd**
 
 ディスプレイマネージャを自動で起動するように systemd を設定します．
 
-{{< tabs "systemd" >}}
+{{< tabpane >}}
 {{< tab "lightdm" >}}
 
 ```sh
@@ -107,4 +104,4 @@ systemctl enable gdm
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}

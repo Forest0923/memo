@@ -3,9 +3,6 @@ title: "リバースエンジニアリング（APK）"
 draft: false
 weight: 20
 ---
-
-# リバースエンジニアリング（APK）
-
 Android 用のアプリケーションパッケージである APK ファイルを解析するためのツールやその使い方についてのページです．
 
 ## ツールのインストール
@@ -14,7 +11,7 @@ Android 用のアプリケーションパッケージである APK ファイル�
 
 APK の解凍やリビルドを容易に行えるリバースエンジニアリングのためのツール．
 
-{{< tabs "Apktool" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -26,13 +23,13 @@ paru -S android-apktool-git
 ```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### **dex2jar**
 
 Android の dex フォーマットを Java の class に変換するツール．
 
-{{< tabs "dex2jar" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -44,13 +41,13 @@ paru -S dex2jar-git
 ```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### **jd-cli**
 
 Java Decompiler の CLI ツール．
 
-{{< tabs "jd-cli" >}}
+{{< tabpane >}}
 {{< tab "Black Arch" >}}
 
 ```sh
@@ -58,13 +55,13 @@ paru -S jd-cli
 ```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### **jd-gui**
 
 Java Decompiler の GUI ツール．
 
-{{< tabs "jd-gui" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -87,7 +84,7 @@ paru -S jd-gui
 ```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ## 使い方
 

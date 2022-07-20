@@ -3,12 +3,9 @@ title: "Install KVM"
 draft: false
 weight: 10
 ---
-
-# Install KVM
-
 ## Install
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -25,7 +22,7 @@ sudo apt install qemu-kvm libvirt-daemon-system \
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Configrations
 

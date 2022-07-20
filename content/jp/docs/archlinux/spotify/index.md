@@ -3,9 +3,6 @@ title: "Spotify の設定"
 draft: false
 weight: 100
 ---
-
-# Spotify の設定
-
 Spotify の設定やトラブルシューティングについてのページです．
 
 ## HiDPI

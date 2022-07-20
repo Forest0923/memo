@@ -3,9 +3,6 @@ title: "Ubuntu の初期設定"
 draft: false
 weight: 10
 ---
-
-# Ubuntu の初期設定
-
 VirtualBox にデスクトップ版の Ubuntu を入れたときに初期設定をすぐにできるようにまとめたものです．GUI なしで設定できるようにしているので，Ubuntu インストール後にターミナルで下記のコマンドを実行すればすべて設定可能です．インストール時の言語設定は English を選択し，Minimal Install を選択した場合を想定しています．
 
 ```sh
@@ -25,7 +22,7 @@ chmod +x ubuntu-initial-settings.sh
 
 次のコマンドで時間を設定します．
 
-{{< tabs "sleep" >}}
+{{< tabpane >}}
 {{< tab "Never">}}
 
 ```sh
@@ -40,7 +37,7 @@ gsettings set org.gnome.desktop.session idle-delay 3600
 ```
 
 {{< /tab>}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **DOCK のカスタマイズ**
 
@@ -58,7 +55,7 @@ gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
 
 ### **パッケージインストール時のサーバ変更**
 
-{{< tabs "apt_server" >}}
+{{< tabpane >}}
 {{< tab "JAIST">}}
 
 ```sh
@@ -73,7 +70,7 @@ sudo sed -i.bak -e 's%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagat
 ```
 
 {{< /tab>}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **シャットダウンにかかる時間の短縮**
 
@@ -121,7 +118,7 @@ sudo sed -i 's/# set bell-style none/set bell-style none/' /etc/inputrc
 
 ### **エディタ**
 
-{{< tabs "editor" >}}
+{{< tabpane >}}
 {{< tab "Vim" >}}
 
 ```sh
@@ -144,7 +141,7 @@ sudo apt install emacs-nox
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **ターミナルマルチプレクサ**
 

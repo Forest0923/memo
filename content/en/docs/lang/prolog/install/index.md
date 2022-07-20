@@ -3,9 +3,6 @@ title: "Install Prolog"
 draft: false
 weight: 10
 ---
-
-# Install Prolog
-
 ## Install
 
 - Commands:

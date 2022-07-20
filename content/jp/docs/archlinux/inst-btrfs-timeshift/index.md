@@ -3,9 +3,6 @@ title: "Arch Linux のインストール（BTRFS + Timeshift）"
 draft: false
 weight: 10
 ---
-
-# Arch Linux のインストール（BTRFS + Timeshift）
-
 Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Timeshift でスナップショットを保存する方法を紹介します．
 
 ## 環境
@@ -317,7 +314,7 @@ reboot
 
 AUR ヘルパーを用いて timeshift をインストールします．
 
-{{< tabs "aurhelper" >}}
+{{< tabpane >}}
 {{< tab "paru" >}}
 
 ```sh
@@ -336,7 +333,7 @@ makepkg -si
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ```sh
 paru -S timeshift

@@ -3,9 +3,6 @@ title: "Dual Booting (multi-disk + Windows10 and Arch Linux)"
 draft: false
 weight: 30
 ---
-
-# Dual Booting (multi-disk + Windows10 and Arch Linux)
-
 ## 環境
 
 - Preinstalled OS: Windows 10 (64 bit Home)
@@ -267,7 +264,7 @@ reboot
 
 ### **グラフィックドライバ**
 
-{{< tabs "gpu-driver" >}}
+{{< tabpane >}}
 {{< tab "Nvidia" >}}
 
 ```sh
@@ -275,7 +272,7 @@ sudo pacman -S nvidia nvidia-utils nvidia-dkms
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### **フォント**
 

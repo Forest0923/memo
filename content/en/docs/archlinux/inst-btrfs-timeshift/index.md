@@ -3,9 +3,6 @@ title: "Install Arch Linux (BTRFS + Timeshift)"
 draft: false
 weight: 10
 ---
-
-# Install Arch Linux (BTRFS + Timeshift)
-
 Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Timeshift.
 
 ## System
@@ -317,26 +314,22 @@ reboot
 
 Install Timeshift with AUR helper.
 
-{{< tabs "aurhelper" >}}
-{{< tab "paru" >}}
+{{< tabpane >}}
+{{< tab header="paru" lang="sh" >}}
 
-```sh
 git clone https://aur.archlinux.org/paru
 cd paru
 makepkg -si
-```
 
 {{< /tab >}}
-{{< tab "yay" >}}
+{{< tab header="yay" lang="sh" >}}
 
-```sh
 git clone https://aur.archlinux.org/yay
 cd yay
 makepkg -si
-```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ```sh
 paru -S timeshift

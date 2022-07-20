@@ -3,9 +3,6 @@ title: "LaTeX スタートアップ：TeX Live のインストール"
 draft: false
 weight: 10
 ---
-
-# LaTeX スタートアップ：TeX Live のインストール
-
 LaTeX を使えるようにするための最低限のガイドです．
 
 ## 環境

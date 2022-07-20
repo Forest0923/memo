@@ -3,13 +3,10 @@ title: "fwupd"
 draft: false
 weight: 50
 ---
-
-# fwupd
-
 ## Install
 
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -24,7 +21,7 @@ sudo apt install fwupd
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Usage
 

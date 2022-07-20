@@ -3,9 +3,6 @@ title: "Arch Build System"
 draft: false
 weight: 90
 ---
-
-# Arch Build System
-
 ABS is a system that automates the building of packages from source code; it uses makepkg to build packages based on information in PKGBUILD, and pacman to install them.
 
 ## Install

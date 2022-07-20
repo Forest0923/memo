@@ -3,27 +3,20 @@ title: "nkf"
 draft: false
 weight: 20
 ---
-
-# nkf
-
 ## Install
 
-{{< tabs "install" >}}
-{{< tab "Arch" >}}
+{{< tabpane >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 paru -S nkf
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install nkf
-```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Usage
 

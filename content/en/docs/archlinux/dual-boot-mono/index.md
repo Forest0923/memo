@@ -3,9 +3,6 @@ title: "Dual Booting (mono disk + Windows10 and Arch Linux)"
 draft: false
 weight: 30
 ---
-
-# Dual Booting (mono disk + Windows10 and Arch Linux)
-
 ## System
 
 - Preinstalled OS: Windows 10 (64 bit Home)

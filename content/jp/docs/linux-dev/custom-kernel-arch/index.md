@@ -3,9 +3,6 @@ title: "カーネルのインストール（Arch Linux 版）"
 draft: false
 weight: 11
 ---
-
-# カーネルのインストール（Arch Linux 版）
-
 Arch Linux で Linux カーネルの開発をしたときのメモです．基本的に研究では無難に Ubuntu を使用していますが，なんとなく Arch Linux にカスタムカーネルをインストールしようとしたら Ubuntu と同じ手順ではうまく行かないことがわかりました．Arch Build System を使う方法もありますが，ここでは PKGBUILD などは使わずにコンパイル，インストールする方法を紹介します．
 
 ## Download Source Code

@@ -3,9 +3,6 @@ title: "Power Management"
 draft: false
 weight: 80
 ---
-
-# Power Management
-
 This is a memo about power management.
 
 ## TLP

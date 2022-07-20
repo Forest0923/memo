@@ -3,15 +3,12 @@ title: "Install Rust"
 draft: false
 weight: 10
 ---
-
-# Install Rust
-
 ## Install
 
 Use rustup to install and version control rust.
 After installing rustup, add `$HOME/.cargo/bin` to your PATH.
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -26,7 +23,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## rustup
 
@@ -52,7 +49,7 @@ rustup self uninstall
 
 To create new project, run `cargo new`.
 
-{{< tabs "cargo new" >}}
+{{< tabpane >}}
 {{< tab "executable" >}}
 
 ```sh
@@ -67,7 +64,7 @@ cargo new dir_name --lib
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 If you don't use version control such as git, add `--vcs none`.
 

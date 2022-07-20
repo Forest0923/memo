@@ -3,9 +3,6 @@ title: "find and grep"
 draft: false
 weight: 60
 ---
-
-# find and grep
-
 ## Source Code Reading with find + grep
 
 ```sh

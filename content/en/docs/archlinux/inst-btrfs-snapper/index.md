@@ -3,9 +3,6 @@ title: "Install Arch Linux (Multi-disks + BTRFS + Snapper)"
 draft: false
 weight: 20
 ---
-
-# Install Arch Linux (Multi-disks + BTRFS + Snapper)
-
 Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Snapper.
 
 ## System

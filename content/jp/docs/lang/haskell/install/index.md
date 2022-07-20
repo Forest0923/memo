@@ -3,16 +3,13 @@ title: "Haskell 環境構築"
 draft: false
 weight: 10
 ---
-
-# Haskell 環境構築
-
 Haskell を Stack を用いてインストールするためのメモです．
 
 ## Install Stack
 
 Stack は haskell のプロジェクトを管理するためのツールでコンパイラやパッケージのインストール，プロジェクトのビルドなどを行えます．インストールは下記のように行います．
 
-{{< tabs "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -28,7 +25,7 @@ stack upgrade
 ```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Basic Usage
 

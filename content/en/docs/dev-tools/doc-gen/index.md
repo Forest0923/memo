@@ -3,29 +3,22 @@ title: "Document Generator (doxygen, sourcetrail)"
 draft: false
 weight: 70
 ---
-
-# Document Generator
-
 ## Doxygen
 
 ### Install
 
-{{< tabs "install" >}}
-{{< tab "Arch" >}}
+{{< tabpane >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S doxygen
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install doxygen
-```
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ### Configuration
 
@@ -179,15 +172,13 @@ doxygen foo/bar/Doxygen
 
 For Arch Linux, you can install it from the AUR. For Ubuntu, you need to download it from [GitHub: CoatiSoftware/Sourcetrail](https://github.com/CoatiSoftware/Sourcetrail/releases).
 
-{{< tabs "Install" >}}
-{{< tab "Arch">}}
+{{< tabpane >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 paru -S sourcetrail
-```
 
 {{< /tab>}}
-{{< /tabs>}}
+{{< /tabpane>}}
 
 ### Create Projects
 

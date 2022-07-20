@@ -1,5 +1,104 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Android on Memo</title><link>http://forest0923.github.io/memo/en/docs/android/</link><description>Recent content in Android on Memo</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="http://forest0923.github.io/memo/en/docs/android/index.xml" rel="self" type="application/rss+xml"/><item><title>Android x86</title><link>http://forest0923.github.io/memo/en/docs/android/inst-x86/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/android/inst-x86/</guid><description> Android x86 # System Setup # Host: Linux KVM Guest: Android x86, Lineage OS Install # Download OS image (*.iso) # Download *.iso from https://www.android-x86.org/ Configuration of Virtual Machine Manager # Install #</description></item><item><title>Reverse Engineering (APK)</title><link>http://forest0923.github.io/memo/en/docs/android/apk/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/android/apk/</guid><description>Reverse Engineering (APK) # This is a page about tools for analyzing APK files, which are application packages for Android, and how to use them.
-Tools # Apktool # A tool for reverse engineering APKs.
-Arch paru -S android-apktool paru -S android-apktool-git dex2jar # A tool to convert Android&amp;rsquo;s dex format to Java&amp;rsquo;s class.
-Arch paru -S dex2jar paru -S dex2jar-git jd-cli # CLI tool for Java Decompiler.
-Black Arch paru -S jd-cli jd-gui # GUI tool for Java Decompiler.</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Android</title><link>http://forest0923.github.io/memo/en/docs/android/</link><description>Recent content in Android on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/android/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Android x86</title><link>http://forest0923.github.io/memo/en/docs/android/inst-x86/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/android/inst-x86/</guid><description>
+&lt;h2 id="system-setup">System Setup&lt;/h2>
+&lt;ul>
+&lt;li>Host: Linux KVM&lt;/li>
+&lt;li>Guest: Android x86, Lineage OS&lt;/li>
+&lt;/ul>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;h3 id="download-os-image-iso">&lt;strong>Download OS image (*.iso)&lt;/strong>&lt;/h3>
+&lt;ul>
+&lt;li>Download *.iso from &lt;a href="https://www.android-x86.org/">https://www.android-x86.org/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="configuration-of-virtual-machine-manager">&lt;strong>Configuration of Virtual Machine Manager&lt;/strong>&lt;/h3>
+&lt;p>&lt;img src="android-x86-overview.png" alt="">
+&lt;img src="android-x86-osinfo.png" alt="">
+&lt;img src="android-x86-cpu.png" alt="">
+&lt;img src="android-x86-mem.png" alt="">
+&lt;img src="android-x86-disk.png" alt="">
+&lt;img src="android-x86-nic.png" alt="">&lt;/p>
+&lt;h3 id="install-1">&lt;strong>Install&lt;/strong>&lt;/h3>
+&lt;p>&lt;img src="android-x86-grub.png" alt="">
+&lt;img src="android-x86-autoins.png" alt="">
+&lt;img src="android-x86-wifi1.png" alt="">
+&lt;img src="android-x86-wifi2.png" alt="">&lt;/p></description></item><item><title>Docs: Reverse Engineering (APK)</title><link>http://forest0923.github.io/memo/en/docs/android/apk/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/android/apk/</guid><description>
+&lt;p>This is a page about tools for analyzing APK files, which are application packages for Android, and how to use them.&lt;/p>
+&lt;h2 id="tools">Tools&lt;/h2>
+&lt;h3 id="apktool">&lt;strong>Apktool&lt;/strong>&lt;/h3>
+&lt;p>A tool for reverse engineering APKs.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S android-apktool
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># or&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -S android-apktool-git&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="dex2jar">&lt;strong>dex2jar&lt;/strong>&lt;/h3>
+&lt;p>A tool to convert Android&amp;rsquo;s dex format to Java&amp;rsquo;s class.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-00" aria-selected="false">Arch&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
+id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S dex2jar
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># or&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -S dex2jar-git&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="jd-cli">&lt;strong>jd-cli&lt;/strong>&lt;/h3>
+&lt;p>CLI tool for Java Decompiler.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-2" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-02-00-tab" data-toggle="tab" href="#tabs-02-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-02-00" aria-selected="false">Black Arch&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-2-content">&lt;div class="tab-pane fade show active"
+id="tabs-02-00" role="tabpanel" aria-labelled-by="tabs-02-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S jd-cli&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="jd-gui">&lt;strong>jd-gui&lt;/strong>&lt;/h3>
+&lt;p>GUI tool for Java Decompiler.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-3" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-03-00-tab" data-toggle="tab" href="#tabs-03-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-03-00" aria-selected="false">Arch&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-03-01-tab" data-toggle="tab" href="#tabs-03-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-03-01" aria-selected="false">Black Arch&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-3-content">&lt;div class="tab-pane fade show active"
+id="tabs-03-00" role="tabpanel" aria-labelled-by="tabs-03-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S jd-gui
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># or&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -S jd-gui-git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># or&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -S jd-gui-bin&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S jd-gui&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h2 id="how-to-use">How to Use&lt;/h2>
+&lt;h3 id="when-using-apktool">&lt;strong>When using Apktool&lt;/strong>&lt;/h3>
+&lt;p>The source will be extracted to &lt;code>base/&lt;/code> by executing the command as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>apktool d base.apk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="when-using-dex2jar-jd-">&lt;strong>When using dex2jar, jd-*&lt;/strong>&lt;/h3>
+&lt;p>Convert the APK to a jar file with dex2jar as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>dex2jar base.apk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Decompile the generated &lt;code>base-dex2jar.jar&lt;/code>. In case of GUI, run jd-gui and select &lt;code>base-dex2jar.jar&lt;/code> from File Open. In case of CUI, run jd-cli as follows to extract the file to &lt;code>src/&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>jd-cli base-dex2jar.jar -od src
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

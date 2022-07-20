@@ -1,4 +1,195 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on Memo</title><link>http://forest0923.github.io/memo/en/docs/ubuntu/</link><description>Recent content in Ubuntu on Memo</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="http://forest0923.github.io/memo/en/docs/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>Initial Settings for Ubuntu</title><link>http://forest0923.github.io/memo/en/docs/ubuntu/initial-settings/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/ubuntu/initial-settings/</guid><description>Initial Settings for Ubuntu # This article is a guide to help you quickly configure the initial settings when you install the desktop version of Ubuntu in VirtualBox. It is assumed that English is selected as the language setting during installation, and Minimal Install is selected.
-wget http://forest0923.github.io/memo/docs/ubuntu/initial-settings/ubuntu-initial-settings.sh chmod +x ubuntu-initial-settings.sh ./ubuntu-initial-settings.sh Systems Setup # Ubuntu 18.04 LTS (minimal install) Ubuntu 20.04 LTS (minimal install) Initial Settings # Set the Time to Sleep # Set the time as follows.</description></item><item><title>Introduction to Creating Your Own OS with Ubuntu</title><link>http://forest0923.github.io/memo/en/docs/ubuntu/haribote-os/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/ubuntu/haribote-os/</guid><description>Introduction to Creating Your Own OS with Ubuntu # This article is tips for creating HariboteOS.
-My HariboteOS
-System Setup # OS: Ubuntu 18.04 Tools Used # Binary editor # hexedit sudo apt install hexedit ghex sudo apt install ghex Assembler # nasm sudo apt install nasm nasm input.asm -o output (-l output.lst) C Compiler # gcc gcc -march=i486 -m32 -fno-pie -nostdlib -T [linkerfile] -g *.c *.o -o bootpack.bin Make OS Image # You can merge asmhead.</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Ubuntu</title><link>http://forest0923.github.io/memo/en/docs/ubuntu/</link><description>Recent content in Ubuntu on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Initial Settings for Ubuntu</title><link>http://forest0923.github.io/memo/en/docs/ubuntu/initial-settings/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/ubuntu/initial-settings/</guid><description>
+&lt;p>This article is a guide to help you quickly configure the initial settings when you install the desktop version of Ubuntu in VirtualBox. It is assumed that English is selected as the language setting during installation, and Minimal Install is selected.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>wget http://forest0923.github.io/memo/docs/ubuntu/initial-settings/ubuntu-initial-settings.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chmod +x ubuntu-initial-settings.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ubuntu-initial-settings.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="systems-setup">Systems Setup&lt;/h2>
+&lt;ul>
+&lt;li>Ubuntu 18.04 LTS (minimal install)&lt;/li>
+&lt;li>Ubuntu 20.04 LTS (minimal install)&lt;/li>
+&lt;/ul>
+&lt;h2 id="initial-settings">Initial Settings&lt;/h2>
+&lt;h3 id="set-the-time-to-sleep">&lt;strong>Set the Time to Sleep&lt;/strong>&lt;/h3>
+&lt;p>Set the time as follows.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+aria-controls="tabs-00-00" aria-selected="false">Never&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+aria-controls="tabs-00-01" aria-selected="false">1 hours&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gsettings set org.gnome.desktop.session idle-delay 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gsettings set org.gnome.desktop.session idle-delay 3600
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="customize-dock">&lt;strong>Customize Dock&lt;/strong>&lt;/h3>
+&lt;p>Add favorite applications to dock.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gsettings &lt;span style="color:#24909d">set&lt;/span> org.gnome.shell favorite-apps &lt;span style="color:#ed9d13">&amp;#34;[&amp;#39;firefox.desktop&amp;#39;, &amp;#39;org.gnome.Terminal.desktop&amp;#39;, &amp;#39;org.gnome.Nautilus.desktop&amp;#39;]&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Change the icon size.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gsettings &lt;span style="color:#24909d">set&lt;/span> org.gnome.shell.extensions.dash-to-dock dash-max-icon-size &lt;span style="color:#3677a9">36&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-server-for-apt">&lt;strong>Change Server for apt&lt;/strong>&lt;/h3>
+&lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+aria-controls="tabs-01-00" aria-selected="false">JAIST&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
+aria-controls="tabs-01-01" aria-selected="false">Yamagata Univ.&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
+id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo sed -i.bak -e &amp;#39;s%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.jaist.ac.jp/pub/Linux/ubuntu/archives/%g&amp;#39; /etc/apt/sources.list
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo sed -i.bak -e &amp;#39;s%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagata-u.ac.jp/pub/linux/ubuntu/archives/%g&amp;#39; /etc/apt/sources.list
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="reduce-the-time-to-shutdown">&lt;strong>Reduce the Time to Shutdown&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo sed -i &lt;span style="color:#ed9d13">&amp;#39;s/#DefaultTimeoutStopSec=90s/#DefaultTimeoutStopSec=90s\nDefaultTimeoutStopSec=10s/&amp;#39;&lt;/span> /etc/systemd/system.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>Reference:&lt;/p>
+&lt;p>&lt;a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html">systemd&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="settings-of-resolution">&lt;strong>Settings of Resolution&lt;/strong>&lt;/h3>
+&lt;p>Use xrandr to set the resolution.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>xrandr --output Virtual1 --mode 1440x900
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To run the command above at OS startup, add it to the autostart as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> [ ! -d /home/&lt;span style="color:#40ffff">$USER&lt;/span>/.config/autostart ]; &lt;span style="color:#6ab825;font-weight:bold">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mkdir /home/&lt;span style="color:#40ffff">$USER&lt;/span>/.config/autostart
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cat &lt;span style="color:#ed9d13">&amp;lt;&amp;lt;EOF &amp;gt; /home/$USER/.config/autostart/xrandr.desktop
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">[Desktop Entry]
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">Type=Application
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">Exec=xrandr --output Virtual1 --mode 1440x900
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">Hidden=false
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">NoDisplay=false
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">X-GNOME-Autostart-enabled=true
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">Name=monitor_resolution
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">Comment=Change builtin monitor resolution
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">EOF&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="mute-error-sounds-in-terminal">&lt;strong>Mute Error Sounds in Terminal&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo sed -i &lt;span style="color:#ed9d13">&amp;#39;s/# set bell-style none/set bell-style none/&amp;#39;&lt;/span> /etc/inputrc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="install-common-applications">Install Common Applications&lt;/h2>
+&lt;h3 id="editor">&lt;strong>Editor&lt;/strong>&lt;/h3>
+&lt;ul class="nav nav-tabs" id="tabs-2" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-02-00-tab" data-toggle="tab" href="#tabs-02-00" role="tab"
+aria-controls="tabs-02-00" aria-selected="false">Vim&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-02-01-tab" data-toggle="tab" href="#tabs-02-01" role="tab"
+aria-controls="tabs-02-01" aria-selected="false">VSCode&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-02-02-tab" data-toggle="tab" href="#tabs-02-02" role="tab"
+aria-controls="tabs-02-02" aria-selected="false">Emacs&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-2-content">&lt;div class="tab-pane fade show active"
+id="tabs-02-00" role="tabpanel" aria-labelled-by="tabs-02-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install vim-gtk3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-02-01" role="tabpanel" aria-labelled-by="tabs-02-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install snapd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo snap install code
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-02-02" role="tabpanel" aria-labelled-by="tabs-02-02-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install emacs-nox
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="terminal-multiplexer">&lt;strong>Terminal Multiplexer&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install tmux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="git">&lt;strong>Git&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="compiler-and-etc">&lt;strong>Compiler and etc.&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install build-essential
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="tweak-tool">&lt;strong>Tweak Tool&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install gnome-tweak-tool
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Introduction to Creating Your Own OS with Ubuntu</title><link>http://forest0923.github.io/memo/en/docs/ubuntu/haribote-os/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/ubuntu/haribote-os/</guid><description>
+&lt;p>This article is tips for creating HariboteOS.&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="https://github.com/Forest0923/my-haribote-os">My HariboteOS&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="system-setup">System Setup&lt;/h2>
+&lt;ul>
+&lt;li>OS: Ubuntu 18.04&lt;/li>
+&lt;/ul>
+&lt;h2 id="tools-used">Tools Used&lt;/h2>
+&lt;h3 id="binary-editor">&lt;strong>Binary editor&lt;/strong>&lt;/h3>
+&lt;ul>
+&lt;li>hexedit&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install hexedit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>ghex&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install ghex
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="assembler">&lt;strong>Assembler&lt;/strong>&lt;/h3>
+&lt;ul>
+&lt;li>nasm&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install nasm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>nasm input.asm -o output (-l output.lst)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="c-compiler">&lt;strong>C Compiler&lt;/strong>&lt;/h3>
+&lt;ul>
+&lt;li>gcc&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gcc -march=i486 -m32 -fno-pie -nostdlib -T [linkerfile] -g *.c *.o -o bootpack.bin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="make-os-image">&lt;strong>Make OS Image&lt;/strong>&lt;/h3>
+&lt;p>You can merge asmhead.bin and bootpack.bin by using cat to connect them as text.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cat asmhead.bin bootpack.bin &amp;gt; os.sys
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Use mtools to export the OS image.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mformat -f &lt;span style="color:#3677a9">1440&lt;/span> -C -B ipl.bin -i os.img ::
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mcopy -i os.img os.sys ::
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The meaning of the options in mtools is as follows.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Options&lt;/th>
+&lt;th style="text-align:left">Descriptions&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">-f&lt;/td>
+&lt;td style="text-align:left">Filesize&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">-C&lt;/td>
+&lt;td style="text-align:left">Create MS-MOS file system&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">-B&lt;/td>
+&lt;td style="text-align:left">Boot sector&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="emulator">&lt;strong>Emulator&lt;/strong>&lt;/h3>
+&lt;p>I used QEMU and VirtualBox as emulators. Since there was a problem that QEMU did not work well, I used VirtualBox after I faced the problem.&lt;/p>
+&lt;p>When using QEMU, you can boot OS with the following command. &lt;code>-fda&lt;/code> means image uses floppy disk format.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>qemu-system-i386 -fda os.img
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

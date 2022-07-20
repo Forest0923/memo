@@ -1,15 +1,610 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux Kernel Development on Memo</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/</link><description>Recent content in Linux Kernel Development on Memo</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="http://forest0923.github.io/memo/en/docs/linux-dev/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Kernel</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/inst-kernel/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/inst-kernel/</guid><description>Install Kernel # This is a step-by-step guide on how to install kernel for those who are new to kernel development.
-System Setup # OS: Ubuntu 18.04 (64bit) Current kernel: 5.3.0-42-generic Installed kernel: 5.4.1 Step-by-step Instructions # Preparing Source Code # In this article, I assume that /usr/src is a working directory. First of all, change directory to /usr/src and download kernel source code with the following command.
-cd /usr/src wget https://mirrors.</description></item><item><title>Install Kernel (Arch Linux ver.)</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/custom-kernel-arch/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/custom-kernel-arch/</guid><description>Install Kernel (Arch Linux ver.) # This is a note of my development of a Linux kernel on Arch Linux. Basically, I use Ubuntu for my research, but when I tried to install a custom kernel on Arch Linux, I found that the same procedure as on Ubuntu did not work. I will show you how to compile and install without using PKGBUILD.
-Download Source Code # The kernel source code was downloaded from the following URL.</description></item><item><title>Remove Kernel</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/rm-kernel/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/rm-kernel/</guid><description>Remove Kernel # If the installed kernel no longer in use, you may want to remove it. This is introduction to remove kernel.
-How to remove kernel # To remove the kernel, you have to remove the following entries.
-/boot/vmlinuz-[version] /boot/initrd.img-[version] /boot/System.map-[version] /boot/config-[version] /lib/modules/[version]/* /var/lib/initramfs_tools/[version] rm /boot/vmlinuz-[version] rm /boot/initrd.img-[version] rm /boot/System.map-[version] rm /boot/config-[version] rm -rf /lib/modules/[version]/* rm /var/lib/initramfs_tools/[version] Then don&amp;rsquo;t forget to update the grub configuration.
-grub-mkconfig -o /boot/grub/grub.cfg or</description></item><item><title>Implementing Original Systemcalls</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/impl-systemcall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/impl-systemcall/</guid><description>Implementing Original Systemcalls # This is a tutorial of implementing new systemcalls.
-System Setup # Linux kernel 5.8.13 CPU: x86_64 Step-by-step instructions # Register New Systemcall # Add a new entry in the arch/x86/entry/syscalls/syscall_64.tbl. You can use empty systemcall number and register hello_syscall as follows.
-437 common openat2 sys_openat2 438 common pidfd_getfd sys_pidfd_getfd 439 common faccessat2 sys_faccessat2 +440 common hello_syscall sys_hello_syscall # # x32-specific system call numbers start at 512 to avoid cache impact Implementing Body of New Systemcall # In this article, I wrote a new systemcall in the my_syscall/ directory.</description></item><item><title>Implementing Original Hypercalls</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/impl-hypercall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/impl-hypercall/</guid><description>Implementing Original Hypercalls # This is a tutorial of implementing new hypercalls.
-System Setup # CPU: x86_64 Hypervisor: Linux KVM 5.8.13 Guest: Linux 5.8.13 Step-by-step instructions # Add new hypercall entry in KVM # Register new hypercall number at the include/uapi/linux/kvm_para.h.
-#define KVM_HC_CLOCK_PAIRING 9 #define KVM_HC_SEND_IPI 10 #define KVM_HC_SCHED_YIELD 11 +#define KVM_HC_HELLO_HYPERCALL0 12 +#define KVM_HC_HELLO_HYPERCALL1 13 /* * hypercalls use architecture specific Hypercall occurs VMCALL that is one of the reason of VM Exit.</description></item><item><title>Loadable Kernel Module</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/lkm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/lkm/</guid><description>Loadable Kernel Module # About # This page describes the implementation of the Loadable Kernel Module on Linux.
-LKM is not a kernel core. It is a module that can be added or removed by insmod or rmmod.
-Adding system calls to the Linux kernel requires rebuilding the kernel, but LKM does not.
-The following explains how to create an LKM for Linux v5.17.0.
-Examples # The following sample modules are examples of LKM.</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Linux Kernel Development</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/</link><description>Recent content in Linux Kernel Development on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/linux-dev/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Install Kernel</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/inst-kernel/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/inst-kernel/</guid><description>
+&lt;p>This is a step-by-step guide on how to install kernel for those who are new to kernel development.&lt;/p>
+&lt;h2 id="system-setup">System Setup&lt;/h2>
+&lt;ul>
+&lt;li>OS: Ubuntu 18.04 (64bit)&lt;/li>
+&lt;li>Current kernel: 5.3.0-42-generic&lt;/li>
+&lt;li>Installed kernel: 5.4.1&lt;/li>
+&lt;/ul>
+&lt;h2 id="step-by-step-instructions">Step-by-step Instructions&lt;/h2>
+&lt;h3 id="preparing-source-code">Preparing Source Code&lt;/h3>
+&lt;p>In this article, I assume that &lt;code>/usr/src&lt;/code> is a working directory. First of all, change directory to &lt;code>/usr/src&lt;/code> and download kernel source code with the following command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> /usr/src
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.1.tar.gz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Decompress the code with &lt;code>tar&lt;/code> command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>tar -xvf linux-5.4.1.tar.gz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="compiling">Compiling&lt;/h3>
+&lt;p>Before compiling you have to install some packages.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install flex bison libssl-dev libelf-dev
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then change directory to &lt;code>linux-5.4.1&lt;/code> and create &lt;code>.config&lt;/code> file with the following command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>make olddefconfig
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make localmodconfig
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Finally, compile with the following command. &lt;code>4&lt;/code> indicate how many thread do you use.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>make -j &lt;span style="color:#3677a9">4&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="installing">Installing&lt;/h3>
+&lt;p>Install modules and kernel image with the following command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>make modules_install &amp;amp;&amp;amp; make install
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="updating-config-for-bootloader">Updating Config for Bootloader&lt;/h3>
+&lt;p>Update grub configuration with the following command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Reboot.&lt;/li>
+&lt;/ul>
+&lt;h3 id="option-change-default-kernel-version">Option: Change Default Kernel Version&lt;/h3>
+&lt;p>If you need to change default kernel, you can select kernel by editting &lt;code>/etc/default/grub&lt;/code> as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>GRUB_DEFAULT=&amp;#34;Advanced options for Ubuntu&amp;gt;Ubuntu, with Linux x.x.x&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Install Kernel (Arch Linux ver.)</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/custom-kernel-arch/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/custom-kernel-arch/</guid><description>
+&lt;p>This is a note of my development of a Linux kernel on Arch Linux. Basically, I use Ubuntu for my research, but when I tried to install a custom kernel on Arch Linux, I found that the same procedure as on Ubuntu did not work. I will show you how to compile and install without using PKGBUILD.&lt;/p>
+&lt;h2 id="download-source-code">Download Source Code&lt;/h2>
+&lt;p>The kernel source code was downloaded from the following URL.&lt;/p>
+&lt;p>&lt;a href="https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.17.tar.gz">https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.17.tar.gz&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl -O https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.17.tar.gz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>tar xf linux-5.17.tar.gz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="install-neccesary-packages">Install Neccesary Packages&lt;/h2>
+&lt;p>Install packages necessary for compilation. Without installing cpio, generation of kernel headers failed.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S bc cpio
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="build">Build&lt;/h2>
+&lt;h3 id="generate-config-file">Generate .config file&lt;/h3>
+&lt;p>The .config file is not created by &lt;code>make olddefconfig&lt;/code>, but uses the Arch default settings.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>zcat /proc/config.gz &amp;gt; .config
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="compile--install">Compile &amp;amp; Install&lt;/h3>
+&lt;p>Compile kernel images and modules, and install modules.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>make -j5 &amp;amp;&amp;amp; make modules_install
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Move the created image to /boot.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cp arch/x86/boot/bzImage /boot/vmlinuz-linux517
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="initramfs">initramfs&lt;/h3>
+&lt;p>Two configuration files are needed to generate the initramfs image. The first is a copy of /etc/mkinitcpio.conf, which contains additional modules and compression format changes.&lt;/p>
+&lt;p>I added vfat because the FAT32 formatted EFI partition, /boot failed to mount when vfat was not included. Also, the /boot partition was not allocated a very large space, and the disk space was insufficient, so I specified xz compression, which has a high compression ratio.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cp /etc/mkinitcpio.conf /etc/mkinitcpio-linux517.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- MODULES=()
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ MODULES=(vfat)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- #COMPRESSION=&amp;#34;xz&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ COMPRESSION=&amp;#34;xz&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The second configuration file is /etc/mkinitcpio.d/linux517.preset. This is like a template for creating initramfs with mkinitcpio, and is used by modifying the original linux.preset file. The only changes are to the kernel image file path and the /etc/mkinitcpio-linux517.conf file path.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cp /etc/mkinitcpio.d/linux.preset /etc/mkinitcpio.d/linux517.preset
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span># mkinitcpio preset file for the &amp;#39;linux&amp;#39; package
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ALL_config=&amp;#34;/etc/mkinitcpio.conf&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ALL_kver=&amp;#34;/boot/vmlinuz-linux517&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>PRESETS=(&amp;#39;default&amp;#39;)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>default_config=&amp;#34;/etc/mkinitcpio-linux517.conf&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>default_image=&amp;#34;/boot/initramfs-linux517.img&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#default_options=&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#fallback_config=&amp;#34;/etc/mkinitcpio.conf&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fallback_image=&amp;#34;/boot/initramfs-linux517-fallback.img&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fallback_options=&amp;#34;-S autodetect&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Finally, generate initramfs by following command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux517
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="grub-config--reboot">GRUB Config &amp;amp; Reboot&lt;/h3>
+&lt;p>Update the GRUB configuration and reboot.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Remove Kernel</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/rm-kernel/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/rm-kernel/</guid><description>
+&lt;p>If the installed kernel no longer in use, you may want to remove it. This is introduction to remove kernel.&lt;/p>
+&lt;h2 id="how-to-remove-kernel">How to remove kernel&lt;/h2>
+&lt;p>To remove the kernel, you have to remove the following entries.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/boot/vmlinuz-[version]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/boot/initrd.img-[version]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/boot/System.map-[version]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/boot/config-[version]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/lib/modules/[version]/*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/var/lib/initramfs_tools/[version]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>rm /boot/vmlinuz-[version]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm /boot/initrd.img-[version]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm /boot/System.map-[version]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm /boot/config-[version]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm -rf /lib/modules/[version]/*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rm /var/lib/initramfs_tools/[version]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then don&amp;rsquo;t forget to update the grub configuration.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>or&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>update-grub
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="references">References&lt;/h2>
+&lt;ul>
+&lt;li>How can I remove compiled kernel
+&lt;ul>
+&lt;li>&lt;a href="https://askubuntu.com/questions/594443/how-can-i-remove-compiled-kernel">https://askubuntu.com/questions/594443/how-can-i-remove-compiled-kernel&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Kernel/Removal
+&lt;ul>
+&lt;li>&lt;a href="https://wiki.gentoo.org/wiki/Kernel/Removal">https://wiki.gentoo.org/wiki/Kernel/Removal&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Docs: Implementing Original Systemcalls</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/impl-systemcall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/impl-systemcall/</guid><description>
+&lt;p>This is a tutorial of implementing new systemcalls.&lt;/p>
+&lt;h2 id="system-setup">System Setup&lt;/h2>
+&lt;ul>
+&lt;li>Linux kernel 5.8.13&lt;/li>
+&lt;li>CPU: x86_64&lt;/li>
+&lt;/ul>
+&lt;h2 id="step-by-step-instructions">Step-by-step instructions&lt;/h2>
+&lt;h3 id="register-new-systemcall">Register New Systemcall&lt;/h3>
+&lt;p>Add a new entry in the &lt;code>arch/x86/entry/syscalls/syscall_64.tbl&lt;/code>. You can use empty systemcall number and register &lt;code>hello_syscall&lt;/code> as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span> 437 common openat2 sys_openat2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 438 common pidfd_getfd sys_pidfd_getfd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 439 common faccessat2 sys_faccessat2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+440 common hello_syscall sys_hello_syscall
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> # x32-specific system call numbers start at 512 to avoid cache impact
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="implementing-body-of-new-systemcall">Implementing Body of New Systemcall&lt;/h2>
+&lt;p>In this article, I wrote a new systemcall in the &lt;code>my_syscall/&lt;/code> directory. The body of &lt;code>hello_syscall&lt;/code> is written in the &lt;code>my_syscalls/my_syscalls.c&lt;/code> using &lt;code>SYSCALL_DEFINEk&lt;/code> macro as follows. &lt;code>k&lt;/code> indicates thw number of arguments.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/kernel.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/syscalls.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;#34;my_syscall.h&amp;#34;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE0(hello_syscall)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printk(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: Hello world!&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If the systemcall has some arguments, it could be written as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE1(hello_syscall, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printk(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: arg = %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then create header files (&lt;code>my_syscalls/my_syscalls.h&lt;/code>) and modify &lt;code>include/linux/syscalls.h&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>asmlinkage &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_hello_syscall&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span> asmlinkage long sys_pidfd_send_signal(int pidfd, int sig,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> unsigned int flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> asmlinkage long sys_pidfd_getfd(int pidfd, int fd, unsigned int flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+/* my_syscalls/my_syscalls.c */
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+asmlinkage long sys_hello_syscall(void);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span> /*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> * Architecture-specific system calls
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> */
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="modifying-makefile">Modifying Makefile&lt;/h3>
+&lt;p>First, create &lt;code>my_syscalls/Makefile&lt;/code> like this.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Makefile" data-lang="Makefile">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">obj-y&lt;/span>:=my_syscalls.o
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Second, modify &lt;code>Makefile&lt;/code> to add &lt;code>my_syscalls/&lt;/code> directory to kernel.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Makefile" data-lang="Makefile">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">core-y&lt;/span> += kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscalls/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="compile-and-install">Compile and Install&lt;/h3>
+&lt;p>&lt;a href="../inst-kernel">Install new kernel&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>make -j8 &amp;amp;&amp;amp; make modules_install &amp;amp;&amp;amp; make install
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="test">Test&lt;/h3>
+&lt;p>Test program:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;sys/syscall.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define HELLO_SYSCALL 440
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> argc, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> **argv)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> syscall(HELLO_SYSCALL);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Result:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>user@host ~ $ dmesg -w
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 169.128284] hello_syscall: Hello world!
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Implementing Original Hypercalls</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/impl-hypercall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/impl-hypercall/</guid><description>
+&lt;p>This is a tutorial of implementing new hypercalls.&lt;/p>
+&lt;h2 id="system-setup">System Setup&lt;/h2>
+&lt;ul>
+&lt;li>CPU: x86_64&lt;/li>
+&lt;li>Hypervisor: Linux KVM 5.8.13&lt;/li>
+&lt;li>Guest: Linux 5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="step-by-step-instructions">Step-by-step instructions&lt;/h2>
+&lt;h3 id="add-new-hypercall-entry-in-kvm">Add new hypercall entry in KVM&lt;/h3>
+&lt;p>Register new hypercall number at the &lt;code>include/uapi/linux/kvm_para.h&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span> #define KVM_HC_CLOCK_PAIRING 9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #define KVM_HC_SEND_IPI 10
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #define KVM_HC_SCHED_YIELD 11
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#define KVM_HC_HELLO_HYPERCALL0 12
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#define KVM_HC_HELLO_HYPERCALL1 13
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> /*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> * hypercalls use architecture specific
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hypercall occurs VMCALL that is one of the reason of VM Exit. The handler of VMCALL eventually calls &lt;code>kvm_emulate_hypercall()&lt;/code> in &lt;code>arch/x86/kvm/x86.c&lt;/code>. You can add hypercall by modifying the switch statement in it as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span> kvm_sched_yield(vcpu-&amp;gt;kvm, a0);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = 0;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> break;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ case KVM_HC_HELLO_HYPERCALL0:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ trace_printk(&amp;#34;Hello world!\n&amp;#34;);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ break;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ case KVM_HC_HELLO_HYPERCALL1:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ trace_printk(&amp;#34;a0 = %d\n&amp;#34;, a0);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ break;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span> default:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = -KVM_ENOSYS;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> break;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="implementing-systemcall-to-call-hypercall">Implementing systemcall to call hypercall&lt;/h3>
+&lt;p>A hypercall can be called using &lt;code>kvm_hypercall0()&lt;/code> and so on as follows. The maximum number of arguments is 4.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/kernel.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/syscalls.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;uapi/linux/kvm_para.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;#34;my_syscalls.h&amp;#34;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE0(hello_hypercall0)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_hypercall0(KVM_HC_HELLO_HYPERCALL0);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE1(hello_hypercall1, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, arg1)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_hypercall1(KVM_HC_HELLO_HYPERCALL1, arg1);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>You need to add a system call to call &lt;code>kvm_hypercallk()&lt;/code> since it cannot be called directly from userspace. The following patch adds a system call to call a simple hypercall.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/Makefile b/Makefile
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 58283e912b4e..2f6191b70d84 100644
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- a/Makefile
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/Makefile
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -1066,7 +1066,7 @@ export MODORDER := $(extmod-prefix)modules.order
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span> export MODULES_NSDEPS := $(extmod-prefix)modules.nsdeps
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ifeq ($(KBUILD_EXTMOD),)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">-core-y += kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+core-y += kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscalls/
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vmlinux-dirs := $(patsubst %/,%,$(filter %/, \
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $(core-y) $(core-m) $(drivers-y) $(drivers-m) \
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 78847b32e137..e8ce133372d2 100644
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- a/arch/x86/entry/syscalls/syscall_64.tbl
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/arch/x86/entry/syscalls/syscall_64.tbl
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -360,6 +360,8 @@
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span> 437 common openat2 sys_openat2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 438 common pidfd_getfd sys_pidfd_getfd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 439 common faccessat2 sys_faccessat2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+440 common hello_hypercall0 sys_hello_hypercall0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+441 common hello_hypercall1 sys_hello_hypercall1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> # x32-specific system call numbers start at 512 to avoid cache impact
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index b951a87da987..65f480aed5ac 100644
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- a/include/linux/syscalls.h
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/include/linux/syscalls.h
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -1424,4 +1424,8 @@ long compat_ksys_semtimedop(int semid, struct sembuf __user *tsems,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span> unsigned int nsops,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> const struct old_timespec32 __user *timeout);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+/* my_syscalls/my_syscalls.c */
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+asmlinkage long sys_hello_hypercall0(void);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+asmlinkage long sys_hello_hypercall1(int arg1);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span> #endif
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/include/uapi/linux/kvm_para.h b/include/uapi/linux/kvm_para.h
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 8b86609849b9..614cc87f38ec 100644
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- a/include/uapi/linux/kvm_para.h
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/include/uapi/linux/kvm_para.h
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -29,6 +29,8 @@
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span> #define KVM_HC_CLOCK_PAIRING 9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #define KVM_HC_SEND_IPI 10
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #define KVM_HC_SCHED_YIELD 11
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#define KVM_HC_HELLO_HYPERCALL0 12
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#define KVM_HC_HELLO_HYPERCALL1 13
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> /*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> * hypercalls use architecture specific
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/my_syscalls/Makefile b/my_syscalls/Makefile
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>new file mode 100644
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 000000000000..e7e211791186
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- /dev/null
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/my_syscalls/Makefile
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -0,0 +1 @@
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#589819">+obj-y:=my_syscalls.o
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;font-weight:bold">diff --git a/my_syscalls/my_syscalls.c b/my_syscalls/my_syscalls.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>new file mode 100644
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 000000000000..0989c604cbd4
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- /dev/null
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/my_syscalls/my_syscalls.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -0,0 +1,15 @@
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#589819">+#include &amp;lt;linux/kernel.h&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#include &amp;lt;linux/syscalls.h&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#include &amp;lt;uapi/linux/kvm_para.h&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#include &amp;#34;my_syscalls.h&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+SYSCALL_DEFINE0(hello_hypercall0)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+{
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ kvm_hypercall0(KVM_HC_HELLO_HYPERCALL0);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ return 0;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+}
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+SYSCALL_DEFINE1(hello_hypercall1, int, arg1)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+{
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ kvm_hypercall1(KVM_HC_HELLO_HYPERCALL1, arg1);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ return 0;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+}
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;font-weight:bold">diff --git a/my_syscalls/my_syscalls.h b/my_syscalls/my_syscalls.h
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>new file mode 100644
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 000000000000..04bf6fbd4efb
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- /dev/null
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/my_syscalls/my_syscalls.h
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -0,0 +1,2 @@
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#589819">+asmlinkage long hello_hypercall0(void);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+asmlinkage long hello_hypercall1(int arg1);
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="test">Test&lt;/h3>
+&lt;p>Call hypercall from guest:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;sys/syscall.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define HELLO_HYPERCALL0 440
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define HELLO_HYPERCALL1 441
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> argc, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> **argv)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> syscall(&lt;span style="color:#3677a9">440&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> syscall(&lt;span style="color:#3677a9">441&lt;/span>, &lt;span style="color:#3677a9">123&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Check log on host:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>user@host ~ % sudo cat /sys/kernel/tracing/trace
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># tracer: nop
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># entries-in-buffer/entries-written: 2/2 #P:6
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># _-----=&amp;gt; irqs-off
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># / _----=&amp;gt; need-resched
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># | / _---=&amp;gt; hardirq/softirq
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># || / _--=&amp;gt; preempt-depth
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># ||| / delay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># TASK-PID CPU# |||| TIMESTAMP FUNCTION
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># | | | |||| | |
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CPU 1/KVM-1748 [000] .... 457.868063: kvm_emulate_hypercall: Hello world!
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CPU 1/KVM-1748 [000] .... 457.868066: kvm_emulate_hypercall: a0 = 123
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Loadable Kernel Module</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/lkm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/lkm/</guid><description>
+&lt;h2 id="about">About&lt;/h2>
+&lt;p>This page describes the implementation of the Loadable Kernel Module on Linux.&lt;/p>
+&lt;p>LKM is not a kernel core. It is a module that can be added or removed by insmod or rmmod.&lt;/p>
+&lt;p>Adding system calls to the Linux kernel requires rebuilding the kernel, but LKM does not.&lt;/p>
+&lt;p>The following explains how to create an LKM for Linux v5.17.0.&lt;/p>
+&lt;h2 id="examples">Examples&lt;/h2>
+&lt;p>The following sample modules are examples of LKM.&lt;/p>
+&lt;ul>
+&lt;li>hello.ko: LKM that only outputs logs when executed insmod and rmmod&lt;/li>
+&lt;li>mulfile.ko: LKM consisting of multiple files&lt;/li>
+&lt;li>getargs.ko: LKM that passes arguments when calling insmod&lt;/li>
+&lt;/ul>
+&lt;h3 id="helloko">hello.ko&lt;/h3>
+&lt;p>Create hello.c for the body of the module and a Makefile to build it.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hello.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── Makefile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>hello.c is as follows.&lt;/p>
+&lt;p>The function specified by &lt;code>module_init([func]);&lt;/code> is executed on insmod, and the function specified by &lt;code>module_exit([func]);&lt;/code> is executed on rmmod.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/module.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_DESCRIPTION(&lt;span style="color:#ed9d13">&amp;#34;hello module&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_AUTHOR(&lt;span style="color:#ed9d13">&amp;#34;Mori&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_LICENSE(&lt;span style="color:#ed9d13">&amp;#34;GPL&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">hello_init&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;hello: init&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">hello_exit&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;hello: exit&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_init(hello_init);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_exit(hello_exit);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The Makefile was created as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-makefile" data-lang="makefile">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">KDIR&lt;/span> := /lib/modules/&lt;span style="color:#ed9d13">`&lt;/span>uname -r&lt;span style="color:#ed9d13">`&lt;/span>/build
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">MODNAME&lt;/span> := hello
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">obj-m&lt;/span> := &lt;span style="color:#6ab825;font-weight:bold">$(&lt;/span>MODNAME&lt;span style="color:#6ab825;font-weight:bold">)&lt;/span>.o
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">all&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> make -C &lt;span style="color:#6ab825;font-weight:bold">$(&lt;/span>KDIR&lt;span style="color:#6ab825;font-weight:bold">)&lt;/span> &lt;span style="color:#40ffff">M&lt;/span>=&lt;span style="color:#ed9d13">`&lt;/span>&lt;span style="color:#24909d">pwd&lt;/span>&lt;span style="color:#ed9d13">`&lt;/span> modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">clean&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> make -C &lt;span style="color:#6ab825;font-weight:bold">$(&lt;/span>KDIR&lt;span style="color:#6ab825;font-weight:bold">)&lt;/span> &lt;span style="color:#40ffff">M&lt;/span>=&lt;span style="color:#ed9d13">`&lt;/span>&lt;span style="color:#24909d">pwd&lt;/span>&lt;span style="color:#ed9d13">`&lt;/span> clean
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Run &lt;code>make (all)&lt;/code> to build hello module.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>SSHmori@arch hello % make
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make -C /lib/modules/`uname -r`/build M=`pwd` modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: Entering directory &amp;#39;/usr/src/linux-5.17&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CC [M] /home/mori/build/hello/hello.o
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> MODPOST /home/mori/build/hello/Module.symvers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CC [M] /home/mori/build/hello/hello.mod.o
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LD [M] /home/mori/build/hello/hello.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BTF [M] /home/mori/build/hello/hello.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: Leaving directory &amp;#39;/usr/src/linux-5.17&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SSHmori@arch hello % tree
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hello.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hello.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hello.mod
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hello.mod.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hello.mod.o
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hello.o
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── Makefile
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── modules.order
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── Module.symvers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0 directories, 9 files
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Run &lt;code>make clean&lt;/code> to cleanup directory.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>SSHmori@arch hello % make clean
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make -C /lib/modules/`uname -r`/build M=`pwd` clean
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: Entering directory &amp;#39;/usr/src/linux-5.17&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CLEAN /home/mori/build/hello/Module.symvers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: Leaving directory &amp;#39;/usr/src/linux-5.17&amp;#39;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>I installed the module with insmod and checked the logs with dmesg as shown below.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>SSHmori@arch hello % sudo insmod hello.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[sudo] password for mori:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SSHmori@arch hello % sudo dmesg | grep hello
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2000.349162] hello: loading out-of-tree module taints kernel.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2000.349265] hello: module verification failed: signature and/or required key missing - tainting kernel
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2000.350086] hello: init
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The following is the output when running rmmod.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>SSHmori@arch hello % sudo rmmod hello
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SSHmori@arch hello % sudo dmesg | grep hello
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2000.349162] hello: loading out-of-tree module taints kernel.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2000.349265] hello: module verification failed: signature and/or required key missing - tainting kernel
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2000.350086] hello: init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2024.857552] hello: exit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="mulfileko">mulfile.ko&lt;/h3>
+&lt;p>Sometimes you may want to split a module into multiple files to make it easier to understand.&lt;/p>
+&lt;p>In this example, the files are divided as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── init.c &amp;lt;-- init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── exit.c &amp;lt;-- exit
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── print.c &amp;lt;-- printk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── Makefile
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>All C files is as follows.&lt;/p>
+&lt;ul>
+&lt;li>init.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/kernel.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/module.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_DESCRIPTION(&lt;span style="color:#ed9d13">&amp;#34;My Module&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_AUTHOR(&lt;span style="color:#ed9d13">&amp;#34;Mori&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_LICENSE(&lt;span style="color:#ed9d13">&amp;#34;GPL&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">mymodule_sub&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">mymod_init&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;my_module: init&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mymodule_sub();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_init(mymod_init);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>exit.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/kernel.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/module.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">mymod_exit&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;my_module: exit&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_exit(mymod_exit);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>print.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/kernel.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/module.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">mymodule_sub&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;mymodule_sub: called&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>I created Makefile like below.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-makefile" data-lang="makefile">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">KDIR&lt;/span> := /lib/modules/&lt;span style="color:#ed9d13">`&lt;/span>uname -r&lt;span style="color:#ed9d13">`&lt;/span>/build
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">MODNAME&lt;/span> := mymodule
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">obj-m&lt;/span> := &lt;span style="color:#6ab825;font-weight:bold">$(&lt;/span>MODNAME&lt;span style="color:#6ab825;font-weight:bold">)&lt;/span>.o
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">$(MODNAME)-objs&lt;/span> := init.o exit.o print.o
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">all&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> make -C &lt;span style="color:#6ab825;font-weight:bold">$(&lt;/span>KDIR&lt;span style="color:#6ab825;font-weight:bold">)&lt;/span> &lt;span style="color:#40ffff">M&lt;/span>=&lt;span style="color:#ed9d13">`&lt;/span>&lt;span style="color:#24909d">pwd&lt;/span>&lt;span style="color:#ed9d13">`&lt;/span> modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">clean&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> make -C &lt;span style="color:#6ab825;font-weight:bold">$(&lt;/span>KDIR&lt;span style="color:#6ab825;font-weight:bold">)&lt;/span> &lt;span style="color:#40ffff">M&lt;/span>=&lt;span style="color:#ed9d13">`&lt;/span>&lt;span style="color:#24909d">pwd&lt;/span>&lt;span style="color:#ed9d13">`&lt;/span> clean
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>After running insmod and rmmod, I looked at the log and found that the it was successful.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>SSHmori@arch build % sudo dmesg | grep -e my_mod -e mymod
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 6832.006826] my_module: init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 6832.006831] mymodule_sub: called
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 6869.413859] my_module: exit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="getargsko">getargs.ko&lt;/h3>
+&lt;p>You can pass parameters to the kernel module at load time.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo insmod mod.ko [param]=[value]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Parameters are defined in LKM code using &lt;code>module_param()&lt;/code> and so on.&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>module_param([name], [type], [perm])&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>&amp;ldquo;type&amp;rdquo; can be byte, short, ushort, int, uint, long, ulong, charp, bool, or invbool.&lt;/p>
+&lt;p>perm is set to the permissions in sysfs. For example, &lt;code>0644&lt;/code> will create a parameter file in /sys/module/getargs/parameters with permission 644. If you specify &lt;code>0&lt;/code>, no file will be created and user will not be able to access sysfs directly to change values.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ sudo insmod getargs.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ ll /sys/module/getargs/parameters
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>total 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>drwxr-xr-x 2 root root 0 Jul 10 13:09 ./
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>drwxr-xr-x 6 root root 0 Jul 10 13:08 ../
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-rw-r--r-- 1 root root 4.0K Jul 10 13:09 intparam
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cat /sys/module/getargs/parameters/intparam
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Parameters can also be defined by &lt;code>module_param_named()&lt;/code>, &lt;code>module_param_string()&lt;/code>, or &lt;code>module_param_array()&lt;/code> .&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>module_param_named([parm name], [var name], [type], [perm])&lt;/code>&lt;/li>
+&lt;li>&lt;code>module_param_string([param name], [var name], [length], [perm])&lt;/code>&lt;/li>
+&lt;li>&lt;code>module_param_array([name], [type], [arr ptr], [perm])&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>I will show you an example of LKM that is output various parameters during initialization.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/module.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define BUF_SIZE 8
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define FILE_PATH_MAX 128
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_DESCRIPTION(&lt;span style="color:#ed9d13">&amp;#34;getargs module&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_AUTHOR(&lt;span style="color:#ed9d13">&amp;#34;Mori&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_LICENSE(&lt;span style="color:#ed9d13">&amp;#34;GPL&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> intparam, intparam2;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *file, file2[FILE_PATH_MAX];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> array[BUF_SIZE], nr_arr;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param(intparam, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param(file, charp, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param_named(arg, intparam2, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param_string(filepath, file2, &lt;span style="color:#3677a9">128&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param_array(array, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, &amp;amp;nr_arr, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">getargs_init&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> i;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: init&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; intparam&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, intparam);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; intparam2&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, intparam2);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (file)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; file&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; file2&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, file2);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; array&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= [&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (i = &lt;span style="color:#3677a9">0&lt;/span>; i &amp;lt; BUF_SIZE; i++)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_cont(&lt;span style="color:#ed9d13">&amp;#34; %d&amp;#34;&lt;/span>, array[i]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_cont(&lt;span style="color:#ed9d13">&amp;#34;]&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">getargs_exit&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_init(getargs_init);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_exit(getargs_exit);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The module is installed as follows, and we have confirmed that the arguments have been obtained.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo insmod getargs.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo rmmod getargs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo insmod getargs.ko &lt;span style="color:#40ffff">intparam&lt;/span>=&lt;span style="color:#3677a9">123&lt;/span> &lt;span style="color:#40ffff">arg&lt;/span>=&lt;span style="color:#3677a9">456&lt;/span> &lt;span style="color:#40ffff">file&lt;/span>=&lt;span style="color:#ed9d13">`&lt;/span>&lt;span style="color:#24909d">pwd&lt;/span>&lt;span style="color:#ed9d13">`&lt;/span>/getargs.c &lt;span style="color:#40ffff">filepath&lt;/span>=&lt;span style="color:#ed9d13">`&lt;/span>&lt;span style="color:#24909d">pwd&lt;/span>&lt;span style="color:#ed9d13">`&lt;/span>/getargs.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo rmmod getargs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo insmod getargs.ko &lt;span style="color:#40ffff">array&lt;/span>=12,23,34,45,56
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo rmmod getargs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>[14218.501390] getargs: init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14218.501392] getargs: =&amp;gt; intparam = 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14218.501393] getargs: =&amp;gt; intparam2 = 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14218.501394] getargs: =&amp;gt; file2 =
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14218.501394] getargs: =&amp;gt; array = [ 0 0 0 0 0 0 0 0]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14457.464244] getargs: init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14457.464246] getargs: =&amp;gt; intparam = 123
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14457.464247] getargs: =&amp;gt; intparam2 = 456
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14457.464248] getargs: =&amp;gt; file = /home/mori/build/hello/getargs.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14457.464249] getargs: =&amp;gt; file2 = /home/mori/build/hello/getargs.ko
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14457.464250] getargs: =&amp;gt; array = [ 0 0 0 0 0 0 0 0]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14585.508189] getargs: init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14585.508191] getargs: =&amp;gt; intparam = 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14585.508192] getargs: =&amp;gt; intparam2 = 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14585.508193] getargs: =&amp;gt; file2 =
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[14585.508194] getargs: =&amp;gt; array = [ 12 23 34 45 56 0 0 0]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

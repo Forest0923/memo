@@ -1,45 +1,1172 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Arch Linux on Memo</title><link>http://forest0923.github.io/memo/docs/archlinux/</link><description>Recent content in Arch Linux on Memo</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="http://forest0923.github.io/memo/docs/archlinux/index.xml" rel="self" type="application/rss+xml"/><item><title>Arch Linux のインストール（BTRFS + Timeshift）</title><link>http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/</guid><description>Arch Linux のインストール（BTRFS + Timeshift） # Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Timeshift でスナップショットを保存する方法を紹介します．
-環境 # Intel CPU UEFI Boot インストール # キーマップの変更 # インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．
-loadkeys jp106 時間設定 # NTP（Network Time Protocol）を使用するために次のコマンドを実行します．
-timedatectl set-ntp true ミラーリストの最適化 # インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．
-pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman.d/mirrorlist reflector のオプションの意味は次のようになっています．
-Options Description -c Japan 日本のミラーサーバのみに制限する --sort rate ダウンロード速度でソートする -a 6 6時間以内に同期したサーバに制限する --save /etc/pacman.</description></item><item><title>Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</title><link>http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/</guid><description>Arch Linux のインストール（Multi-disks + BTRFS + Snapper） # Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Snapper でスナップショットを保存する方法を紹介します．
-環境 # Intel CPU UEFI Boot Disks /dev/vda /dev/vdb /dev/vdc インストール # キーマップの変更 # インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．
-loadkeys jp106 時間設定 # NTP（Network Time Protocol）を使用するために次のコマンドを実行します．
-timedatectl set-ntp true ミラーリストの最適化 # インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．
-pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman.d/mirrorlist reflector のオプションの意味は次のようになっています．
-Options Description -c Japan 日本のミラーサーバのみに制限する --sort rate ダウンロード速度でソートする -a 6 6時間以内に同期したサーバに制限する --save /etc/pacman.</description></item><item><title>Dual Booting (mono disk + Windows10 and Arch Linux)</title><link>http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/</guid><description>Dual Booting (mono disk + Windows10 and Arch Linux) # 環境 # Preinstalled OS: Windows 10 (64 bit Home) CPU: Intel Storage: /dev/sda Windows 10 での準備 # 最初に Windows 10 をインストールします．Disk Management を起動して Linux をインストールするための空き領域を作成します．空きパーティション作成前後のレイアウトは次のようになります．
-Before: After: Arch Linux のブータブル USB でブートしてインストールします．
-インストール # キーマップの変更 # インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．
-loadkeys jp106 時間設定 # NTP（Network Time Protocol）を使用するために次のコマンドを実行します．
-timedatectl set-ntp true ミラーリストの最適化 # インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．
-pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman.</description></item><item><title>Dual Booting (multi-disk + Windows10 and Arch Linux)</title><link>http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/</guid><description>Dual Booting (multi-disk + Windows10 and Arch Linux) # 環境 # Preinstalled OS: Windows 10 (64 bit Home) CPU: Intel GPU: Nvidia Storage: /dev/sda: Windows sub /dev/sdb: Windows main /dev/sdc: Linux インストール # キーマップの変更 # インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．
-loadkeys jp106 時間設定 # NTP（Network Time Protocol）を使用するために次のコマンドを実行します．
-timedatectl set-ntp true ミラーリストの最適化 # インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．
-pacman -Syy pacman -S reflector # `python` might be required reflector -c Japan --sort rate -a 6 --save /etc/pacman.</description></item><item><title>デスクトップ環境</title><link>http://forest0923.github.io/memo/docs/archlinux/desktop-env/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/desktop-env/</guid><description>デスクトップ環境 # デスクトップ環境をインストールするチュートリアルです．
-Install # Graphics Driver # グラフィックドライバをインストールします．
-Intel sudo pacman -S xf86-video-intel sudo pacman -S nvidia nvidia-utils nvidia-dkms Nvidia sudo pacman -S xf86-video-intel sudo pacman -S nvidia nvidia-utils nvidia-dkms Display Server # ディスプレイサーバとして xorg をインストールします．ディスプレイサーバは Gnome などの GUI を用いた入出力を OS，ハードウェアに受け渡すソフトウェアです．
-sudo pacman -S xorg Display Manager # ログインを GUI で行うためにディスプレイマネージャをインストールします．
-lightdm sudo pacman -S lightdm lightdm-gtk-greeter gdm sudo pacman -S gdm Desktop Environment # xfce sudo pacman -S xfce4 xfce4-goodies gnome sudo pacman -S gnome gnome-tweaks budgie sudo pacman -S budgie-desktop gnome Systemd # ディスプレイマネージャを自動で起動するように systemd を設定します．</description></item><item><title>BSPWM のインストール</title><link>http://forest0923.github.io/memo/docs/archlinux/bspwm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/bspwm/</guid><description>BSPWM のインストール # BSPWM という Tile 型のウィンドウマネージャをインストールして，カスタマイズを行います．
-Install and Configurations # Graphics Driver # グラフィックドライバをインストールします．
-Intel sudo pacman -S xf86-video-intel sudo pacman -S nvidia nvidia-utils nvidia-dkms Nvidia sudo pacman -S xf86-video-intel sudo pacman -S nvidia nvidia-utils nvidia-dkms BSPWM # ディスプレイサーバや bspwm などをインストールします．
-sudo pacman -S xorg xorg-xinit bspwm picom dmenu sxhkd nitrogen arandr アプリケーションの例としてターミナルエミュレータとブラウザをインストールします
-sudo pacman -S alacritty firefox config ファイルを作成します．sxhkd はホットキーを使用するための daemon です．
-mkdir .config/bspwm mkdir .config/sxhkd cp /usr/share/doc/bspwm/examples/bspwmrc .</description></item><item><title>アプリケーションのインストール</title><link>http://forest0923.github.io/memo/docs/archlinux/common-apps/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/common-apps/</guid><description>アプリケーションのインストール # Package Manager # Paru git clone https://aur.archlinux.org/paru cd paru makepkg -si Yay git clone https://aur.archlinux.org/yay.git cd yay makepkg -si Shell # zsh sudo pacman -S zsh zsh-completions chsh -s $(which zsh) # or chsh -s /bin/zsh Terminal Emulator # Alacritty sudo pacman -S alacritty Xfce4 terminal sudo pacman -S xfce4-terminal Gnome terminal paru -S gnome-terminal-transparency Terminal multiplexer # tmux sudo pacman -S tmux Editor # VSCode paru -S visual-studio-code-bin vim sudo pacman -S gvim emacs sudo pacman -S emacs-nox Backup # Timeshift paru -S timeshift Browser # Brave browser paru -S brave-bin Virtual Machine Monitor # KVM</description></item><item><title>電源管理</title><link>http://forest0923.github.io/memo/docs/archlinux/power-mgr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/power-mgr/</guid><description>電源管理 # 電源管理に関するメモです．
-TLP # TLP は Linux の電源管理ツールです．インストールして有効化すれば特に細かい設定はせずに使用できます．
-Install # sudo pacman -S tlp Settings # ファイルシステムとして BTRFS を使っている場合はファイルシステムが破壊される可能性があるので以下の設定をしたほうが良いそうです．
-sudo vim /etc/default/tlp SATA_LINKPWR_ON_BAT=max_performance Enable TLP # 以下のコマンドで TLP をスタートします．
-sudo tlp start 自動でスタートさせるために systemd で tlp のサービスを有効化します．
-sudo systemctl enable tlp Powertop # Powertop は Intel が提供する省電力化ツールです．
-Install # sudo pacman -S powertop Auto tune # 下記のコマンドを実行すると自動で省電力化が行われます．
-sudo powertop --auto-tune systemd でこのコマンドを実行するようにサービスを作成すると自動で省電力化されるようになります．
-Powertop - Arch Wiki</description></item><item><title>Arch Build System</title><link>http://forest0923.github.io/memo/docs/archlinux/abs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/abs/</guid><description>Arch Build System # ABS はソースコードからパッケージのビルドを自動化するシステムです．PKGBUILD に記述された情報をもとに makepkg でパッケージをビルドし，pacman を用いてインストールを行います．
-Install # ABS を用いるために asp をインストールします．
-sudo pacman -S asp Usage (kernel build) # 使い方の例としてカーネルのビルドを行う方法を紹介します．作業用ディレクトリとして build を作成します．
-mkdir build cd build Linux kernel の PKGBUILD をダウンロードします．
-asp update linux asp export linux PKGBUILD を修正してパッケージの名前変更したり，ドキュメントを生成させないように修正します．
-cd linux vim PKGBUILD 3c3 &amp;lt; pkgbase=linux --- &amp;gt; pkgbase=linux-custom 64d63 &amp;lt; make htmldocs 191c190 &amp;lt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34; &amp;#34;$pkgbase-docs&amp;#34;) --- &amp;gt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34;) 下記のコマンドでソースコードをダウンロードします．
-makepkg -so .</description></item><item><title>Spotify の設定</title><link>http://forest0923.github.io/memo/docs/archlinux/spotify/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/spotify/</guid><description>Spotify の設定 # Spotify の設定やトラブルシューティングについてのページです．
-HiDPI # 高解像度のモニタを使う場合にはデフォルトだと UI が小さすぎるので設定を変えて見やすくします． /usr/share/applications/spotify.desktop を下記のように修正することで，Spotify を GUI で起動したときにスケールを変えることができます．
--Exec=spotify %U +Exec=spotify --force-device-scale-factor=1.5 %U Download Error # Spotify はダウンロードエラーが多いので，以下にエラー内容や解決策を雑記しておきます．
-Error: ==&amp;gt; ERROR: Failure while downloading http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_1.1.56.595.g2d2da0de_amd64.deb Solution: cd ~/.cache/paru/clone/spotify/ wget --continue http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_1.1.56.595.g2d2da0de_amd64.deb mv spotify-client_1.1.56.595.g2d2da0de_amd64.deb spotify-1.1.56.595-x86_64.deb paru -Syu Error: ==&amp;gt; Verifying source file signatures with gpg... spotify-1.1.72.439-3-Release ... FAILED (unknown public key 5E3C45D7B312C643) ==&amp;gt; ERROR: One or more PGP signatures could not be verified! error: failed to download sources for &amp;#39;spotify-1:1.</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Arch Linux</title><link>http://forest0923.github.io/memo/docs/archlinux/</link><description>Recent content in Arch Linux on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/docs/archlinux/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Arch Linux のインストール（BTRFS + Timeshift）</title><link>http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-timeshift/</guid><description>
+&lt;p>Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Timeshift でスナップショットを保存する方法を紹介します．&lt;/p>
+&lt;h2 id="環境">環境&lt;/h2>
+&lt;ul>
+&lt;li>Intel CPU&lt;/li>
+&lt;li>UEFI Boot&lt;/li>
+&lt;/ul>
+&lt;h2 id="インストール">インストール&lt;/h2>
+&lt;h3 id="キーマップの変更">&lt;strong>キーマップの変更&lt;/strong>&lt;/h3>
+&lt;p>インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="時間設定">&lt;strong>時間設定&lt;/strong>&lt;/h3>
+&lt;p>NTP（Network Time Protocol）を使用するために次のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ミラーリストの最適化">&lt;strong>ミラーリストの最適化&lt;/strong>&lt;/h3>
+&lt;p>インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S reflector &lt;span style="color:#999;font-style:italic"># `python` might be required&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reflector -c Japan --sort rate -a &lt;span style="color:#3677a9">6&lt;/span> --save /etc/pacman.d/mirrorlist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>reflector のオプションの意味は次のようになっています．&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Options&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>-c Japan&lt;/code>&lt;/td>
+&lt;td>日本のミラーサーバのみに制限する&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--sort rate&lt;/code>&lt;/td>
+&lt;td>ダウンロード速度でソートする&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>-a 6&lt;/code>&lt;/td>
+&lt;td>6時間以内に同期したサーバに制限する&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--save /etc/pacman.d/mirrorlist&lt;/code>&lt;/td>
+&lt;td>ミラーリストを指定したパスに保存する&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="ディスクパーティショニングとフォーマット">&lt;strong>ディスクパーティショニングとフォーマット&lt;/strong>&lt;/h3>
+&lt;p>gdisk を用いてパーティションを変更します．ここでは &lt;code>/dev/vda&lt;/code> にインストールするものとします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gdisk /dev/vda
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>1つ目のパーティションは EFI パーティションで 200MB 程度割り当てます．残りの領域を Linux Filesystem として割り当てます．メモリが十分にあると仮定して swap 領域は割り当てない方針で進めます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/dev/vda1: EFI system (200M)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/vda2: Linux filesystem
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>EFI パーティションは fat でフォーマットします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.fat -F32 /dev/vda1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Linux Filesystem は BTRFS でフォーマットします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/vda2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>BTRFS のサブボリュームを作成して，マウントします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mount /dev/vda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o &lt;span style="color:#40ffff">compress&lt;/span>=lzo,subvol=@ /dev/vda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/boot/efi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/vda1 /mnt/boot/efi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ベースのインストール">&lt;strong>ベースのインストール&lt;/strong>&lt;/h3>
+&lt;p>Root ディレクトリとなる &lt;code>/mnt&lt;/code> にパッケージをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="fstab">&lt;strong>fstab&lt;/strong>&lt;/h3>
+&lt;p>fstab ファイルを生成します．fstab ファイルはどのデバイスをマウントするかという情報を保持するファイルです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-ディレクトリの変更">&lt;strong>Root ディレクトリの変更&lt;/strong>&lt;/h3>
+&lt;p>chroot で root ディレクトリを &lt;code>/mnt&lt;/code> に変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ローカライズ">&lt;strong>ローカライズ&lt;/strong>&lt;/h3>
+&lt;p>&lt;code>/etc/localtime&lt;/code> にシンボリックリンクを作成してタイムゾーンを変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ハードウェアクロックを現在のシステムクロックに合わせます．システムクロックは OS が管理する時計のことで，ハードウェアクロックはマザーボード（ハードウェア）が管理する時計のことです．OS が再起動されたときは，メモリに展開されたシステムクロックが失われるのでハードウェアクロックから時刻を取得します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>hwclock --systohc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>locale を設定するためにまずは locale を生成します．&lt;code>/etc/locale.gen&lt;/code> の使用するエントリをアンコメントして &lt;code>locale-gen&lt;/code> を実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/locale.gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # en_US.UTF-8 UTF-8
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ en_US.UTF-8 UTF-8
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>locale-gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>システムの locale を設定するために次のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ホスト名">&lt;strong>ホスト名&lt;/strong>&lt;/h3>
+&lt;p>ホスト名を &lt;code>/etc/hostname&lt;/code> に登録します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hostname
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ arch
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/etc/hosts&lt;/code> を編集してホスト名に対応する IP アドレスを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hosts
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.0.1 localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ ::1 localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.1.1 arch.localdomain arch
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-のパスワード">&lt;strong>Root のパスワード&lt;/strong>&lt;/h3>
+&lt;p>Root ユーザのパスワードを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>passwd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="追加のパッケージインストール">&lt;strong>追加のパッケージインストール&lt;/strong>&lt;/h3>
+&lt;p>ブートローダとして grub をインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr os-prober
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ネットワークとワイヤレスデバイス用のソフトウェアをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S networkmanager network-manager-applet wireless_tools wpa_supplicant dialog
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>MS-DOS ディスクにアクセスするためのツールをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S mtools dosgstools
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>sudo や make，gcc などの基本的なアプリケーション（コマンド）をインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S base-devel
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>カーネルヘッダをインストールします．カーネルヘッダはカーネルモジュールをビルドするときに用いられるヘッダやスクリプトです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S linux-headers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Bluetooth やオーディオ設定のツールをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S bluez bluez-utils alsa-utils pulseaudio pulseaudio-bluetooth
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>デスクトップアプリケーションに関係するコマンドラインツールをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S xdg-utils
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>home ディレクトリの &lt;code>~/Desktop/&lt;/code>，&lt;code>~/Music/&lt;/code> などを追加します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S xdg-user-dirs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Git をインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Timeshift で使用する cron をインストールします．cron はプログラムの定期実行を行うために使用されます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S cron
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>mirrorlist を最適化するツールをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S reflector
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ブートローダ">&lt;strong>ブートローダ&lt;/strong>&lt;/h3>
+&lt;p>Grub をインストールして設定ファイルを生成します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">&lt;strong>Systemd&lt;/strong>&lt;/h3>
+&lt;p>NetworkManager を有効化．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Bluetooth を有効化．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>reflector の有効化．実行オプションは &lt;code>/etc/xdg/reflector/reflector.conf&lt;/code> に記述します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service &lt;span style="color:#999;font-style:italic"># update mirrorlist every boot&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer &lt;span style="color:#999;font-style:italic"># update mirrorlist weekly&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ユーザの追加">&lt;strong>ユーザの追加&lt;/strong>&lt;/h3>
+&lt;p>useradd で追加してパスワードを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ユーザに特権を追加します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">&lt;strong>Reboot&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="デスクトップ環境のインストール">&lt;strong>デスクトップ環境のインストール&lt;/strong>&lt;/h3>
+&lt;p>&lt;a href="../desktop-env/">デスクトップ環境&lt;/a>&lt;/p>
+&lt;h3 id="timeshift-のインストール">&lt;strong>Timeshift のインストール&lt;/strong>&lt;/h3>
+&lt;p>AUR ヘルパーを用いて timeshift をインストールします．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+aria-controls="tabs-00-00" aria-selected="false">paru&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+aria-controls="tabs-00-01" aria-selected="false">yay&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git clone https://aur.archlinux.org/paru
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd paru
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>makepkg -si
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git clone https://aur.archlinux.org/yay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd yay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>makepkg -si
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S timeshift
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</title><link>http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/inst-btrfs-snapper/</guid><description>
+&lt;p>Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Snapper でスナップショットを保存する方法を紹介します．&lt;/p>
+&lt;h2 id="環境">環境&lt;/h2>
+&lt;ul>
+&lt;li>Intel CPU&lt;/li>
+&lt;li>UEFI Boot&lt;/li>
+&lt;li>Disks&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/dev/vda
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/vdb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/vdc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="インストール">インストール&lt;/h2>
+&lt;h3 id="キーマップの変更">&lt;strong>キーマップの変更&lt;/strong>&lt;/h3>
+&lt;p>インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="時間設定">&lt;strong>時間設定&lt;/strong>&lt;/h3>
+&lt;p>NTP（Network Time Protocol）を使用するために次のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ミラーリストの最適化">&lt;strong>ミラーリストの最適化&lt;/strong>&lt;/h3>
+&lt;p>インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S reflector &lt;span style="color:#999;font-style:italic"># `python` might be required&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reflector -c Japan --sort rate -a &lt;span style="color:#3677a9">6&lt;/span> --save /etc/pacman.d/mirrorlist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>reflector のオプションの意味は次のようになっています．&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Options&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>-c Japan&lt;/code>&lt;/td>
+&lt;td>日本のミラーサーバのみに制限する&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--sort rate&lt;/code>&lt;/td>
+&lt;td>ダウンロード速度でソートする&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>-a 6&lt;/code>&lt;/td>
+&lt;td>6時間以内に同期したサーバに制限する&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--save /etc/pacman.d/mirrorlist&lt;/code>&lt;/td>
+&lt;td>ミラーリストを指定したパスに保存する&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="ディスクパーティショニングとフォーマット">&lt;strong>ディスクパーティショニングとフォーマット&lt;/strong>&lt;/h3>
+&lt;p>gdisk を用いてパーティションを変更します．ここでは &lt;code>/dev/vda&lt;/code> に EFI パーティション（200MB程度）を作成し，残りの領域とデバイスは Linux Filesystem とします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gdisk /dev/vda
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gdisk /dev/vdb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gdisk /dev/vdc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/dev/vda1: EFI system (200M)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/vda2: Linux filesystem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/vdb1: Linux filesystem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/vdc1: Linux filesystem
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>EFI パーティションは fat，Linux Filesystem は BTRFS でフォーマットします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.fat -F32 /dev/vda1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/vda2 /dev/vdb1 /dev/vdc1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>BTRFS のサブボリュームを作成して，マウントします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mount /dev/vda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@var_log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/vda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,.snapshots,var/log}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/vda2 /mnt/home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/vda2 /mnt/.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/vda2 /mnt/var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/vda1 /mnt/boot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ベースのインストール">&lt;strong>ベースのインストール&lt;/strong>&lt;/h3>
+&lt;p>Root ディレクトリとなる &lt;code>/mnt&lt;/code> にパッケージをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware intel-ucode vim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="fstab">&lt;strong>fstab&lt;/strong>&lt;/h3>
+&lt;p>fstab ファイルを生成します．fstab ファイルはどのデバイスをマウントするかという情報を保持するファイルです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-ディレクトリの変更">&lt;strong>Root ディレクトリの変更&lt;/strong>&lt;/h3>
+&lt;p>chroot で root ディレクトリを &lt;code>/mnt&lt;/code> に変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ローカライズ">&lt;strong>ローカライズ&lt;/strong>&lt;/h3>
+&lt;p>&lt;code>/etc/localtime&lt;/code> にシンボリックリンクを作成してタイムゾーンを変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ハードウェアクロックを現在のシステムクロックに合わせます．システムクロックは OS が管理する時計のことで，ハードウェアクロックはマザーボード（ハードウェア）が管理する時計のことです．OS が再起動されたときは，メモリに展開されたシステムクロックが失われるのでハードウェアクロックから時刻を取得します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>hwclock --systohc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>locale を設定するためにまずは locale を生成します．&lt;code>/etc/locale.gen&lt;/code> の使用するエントリをアンコメントして &lt;code>locale-gen&lt;/code> を実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/locale.gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # en_US.UTF-8 UTF-8
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ en_US.UTF-8 UTF-8
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>locale-gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>システムの locale を設定するために次のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ホスト名">&lt;strong>ホスト名&lt;/strong>&lt;/h3>
+&lt;p>ホスト名を &lt;code>/etc/hostname&lt;/code> に登録します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hostname
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ arch
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/etc/hosts&lt;/code> を編集してホスト名に対応する IP アドレスを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hosts
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.0.1 localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ ::1 localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.1.1 arch.localdomain arch
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-のパスワード">&lt;strong>Root のパスワード&lt;/strong>&lt;/h3>
+&lt;p>Root ユーザのパスワードを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>passwd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="追加のパッケージインストール">&lt;strong>追加のパッケージインストール&lt;/strong>&lt;/h3>
+&lt;p>ブートローダとして grub をインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr os-prober
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ネットワークとワイヤレスデバイス用のソフトウェアをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S networkmanager network-manager-applet wireless_tools wpa_supplicant dialog
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>MS-DOS ディスクにアクセスするためのツールをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S mtools dosgstools
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>sudo や make，gcc などの基本的なアプリケーション（コマンド）をインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S base-devel
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>カーネルヘッダをインストールします．カーネルヘッダはカーネルモジュールをビルドするときに用いられるヘッダやスクリプトです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S linux-headers
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Bluetooth や オーディオ設定のツールをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S bluez bluez-utils alsa-utils pulseaudio pulseaudio-bluetooth
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>デスクトップアプリケーションに関係するコマンドラインツールをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S xdg-utils
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>home ディレクトリの &lt;code>~/Desktop/&lt;/code>，&lt;code>~/Music/&lt;/code> などを追加します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S xdg-user-dirs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Git をインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Snapper で使用する cron をインストールします．cron はプログラムの定期実行を行うために使用されます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S cron
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>mirrorlist を最適化するツールをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S reflector
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Snapper をインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S snapper
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Arch Linux の PGP Key をインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S archlinux-keyring
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="mkinitcpio-の設定">mkinitcpio の設定&lt;/h3>
+&lt;p>設定を変更し，mkinitcpio で変更を反映します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/mkinitcpio.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- MODULES=()
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ MODULES=(btrfs)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ブートローダ">&lt;strong>ブートローダ&lt;/strong>&lt;/h3>
+&lt;p>Grub をインストールして設定ファイルを生成します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">&lt;strong>Systemd&lt;/strong>&lt;/h3>
+&lt;p>NetworkManager を有効化．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Bluetooth を有効化．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>reflector の有効化．実行オプションは &lt;code>/etc/xdg/reflector/reflector.conf&lt;/code> に記述します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service &lt;span style="color:#999;font-style:italic"># update mirrorlist every boot&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer &lt;span style="color:#999;font-style:italic"># update mirrorlist weekly&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ユーザの追加">&lt;strong>ユーザの追加&lt;/strong>&lt;/h3>
+&lt;p>useradd で追加してパスワードを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ユーザに特権を追加します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-udiff" data-lang="udiff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">&lt;strong>Reboot&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="デスクトップ環境のインストール">&lt;strong>デスクトップ環境のインストール&lt;/strong>&lt;/h3>
+&lt;p>&lt;a href="../desktop-env/">デスクトップ環境&lt;/a>&lt;/p>
+&lt;h3 id="snapper-の設定">&lt;strong>Snapper の設定&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo umount /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo rm -r /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo snapper -c root create-config /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo btrfs su delete /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mkdir /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mount -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chmod &lt;span style="color:#3677a9">750&lt;/span> /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo vim /etc/snapper/configs/root
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_HOURLY=&amp;#34;5&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_DAILY=&amp;#34;7&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_WEEKLY=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_MONTHLY=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_YEARLY=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> --now snapper-timeline.timer
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> --now snapper-cleanup.timer
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -S snap-pac-grub snapper-gui-git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mkdir /etc/pacman.d/hooks
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo vim /etc/pacman.d/hooks/50-bootbackup.hook
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ [Trigger]
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Operation = Upgrade
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Operation = Install
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Operation = Remove
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Type = Path
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Target = boot/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ [Action]
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Depends = rsync
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Description = Backing up /boot...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ When = PreTransaction
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Exec = /usr/bin/rsync -a --delete /boot /.bootbackup
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S rsync
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chmod a+rx /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chown :mori /.snapshots
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Dual Booting (mono disk + Windows10 and Arch Linux)</title><link>http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/dual-boot-mono/</guid><description>
+&lt;h2 id="環境">環境&lt;/h2>
+&lt;ul>
+&lt;li>Preinstalled OS: Windows 10 (64 bit Home)&lt;/li>
+&lt;li>CPU: Intel&lt;/li>
+&lt;li>Storage: &lt;code>/dev/sda&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h2 id="windows-10-での準備">Windows 10 での準備&lt;/h2>
+&lt;p>最初に Windows 10 をインストールします．Disk Management を起動して Linux をインストールするための空き領域を作成します．空きパーティション作成前後のレイアウトは次のようになります．&lt;/p>
+&lt;ul>
+&lt;li>Before:
+&lt;img src="dual-boot-disk-before.png" alt="disk-layout-before">&lt;/li>
+&lt;li>After:
+&lt;img src="dual-boot-disk-after.png" alt="disk-layout-after">&lt;/li>
+&lt;/ul>
+&lt;p>Arch Linux のブータブル USB でブートしてインストールします．&lt;/p>
+&lt;h2 id="インストール">インストール&lt;/h2>
+&lt;h3 id="キーマップの変更">&lt;strong>キーマップの変更&lt;/strong>&lt;/h3>
+&lt;p>インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="時間設定">&lt;strong>時間設定&lt;/strong>&lt;/h3>
+&lt;p>NTP（Network Time Protocol）を使用するために次のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ミラーリストの最適化">&lt;strong>ミラーリストの最適化&lt;/strong>&lt;/h3>
+&lt;p>インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S reflector &lt;span style="color:#999;font-style:italic"># `python` might be required&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reflector -c Japan --sort rate -a &lt;span style="color:#3677a9">6&lt;/span> --save /etc/pacman.d/mirrorlist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>reflector のオプションの意味は次のようになっています．&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Options&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>-c Japan&lt;/code>&lt;/td>
+&lt;td>日本のミラーサーバのみに制限する&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--sort rate&lt;/code>&lt;/td>
+&lt;td>ダウンロード速度でソートする&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>-a 6&lt;/code>&lt;/td>
+&lt;td>6時間以内に同期したサーバに制限する&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--save /etc/pacman.d/mirrorlist&lt;/code>&lt;/td>
+&lt;td>ミラーリストを指定したパスに保存する&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="ディスクパーティショニングとフォーマット">&lt;strong>ディスクパーティショニングとフォーマット&lt;/strong>&lt;/h3>
+&lt;p>&lt;code>/dev/sda&lt;/code> 内のパーティションが次のようになっていると仮定して，話を進めます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>sda
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda1 &amp;lt;-- EFI Partition
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda4
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sda5 &amp;lt;-- Empty Partition for Linux Filesystem
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>まずは作成した空のパーティションを Linux Filesystem として使用するようにパーティションテーブルを更新します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cfdisk /dev/sda
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Linux filesystem のパーティションを BTRFS でフォーマットし，サブボリュームを作成してマウントします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sda5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda5 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@var_log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/sda5 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,.snapshots,var/log}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/sda5 /mnt/home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/sda5 /mnt/.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda5 /mnt/boot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ベースのインストール">&lt;strong>ベースのインストール&lt;/strong>&lt;/h3>
+&lt;p>Root ディレクトリとなる &lt;code>/mnt&lt;/code> にパッケージをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="fstab">&lt;strong>fstab&lt;/strong>&lt;/h3>
+&lt;p>fstab ファイルを生成します．fstab ファイルはどのデバイスをマウントするかという情報を保持するファイルです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-ディレクトリの変更">&lt;strong>Root ディレクトリの変更&lt;/strong>&lt;/h3>
+&lt;p>chroot で root ディレクトリを &lt;code>/mnt&lt;/code> に変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ローカライズ">&lt;strong>ローカライズ&lt;/strong>&lt;/h3>
+&lt;p>&lt;code>/etc/localtime&lt;/code> にシンボリックリンクを作成してタイムゾーンを変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ハードウェアクロックを現在のシステムクロックに合わせます．システムクロックは OS が管理する時計のことで，ハードウェアクロックはマザーボード（ハードウェア）が管理する時計のことです．OS が再起動されたときは，メモリに展開されたシステムクロックが失われるのでハードウェアクロックから時刻を取得します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>hwclock --systohc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>locale を設定するためにまずは locale を生成します．&lt;code>/etc/locale.gen&lt;/code> の使用するエントリをアンコメントして &lt;code>locale-gen&lt;/code> を実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/locale.gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # en_US.UTF-8 UTF-8
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ en_US.UTF-8 UTF-8
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>locale-gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>システムの locale を設定するために次のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ホスト名">&lt;strong>ホスト名&lt;/strong>&lt;/h3>
+&lt;p>ホスト名を &lt;code>/etc/hostname&lt;/code> に登録します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hostname
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ arch
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/etc/hosts&lt;/code> を編集してホスト名に対応する IP アドレスを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hosts
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.0.1 localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ ::1 localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.1.1 arch.localdomain arch
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-のパスワード">&lt;strong>Root のパスワード&lt;/strong>&lt;/h3>
+&lt;p>Root ユーザのパスワードを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>passwd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="追加パッケージのインストール">&lt;strong>追加パッケージのインストール&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> dialog os-prober mtools dosfstools base-devel linux-headers snapper &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>reflector cron git xdg-utils xdg-user-dirs ntfs-3g
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="mkinitcpio-の設定">mkinitcpio の設定&lt;/h3>
+&lt;p>設定を変更し，mkinitcpio で変更を反映します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/mkinitcpio.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- MODULES=()
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ MODULES=(btrfs)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ブートローダ">&lt;strong>ブートローダ&lt;/strong>&lt;/h3>
+&lt;p>Grub をインストールして設定ファイルを生成します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">&lt;strong>Systemd&lt;/strong>&lt;/h3>
+&lt;p>NetworkManager を有効化．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Bluetooth を有効化．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>reflector の有効化．実行オプションは &lt;code>/etc/xdg/reflector/reflector.conf&lt;/code> に記述します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service &lt;span style="color:#999;font-style:italic"># update mirrorlist every boot&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer &lt;span style="color:#999;font-style:italic"># update mirrorlist weekly&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ユーザの追加">&lt;strong>ユーザの追加&lt;/strong>&lt;/h3>
+&lt;p>useradd で追加してパスワードを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ユーザに特権を追加します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">&lt;strong>Reboot&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="trouble-shooting">Trouble shooting&lt;/h2>
+&lt;ul>
+&lt;li>Boot entry of windows disappears from grub boot loader
+&lt;ul>
+&lt;li>Add &lt;code>GRUB_DISABLE_OS_PROBER=false&lt;/code> to &lt;code>/etc/default/grub&lt;/code> and recreate grub.cfg&lt;/li>
+&lt;li>The problem is deactivated os-prober. os-prober automatically finds operating systems and adds their boot entry, but sometimes it is deactivated. The option reactivate os-prober.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Docs: Dual Booting (multi-disk + Windows10 and Arch Linux)</title><link>http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/dual-boot-multi/</guid><description>
+&lt;h2 id="環境">環境&lt;/h2>
+&lt;ul>
+&lt;li>Preinstalled OS: Windows 10 (64 bit Home)&lt;/li>
+&lt;li>CPU: Intel&lt;/li>
+&lt;li>GPU: Nvidia&lt;/li>
+&lt;li>Storage:
+&lt;ul>
+&lt;li>&lt;code>/dev/sda&lt;/code>: Windows sub&lt;/li>
+&lt;li>&lt;code>/dev/sdb&lt;/code>: Windows main&lt;/li>
+&lt;li>&lt;code>/dev/sdc&lt;/code>: Linux&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="インストール">インストール&lt;/h2>
+&lt;h3 id="キーマップの変更">&lt;strong>キーマップの変更&lt;/strong>&lt;/h3>
+&lt;p>インストールに使うキーボードに合わせてキーマップを変更します．日本語キーボードの場合は jp106 です．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="時間設定">&lt;strong>時間設定&lt;/strong>&lt;/h3>
+&lt;p>NTP（Network Time Protocol）を使用するために次のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ミラーリストの最適化">&lt;strong>ミラーリストの最適化&lt;/strong>&lt;/h3>
+&lt;p>インストール時にアクセスが速いミラーサーバにアクセスするために reflector を用いてミラーリストを最適化します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S reflector &lt;span style="color:#999;font-style:italic"># `python` might be required&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reflector -c Japan --sort rate -a &lt;span style="color:#3677a9">6&lt;/span> --save /etc/pacman.d/mirrorlist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>reflector のオプションの意味は次のようになっています．&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Options&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>-c Japan&lt;/code>&lt;/td>
+&lt;td>日本のミラーサーバのみに制限する&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--sort rate&lt;/code>&lt;/td>
+&lt;td>ダウンロード速度でソートする&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>-a 6&lt;/code>&lt;/td>
+&lt;td>6時間以内に同期したサーバに制限する&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--save /etc/pacman.d/mirrorlist&lt;/code>&lt;/td>
+&lt;td>ミラーリストを指定したパスに保存する&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="ディスクパーティショニングとフォーマット">&lt;strong>ディスクパーティショニングとフォーマット&lt;/strong>&lt;/h3>
+&lt;p>最初にWindows の EFI パーティションを見つけます．下記のコマンドで EFI パーティションとして割り当てられたデバイスを探します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>fdisk -l
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ここでは，&lt;code>/dev/sdb1&lt;/code> が EFI パーティションとします．サイズが 100MB と若干小さめですが，とりあえず問題はないです．&lt;code>/dev/sdc&lt;/code> を Linux Filesystem として使用します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sda 8:0 0 931.5G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sda1 8:1 0 931.5G 0 part /windows_d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdb 8:16 0 238.5G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sdb1 8:17 0 100M 0 part /boot/efi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sdb2 8:18 0 16M 0 part
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sdb3 8:19 0 237.4G 0 part /windows_c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sdb4 8:20 0 990M 0 part
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdc 8:32 0 476.9G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sdc1 8:33 0 476.9G 0 part /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sr0 11:0 1 1024M 0 rom
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>fdisk /dev/sdc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>BTRFS でフォーマットします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sdc1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>BTRFS のサブボリュームを作成して，マウントします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mount /dev/sdc1 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o &lt;span style="color:#40ffff">compress&lt;/span>=lzo,subvol=@ /dev/sdc1 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/boot/efi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sdb2 /mnt/boot/efi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir /mnt/windows_c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sdb4 /mnt/windows_c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir /mnt/windows_d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sdb1 /mnt/windows_d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ベースのインストール">&lt;strong>ベースのインストール&lt;/strong>&lt;/h3>
+&lt;p>Root ディレクトリとなる &lt;code>/mnt&lt;/code> にパッケージをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="fstab">&lt;strong>fstab&lt;/strong>&lt;/h3>
+&lt;p>fstab ファイルを生成します．fstab ファイルはどのデバイスをマウントするかという情報を保持するファイルです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-ディレクトリの変更">&lt;strong>Root ディレクトリの変更&lt;/strong>&lt;/h3>
+&lt;p>chroot で root ディレクトリを &lt;code>/mnt&lt;/code> に変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ローカライズ">&lt;strong>ローカライズ&lt;/strong>&lt;/h3>
+&lt;p>&lt;code>/etc/localtime&lt;/code> にシンボリックリンクを作成してタイムゾーンを変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ハードウェアクロックを現在のシステムクロックに合わせます．システムクロックは OS が管理する時計のことで，ハードウェアクロックはマザーボード（ハードウェア）が管理する時計のことです．OS が再起動されたときは，メモリに展開されたシステムクロックが失われるのでハードウェアクロックから時刻を取得します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>hwclock --systohc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>locale を設定するためにまずは locale を生成します．&lt;code>/etc/locale.gen&lt;/code> の使用するエントリをアンコメントして &lt;code>locale-gen&lt;/code> を実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/locale.gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # en_US.UTF-8 UTF-8
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ en_US.UTF-8 UTF-8
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>locale-gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>システムの locale を設定するために次のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ホスト名">&lt;strong>ホスト名&lt;/strong>&lt;/h3>
+&lt;p>ホスト名を &lt;code>/etc/hostname&lt;/code> に登録します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hostname
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ arch
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/etc/hosts&lt;/code> を編集してホスト名に対応する IP アドレスを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hosts
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.0.1 localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ ::1 localhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.1.1 arch.localdomain arch
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-のパスワード">&lt;strong>Root のパスワード&lt;/strong>&lt;/h3>
+&lt;p>Root ユーザのパスワードを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>passwd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="追加パッケージのインストール">&lt;strong>追加パッケージのインストール&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet wireless_tools &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>wpa_supplicant dialog os-prober mtools dosfstools base-devel linux-headers git &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>reflector bluez bluez-utils pulseaudio-bluetooth ntfs-3g xdg-utils xdg-user-dirs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ブートローダ">&lt;strong>ブートローダ&lt;/strong>&lt;/h3>
+&lt;p>Grub をインストールして設定ファイルを生成します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">&lt;strong>Systemd&lt;/strong>&lt;/h3>
+&lt;p>NetworkManager を有効化．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Bluetooth を有効化．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>reflector の有効化．実行オプションは &lt;code>/etc/xdg/reflector/reflector.conf&lt;/code> に記述します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service &lt;span style="color:#999;font-style:italic"># update mirrorlist every boot&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer &lt;span style="color:#999;font-style:italic"># update mirrorlist weekly&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ユーザの追加">&lt;strong>ユーザの追加&lt;/strong>&lt;/h3>
+&lt;p>useradd で追加してパスワードを設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ユーザに特権を追加します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">&lt;strong>Reboot&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="グラフィックドライバ">&lt;strong>グラフィックドライバ&lt;/strong>&lt;/h3>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+aria-controls="tabs-00-00" aria-selected="false">Nvidia&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="フォント">&lt;strong>フォント&lt;/strong>&lt;/h3>
+&lt;p>Windows のパーティションからフォントをコピーします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mkdir /usr/share/fonts/WindowsFonts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo cp /windows/Windows/Fonts/* /usr/share/fonts/WindowsFonts/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chmod &lt;span style="color:#3677a9">644&lt;/span> /usr/share/fonts/WindowsFonts/*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fc-cache -f
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="デスクトップ環境のインストール">&lt;strong>デスクトップ環境のインストール&lt;/strong>&lt;/h3>
+&lt;p>&lt;a href="../desktop-env/">デスクトップ環境&lt;/a>&lt;/p></description></item><item><title>Docs: デスクトップ環境</title><link>http://forest0923.github.io/memo/docs/archlinux/desktop-env/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/desktop-env/</guid><description>
+&lt;p>デスクトップ環境をインストールするチュートリアルです．&lt;/p>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;h3 id="graphics-driver">&lt;strong>Graphics Driver&lt;/strong>&lt;/h3>
+&lt;p>グラフィックドライバをインストールします．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+aria-controls="tabs-00-00" aria-selected="false">Intel&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+aria-controls="tabs-00-01" aria-selected="false">Nvidia&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-intel
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-intel
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="display-server">&lt;strong>Display Server&lt;/strong>&lt;/h3>
+&lt;p>ディスプレイサーバとして xorg をインストールします．ディスプレイサーバは Gnome などの GUI を用いた入出力を OS，ハードウェアに受け渡すソフトウェアです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xorg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="display-manager">&lt;strong>Display Manager&lt;/strong>&lt;/h3>
+&lt;p>ログインを GUI で行うためにディスプレイマネージャをインストールします．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+aria-controls="tabs-01-00" aria-selected="false">lightdm&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
+aria-controls="tabs-01-01" aria-selected="false">gdm&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
+id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S lightdm lightdm-gtk-greeter
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S gdm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="desktop-environment">&lt;strong>Desktop Environment&lt;/strong>&lt;/h3>
+&lt;ul class="nav nav-tabs" id="tabs-2" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-02-00-tab" data-toggle="tab" href="#tabs-02-00" role="tab"
+aria-controls="tabs-02-00" aria-selected="false">xfce&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-02-01-tab" data-toggle="tab" href="#tabs-02-01" role="tab"
+aria-controls="tabs-02-01" aria-selected="false">gnome&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-02-02-tab" data-toggle="tab" href="#tabs-02-02" role="tab"
+aria-controls="tabs-02-02" aria-selected="false">budgie&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-2-content">&lt;div class="tab-pane fade show active"
+id="tabs-02-00" role="tabpanel" aria-labelled-by="tabs-02-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S xfce4 xfce4-goodies
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-02-01" role="tabpanel" aria-labelled-by="tabs-02-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S gnome gnome-tweaks
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-02-02" role="tabpanel" aria-labelled-by="tabs-02-02-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S budgie-desktop gnome
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="systemd">&lt;strong>Systemd&lt;/strong>&lt;/h3>
+&lt;p>ディスプレイマネージャを自動で起動するように systemd を設定します．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-3" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-03-00-tab" data-toggle="tab" href="#tabs-03-00" role="tab"
+aria-controls="tabs-03-00" aria-selected="false">lightdm&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-03-01-tab" data-toggle="tab" href="#tabs-03-01" role="tab"
+aria-controls="tabs-03-01" aria-selected="false">gdm&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-3-content">&lt;div class="tab-pane fade show active"
+id="tabs-03-00" role="tabpanel" aria-labelled-by="tabs-03-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl enable lightdm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl enable gdm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div></description></item><item><title>Docs: BSPWM のインストール</title><link>http://forest0923.github.io/memo/docs/archlinux/bspwm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/bspwm/</guid><description>
+&lt;p>BSPWM という Tile 型のウィンドウマネージャをインストールして，カスタマイズを行います．&lt;/p>
+&lt;h2 id="install-and-configurations">Install and Configurations&lt;/h2>
+&lt;h3 id="graphics-driver">&lt;strong>Graphics Driver&lt;/strong>&lt;/h3>
+&lt;p>グラフィックドライバをインストールします．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+aria-controls="tabs-00-00" aria-selected="false">Intel&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+aria-controls="tabs-00-01" aria-selected="false">Nvidia&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-intel
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-intel
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="bspwm">&lt;strong>BSPWM&lt;/strong>&lt;/h3>
+&lt;p>ディスプレイサーバや bspwm などをインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xorg xorg-xinit bspwm picom dmenu sxhkd nitrogen arandr
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>アプリケーションの例としてターミナルエミュレータとブラウザをインストールします&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S alacritty firefox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>config ファイルを作成します．sxhkd はホットキーを使用するための daemon です．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkdir .config/bspwm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir .config/sxhkd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cp /usr/share/doc/bspwm/examples/bspwmrc .config/bspwm/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cp /usr/share/doc/bspwm/examples/sxhkdrc .config/sxhkd/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>Super + Return&lt;/code> でターミナルエミュレータとして alacritty を実行するように設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /.config/sxhkd/sxhkdrc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>super + Return
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- urxvt
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ alacritty
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>.xinitrc を修正して bspwm などを実行するように設定します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cp /etc/X11/xinit/xinitrc .xinitrc
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim .xinitrc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- twm &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- xclock -geometry 50x50-1+1 &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- xterm -geometry 80x50+494+51 &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- xterm -geometry 80x20+494+0 &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- exec xterm -geometry 80x66+0+0 -name login
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ setxkbmap jp &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ picom -f &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ exec bspwm
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>picom はグラフィックの設定に使われます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /etc/xdg/picom.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- vsync = true;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ #vsync = true;
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ウィンドウマネージャをスタートします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>startx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="customize">Customize&lt;/h2>
+&lt;p>解像度を変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arandr &lt;span style="color:#999;font-style:italic"># choose resolution and save as a shell script&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chmod +x .screenlayout/dislay.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim .xinitrc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>setkbmap ch &amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ $HOME/.screenlayout/display.sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>picom -f &amp;amp;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>bspwm を終了して（super + alt + q）ウィンドウマネージャを再起動します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>startx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>カーソルを変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim .xinitrc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>setkbmap ch &amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$HOME/.screenlayout/display.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ xsetroot -cursor_name left_ptr
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>picom -f &amp;amp;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>デスクトップの背景を変更して（Preferences &amp;gt; Add &amp;gt; Pictures &amp;gt; OK &amp;gt; Apply）nitrogen を起動するように xinitrc を修正します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim .xinitrc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ setkbmap ch &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ $HOME/.screenlayout/display.sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ nitrogen --restore &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ xsetroot -cursor_name left_ptr
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ picom -f &amp;amp;
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: アプリケーションのインストール</title><link>http://forest0923.github.io/memo/docs/archlinux/common-apps/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/common-apps/</guid><description>
+&lt;h2 id="package-manager">Package Manager&lt;/h2>
+&lt;ul>
+&lt;li>Paru&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git clone https://aur.archlinux.org/paru
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> paru
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>makepkg -si
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Yay&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git clone https://aur.archlinux.org/yay.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> yay
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>makepkg -si
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="shell">Shell&lt;/h2>
+&lt;ul>
+&lt;li>zsh&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S zsh zsh-completions
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chsh -s &lt;span style="color:#6ab825;font-weight:bold">$(&lt;/span>which zsh&lt;span style="color:#6ab825;font-weight:bold">)&lt;/span> &lt;span style="color:#999;font-style:italic"># or chsh -s /bin/zsh&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="terminal-emulator">Terminal Emulator&lt;/h2>
+&lt;ul>
+&lt;li>Alacritty&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S alacritty
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Xfce4 terminal&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xfce4-terminal
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Gnome terminal&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S gnome-terminal-transparency
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="terminal-multiplexer">Terminal multiplexer&lt;/h2>
+&lt;ul>
+&lt;li>tmux&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S tmux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="editor">Editor&lt;/h2>
+&lt;ul>
+&lt;li>VSCode&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S visual-studio-code-bin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>vim&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S gvim
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>emacs&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S emacs-nox
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="backup">Backup&lt;/h2>
+&lt;ul>
+&lt;li>Timeshift&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S timeshift
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="browser">Browser&lt;/h2>
+&lt;ul>
+&lt;li>Brave browser&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S brave-bin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="virtual-machine-monitor">Virtual Machine Monitor&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>KVM&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="">&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>VirtualBox&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S virtualbox virtualbox-host-modules-arch
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="password-manager">Password Manager&lt;/h2>
+&lt;ul>
+&lt;li>Bitwarden&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>yay -S bitwarden-bin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="anti-virus">Anti Virus&lt;/h2>
+&lt;ul>
+&lt;li>clamav&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S clamav clamtk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo freshclam
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl start clamav-freshclam.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> clamav-freshclam.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl start clamav-daemon.service
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> clamav-daemon.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="firewall">Firewall&lt;/h2>
+&lt;ul>
+&lt;li>gufw&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S gufw
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl start ufw
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> ufw
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo ufw &lt;span style="color:#24909d">enable&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>firewalld&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S firewalld
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="messaging-apps">Messaging Apps&lt;/h2>
+&lt;ul>
+&lt;li>Discord&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S discord
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Slack&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S slack-desktop
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Quill&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S quill-chat
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="office">Office&lt;/h2>
+&lt;ul>
+&lt;li>LibreOffice&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S libreoffice
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="rclone-browser">rclone-browser&lt;/h2>
+&lt;ul>
+&lt;li>rclone brawser&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S rclone
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="gnome-shell">Gnome Shell&lt;/h2>
+&lt;ul>
+&lt;li>CPU power manager&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S gnome-shell-extension-cpupower-git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>CPU temperature&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S gnome-shell-extension-freon-git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="preferences">Preferences&lt;/h2>
+&lt;ul>
+&lt;li>Gnome shell theme&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S matcha-gtk-theme
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Icon theme&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S papirus-icon-theme breeze
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Power line&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S powerline powerline-fonts
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>
+&lt;p>Fonts&lt;/p>
+&lt;ul>
+&lt;li>Japanese:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S otf-ipaexfont
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>yay -S ttf-ms-fonts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>yay -S ttf-windows
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Chinese &amp;amp; Hangul:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S adobe-source-han-sans-cn-fonts &lt;span style="color:#999;font-style:italic"># Chinese&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S adobe-source-han-sans-tw-fonts &lt;span style="color:#999;font-style:italic"># Chinese&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S adobe-source-han-sans-kr-fonts &lt;span style="color:#999;font-style:italic"># hangul&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item><item><title>Docs: 電源管理</title><link>http://forest0923.github.io/memo/docs/archlinux/power-mgr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/power-mgr/</guid><description>
+&lt;p>電源管理に関するメモです．&lt;/p>
+&lt;h2 id="tlp">TLP&lt;/h2>
+&lt;p>TLP は Linux の電源管理ツールです．インストールして有効化すれば特に細かい設定はせずに使用できます．&lt;/p>
+&lt;h3 id="install">&lt;strong>Install&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S tlp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="settings">&lt;strong>Settings&lt;/strong>&lt;/h3>
+&lt;p>ファイルシステムとして BTRFS を使っている場合はファイルシステムが破壊される可能性があるので以下の設定をしたほうが良いそうです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /etc/default/tlp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">SATA_LINKPWR_ON_BAT&lt;/span>=max_performance
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="enable-tlp">&lt;strong>Enable TLP&lt;/strong>&lt;/h3>
+&lt;p>以下のコマンドで TLP をスタートします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo tlp start
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>自動でスタートさせるために systemd で tlp のサービスを有効化します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> tlp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="powertop">Powertop&lt;/h2>
+&lt;p>Powertop は Intel が提供する省電力化ツールです．&lt;/p>
+&lt;h3 id="install-1">&lt;strong>Install&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S powertop
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="auto-tune">&lt;strong>Auto tune&lt;/strong>&lt;/h3>
+&lt;p>下記のコマンドを実行すると自動で省電力化が行われます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo powertop --auto-tune
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>systemd でこのコマンドを実行するようにサービスを作成すると自動で省電力化されるようになります．&lt;/p>
+&lt;p>&lt;a href="https://wiki.archlinux.jp/index.php/Powertop">Powertop - Arch Wiki&lt;/a>&lt;/p></description></item><item><title>Docs: Arch Build System</title><link>http://forest0923.github.io/memo/docs/archlinux/abs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/abs/</guid><description>
+&lt;p>ABS はソースコードからパッケージのビルドを自動化するシステムです．PKGBUILD に記述された情報をもとに makepkg でパッケージをビルドし，pacman を用いてインストールを行います．&lt;/p>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;p>ABS を用いるために asp をインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S asp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="usage-kernel-build">Usage (kernel build)&lt;/h2>
+&lt;p>使い方の例としてカーネルのビルドを行う方法を紹介します．作業用ディレクトリとして build を作成します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkdir build
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> build
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Linux kernel の PKGBUILD をダウンロードします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>asp update linux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>asp &lt;span style="color:#24909d">export&lt;/span> linux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>PKGBUILD を修正してパッケージの名前変更したり，ドキュメントを生成させないように修正します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> linux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim PKGBUILD
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>3c3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt; pkgbase=linux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">---
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&amp;gt; pkgbase=linux-custom
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>64d63
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt; make htmldocs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>191c190
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34; &amp;#34;$pkgbase-docs&amp;#34;)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">---
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&amp;gt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34;)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>下記のコマンドでソースコードをダウンロードします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>makepkg -so
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── archlinux-linux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── branches
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── config
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── description
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── FETCH_HEAD
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── HEAD
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── hooks
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── info
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── objects
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── packed-refs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── refs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── config
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── PKGBUILD
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── sphinx-workaround.patch
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── src
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ├── archlinux-linux &amp;lt;- Kernel source code here
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ├── config -&amp;gt; /home/mori/kernelbuild/linux/config
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> └── sphinx-workaround.patch -&amp;gt; /home/mori/kernelbuild/linux/sphinx-workaround.patch
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>makepkg で下記のようにビルドして，pacman でインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>makepkg -se &lt;span style="color:#999;font-style:italic"># Additionally &amp;#39;f&amp;#39; option needed when overwrite pkg&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -U linux-custom-[version].arch1-1-x86_64.pkg.tar.zst linux-custom-headers-[version].arch1-1-x86_64.pkg.tar.zst
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>&lt;a href="https://wiki.archlinux.org/index.php/Kernel/Arch_Build_System">Kernel/Arch Build System&lt;/a>&lt;/p>
+&lt;/blockquote></description></item><item><title>Docs: Spotify の設定</title><link>http://forest0923.github.io/memo/docs/archlinux/spotify/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/docs/archlinux/spotify/</guid><description>
+&lt;p>Spotify の設定やトラブルシューティングについてのページです．&lt;/p>
+&lt;h2 id="hidpi">HiDPI&lt;/h2>
+&lt;p>高解像度のモニタを使う場合にはデフォルトだと UI が小さすぎるので設定を変えて見やすくします．
+&lt;code>/usr/share/applications/spotify.desktop&lt;/code> を下記のように修正することで，Spotify を GUI で起動したときにスケールを変えることができます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">-Exec=spotify %U
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+Exec=spotify --force-device-scale-factor=1.5 %U
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="download-error">Download Error&lt;/h2>
+&lt;p>Spotify はダウンロードエラーが多いので，以下にエラー内容や解決策を雑記しておきます．&lt;/p>
+&lt;ul>
+&lt;li>Error:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>==&amp;gt; ERROR: Failure while downloading http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_1.1.56.595.g2d2da0de_amd64.deb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Solution:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> ~/.cache/paru/clone/spotify/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>wget --continue http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_1.1.56.595.g2d2da0de_amd64.deb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mv spotify-client_1.1.56.595.g2d2da0de_amd64.deb spotify-1.1.56.595-x86_64.deb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -Syu
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Error:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>==&amp;gt; Verifying source file signatures with gpg...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spotify-1.1.72.439-3-Release ... FAILED (unknown public key 5E3C45D7B312C643)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>==&amp;gt; ERROR: One or more PGP signatures could not be verified!
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>error: failed to download sources for &amp;#39;spotify-1:1.1.72.439-3&amp;#39;:
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>:: Downloading PKGBUILDs...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PKGBUILDs up to date
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> nothing new to review
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:: keys need to be imported:)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> F9A211976ED662F00E59361E5E3C45D7B312C643 wanted by: spotify-1:1.1.72.439-3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:: import? [Y/n]:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gpg: key 5E3C45D7B312C643: public key &amp;#34;Spotify Public Repository Signing Key &amp;lt;tux@spotify.com&amp;gt;&amp;#34; imported
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gpg: Total number processed: 1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gpg: imported: 1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fetching devel info...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

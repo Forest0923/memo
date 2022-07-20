@@ -1,1 +1,137 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>EPT on Memo</title><link>http://forest0923.github.io/memo/tags/ept/</link><description>Recent content in EPT on Memo</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 15 Apr 2022 12:20:18 +0900</lastBuildDate><atom:link href="http://forest0923.github.io/memo/tags/ept/index.xml" rel="self" type="application/rss+xml"/><item><title>QEMU/KVM における EPT の操作</title><link>http://forest0923.github.io/memo/posts/linux-ept/</link><pubDate>Fri, 15 Apr 2022 12:20:18 +0900</pubDate><guid>http://forest0923.github.io/memo/posts/linux-ept/</guid><description>Initialize EPT # Add new entry # Update entry # Update state bits # __direct_map() --&amp;gt; mmu_set_spte() --&amp;gt; set_spte() --&amp;gt; mmu_spte_update() --&amp;gt; mmu_spte_update_no_track() static bool mmu_spte_update(u64 *sptep, u64 new_spte) { bool flush = false; u64 old_spte = mmu_spte_update_no_track(sptep, new_spte); if (!is_shadow_present_pte(old_spte)) return false; /* * For the spte updated out of mmu-lock is safe, since * we always atomically update it, see the comments in * spte_has_volatile_bits(). */ if (spte_can_locklessly_be_made_writable(old_spte) &amp;amp;&amp;amp; !</description></item><item><title>EPTI: Efficient Defence against Meltdown Attack for Unpatched VMs</title><link>http://forest0923.github.io/memo/posts/epti/</link><pubDate>Fri, 03 Dec 2021 11:07:19 +0900</pubDate><guid>http://forest0923.github.io/memo/posts/epti/</guid><description> References # Info. Detail (URL and etc.) Authors Zhichao Hua, Dong Du, Yubin Xia, Haibo Chen and Binyu Zang Affiliation Shanghai Jiao Tong University Book Title In the proceedings of the 2018 USENIX Annual Technical Conference (USENIX ATC &amp;lsquo;18), pages 255-266, 2018 URL https://www.usenix.org/conference/atc18/presentation/hua PDF https://www.usenix.org/system/files/conference/atc18/atc18-hua.pdf Slides https://www.usenix.org/sites/default/files/conference/protected-files/atc18_slides_hua.pdf Video</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – EPT</title><link>http://forest0923.github.io/memo/tags/ept/</link><description>Recent content in EPT on Memo</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Fri, 15 Apr 2022 12:20:18 +0900</lastBuildDate><atom:link href="http://forest0923.github.io/memo/tags/ept/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: QEMU/KVM における EPT の操作</title><link>http://forest0923.github.io/memo/blog/2022/04/15/qemu/kvm-%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B-ept-%E3%81%AE%E6%93%8D%E4%BD%9C/</link><pubDate>Fri, 15 Apr 2022 12:20:18 +0900</pubDate><guid>http://forest0923.github.io/memo/blog/2022/04/15/qemu/kvm-%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B-ept-%E3%81%AE%E6%93%8D%E4%BD%9C/</guid><description>
+&lt;!-- ## Introduction
+## Background -->
+&lt;h2 id="initialize-ept">Initialize EPT&lt;/h2>
+&lt;h2 id="add-new-entry">Add new entry&lt;/h2>
+&lt;h2 id="update-entry">Update entry&lt;/h2>
+&lt;h3 id="update-state-bits">Update state bits&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>__direct_map()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; mmu_set_spte()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; set_spte()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; mmu_spte_update()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; mmu_spte_update_no_track()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> &lt;span style="color:#447fcf">mmu_spte_update&lt;/span>(u64 *sptep, u64 new_spte)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> flush = &lt;span style="color:#24909d">false&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 old_spte = mmu_spte_update_no_track(sptep, new_spte);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!is_shadow_present_pte(old_spte))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">false&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * For the spte updated out of mmu-lock is safe, since
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * we always atomically update it, see the comments in
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * spte_has_volatile_bits().
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (spte_can_locklessly_be_made_writable(old_spte) &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !is_writable_pte(new_spte))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flush = &lt;span style="color:#24909d">true&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Flush TLB when accessed/dirty states are changed in the page tables,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * to guarantee consistency between TLB and page tables.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (is_accessed_spte(old_spte) &amp;amp;&amp;amp; !is_accessed_spte(new_spte)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flush = &lt;span style="color:#24909d">true&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_set_pfn_accessed(spte_to_pfn(old_spte));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (is_dirty_spte(old_spte) &amp;amp;&amp;amp; !is_dirty_spte(new_spte)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flush = &lt;span style="color:#24909d">true&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_set_pfn_dirty(spte_to_pfn(old_spte));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> flush;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="update-pfn">Update PFN&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>kvm_mmu_notifier_change_pte()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; kvm_set_spte_hva()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; kvm_handle_hva()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; kvm_handle_hva_range()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; kvm_set_pte_rmapp()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_set_pte_rmapp&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_rmap_head *rmap_head,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_memory_slot *slot, gfn_t gfn, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> level,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> data)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 *sptep;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rmap_iterator iter;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> need_flush = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 new_spte;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pte_t *ptep = (pte_t *)data;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_pfn_t new_pfn;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> WARN_ON(pte_huge(*ptep));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_pfn = pte_pfn(*ptep);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>restart:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> for_each_rmap_spte(rmap_head, &amp;amp;iter, sptep) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rmap_printk(&lt;span style="color:#ed9d13">&amp;#34;kvm_set_pte_rmapp: spte %p %llx gfn %llx (%d)&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sptep, *sptep, gfn, level);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> need_flush = &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (pte_write(*ptep)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pte_list_remove(rmap_head, sptep);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> restart;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_spte = *sptep &amp;amp; ~PT64_BASE_ADDR_MASK; &lt;span style="color:#999;font-style:italic">// update PFN
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> new_spte |= (u64)new_pfn &amp;lt;&amp;lt; PAGE_SHIFT;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_spte &amp;amp;= ~PT_WRITABLE_MASK; &lt;span style="color:#999;font-style:italic">// unwritable
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> new_spte &amp;amp;= ~SPTE_HOST_WRITEABLE;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_spte = mark_spte_for_access_track(new_spte);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmu_spte_clear_track_bits(sptep);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmu_spte_set(sptep, new_spte);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (need_flush &amp;amp;&amp;amp; kvm_available_flush_tlb_with_range()) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_flush_remote_tlbs_with_address(kvm, gfn, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> need_flush;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="free-ept">Free EPT&lt;/h2></description></item><item><title>Blog: EPTI: Efficient Defence against Meltdown Attack for Unpatched VMs</title><link>http://forest0923.github.io/memo/blog/2021/12/03/epti-efficient-defence-against-meltdown-attack-for-unpatched-vms/</link><pubDate>Fri, 03 Dec 2021 11:07:19 +0900</pubDate><guid>http://forest0923.github.io/memo/blog/2021/12/03/epti-efficient-defence-against-meltdown-attack-for-unpatched-vms/</guid><description>
+&lt;h2 id="references">References&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Info.&lt;/th>
+&lt;th>Detail (URL and etc.)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Authors&lt;/td>
+&lt;td>Zhichao Hua, Dong Du, Yubin Xia, Haibo Chen and Binyu Zang&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Affiliation&lt;/td>
+&lt;td>Shanghai Jiao Tong University&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Book Title&lt;/td>
+&lt;td>In the proceedings of the 2018 USENIX Annual Technical Conference (USENIX ATC &amp;lsquo;18), pages 255-266, 2018&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>URL&lt;/td>
+&lt;td>&lt;a href="https://www.usenix.org/conference/atc18/presentation/hua">https://www.usenix.org/conference/atc18/presentation/hua&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>PDF&lt;/td>
+&lt;td>&lt;a href="https://www.usenix.org/system/files/conference/atc18/atc18-hua.pdf">https://www.usenix.org/system/files/conference/atc18/atc18-hua.pdf&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Slides&lt;/td>
+&lt;td>&lt;a href="https://www.usenix.org/sites/default/files/conference/protected-files/atc18_slides_hua.pdf">https://www.usenix.org/sites/default/files/conference/protected-files/atc18_slides_hua.pdf&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Video&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item></channel></rss>

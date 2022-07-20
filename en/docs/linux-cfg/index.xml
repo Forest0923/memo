@@ -1,15 +1,109 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux Configurations on Memo</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/</link><description>Recent content in Linux Configurations on Memo</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="http://forest0923.github.io/memo/en/docs/linux-cfg/index.xml" rel="self" type="application/rss+xml"/><item><title>Compress initramfs</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/compress-initramfs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/compress-initramfs/</guid><description>Compress initramfs # In some cases, the /boot partition is too small for the initramfs to fit. This makes it impossible to install multiple kernels, so the solution is to change the compression method.
-Edit /etc/initramfs-tools/initramfs.conf and change the compression method to xz (xz has a higher compression ratio, but slows down the decompression speed).
-sudo vim /etc/initramfs-tools/initramfs.conf - MODULES=most + MODULES=dep - COMPRESS=lz4 + COMPRESS=xz Install xz-utils and update initramfs.</description></item><item><title>Gnome Configurations</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/gnome/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/gnome/</guid><description> Gnome Configurations # Disable wayland # Edit /etc/gdm/custom.conf as follows.
-- #WaylandEnable=false + WaylandEnable=false + DefaultSession=gnome-xorg.desktop Otherwise run /usr/lib/gdm-disable-wayland as root.
-sudo /usr/lib/gdm-disable-wayland Turn off alert # dconf write /org/gnome/desktop/sound/event-sounds &amp;#34;false&amp;#34;</description></item><item><title>GRUB Resolution Settings</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/grub-resolution/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/grub-resolution/</guid><description>GRUB Resolution Settings # System # Arch CUI Check Available Resolutions # Open a GRUB terminal to check available resolutions.
-You can get a list of available resolution by running videoinfo.
-Setting the Resolution # Modify /etc/default/grub to set the resolution, referring to the list. Basically, you should change GRUB_GFXMODE and GRUB_GFX_PAYLOAD_LINUX as follows.
-However, in my environment, if I did not add nomodeset to GRUB_CMDLINE_LINUX_DEFAULT, the resolution remains low after kernel boot.</description></item><item><title>Japanese Input</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/japanese-input/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/japanese-input/</guid><description>Japanese Input # This is a memo on how to set up Japanese input using Fcitx (Flexible Input Method Framework) and Mozc.
-Install # fcitx5 fcitx5 is a successor to fcitx.
-sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool fcitx sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool Configurations # Add Mozc to the input method in fcitx configuration tool. Then, create ~/.pam_environment.
-vim ~/.pam_environment + GTK_IM_MODULE DEFAULT=fcitx + QT_IM_MODULE DEFAULT=fcitx + XMODIFIERS DEFAULT=\@im=fcitx + SDL_IM_MODULE DEFAULT=fcitx If this does not work, execute the following command.</description></item><item><title>Keymaps</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/keymaps/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/keymaps/</guid><description>Keymaps # This is a note on how to assign other keys to keys such as Caps lock.
-Create Custom Key Mapping # Create a directory to store the keymap.
-sudo mkdir -p /usr/local/share/kbd/keymaps Use dumpkeys to get the original keymaps and save it in my-keymaps.map.
-sudo dumpkeys | sudo tee /usr/local/share/kbd/keymaps/my-keymaps.map Modify /usr/local/share/kbd/keymaps/my-keymaps.map to change Caps lock to control.
-sudo vim /usr/local/share/kbd/keymaps/my-keymaps.map - keycode 58 = Caps_Lock + keycode 58 = Control Create /etc/vconsole.</description></item><item><title>L2TP IPsec</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/l2tp-ipsec/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/l2tp-ipsec/</guid><description> L2TP IPsec # paru -S xl2tpd strongswan networkmanager-l2tp</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Linux Configurations</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/</link><description>Recent content in Linux Configurations on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/linux-cfg/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Compress initramfs</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/compress-initramfs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/compress-initramfs/</guid><description>
+&lt;p>In some cases, the &lt;code>/boot&lt;/code> partition is too small for the initramfs to fit. This makes it impossible to install multiple kernels, so the solution is to change the compression method.&lt;/p>
+&lt;p>Edit &lt;code>/etc/initramfs-tools/initramfs.conf&lt;/code> and change the compression method to xz (xz has a higher compression ratio, but slows down the decompression speed).&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /etc/initramfs-tools/initramfs.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- MODULES=most
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ MODULES=dep
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- COMPRESS=lz4
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ COMPRESS=xz
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Install xz-utils and update initramfs.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+aria-controls="tabs-00-00" aria-selected="false">Ubuntu&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install xz-utils
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo update-initramfs -u -k all
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div></description></item><item><title>Docs: Gnome Configurations</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/gnome/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/gnome/</guid><description>
+&lt;h2 id="disable-wayland">Disable wayland&lt;/h2>
+&lt;p>Edit &lt;code>/etc/gdm/custom.conf&lt;/code> as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- #WaylandEnable=false
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ WaylandEnable=false
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ DefaultSession=gnome-xorg.desktop
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Otherwise run &lt;code>/usr/lib/gdm-disable-wayland&lt;/code> as root.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo /usr/lib/gdm-disable-wayland
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="turn-off-alert">Turn off alert&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>dconf write /org/gnome/desktop/sound/event-sounds &lt;span style="color:#ed9d13">&amp;#34;false&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: GRUB Resolution Settings</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/grub-resolution/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/grub-resolution/</guid><description>
+&lt;h2 id="system">System&lt;/h2>
+&lt;ul>
+&lt;li>Arch&lt;/li>
+&lt;li>CUI&lt;/li>
+&lt;/ul>
+&lt;h2 id="check-available-resolutions">Check Available Resolutions&lt;/h2>
+&lt;p>Open a GRUB terminal to check available resolutions.&lt;/p>
+&lt;p>&lt;img src="./grub00.png" alt="">
+&lt;img src="./grub01.png" alt="">&lt;/p>
+&lt;p>You can get a list of available resolution by running videoinfo.&lt;/p>
+&lt;p>&lt;img src="./grub02.png" alt="">&lt;/p>
+&lt;h2 id="setting-the-resolution">Setting the Resolution&lt;/h2>
+&lt;p>Modify /etc/default/grub to set the resolution, referring to the list. Basically, you should change GRUB_GFXMODE and GRUB_GFX_PAYLOAD_LINUX as follows.&lt;/p>
+&lt;p>However, in my environment, if I did not add nomodeset to GRUB_CMDLINE_LINUX_DEFAULT, the resolution remains low after kernel boot.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GRUB_CMDLINE_LINUX_DEFAULT=&amp;#34;loglevel=3 quiet nomodeset&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># The resolution used on graphical terminal
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># note that you can use only modes which your graphic card supports via VBE
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># you can see them in real GRUB with the command `vbeinfo&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GRUB_GFXMODE=1920x1080x32
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># Uncomment to allow the kernel use the same resolution used by grub
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GRUB_GFXPAYLOAD_LINUX=keep
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Japanese Input</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/japanese-input/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/japanese-input/</guid><description>
+&lt;p>This is a memo on how to set up Japanese input using Fcitx (Flexible Input Method Framework) and Mozc.&lt;/p>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+aria-controls="tabs-00-00" aria-selected="false">fcitx5&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+aria-controls="tabs-00-01" aria-selected="false">fcitx&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>fcitx5 is a successor to fcitx.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h2 id="configurations">Configurations&lt;/h2>
+&lt;p>Add Mozc to the input method in fcitx configuration tool. Then, create &lt;code>~/.pam_environment&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim ~/.pam_environment
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ GTK_IM_MODULE DEFAULT=fcitx
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ QT_IM_MODULE DEFAULT=fcitx
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ XMODIFIERS DEFAULT=\@im=fcitx
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ SDL_IM_MODULE DEFAULT=fcitx
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If this does not work, execute the following command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gsettings &lt;span style="color:#24909d">set&lt;/span> org.gnome.settings-daemon.plugins.xsettings overrides &lt;span style="color:#ed9d13">&amp;#34;{&amp;#39;Gtk/IMModule&amp;#39;:&amp;lt;&amp;#39;fcitx&amp;#39;&amp;gt;}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Keymaps</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/keymaps/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/keymaps/</guid><description>
+&lt;p>This is a note on how to assign other keys to keys such as Caps lock.&lt;/p>
+&lt;h2 id="create-custom-key-mapping">Create Custom Key Mapping&lt;/h2>
+&lt;p>Create a directory to store the keymap.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mkdir -p /usr/local/share/kbd/keymaps
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Use dumpkeys to get the original keymaps and save it in my-keymaps.map.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo dumpkeys | sudo tee /usr/local/share/kbd/keymaps/my-keymaps.map
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Modify &lt;code>/usr/local/share/kbd/keymaps/my-keymaps.map&lt;/code> to change Caps lock to control.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /usr/local/share/kbd/keymaps/my-keymaps.map
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- keycode 58 = Caps_Lock
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ keycode 58 = Control
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Create &lt;code>/etc/vconsole.conf&lt;/code> and load &lt;code>my-keymaps.map&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ KEYMAP=/usr/local/share/kbd/keymaps/my-keymaps.map
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: L2TP IPsec</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/l2tp-ipsec/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/l2tp-ipsec/</guid><description>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S xl2tpd strongswan networkmanager-l2tp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

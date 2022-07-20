@@ -1,14 +1,562 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>LaTeX on Memo</title><link>http://forest0923.github.io/memo/en/docs/latex/</link><description>Recent content in LaTeX on Memo</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="http://forest0923.github.io/memo/en/docs/latex/index.xml" rel="self" type="application/rss+xml"/><item><title>Install TeX Live</title><link>http://forest0923.github.io/memo/en/docs/latex/inst-tex-live/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/latex/inst-tex-live/</guid><description>Install TeX Live # This is a startup guide for using LaTeX.
-System Environment # OS: Linux Install # TeX Live # Install texlive and language packages with the following command.
-# Arch sudo pacman -S texlive-most texlive-langjapanese # ubuntu sudo apt install texlive-full jListing # If you want to add source code that contains Japanese, you need to download jlisting from https://osdn.net/projects/mytexpert/downloads/26068/jlisting.sty.bz2/ and extract it.
-bzip2 -dk jlisting.sty Create a directory for jlisting in /usr/local/share/texmf/tex/latex/, add jlisting.</description></item><item><title>LaTeX Cheat Sheet</title><link>http://forest0923.github.io/memo/en/docs/latex/latex-cs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/latex/latex-cs/</guid><description>LaTeX Cheat Sheet # Expressions # Expression Number # If you need an expression number:
-\begin{eqnarray} y=\alpha x + \beta \end{eqnarray} $$ y=\alpha x + \beta \tag{1} $$ If you do not need an expression number:
-\[ y=\alpha x + \beta \] $$ y=\alpha x + \beta $$ Align Equations # Use &amp;amp; to align multiple equations at equal positions.
-\[ a&amp;amp;=b+c \\ d+e&amp;amp;=f \] $$ \begin{aligned} a&amp;amp;=b+c \\ d+e&amp;amp;=f \end{aligned} $$ \begin{eqnarray} a&amp;amp;=b+c \\ d+e&amp;amp;=f \end{eqnarray} $$ \begin{aligned} a&amp;amp;=b+c \\ d+e&amp;amp;=f \end{aligned} $$ Simultaneous Equations # \begin{eqnarray} \begin{cases} (x - 2)^2 + y^2 + z^2 = 1\\ x + z = 3 \end{cases} \end{eqnarray} $$ \begin{cases} \left(x - 2\right)^2 + y^2 + z^2 = 1\\ x + z = 3 \end{cases} $$ \begin{numcases} {} (x - 2)^2 + y^2 + z^2 = 1\\ x + z = 3 \end{numcases} $$ \begin{cases} \left(x - 2\right)^2 + y^2 + z^2 = 1\\ x + z = 3 \end{cases} $$ Matrix # \begin{eqnarray} \left( \begin{array}{cc} a &amp;amp; b \\ c &amp;amp; d \end{array} \right) \end{eqnarray} $$ \begin{pmatrix} a &amp;amp; b \\ c &amp;amp; d \end{pmatrix} $$</description></item><item><title>Using Custom Style File</title><link>http://forest0923.github.io/memo/en/docs/latex/sty/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/latex/sty/</guid><description>Using Custom Style File # Create style file (~.sty) # Create new command # \newcomand and \renewcommand allow you to define new command.
-\newcommand{\command-name}[argument-number][default]{definition} \renewcommand{\command-name}[argument-number][default]{definition} Example:
-\newcommand{\myfig}[4][width=5cm]{ \begin{figure}[H] \centering \includegraphics[#1]{#2} \caption{#3} \label{fig:#4} \end{figure} } Create new environment # \newenvironment and \renewenvironment allow you to define new environment. \newenvironment{environment-name}[argument-number][default]{before}{after} \renewenvironment{environment-name}[argument-number][default]{before}{after} Example:
-\definecolor{code-bg}{rgb}{0.95, 0.95, 0.95} \newenvironment{code}[2][] {\VerbatimEnvironment\begin{minted}[breaklines, frame=lines, bgcolor=code-bg, #1]{#2}} {\end{minted}} Add style files # Put your file under /usr/local/share/texmf/tex/latex and execute mktexlsr as a root user.</description></item><item><title>Using minted for Syntax Highlighting</title><link>http://forest0923.github.io/memo/en/docs/latex/minted/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/latex/minted/</guid><description>Using minted for Syntax highlighting # About # minted is a package that enable to add syntax highlight by using Pygments library.
-Installation # Pygments is written in Python and can be installed by pip
-pip install Pygments Package minted is already installed if you use texlive.
-Usage # At the preamble add some commands as follows.
-\usepackage[cache=false]{minted} \usepackage{xcolor} \definecolor{code-bg}{rgb}{0.95, 0.95, 0.95} You can then use syntax highlighting in your document as follows.</description></item></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – LaTeX</title><link>http://forest0923.github.io/memo/en/docs/latex/</link><description>Recent content in LaTeX on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/latex/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Install TeX Live</title><link>http://forest0923.github.io/memo/en/docs/latex/inst-tex-live/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/latex/inst-tex-live/</guid><description>
+&lt;p>This is a startup guide for using LaTeX.&lt;/p>
+&lt;h2 id="system-environment">System Environment&lt;/h2>
+&lt;ul>
+&lt;li>OS: Linux&lt;/li>
+&lt;/ul>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;h3 id="tex-live">&lt;strong>TeX Live&lt;/strong>&lt;/h3>
+&lt;p>Install texlive and language packages with the following command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># Arch&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S texlive-most texlive-langjapanese
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># ubuntu&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install texlive-full
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="jlisting">&lt;strong>jListing&lt;/strong>&lt;/h3>
+&lt;p>If you want to add source code that contains Japanese, you need to download jlisting from &lt;a href="https://osdn.net/projects/mytexpert/downloads/26068/jlisting.sty.bz2/">https://osdn.net/projects/mytexpert/downloads/26068/jlisting.sty.bz2/&lt;/a> and extract it.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>bzip2 -dk jlisting.sty
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Create a directory for jlisting in &lt;code>/usr/local/share/texmf/tex/latex/&lt;/code>, add jlisting.sty, and run mktexlsr to reflect the added files.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mkdir -p /usr/local/share/texmf/tex/latex/jlisting
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mv jlisting.sty /usr/local/share/texmf/tex/latex/jlisting/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> /usr/local/share/texmf/tex/latex/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mktexlsr
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: LaTeX Cheat Sheet</title><link>http://forest0923.github.io/memo/en/docs/latex/latex-cs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/latex/latex-cs/</guid><description>
+&lt;h2 id="expressions">Expressions&lt;/h2>
+&lt;h3 id="expression-number">&lt;strong>Expression Number&lt;/strong>&lt;/h3>
+&lt;p>If you need an expression number:&lt;/p>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>eqnarray&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> y=&lt;span style="color:#6ab825;font-weight:bold">\alpha&lt;/span> x + &lt;span style="color:#6ab825;font-weight:bold">\beta&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>eqnarray&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+&lt;/br>
+&lt;p>$$
+y=\alpha x + \beta
+\tag{1}
+$$
+&lt;/div>
+&lt;/div>
+&lt;p>If you do not need an expression number:&lt;/p>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">\[&lt;/span>&lt;span style="color:#24909d">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d"> y&lt;/span>=&lt;span style="color:#40ffff">\alpha&lt;/span>&lt;span style="color:#24909d"> x &lt;/span>+&lt;span style="color:#24909d"> &lt;/span>&lt;span style="color:#40ffff">\beta&lt;/span>&lt;span style="color:#24909d">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">&lt;/span>&lt;span style="color:#ed9d13">\]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+&lt;/br>
+&lt;p>$$
+y=\alpha x + \beta
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="align-equations">&lt;strong>Align Equations&lt;/strong>&lt;/h3>
+&lt;p>Use &amp;amp; to align multiple equations at equal positions.&lt;/p>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">\[&lt;/span>&lt;span style="color:#24909d">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d"> a&amp;amp;&lt;/span>=&lt;span style="color:#24909d">b&lt;/span>+&lt;span style="color:#24909d">c &lt;/span>&lt;span style="color:#40ffff">\\&lt;/span>&lt;span style="color:#24909d">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d"> d&lt;/span>+&lt;span style="color:#24909d">e&amp;amp;&lt;/span>=&lt;span style="color:#24909d">f
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">&lt;/span>&lt;span style="color:#ed9d13">\]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+&lt;/br>
+&lt;p>$$
+\begin{aligned}
+a&amp;amp;=b+c \\
+d+e&amp;amp;=f
+\end{aligned}
+$$
+&lt;/div>
+&lt;/div>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>eqnarray&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> a&lt;span style="color:#24909d">&amp;amp;&lt;/span>=b+c &lt;span style="color:#6ab825;font-weight:bold">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> d+e&lt;span style="color:#24909d">&amp;amp;&lt;/span>=f
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>eqnarray&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+&lt;/br>
+&lt;p>$$
+\begin{aligned}
+a&amp;amp;=b+c \\
+d+e&amp;amp;=f
+\end{aligned}
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="simultaneous-equations">&lt;strong>Simultaneous Equations&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>eqnarray&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>cases&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (x - 2)&lt;span style="color:#24909d">^&lt;/span>2 + y&lt;span style="color:#24909d">^&lt;/span>2 + z&lt;span style="color:#24909d">^&lt;/span>2 = 1&lt;span style="color:#6ab825;font-weight:bold">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x + z = 3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>cases&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>eqnarray&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+&lt;/br>
+&lt;p>$$
+\begin{cases}
+\left(x - 2\right)^2 + y^2 + z^2 = 1\\
+x + z = 3
+\end{cases}
+$$
+&lt;/div>
+&lt;/div>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>numcases&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (x - 2)&lt;span style="color:#24909d">^&lt;/span>2 + y&lt;span style="color:#24909d">^&lt;/span>2 + z&lt;span style="color:#24909d">^&lt;/span>2 = 1&lt;span style="color:#6ab825;font-weight:bold">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x + z = 3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>numcases&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+&lt;/br>
+&lt;p>$$
+\begin{cases}
+\left(x - 2\right)^2 + y^2 + z^2 = 1\\
+x + z = 3
+\end{cases}
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="matrix">&lt;strong>Matrix&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>eqnarray&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\left&lt;/span>(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>array&lt;span style="color:#24909d">}{&lt;/span>cc&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> a &lt;span style="color:#24909d">&amp;amp;&lt;/span> b &lt;span style="color:#6ab825;font-weight:bold">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c &lt;span style="color:#24909d">&amp;amp;&lt;/span> d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>array&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\right&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>eqnarray&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+&lt;p>&lt;/br>&lt;/br>&lt;/br>&lt;/p>
+&lt;p>$$
+\begin{pmatrix}
+a &amp;amp; b \\
+c &amp;amp; d
+\end{pmatrix}
+$$&lt;/p>
+&lt;/div>
+&lt;/div>
+&lt;h2 id="source-code">Source Code&lt;/h2>
+&lt;h3 id="minted">&lt;strong>minted&lt;/strong>&lt;/h3>
+&lt;p>To write code directly in a tex file, use minted.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>[linenos, breaklines, frame=lines]&lt;span style="color:#24909d">{&lt;/span>c&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#include &amp;lt;stdio.h&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>int main()&lt;span style="color:#24909d">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf(&amp;#34;Hello, World!&amp;#34;);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> return 0;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Use inputminted to specify a file and put the source code in it.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\inputminted&lt;/span>&lt;span style="color:#bbb">[linenos, breaklines, frame=lines]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>language&lt;span style="color:#24909d">}{&lt;/span>src/hello.c&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="figure">Figure&lt;/h2>
+&lt;p>This is an example of inserting a single image. In the example below, the package here is used to insert the image at the specified position. (&lt;code>\usepackage{here}&lt;/code>)&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>figure&lt;span style="color:#24909d">}&lt;/span>[H]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\centering&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\includegraphics&lt;/span>&lt;span style="color:#bbb">[width=10cm]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>path2image&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\caption&lt;/span>&lt;span style="color:#24909d">{&lt;/span>hoge&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\label&lt;/span>&lt;span style="color:#24909d">{&lt;/span>fig1&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>figure&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="table">Table&lt;/h2>
+&lt;p>The table can be written as follows, but it is easier to create it automatically using &lt;a href="https://www.tablesgenerator.com/">Table generator&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>table&lt;span style="color:#24909d">}&lt;/span>[H]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\centering&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\caption&lt;/span>&lt;span style="color:#24909d">{&lt;/span>title&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\label&lt;/span>&lt;span style="color:#24909d">{&lt;/span>tbl:1&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>tabular&lt;span style="color:#24909d">}{&lt;/span>ccc&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\hline&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> e1 &lt;span style="color:#24909d">&amp;amp;&lt;/span> e2 &lt;span style="color:#24909d">&amp;amp;&lt;/span> e3 &lt;span style="color:#6ab825;font-weight:bold">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\hline&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 11 &lt;span style="color:#24909d">&amp;amp;&lt;/span> 12 &lt;span style="color:#24909d">&amp;amp;&lt;/span> 13 &lt;span style="color:#6ab825;font-weight:bold">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 21 &lt;span style="color:#24909d">&amp;amp;&lt;/span> 22 &lt;span style="color:#24909d">&amp;amp;&lt;/span> 23 &lt;span style="color:#6ab825;font-weight:bold">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 31 &lt;span style="color:#24909d">&amp;amp;&lt;/span> 32 &lt;span style="color:#24909d">&amp;amp;&lt;/span> 33 &lt;span style="color:#6ab825;font-weight:bold">\\&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\hline&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>tabular&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>table&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="footnote">Footnote&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\footnote&lt;/span>&lt;span style="color:#bbb">[number]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>text&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="special-characters-and-operators">Special Characters and Operators&lt;/h2>
+&lt;h3 id="σ">&lt;strong>Σ&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\sum&lt;/span>&lt;span style="color:#24909d">_{&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">\alpha&lt;/span>=0&lt;span style="color:#24909d">}^{&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">\beta&lt;/span>&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$\sum_{\alpha=0}^{\beta}$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading">&lt;strong>∫&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\int&lt;/span>&lt;span style="color:#24909d">_{&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">\alpha&lt;/span>&lt;span style="color:#24909d">}^{&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">\beta&lt;/span>&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\int_{\alpha}^{\beta}
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="lim">&lt;strong>lim&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\lim&lt;/span>&lt;span style="color:#24909d">_{&lt;/span>n &lt;span style="color:#6ab825;font-weight:bold">\to&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">\infty&lt;/span>&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\lim_{n \to \infty}
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-1">&lt;strong>≠&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\neq&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\neq
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-2">&lt;strong>≈&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\approx&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\approx
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-3">&lt;strong>≒&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\fallingdotseq&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\fallingdotseq
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-4">&lt;strong>≡&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\equiv&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\equiv
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-5">&lt;strong>&amp;gt;&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\geq&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\geq
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-6">&lt;strong>&amp;lt;&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\leq&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\leq
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-7">&lt;strong>≧&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\geqq&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\geqq
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-8">&lt;strong>≦&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\leqq&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\leqq
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-9">&lt;strong>×&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\times&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\times
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-10">&lt;strong>÷&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\div&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\div
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-11">&lt;strong>±&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\pm&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\pm
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-12">&lt;strong>∈&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\in&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\in
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-13">&lt;strong>⊂&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\subset&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\subset
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-14">&lt;strong>∩&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\cap&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\cap
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-15">&lt;strong>∪&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\cup&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\cup
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="null-set-">&lt;strong>Null Set ∅&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\emptyset&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\emptyset
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="heading-16">&lt;strong>∞&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\infty&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\infty
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="vector">&lt;strong>Vector&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\vec&lt;/span>&lt;span style="color:#24909d">{&lt;/span>a&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\vec{a}
+$$
+&lt;/div>
+&lt;/div>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\bm&lt;/span>&lt;span style="color:#24909d">{&lt;/span>a&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\bm{a}
+$$
+&lt;/div>
+&lt;/div>
+&lt;h3 id="partial-del-">&lt;strong>Partial, Del, ∂&lt;/strong>&lt;/h3>
+&lt;div class="book-columns flex flex-wrap">
+&lt;div class="flex-even markdown-inner">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-latex" data-lang="latex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\partial&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;div class="flex-even markdown-inner">
+$$
+\partial
+$$
+&lt;/div>
+&lt;/div></description></item><item><title>Docs: Using Custom Style File</title><link>http://forest0923.github.io/memo/en/docs/latex/sty/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/latex/sty/</guid><description>
+&lt;h2 id="create-style-file-sty">Create style file (~.sty)&lt;/h2>
+&lt;h3 id="create-new-command">Create new command&lt;/h3>
+&lt;p>&lt;code>\newcomand&lt;/code> and &lt;code>\renewcommand&lt;/code> allow you to define new command.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\newcommand&lt;/span>&lt;span style="color:#24909d">{&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">\command&lt;/span>-name&lt;span style="color:#24909d">}&lt;/span>[argument-number][default]&lt;span style="color:#24909d">{&lt;/span>definition&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\renewcommand&lt;/span>&lt;span style="color:#24909d">{&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">\command&lt;/span>-name&lt;span style="color:#24909d">}&lt;/span>[argument-number][default]&lt;span style="color:#24909d">{&lt;/span>definition&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Example:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\newcommand&lt;/span>&lt;span style="color:#24909d">{&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">\myfig&lt;/span>&lt;span style="color:#24909d">}&lt;/span>[4][width=5cm]&lt;span style="color:#24909d">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>figure&lt;span style="color:#24909d">}&lt;/span>[H]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\centering&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\includegraphics&lt;/span>&lt;span style="color:#bbb">[#1]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>#2&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\caption&lt;/span>&lt;span style="color:#24909d">{&lt;/span>#3&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\label&lt;/span>&lt;span style="color:#24909d">{&lt;/span>fig:#4&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>figure&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="create-new-environment">Create new environment&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>\newenvironment&lt;/code> and &lt;code>\renewenvironment&lt;/code> allow you to define new environment.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\newenvironment&lt;/span>&lt;span style="color:#24909d">{&lt;/span>environment-name&lt;span style="color:#24909d">}&lt;/span>[argument-number][default]&lt;span style="color:#24909d">{&lt;/span>before&lt;span style="color:#24909d">}{&lt;/span>after&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\renewenvironment&lt;/span>&lt;span style="color:#24909d">{&lt;/span>environment-name&lt;span style="color:#24909d">}&lt;/span>[argument-number][default]&lt;span style="color:#24909d">{&lt;/span>before&lt;span style="color:#24909d">}{&lt;/span>after&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Example:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\definecolor&lt;/span>&lt;span style="color:#24909d">{&lt;/span>code-bg&lt;span style="color:#24909d">}{&lt;/span>rgb&lt;span style="color:#24909d">}{&lt;/span>0.95, 0.95, 0.95&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\newenvironment&lt;/span>&lt;span style="color:#24909d">{&lt;/span>code&lt;span style="color:#24909d">}&lt;/span>[2][]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">{&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">\VerbatimEnvironment\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>[breaklines, frame=lines, bgcolor=code-bg, #1]&lt;span style="color:#24909d">{&lt;/span>#2&lt;span style="color:#24909d">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">{&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="add-style-files">Add style files&lt;/h2>
+&lt;p>Put your file under &lt;code>/usr/local/share/texmf/tex/latex&lt;/code> and execute &lt;code>mktexlsr&lt;/code> as a root user.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> /usr/local/share/texmf/tex/latex/mypkg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mktexlsr
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="tip-where-to-put-the-files">Tip: Where to put the files&lt;/h2>
+&lt;p>You can get the path of texmf.conf like this.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ kpsewhich -all texmf.cnf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/etc/texmf/web2c/texmf.cnf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/usr/share/texmf/web2c/texmf.cnf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/usr/share/texlive/texmf-dist/web2c/texmf.cnf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>When you look inside the file, you will found the following description.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>73 % Local additions to the distribution trees.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>74 TEXMFLOCAL = /usr/local/share/texmf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>232 % p(La)TeX.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>233 TEXINPUTS.ptex = .;$TEXMF/tex/{ptex,plain,generic,}//
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>234 TEXINPUTS.platex = .;$TEXMF/tex/{platex,latex,generic,}//
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>According to these descriptions you can get a correct position.&lt;/p></description></item><item><title>Docs: Using minted for Syntax Highlighting</title><link>http://forest0923.github.io/memo/en/docs/latex/minted/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/latex/minted/</guid><description>
+&lt;h2 id="about">About&lt;/h2>
+&lt;p>minted is a package that enable to add syntax highlight by using Pygments library.&lt;/p>
+&lt;h2 id="installation">Installation&lt;/h2>
+&lt;p>Pygments is written in Python and can be installed by pip&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pip install Pygments
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Package minted is already installed if you use texlive.&lt;/p>
+&lt;h2 id="usage">Usage&lt;/h2>
+&lt;p>At the preamble add some commands as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\usepackage&lt;/span>&lt;span style="color:#bbb">[cache=false]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\usepackage&lt;/span>&lt;span style="color:#24909d">{&lt;/span>xcolor&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\definecolor&lt;/span>&lt;span style="color:#24909d">{&lt;/span>code-bg&lt;span style="color:#24909d">}{&lt;/span>rgb&lt;span style="color:#24909d">}{&lt;/span>0.95, 0.95, 0.95&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>You can then use syntax highlighting in your document as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>[breaklines, linenos, frame=lines, bgcolor=code-bg]&lt;span style="color:#24909d">{&lt;/span>c&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#include &amp;lt;stdio.h&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>int main()&lt;span style="color:#24909d">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf(&amp;#34;Hello, World!&amp;#34;);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Otherwise, you can use &lt;code>\inputminted&lt;/code> to include source files.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\inputminted&lt;/span>&lt;span style="color:#bbb">[breaklines, linenos, frame=lines, bgcolor=code-bg]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>python&lt;span style="color:#24909d">}{&lt;/span>src/hello.py&lt;span style="color:#24909d">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>There are several options for configuring the code visuals.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">Option&lt;/th>
+&lt;th style="text-align:left">Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">breaklines&lt;/td>
+&lt;td style="text-align:left">Insert break when source code exceeds page width.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">linenos&lt;/td>
+&lt;td style="text-align:left">Add line numbers.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">frame=lines&lt;/td>
+&lt;td style="text-align:left">Add frame (line, single, &amp;hellip;).&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">bgcolor=code-bg&lt;/td>
+&lt;td style="text-align:left">Add background color.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item></channel></rss>

@@ -9,9 +9,9 @@ See https://github.com/twbs/bootstrap/pull/23260
 @import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap");
 @fa-font-path :        "../webfonts";
 /*!
- * Bootstrap v4.6.1 (https://getbootstrap.com/)
- * Copyright 2011-2021 The Bootstrap Authors
- * Copyright 2011-2021 Twitter, Inc.
+ * Bootstrap v4.6.2 (https://getbootstrap.com/)
+ * Copyright 2011-2022 The Bootstrap Authors
+ * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root {
@@ -358,7 +358,7 @@ hr {
 
 small,
 .small {
-  font-size: 80%;
+  font-size: 0.875em;
   font-weight: 400; }
 
 mark,
@@ -389,7 +389,7 @@ mark,
 
 .blockquote-footer {
   display: block;
-  font-size: 80%;
+  font-size: 0.875em;
   color: #aaa; }
   .blockquote-footer::before {
     content: "\2014\00A0"; }
@@ -1549,7 +1549,7 @@ textarea.form-control {
   display: none;
   width: 100%;
   margin-top: 0.25rem;
-  font-size: 80%;
+  font-size: 0.875em;
   color: #457bf8; }
 
 .valid-tooltip {
@@ -1636,7 +1636,7 @@ textarea.form-control {
   display: none;
   width: 100%;
   margin-top: 0.25rem;
-  font-size: 80%;
+  font-size: 0.875em;
   color: #ED6A5A; }
 
 .invalid-tooltip {
@@ -2223,6 +2223,13 @@ input[type="button"].btn-block {
   @media (prefers-reduced-motion: reduce) {
     .collapsing {
       transition: none; } }
+  .collapsing.width {
+    width: 0;
+    height: auto;
+    transition: width 0.35s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      .collapsing.width {
+        transition: none; } }
 .dropup,
 .dropright,
 .dropdown,
@@ -2681,7 +2688,7 @@ input[type="button"].btn-block {
   display: block;
   min-height: 1.5rem;
   padding-left: 1.5rem;
-  color-adjust: exact; }
+  print-color-adjust: exact; }
 
 .custom-control-inline {
   display: inline-flex;
@@ -2727,7 +2734,7 @@ input[type="button"].btn-block {
     pointer-events: none;
     content: "";
     background-color: #111;
-    border: #999 solid 1px;
+    border: 1px solid #999;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
   .custom-control-label::after {
     position: absolute;
@@ -3035,10 +3042,12 @@ input[type="button"].btn-block {
   border-bottom: 1px solid #555; }
   .nav-tabs .nav-link {
     margin-bottom: -1px;
+    background-color: transparent;
     border: 1px solid transparent;
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem; }
     .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+      isolation: isolate;
       border-color: #444 #444 #555; }
     .nav-tabs .nav-link.disabled {
       color: #aaa;
@@ -3055,6 +3064,8 @@ input[type="button"].btn-block {
     border-top-right-radius: 0; }
 
 .nav-pills .nav-link {
+  background: none;
+  border: 0;
   border-radius: 0.25rem; }
 
 .nav-pills .nav-link.active,
@@ -4393,8 +4404,8 @@ a.close.disabled {
   text-transform: none;
   letter-spacing: normal;
   word-break: normal;
-  word-spacing: normal;
   white-space: normal;
+  word-spacing: normal;
   line-break: auto;
   font-size: 0.875rem;
   word-wrap: break-word;
@@ -4478,8 +4489,8 @@ a.close.disabled {
   text-transform: none;
   letter-spacing: normal;
   word-break: normal;
-  word-spacing: normal;
   white-space: normal;
+  word-spacing: normal;
   line-break: auto;
   font-size: 0.875rem;
   word-wrap: break-word;
@@ -4745,7 +4756,7 @@ a.close.disabled {
   width: 2rem;
   height: 2rem;
   vertical-align: -0.125em;
-  border: 0.25em solid currentColor;
+  border: 0.25em solid currentcolor;
   border-right-color: transparent;
   border-radius: 50%;
   animation: .75s linear infinite spinner-border; }
@@ -4767,7 +4778,7 @@ a.close.disabled {
   width: 2rem;
   height: 2rem;
   vertical-align: -0.125em;
-  background-color: currentColor;
+  background-color: currentcolor;
   border-radius: 50%;
   opacity: 0;
   animation: .75s linear infinite spinner-grow; }
@@ -14314,18 +14325,16 @@ div.drawioframe {
   margin: 0rem 0 2rem 0; }
 
 .tab-content .tab-pane {
-  margin: 0rem;
+  margin-top: 0rem;
+  margin-bottom: 1.5rem;
   max-width: 80%;
-  border-left: none;
-  border-right: none;
-  border-bottom: none; }
+  border-left: 1px solid rgba(0, 0, 0, 0.125);
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125); }
   .tab-content .tab-pane .highlight {
+    margin: 0rem 0 0rem 0;
     border: none;
     max-width: 100%; }
-  .tab-content .tab-pane pre {
-    border-left: 1px solid rgba(0, 0, 0, 0.125);
-    border-right: 1px solid rgba(0, 0, 0, 0.125);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125); }
 
 .tab-body {
   font-weight: 500;

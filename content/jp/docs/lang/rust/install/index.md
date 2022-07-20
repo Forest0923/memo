@@ -8,7 +8,7 @@ weight: 10
 rustup を用いて rust のインストールやバージョン管理を行います．
 rustup をインストールしたら `$HOME/.cargo/bin` を PATH に追加します．
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -49,7 +49,7 @@ rustup self uninstall
 
 新しいプロジェクトは `cargo new` で作成します．
 
-{{< tabpane "cargo new" >}}
+{{< tabpane >}}
 {{< tab "executable" >}}
 
 ```sh

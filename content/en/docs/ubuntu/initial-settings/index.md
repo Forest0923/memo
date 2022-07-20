@@ -22,7 +22,7 @@ chmod +x ubuntu-initial-settings.sh
 
 Set the time as follows.
 
-{{< tabpane "sleep" >}}
+{{< tabpane >}}
 {{< tab "Never">}}
 
 ```sh
@@ -55,7 +55,7 @@ gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
 
 ### **Change Server for apt**
 
-{{< tabpane "apt_server" >}}
+{{< tabpane >}}
 {{< tab "JAIST">}}
 
 ```sh
@@ -118,7 +118,7 @@ sudo sed -i 's/# set bell-style none/set bell-style none/' /etc/inputrc
 
 ### **Editor**
 
-{{< tabpane "editor" >}}
+{{< tabpane >}}
 {{< tab "Vim" >}}
 
 ```sh

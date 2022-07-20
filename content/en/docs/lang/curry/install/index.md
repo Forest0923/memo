@@ -7,7 +7,7 @@ Curry is a language that has features of both functional and logic programming l
 
 ## Install
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh

@@ -7,7 +7,7 @@ weight: 70
 
 ### Install
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -176,7 +176,7 @@ doxygen foo/bar/Doxygen
 
 Arch Linux の場合は AUR からインストールできます．Ubuntu では [GitHub: CoatiSoftware/Sourcetrail](https://github.com/CoatiSoftware/Sourcetrail/releases) からダウンロードする必要があります．
 
-{{< tabpane "Install" >}}
+{{< tabpane >}}
 {{< tab "Arch">}}
 
 ```sh

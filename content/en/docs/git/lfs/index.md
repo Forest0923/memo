@@ -10,7 +10,7 @@ Git Large File Storage enables to upload large file that is larger than 100MB.
 
 Install git-lfs with following commands.
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh

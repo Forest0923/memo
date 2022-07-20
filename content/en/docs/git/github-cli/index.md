@@ -9,15 +9,13 @@ In this page, I will explain how to install, configure and use the GitHub CLI.
 
 Use the following command to install GitHub CLI.
 
-{{< tabpane "install" >}}
-{{< tab "Arch" >}}
+{{< tabpane >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S github-cli
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{% tab header="Ubuntu" %}}
 
 For Ubuntu, it is not possible to install directly from apt, so you will have to install via snap.
 
@@ -29,7 +27,7 @@ sudo apt install snapd
 sudo snap install gh
 ```
 
-{{< /tab >}}
+{{% /tab %}}
 {{< /tabpane >}}
 
 ## **Configuration**

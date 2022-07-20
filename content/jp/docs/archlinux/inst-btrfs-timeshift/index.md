@@ -314,7 +314,7 @@ reboot
 
 AUR ヘルパーを用いて timeshift をインストールします．
 
-{{< tabpane "aurhelper" >}}
+{{< tabpane >}}
 {{< tab "paru" >}}
 
 ```sh

@@ -7,7 +7,7 @@ weight: 20
 
 Executing ssh-keygen as follows will generate a key using the algorithm you have selected.
 
-{{< tabpane "ssh-keygen" >}}
+{{< tabpane >}}
 {{< tab "EdDSA" >}}
 
 ```sh

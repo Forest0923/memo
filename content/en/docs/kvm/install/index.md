@@ -5,7 +5,7 @@ weight: 10
 ---
 ## Install
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh

@@ -11,7 +11,7 @@ weight: 50
 
 グラフィックドライバをインストールします．
 
-{{< tabpane "gpu-driver" >}}
+{{< tabpane >}}
 {{< tab "Intel" >}}
 
 ```sh
@@ -42,7 +42,7 @@ sudo pacman -S xorg
 
 ログインを GUI で行うためにディスプレイマネージャをインストールします．
 
-{{< tabpane "display-manager" >}}
+{{< tabpane >}}
 {{< tab "lightdm" >}}
 
 ```sh
@@ -61,7 +61,7 @@ sudo pacman -S gdm
 
 ### **Desktop Environment**
 
-{{< tabpane "desktop-environment" >}}
+{{< tabpane >}}
 {{< tab "xfce" >}}
 
 ```sh
@@ -89,7 +89,7 @@ sudo pacman -S budgie-desktop gnome
 
 ディスプレイマネージャを自動で起動するように systemd を設定します．
 
-{{< tabpane "systemd" >}}
+{{< tabpane >}}
 {{< tab "lightdm" >}}
 
 ```sh

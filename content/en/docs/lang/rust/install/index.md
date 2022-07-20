@@ -8,7 +8,7 @@ weight: 10
 Use rustup to install and version control rust.
 After installing rustup, add `$HOME/.cargo/bin` to your PATH.
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -49,7 +49,7 @@ rustup self uninstall
 
 To create new project, run `cargo new`.
 
-{{< tabpane "cargo new" >}}
+{{< tabpane >}}
 {{< tab "executable" >}}
 
 ```sh

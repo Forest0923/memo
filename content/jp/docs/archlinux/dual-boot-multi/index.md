@@ -264,7 +264,7 @@ reboot
 
 ### **グラフィックドライバ**
 
-{{< tabpane "gpu-driver" >}}
+{{< tabpane >}}
 {{< tab "Nvidia" >}}
 
 ```sh

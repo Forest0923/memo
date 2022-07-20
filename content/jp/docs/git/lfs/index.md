@@ -10,7 +10,7 @@ GitHub にアップロードできる最大のファイルサイズはデフォ�
 
 下記コマンドでインストールします．
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh

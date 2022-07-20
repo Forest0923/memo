@@ -9,7 +9,7 @@ SSH は Secure Shell の略で，リモートから安全にコンピュータ�
 
 ### インストール
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -30,7 +30,7 @@ sudo apt install openssh-client
 
 ssh-keygen で鍵を生成します．
 
-{{< tabpane "ssh-keygen" >}}
+{{< tabpane >}}
 {{< tab "RSA" >}}
 
 ```sh

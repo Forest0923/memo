@@ -264,12 +264,10 @@ reboot
 
 ### **Graphic Driver**
 
-{{< tabpane "gpu-driver" >}}
-{{< tab "Nvidia" >}}
+{{< tabpane >}}
+{{< tab header="Nvidia" lang="sh" >}}
 
-```sh
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

@@ -9,7 +9,7 @@ SSH stands for Secure Shell, a protocol that allows you to communicate with a co
 
 ### Install
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -30,7 +30,7 @@ sudo apt install openssh-client
 
 Generate a key with ssh-keygen.
 
-{{< tabpane "ssh-keygen" >}}
+{{< tabpane >}}
 {{< tab "RSA" >}}
 
 ```sh

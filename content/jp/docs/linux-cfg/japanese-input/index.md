@@ -7,7 +7,7 @@ Fcitx（Flexible Input Method Framework）と Mozc を用いた日本語入力�
 
 ## インストール
 
-{{< tabpane "japanese-input" >}}
+{{< tabpane >}}
 {{< tab "fcitx5" >}}
 
 fcitx5 は fcitx の後継のソフトウェアです．

@@ -314,23 +314,19 @@ reboot
 
 Install Timeshift with AUR helper.
 
-{{< tabpane "aurhelper" >}}
-{{< tab "paru" >}}
+{{< tabpane >}}
+{{< tab header="paru" lang="sh" >}}
 
-```sh
 git clone https://aur.archlinux.org/paru
 cd paru
 makepkg -si
-```
 
 {{< /tab >}}
-{{< tab "yay" >}}
+{{< tab header="yay" lang="sh" >}}
 
-```sh
 git clone https://aur.archlinux.org/yay
 cd yay
 makepkg -si
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

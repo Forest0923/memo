@@ -11,7 +11,7 @@ Android 用のアプリケーションパッケージである APK ファイル�
 
 APK の解凍やリビルドを容易に行えるリバースエンジニアリングのためのツール．
 
-{{< tabpane "Apktool" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -29,7 +29,7 @@ paru -S android-apktool-git
 
 Android の dex フォーマットを Java の class に変換するツール．
 
-{{< tabpane "dex2jar" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh
@@ -47,7 +47,7 @@ paru -S dex2jar-git
 
 Java Decompiler の CLI ツール．
 
-{{< tabpane "jd-cli" >}}
+{{< tabpane >}}
 {{< tab "Black Arch" >}}
 
 ```sh
@@ -61,7 +61,7 @@ paru -S jd-cli
 
 Java Decompiler の GUI ツール．
 
-{{< tabpane "jd-gui" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh

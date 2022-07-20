@@ -9,7 +9,7 @@ weight: 10
 
 下記のコマンドでインストールします．
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh

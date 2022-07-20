@@ -7,7 +7,7 @@ Curry は関数型プログラミング言語と論理型プログラミング�
 
 ## インストール
 
-{{< tabpane "install" >}}
+{{< tabpane >}}
 {{< tab "Arch" >}}
 
 ```sh

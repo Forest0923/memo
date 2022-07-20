@@ -11,7 +11,7 @@ BSPWM という Tile 型のウィンドウマネージャをインストール�
 
 グラフィックドライバをインストールします．
 
-{{< tabpane "gpu-driver" >}}
+{{< tabpane >}}
 {{< tab "Intel" >}}
 
 ```sh

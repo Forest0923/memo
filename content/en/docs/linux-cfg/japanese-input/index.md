@@ -7,7 +7,7 @@ This is a memo on how to set up Japanese input using Fcitx (Flexible Input Metho
 
 ## Install
 
-{{< tabpane "japanese-input" >}}
+{{< tabpane >}}
 {{< tab "fcitx5" >}}
 
 fcitx5 is a successor to fcitx.

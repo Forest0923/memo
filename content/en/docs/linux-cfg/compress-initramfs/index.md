@@ -23,7 +23,7 @@ sudo vim /etc/initramfs-tools/initramfs.conf
 
 Install xz-utils and update initramfs.
 
-{{< tabpane "update-initramfs" >}}
+{{< tabpane >}}
 {{< tab "Ubuntu" >}}
 
 ```sh

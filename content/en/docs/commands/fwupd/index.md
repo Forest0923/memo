@@ -6,19 +6,15 @@ weight: 50
 ## Install
 
 
-{{< tabpane "install" >}}
-{{< tab "Arch" >}}
+{{< tabpane >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S fwupd
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install fwupd
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

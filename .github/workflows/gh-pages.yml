@@ -9,7 +9,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          submodules: true
+          submodules: recursive
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -21,12 +21,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+      
+      - run: npm install
 
       - name: Build
-        run: |
-          npm install autoprefixer
-          npm install postcss-cli
-          hugo --minify
+        run: hugo --minify
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

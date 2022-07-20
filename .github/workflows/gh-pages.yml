@@ -24,8 +24,8 @@ jobs:
           node-version: '13.x'
       
       - run: npm install
-      - run: npm install postcss-cli
       - run: npm install autoprefixer
+      - run: npm install postcss-cli
 
       - name: Build
         run: hugo --minify

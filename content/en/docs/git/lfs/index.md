@@ -11,18 +11,14 @@ Git Large File Storage enables to upload large file that is larger than 100MB.
 Install git-lfs with following commands.
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S git-lfs
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install git-lfs
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

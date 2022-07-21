@@ -10,14 +10,12 @@ weight: 10
 下記のコマンドでインストールします．
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S github-cli
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{% tab header="Ubuntu" text=true %}}
 
 Ubuntu の場合は apt から直接インストールできないので，snap 経由でインストールします．
 
@@ -29,7 +27,7 @@ sudo apt install snapd
 sudo snap install gh
 ```
 
-{{< /tab >}}
+{{% /tab %}}
 {{< /tabpane >}}
 
 ## 設定

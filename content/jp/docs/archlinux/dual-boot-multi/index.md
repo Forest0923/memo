@@ -265,11 +265,9 @@ reboot
 ### **グラフィックドライバ**
 
 {{< tabpane >}}
-{{< tab "Nvidia" >}}
+{{< tab header="Nvidia" lang="sh" >}}
 
-```sh
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

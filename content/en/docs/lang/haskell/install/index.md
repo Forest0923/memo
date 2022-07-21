@@ -10,19 +10,15 @@ This is a guide to installing Haskell using Stack.
 Stack is a tool for managing haskell projects, installing compilers and packages, and building projects. The installation is done as follows.
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S stack
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 curl -sSL https://get.haskellstack.org/ | sh
 stack upgrade
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

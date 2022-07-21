@@ -8,21 +8,17 @@ Curry は関数型プログラミング言語と論理型プログラミング�
 ## インストール
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 paru -S pakcs
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt-add-repository ppa:swi-prolog/stable
 sudo apt update
 sudo apt install swi-prolog
 sudo apt install pakcs
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

@@ -24,12 +24,10 @@ sudo vim /etc/initramfs-tools/initramfs.conf
 Install xz-utils and update initramfs.
 
 {{< tabpane >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install xz-utils
 sudo update-initramfs -u -k all
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

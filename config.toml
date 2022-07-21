@@ -79,7 +79,7 @@ weight = 2
   [markup.highlight]
     # https://xyproto.github.io/splash/docs/all.html
     style = "native"
-    guessSyntax = "true"
+    guessSyntax = false
 
 
 #########################
@@ -140,6 +140,12 @@ enable = false
   icon = "fab fa-gitlab"
   desc = "Development takes place here!"
 
+[params.katex]
+enable = true
+
+[params.mermaid]
+enable = true
+theme = 'dark'
 
 ####################################
 # hugo module configuration

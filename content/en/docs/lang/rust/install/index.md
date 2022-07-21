@@ -9,18 +9,14 @@ Use rustup to install and version control rust.
 After installing rustup, add `$HOME/.cargo/bin` to your PATH.
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S rustup
-```
 
 {{< /tab >}}
-{{< tab "Otherwise" >}}
+{{< tab header="Otherwise" lang="sh" >}}
 
-```sh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
 
 {{< /tab >}}
 {{< /tabpane >}}
@@ -50,18 +46,14 @@ rustup self uninstall
 To create new project, run `cargo new`.
 
 {{< tabpane >}}
-{{< tab "executable" >}}
+{{< tab header="executable" lang="sh" >}}
 
-```sh
 cargo new dir_name --bin
-```
 
 {{< /tab >}}
-{{< tab "library" >}}
+{{< tab header="library" lang="sh" >}}
 
-```sh
 cargo new dir_name --lib
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

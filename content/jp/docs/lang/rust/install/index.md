@@ -9,18 +9,14 @@ rustup を用いて rust のインストールやバージョン管理を行い�
 rustup をインストールしたら `$HOME/.cargo/bin` を PATH に追加します．
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S rustup
-```
 
 {{< /tab >}}
-{{< tab "Otherwise" >}}
+{{< tab header="Otherwise" lang="sh" >}}
 
-```sh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
 
 {{< /tab >}}
 {{< /tabpane >}}
@@ -50,18 +46,14 @@ rustup self uninstall
 新しいプロジェクトは `cargo new` で作成します．
 
 {{< tabpane >}}
-{{< tab "executable" >}}
+{{< tab header="executable" lang="sh" >}}
 
-```sh
 cargo new dir_name --bin
-```
 
 {{< /tab >}}
-{{< tab "library" >}}
+{{< tab header="library" lang="sh" >}}
 
-```sh
 cargo new dir_name --lib
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

@@ -67,60 +67,55 @@ $$&lt;/p>
 &lt;h2 id="how-to-use-ssh-client">How to use SSH (client)&lt;/h2>
 &lt;h3 id="install">Install&lt;/h3>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S openssh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S openssh&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install openssh-client
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install openssh-client&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h3 id="key-generation">Key Generation&lt;/h3>
 &lt;p>Generate a key with ssh-keygen.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-01-00" aria-selected="false">RSA&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
-aria-controls="tabs-01-01" aria-selected="false">ECDSA&lt;/a>
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-01" aria-selected="false">Tab 2&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-01-02-tab" data-toggle="tab" href="#tabs-01-02" role="tab"
-aria-controls="tabs-01-02" aria-selected="false">EdDSA&lt;/a>
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-02" aria-selected="false">Tab 3&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
 id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b 4096
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b &lt;span style="color:#3677a9">4096&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b 521
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b &lt;span style="color:#3677a9">521&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-01-02" role="tabpanel" aria-labelled-by="tabs-01-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;p>By default, the public key &lt;code>id_[algorithm].pub&lt;/code> and the private key &lt;code>id_[algorithm]&lt;/code> are created in &lt;code>~/.ssh/&lt;/code>. You can communicate without password authentication by registering a public key with the SSH server.&lt;/p></description></item><item><title>Docs: Hack</title><link>http://forest0923.github.io/memo/en/docs/security/hack/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/security/hack/</guid><description>
 &lt;h2 id="links">Links&lt;/h2>

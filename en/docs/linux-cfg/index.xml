@@ -8,17 +8,16 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ COMPRESS=xz
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Install xz-utils and update initramfs.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Ubuntu&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install xz-utils
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo update-initramfs -u -k all
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install xz-utils
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo update-initramfs -u -k all&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div></description></item><item><title>Docs: Gnome Configurations</title><link>http://forest0923.github.io/memo/en/docs/linux-cfg/gnome/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-cfg/gnome/</guid><description>
 &lt;h2 id="disable-wayland">Disable wayland&lt;/h2>
 &lt;p>Edit &lt;code>/etc/gdm/custom.conf&lt;/code> as follows.&lt;/p>
@@ -59,29 +58,26 @@ id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
 &lt;p>This is a memo on how to set up Japanese input using Fcitx (Flexible Input Method Framework) and Mozc.&lt;/p>
 &lt;h2 id="install">Install&lt;/h2>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">fcitx5&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">fcitx&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>fcitx5 is a successor to fcitx.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
+&lt;p>fcitx5 is a successor to fcitx.&lt;/p>
 &lt;h2 id="configurations">Configurations&lt;/h2>
 &lt;p>Add Mozc to the input method in fcitx configuration tool. Then, create &lt;code>~/.pam_environment&lt;/code>.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim ~/.pam_environment

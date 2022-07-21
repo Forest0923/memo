@@ -1,0 +1,104 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Linux の設定いろいろ</title><link>http://forest0923.github.io/memo/jp/docs/linux-cfg/</link><description>Recent content in Linux の設定いろいろ on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/jp/docs/linux-cfg/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Gnome の設定</title><link>http://forest0923.github.io/memo/jp/docs/linux-cfg/gnome/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-cfg/gnome/</guid><description>
+&lt;h2 id="wayland-の無効化">Wayland の無効化&lt;/h2>
+&lt;p>&lt;code>/etc/gdm/custom.conf&lt;/code> を下記のように編集します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- #WaylandEnable=false
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ WaylandEnable=false
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ DefaultSession=gnome-xorg.desktop
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/usr/lib/gdm-disable-wayland&lt;/code> を root 権限で実行してもOKです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo /usr/lib/gdm-disable-wayland
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="アラート音を消す">アラート音を消す&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>dconf write /org/gnome/desktop/sound/event-sounds &lt;span style="color:#ed9d13">&amp;#34;false&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: GRUB の解像度設定</title><link>http://forest0923.github.io/memo/jp/docs/linux-cfg/grub-resolution/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-cfg/grub-resolution/</guid><description>
+&lt;h2 id="環境">環境&lt;/h2>
+&lt;ul>
+&lt;li>Arch&lt;/li>
+&lt;li>CUI&lt;/li>
+&lt;/ul>
+&lt;h2 id="使用できる解像度の確認">使用できる解像度の確認&lt;/h2>
+&lt;p>使用できる解像度を確認するために，GRUB のターミナルを開きます．&lt;/p>
+&lt;p>&lt;img src="./grub00.png" alt="">
+&lt;img src="./grub01.png" alt="">&lt;/p>
+&lt;p>ターミナルで videoinfo を実行すると選択可能な解像度のリストが表示されます．&lt;/p>
+&lt;p>&lt;img src="./grub02.png" alt="">&lt;/p>
+&lt;h2 id="解像度の設定">解像度の設定&lt;/h2>
+&lt;p>確認した解像度のリストを参考に /etc/default/grub を修正して解像度を設定します．基本的には GRUB_GFXMODE と GRUB_GFX_PAYLOAD_LINUX を下記のように変更すれば良いはずですが，私の実行環境ではGRUB_CMDLINE_LINUX_DEFAULT に nomodeset を追加しないとカーネル起動後に解像度が低いままになってしまいました．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GRUB_CMDLINE_LINUX_DEFAULT=&amp;#34;loglevel=3 quiet nomodeset&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># The resolution used on graphical terminal
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># note that you can use only modes which your graphic card supports via VBE
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># you can see them in real GRUB with the command `vbeinfo&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GRUB_GFXMODE=1920x1080x32
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># Uncomment to allow the kernel use the same resolution used by grub
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GRUB_GFXPAYLOAD_LINUX=keep
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: initramfs の圧縮</title><link>http://forest0923.github.io/memo/jp/docs/linux-cfg/compress-initramfs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-cfg/compress-initramfs/</guid><description>
+&lt;p>&lt;code>/boot&lt;/code> のパーティションが小さすぎて initramfs が入り切らない場合があります．この場合，カーネル開発で複数のカーネルをインストールすることができなくなってしまうので，圧縮方法を変えることで解決します．&lt;/p>
+&lt;p>&lt;code>/etc/initramfs-tools/initramfs.conf&lt;/code> を編集して，xz で圧縮するように変更します（xz は圧縮率は高いですが，解凍速度は遅くなります）．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /etc/initramfs-tools/initramfs.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- MODULES=most
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ MODULES=dep
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- COMPRESS=lz4
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ COMPRESS=xz
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>xz-utils をインストールして initramfs をアップデートします．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Ubuntu&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install xz-utils
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo update-initramfs -u -k all&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div></description></item><item><title>Docs: L2TP IPsec</title><link>http://forest0923.github.io/memo/jp/docs/linux-cfg/l2tp-ipsec/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-cfg/l2tp-ipsec/</guid><description>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S xl2tpd strongswan networkmanager-l2tp
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: キーマッピング</title><link>http://forest0923.github.io/memo/jp/docs/linux-cfg/keymaps/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-cfg/keymaps/</guid><description>
+&lt;p>Caps lock などのキーに他のキーを割り当てる方法をメモします．&lt;/p>
+&lt;h2 id="create-custom-key-mapping">Create Custom Key Mapping&lt;/h2>
+&lt;p>キーマップを保存するためのディレクトリを作成します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mkdir -p /usr/local/share/kbd/keymaps
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>dumpkeys でオリジナルのキーを取得して保存します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo dumpkeys | sudo tee /usr/local/share/kbd/keymaps/my-keymaps.map
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/usr/local/share/kbd/keymaps/my-keymaps.map&lt;/code> を修正して Caps lock をコントロールに変更します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /usr/local/share/kbd/keymaps/my-keymaps.map
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- keycode 58 = Caps_Lock
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ keycode 58 = Control
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/etc/vconsole.conf&lt;/code> を作成して，&lt;code>my-keymaps.map&lt;/code> を読み込ませます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ KEYMAP=/usr/local/share/kbd/keymaps/my-keymaps.map
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: 日本語入力</title><link>http://forest0923.github.io/memo/jp/docs/linux-cfg/japanese-input/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-cfg/japanese-input/</guid><description>
+&lt;p>Fcitx（Flexible Input Method Framework）と Mozc を用いた日本語入力の設定のメモです．&lt;/p>
+&lt;h2 id="インストール">インストール&lt;/h2>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">fcitx5&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-01" aria-selected="false">fcitx&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;p>fcitx5 は fcitx の後継のソフトウェアです．&lt;/p>
+&lt;h2 id="設定">設定&lt;/h2>
+&lt;p>fcitx configuration の入力メソッドに Mozc を追加し，&lt;code>~/.pam_environment&lt;/code> を作成します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim ~/.pam_environment
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ GTK_IM_MODULE DEFAULT=fcitx
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ QT_IM_MODULE DEFAULT=fcitx
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ XMODIFIERS DEFAULT=\@im=fcitx
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ SDL_IM_MODULE DEFAULT=fcitx
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>これで上手く行かない場合は下記のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gsettings &lt;span style="color:#24909d">set&lt;/span> org.gnome.settings-daemon.plugins.xsettings overrides &lt;span style="color:#ed9d13">&amp;#34;{&amp;#39;Gtk/IMModule&amp;#39;:&amp;lt;&amp;#39;fcitx&amp;#39;&amp;gt;}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

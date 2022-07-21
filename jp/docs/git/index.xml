@@ -1,0 +1,239 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Git</title><link>http://forest0923.github.io/memo/jp/docs/git/</link><description>Recent content in Git on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/jp/docs/git/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: GitHub CLI</title><link>http://forest0923.github.io/memo/jp/docs/git/github-cli/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/git/github-cli/</guid><description>
+&lt;p>このページでは GitHub CLI のインストール，設定，使い方をまとめます．&lt;/p>
+&lt;h2 id="インストール">インストール&lt;/h2>
+&lt;p>下記のコマンドでインストールします．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S github-cli&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-body tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;p>Ubuntu の場合は apt から直接インストールできないので，snap 経由でインストールします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install snapd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo snap install gh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h2 id="設定">設定&lt;/h2>
+&lt;p>次のコマンドを実行することでアカウントの認証ができます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gh auth login
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ステップごとにガイドが表示されるので環境に合わせて選択すれば認証できます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>? What account do you want to log into? [Use arrows to move, type to filter]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; GitHub.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> GitHub Enterprise Server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>? What account do you want to log into? GitHub.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? What is your preferred protocol for Git operations? [Use arrows to move, type to filter]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> HTTPS
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; SSH
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>? What account do you want to log into? GitHub.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? What is your preferred protocol for Git operations? SSH
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? Upload your SSH public key to your GitHub account? [Use arrows to move, type to filter]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; /home/user/.ssh/id_ed25519.pub
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Skip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>? What account do you want to log into? GitHub.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? What is your preferred protocol for Git operations? SSH
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? Upload your SSH public key to your GitHub account? /home/user/.ssh/id_ed25519.pub
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? How would you like to authenticate GitHub CLI? [Use arrows to move, type to filter]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; Login with a web browser
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Paste an authentication token
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>? What account do you want to log into? GitHub.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? What is your preferred protocol for Git operations? SSH
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? Upload your SSH public key to your GitHub account? /home/user/.ssh/id_ed25519.pub
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? How would you like to authenticate GitHub CLI? Login with a web browser
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>! First copy your one-time code: 51E6-B724
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>- Press Enter to open github.com in your browser...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="使い方">使い方&lt;/h2>
+&lt;h3 id="リポジトリ作成">&lt;strong>リポジトリ作成&lt;/strong>&lt;/h3>
+&lt;p>GitHub に新しいリポジトリを追加したいときは，ブラウザから GUI で作成するか，gh を下記のように使います．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gh repo create &amp;lt;repo-name&amp;gt; &amp;lt;visibility&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>例：github-test という名前のプライベートリポジトリを作成する&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gh repo create github-test --private
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>例：github-test という名前のパブリックリポジトリを作成する&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gh repo create github-test --public
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: GitHub への SSH 接続</title><link>http://forest0923.github.io/memo/jp/docs/git/github-ssh/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/git/github-ssh/</guid><description>
+&lt;h2 id="ssh-key-の生成">SSH Key の生成&lt;/h2>
+&lt;p>ssh-keygen を用いて下記のようにコマンドを実行すると選択したアルゴリズムで鍵が生成されます．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">EdDSA&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-01" aria-selected="false">RSA&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-02-tab" data-toggle="tab" href="#tabs-00-02" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-02" aria-selected="false">ECDSA&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b &lt;span style="color:#3677a9">4096&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-02" role="tabpanel" aria-labelled-by="tabs-00-02-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b &lt;span style="color:#3677a9">521&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;p>生成時に特に変更を加えなければ &lt;code>~/.ssh&lt;/code> に秘密鍵の &lt;code>id_[algorithm]&lt;/code> と公開鍵の &lt;code>id_[algorithm].pub&lt;/code> が生成されます．&lt;/p>
+&lt;h2 id="ssh-agent-への秘密鍵の登録">SSH Agent への秘密鍵の登録&lt;/h2>
+&lt;p>SSH Agent に鍵を登録することで，毎回パスフレーズを求められることがなくなります．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">eval&lt;/span> &lt;span style="color:#ed9d13">&amp;#34;&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">$(&lt;/span>ssh-agent -s&lt;span style="color:#6ab825;font-weight:bold">)&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-add ~/.ssh/id_[algorithm]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="github-への公開鍵の登録">GitHub への公開鍵の登録&lt;/h2>
+&lt;h3 id="ブラウザから登録する場合">ブラウザから登録する場合&lt;/h3>
+&lt;p>GitHub で自分のアカウントページから &lt;code>Settings &amp;gt; SSH and GPG keys&lt;/code> と進み，&lt;code>New SSH key&lt;/code> を押して &lt;code>id_[algorithm].pub&lt;/code> の内容をコピペして登録します．&lt;/p>
+&lt;h3 id="github-cli-を用いる場合">GitHub CLI を用いる場合&lt;/h3>
+&lt;p>GitHub CLI の初期設定で実行する下記コマンドでも鍵を登録できます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gh auth login
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>接続プロトコルで SSH を選んだ場合に公開鍵をアップロードするか選択することができます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>? What account do you want to log into? GitHub.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? What is your preferred protocol for Git operations? [Use arrows to move, type to filter]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> HTTPS
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; SSH
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>? What account do you want to log into? GitHub.com
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? What is your preferred protocol for Git operations? SSH
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>? Upload your SSH public key to your GitHub account? [Use arrows to move, type to filter]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;gt; /home/user/.ssh/id_ed25519.pub
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Skip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="接続テスト">接続テスト&lt;/h2>
+&lt;p>下記のコマンドを実行して接続テストを行います．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh git@github.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>フィンガープリントが表示されるので，&lt;a href="https://docs.github.com/ja/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints">https://docs.github.com/ja/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints&lt;/a> と比較して github.com であることを確認したら yes を選択します．&lt;/p>
+&lt;blockquote>
+&lt;p>Reference:&lt;/p>
+&lt;p>&lt;a href="https://help.github.com/ja/github/authenticating-to-github/connecting-to-github-with-ssh">GitHubにSSHで接続する&lt;/a>&lt;/p>
+&lt;/blockquote></description></item><item><title>Docs: Git の使い方（使用例）</title><link>http://forest0923.github.io/memo/jp/docs/git/usecases/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/git/usecases/</guid><description>
+&lt;h2 id="git-add-を取り消す">git add を取り消す&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git reset
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># or&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git reset &amp;lt;file&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="git-commit-を取り消す">git commit を取り消す&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># Reset contents &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git reset &amp;lt;tag&amp;gt; --hard
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># Reset commit and keep changes&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git reset &amp;lt;tag&amp;gt; --soft
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="以前のコミット時の状態に戻す">以前のコミット時の状態に戻す&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git checkout &amp;lt;tag&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: サブモジュール</title><link>http://forest0923.github.io/memo/jp/docs/git/submodule/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/git/submodule/</guid><description>
+&lt;p>サブモジュールはレポジトリ内に Git 管理している別のリポジトリをサブディレクトリとして含めることができる機能です．ライブラリや自分が開発している他のプロジェクトの内容を使いたい場合にメインのプロジェクトとは別で管理しながらプロジェクト内に組み込むことができます．&lt;/p>
+&lt;h2 id="サブモジュールの追加">&lt;strong>サブモジュールの追加&lt;/strong>&lt;/h2>
+&lt;p>サブモジュールを追加するには次のコマンドを使用します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git submodule add
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>サブモジュールとして追加したリポジトリの情報は .gitmodules に記述されます．&lt;/p>
+&lt;h2 id="サブモジュールを含んだリポジトリのクローン">&lt;strong>サブモジュールを含んだリポジトリのクローン&lt;/strong>&lt;/h2>
+&lt;p>サブモジュールを含んだリポジトリを通常のリポジトリと同様に clone すると，サブモジュールのディレクトリは空の状態になります．サブモジュールも一緒にクローンしたい場合は次のように &lt;code>--recursive&lt;/code> オプションを使います．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git clone --recursive git@github.com:user/repo.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>すでに &lt;code>git clone&lt;/code> していてサブモジュールの中身をクローンしたい場合は次のコマンドを実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git submodule init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git submodule update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="サブモジュールのアップデート">&lt;strong>サブモジュールのアップデート&lt;/strong>&lt;/h2>
+&lt;p>サブモジュールのアップデートを適用する1つ目の方法はサブモジュールのディレクトリに移動して fetch，merge する方法です．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> submod
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git fetch
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git merge
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>2つ目は次のように update を使用する方法です．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git submodule update --remote
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Local のサブモジュールを更新した場合はサブモジュールのディレクトリに移動してコミット，プッシュします．&lt;/p>
+&lt;h2 id="サブモジュールの削除">&lt;strong>サブモジュールの削除&lt;/strong>&lt;/h2>
+&lt;p>サブモジュールを削除したい場合はまず deinit を実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git submodule deinit submoddir
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>次に下記のコマンドで git からサブディレクトリを取り除きます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git rm --cached submoddir
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>最後にコミットして変更を反映させます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git commit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: LFS (Large File Storage)</title><link>http://forest0923.github.io/memo/jp/docs/git/lfs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/git/lfs/</guid><description>
+&lt;p>GitHub にアップロードできる最大のファイルサイズはデフォルトでは 100 MB となっています．
+その制限を超えるサイズのファイルを Git で管理したい場合には Git LFS を用いる必要があり，ここではその使い方を説明します．&lt;/p>
+&lt;h2 id="インストール">&lt;strong>インストール&lt;/strong>&lt;/h2>
+&lt;p>下記コマンドでインストールします．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S git-lfs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install git-lfs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;p>インストールできたことを下記のコマンドで確認します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git lfs install
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="使い方">&lt;strong>使い方&lt;/strong>&lt;/h2>
+&lt;p>hello.txt という 100MB より小さいファイルと large.file という 100MB を超えるファイルがある場合を考えます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hello.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── large.file
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>この状態で通常通りに push しようとすると次のようにエラーが出ます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git remote add origin git@github.com:user/git-lfs-test.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit -m &lt;span style="color:#ed9d13">&amp;#34;Initial commit&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push origin master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>Enumerating objects: 4, done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Counting objects: 100% (4/4), done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Delta compression using up to 16 threads
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Compressing objects: 100% (3/3), done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Writing objects: 100% (4/4), 8.31 MiB | 1.76 MiB/s, done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: error: GH001: local files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: error: Trace: f2804525d75e71f1d42747fe638744b05a78ef347da1de187e2437a43d25eccb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: error: See http://git.io/iEPt8g for more information.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: error: File large.file is 119.52 MB; this exceeds GitHub&amp;#39;s file size limit of 100.00 MB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>To github.com:user/git-lfs-test.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ! [remote rejected] master -&amp;gt; master (pre-receive hook declined)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>error: failed to push some refs to &amp;#39;github.com:user/git-lfs-test.git&amp;#39;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>LFS を使うためにまずはサイズの大きいファイルを commit から削除します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git rm --cached large.file
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit --amend -CHEAD
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>サイズの大きいファイルを LFS で追跡します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git lfs track large.file
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .gitattributes &amp;amp;&amp;amp; git commit -m &lt;span style="color:#ed9d13">&amp;#34;Track large file&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add large.file &amp;amp;&amp;amp; git commit -m &lt;span style="color:#ed9d13">&amp;#34;Add large file&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>これで push すれば large.file も GitHub にアップロードできるようになります．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git push origin master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>Uploading LFS objects: 100% (1/1), 125 MB | 0 B/s, done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Enumerating objects: 9, done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Counting objects: 100% (9/9), done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Delta compression using up to 16 threads
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Compressing objects: 100% (7/7), done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Writing objects: 100% (9/9), 900 bytes | 900.00 KiB/s, done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Total 9 (delta 1), reused 0 (delta 0), pack-reused 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: Resolving deltas: 100% (1/1), done.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>To github.com:user/git-lfs-test.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> * [new branch] master -&amp;gt; master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="注意点">&lt;strong>注意点&lt;/strong>&lt;/h2>
+&lt;p>GitHub では LFS を用いて管理できるサイズにはアカウント単位で上限が存在します．詳しい内容は &lt;a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage">GitHub - About storage and bandwidth usage&lt;/a> を見ることをおすすめしますが，現状でどれだけ利用しているかといった情報は &lt;a href="https://github.com/settings/billing">https://github.com/settings/billing&lt;/a> の Git LFS Data から確認できます．&lt;/p></description></item><item><title>Docs: Git を学ぶ上で参考になるリンク集</title><link>http://forest0923.github.io/memo/jp/docs/git/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/git/links/</guid><description>
+&lt;ul>
+&lt;li>&lt;a href="https://backlog.com/ja/git-tutorial/">サル先生のGit入門&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://learngitbranching.js.org/">Learn Git Branching&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

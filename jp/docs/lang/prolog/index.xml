@@ -1,0 +1,66 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Prolog</title><link>http://forest0923.github.io/memo/jp/docs/lang/prolog/</link><description>Recent content in Prolog on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/jp/docs/lang/prolog/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Prolog 環境構築</title><link>http://forest0923.github.io/memo/jp/docs/lang/prolog/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/lang/prolog/install/</guid><description>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;ul>
+&lt;li>Commands:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S swi-prolog
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="basic-usage">Basic Usage&lt;/h2>
+&lt;ul>
+&lt;li>Sample program:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-prolog" data-lang="prolog">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">%% family.pl&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">parent&lt;/span>(&lt;span style="color:#ed9d13">alice&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">parent&lt;/span>(&lt;span style="color:#ed9d13">bob&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">child&lt;/span>(&lt;span style="color:#ed9d13">charlie&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">child&lt;/span>(&lt;span style="color:#ed9d13">dave&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">parent_child&lt;/span>(&lt;span style="color:#ed9d13">alice&lt;/span>, &lt;span style="color:#ed9d13">charlie&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">parent_child&lt;/span>(&lt;span style="color:#ed9d13">alice&lt;/span>, &lt;span style="color:#ed9d13">dave&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">parent_child&lt;/span>(&lt;span style="color:#ed9d13">bob&lt;/span>, &lt;span style="color:#ed9d13">charlie&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">parent_child&lt;/span>(&lt;span style="color:#ed9d13">bob&lt;/span>, &lt;span style="color:#ed9d13">dave&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">sibling&lt;/span>(&lt;span style="color:#40ffff">X&lt;/span>,&lt;span style="color:#40ffff">Y&lt;/span>) :-
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">parent_child&lt;/span>(&lt;span style="color:#40ffff">Z&lt;/span>, &lt;span style="color:#40ffff">X&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">parent_child&lt;/span>(&lt;span style="color:#40ffff">Z&lt;/span>, &lt;span style="color:#40ffff">Y&lt;/span>).
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Start interactive shell with &lt;code>swipl&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ swipl
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Welcome to SWI-Prolog (threaded, 64 bits, version 8.2.3)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Please run ?- license. for legal details.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>For online help and background, visit https://www.swi-prolog.org
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>For built-in help, use ?- help(Topic). or ?- apropos(Word).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>?-
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Load files:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-prolog" data-lang="prolog">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">?-&lt;/span> &lt;span style="color:#447fcf">consult&lt;/span>(&lt;span style="color:#ed9d13">&amp;#39;family.pl&amp;#39;&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">?-&lt;/span> &lt;span style="color:#447fcf">reconsult&lt;/span>(&lt;span style="color:#ed9d13">&amp;#39;family.pl&amp;#39;&lt;/span>).
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Test:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-prolog" data-lang="prolog">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">?-&lt;/span> &lt;span style="color:#447fcf">consult&lt;/span>(&lt;span style="color:#ed9d13">&amp;#39;family.pl&amp;#39;&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">true&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">?-&lt;/span> &lt;span style="color:#447fcf">parent&lt;/span>(&lt;span style="color:#40ffff">X&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">alice&lt;/span> ;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">bob&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">?-&lt;/span> &lt;span style="color:#447fcf">parent_child&lt;/span>(&lt;span style="color:#ed9d13">alice&lt;/span>,&lt;span style="color:#40ffff">X&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">charlie&lt;/span> ;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">dave&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">?-&lt;/span> &lt;span style="color:#447fcf">parent_child&lt;/span>(&lt;span style="color:#40ffff">X&lt;/span>,&lt;span style="color:#ed9d13">charlie&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">alice&lt;/span> ;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">bob&lt;/span> ;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">false&lt;/span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">?-&lt;/span> &lt;span style="color:#447fcf">sibling&lt;/span>(&lt;span style="color:#40ffff">X&lt;/span>,&lt;span style="color:#ed9d13">dave&lt;/span>).
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">charlie&lt;/span> ;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">dave&lt;/span> ;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">charlie&lt;/span> ;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">dave&lt;/span>.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

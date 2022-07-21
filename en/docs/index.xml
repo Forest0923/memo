@@ -117,12 +117,12 @@ aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S github-cli&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
+&lt;div class="tab-body tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>&amp;lt;p&amp;gt;For Ubuntu, it is not possible to install directly from apt, so you will have to install via snap.&amp;lt;/p&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;div class=&amp;#34;highlight&amp;#34;&amp;gt;&amp;lt;pre tabindex=&amp;#34;0&amp;#34; style=&amp;#34;color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&amp;#34;&amp;gt;&amp;lt;code class=&amp;#34;language-sh&amp;#34; data-lang=&amp;#34;sh&amp;#34;&amp;gt;&amp;lt;span style=&amp;#34;display:flex;&amp;#34;&amp;gt;&amp;lt;span&amp;gt;sudo apt install snapd
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;div class=&amp;#34;highlight&amp;#34;&amp;gt;&amp;lt;pre tabindex=&amp;#34;0&amp;#34; style=&amp;#34;color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&amp;#34;&amp;gt;&amp;lt;code class=&amp;#34;language-sh&amp;#34; data-lang=&amp;#34;sh&amp;#34;&amp;gt;&amp;lt;span style=&amp;#34;display:flex;&amp;#34;&amp;gt;&amp;lt;span&amp;gt;sudo snap install gh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&amp;lt;/div&amp;gt;&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;p>For Ubuntu, it is not possible to install directly from apt, so you will have to install via snap.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install snapd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo snap install gh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h2 id="configuration">&lt;strong>Configuration&lt;/strong>&lt;/h2>
 &lt;p>You can authenticate your account by executing the following command.&lt;/p>
@@ -175,26 +175,24 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;h3 id="set-the-time-to-sleep">&lt;strong>Set the Time to Sleep&lt;/strong>&lt;/h3>
 &lt;p>Set the time as follows.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Never&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">1 hours&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gsettings set org.gnome.desktop.session idle-delay 0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gsettings &lt;span style="color:#24909d">set&lt;/span> org.gnome.desktop.session idle-delay &lt;span style="color:#3677a9">0&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gsettings set org.gnome.desktop.session idle-delay 3600
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gsettings &lt;span style="color:#24909d">set&lt;/span> org.gnome.desktop.session idle-delay &lt;span style="color:#3677a9">3600&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h3 id="customize-dock">&lt;strong>Customize Dock&lt;/strong>&lt;/h3>
 &lt;p>Add favorite applications to dock.&lt;/p>
@@ -203,26 +201,24 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gsettings &lt;span style="color:#24909d">set&lt;/span> org.gnome.shell.extensions.dash-to-dock dash-max-icon-size &lt;span style="color:#3677a9">36&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-server-for-apt">&lt;strong>Change Server for apt&lt;/strong>&lt;/h3>
 &lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-01-00" aria-selected="false">JAIST&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-01-01" aria-selected="false">Yamagata Univ.&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
 id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo sed -i.bak -e &amp;#39;s%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.jaist.ac.jp/pub/Linux/ubuntu/archives/%g&amp;#39; /etc/apt/sources.list
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo sed -i.bak -e &lt;span style="color:#ed9d13">&amp;#39;s%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.jaist.ac.jp/pub/Linux/ubuntu/archives/%g&amp;#39;&lt;/span> /etc/apt/sources.list&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo sed -i.bak -e &amp;#39;s%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagata-u.ac.jp/pub/linux/ubuntu/archives/%g&amp;#39; /etc/apt/sources.list
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo sed -i.bak -e &lt;span style="color:#ed9d13">&amp;#39;s%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagata-u.ac.jp/pub/linux/ubuntu/archives/%g&amp;#39;&lt;/span> /etc/apt/sources.list&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h3 id="reduce-the-time-to-shutdown">&lt;strong>Reduce the Time to Shutdown&lt;/strong>&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo sed -i &lt;span style="color:#ed9d13">&amp;#39;s/#DefaultTimeoutStopSec=90s/#DefaultTimeoutStopSec=90s\nDefaultTimeoutStopSec=10s/&amp;#39;&lt;/span> /etc/systemd/system.conf
@@ -252,37 +248,34 @@ id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="install-common-applications">Install Common Applications&lt;/h2>
 &lt;h3 id="editor">&lt;strong>Editor&lt;/strong>&lt;/h3>
 &lt;ul class="nav nav-tabs" id="tabs-2" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-02-00-tab" data-toggle="tab" href="#tabs-02-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-02-00" aria-selected="false">Vim&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-02-01-tab" data-toggle="tab" href="#tabs-02-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-02-01" aria-selected="false">VSCode&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-02-02-tab" data-toggle="tab" href="#tabs-02-02" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-02-02" aria-selected="false">Emacs&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-2-content">&lt;div class="tab-pane fade show active"
 id="tabs-02-00" role="tabpanel" aria-labelled-by="tabs-02-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install vim-gtk3
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install vim-gtk3&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-02-01" role="tabpanel" aria-labelled-by="tabs-02-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install snapd
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo snap install code
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install snapd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo snap install code&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-02-02" role="tabpanel" aria-labelled-by="tabs-02-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install emacs-nox
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install emacs-nox&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h3 id="terminal-multiplexer">&lt;strong>Terminal Multiplexer&lt;/strong>&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install tmux
@@ -469,29 +462,27 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;p>Curry is a language that has features of both functional and logic programming languages. PAKCS is an interpreter that can execute programs written in Curry. PAKCS converts Curry code into Prolog and executes it.&lt;/p>
 &lt;h2 id="install">Install&lt;/h2>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -S pakcs
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S pakcs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-add-repository ppa:swi-prolog/stable
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt-add-repository ppa:swi-prolog/stable
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt update
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install swi-prolog
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install pakcs
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install pakcs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;p>&lt;a href="https://www.informatik.uni-kiel.de/~pakcs/download.html">download site&lt;/a>&lt;/p>
 &lt;h2 id="basic-usage">Basic Usage&lt;/h2>
@@ -554,27 +545,25 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;h2 id="install-stack">Install Stack&lt;/h2>
 &lt;p>Stack is a tool for managing haskell projects, installing compilers and packages, and building projects. The installation is done as follows.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S stack
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S stack&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl -sSL https://get.haskellstack.org/ | sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>stack upgrade
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl -sSL https://get.haskellstack.org/ | sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>stack upgrade&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h2 id="basic-usage">Basic Usage&lt;/h2>
 &lt;p>To create a new project, run &lt;code>stack new&lt;/code>.&lt;/p>
@@ -642,28 +631,26 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Install KVM</title><link>http://forest0923.github.io/memo/en/docs/kvm/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/kvm/install/</guid><description>
 &lt;h2 id="install">Install&lt;/h2>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 \
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ebtables dnsmasq bridge-utils openbsd-netcat
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> ebtables dnsmasq bridge-utils openbsd-netcat&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install qemu-kvm libvirt-daemon-system \
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> libvirt-clients bridge-utils virtinst
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install qemu-kvm libvirt-daemon-system &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> libvirt-clients bridge-utils virtinst&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h2 id="configrations">Configrations&lt;/h2>
 &lt;p>Configure the systemd service to automatically enable the libvirt daemon.&lt;/p>
@@ -796,26 +783,24 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;p>Use rustup to install and version control rust.
 After installing rustup, add &lt;code>$HOME/.cargo/bin&lt;/code> to your PATH.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">Otherwise&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S rustup
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S rustup&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>curl --proto &amp;#39;=https&amp;#39; --tlsv1.2 -sSf https://sh.rustup.rs | sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl --proto &lt;span style="color:#ed9d13">&amp;#39;=https&amp;#39;&lt;/span> --tlsv1.2 -sSf https://sh.rustup.rs | sh&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h2 id="rustup">rustup&lt;/h2>
 &lt;p>To update rustc and other programs using rustup, run &lt;code>rustup update&lt;/code>.&lt;/p>
@@ -827,26 +812,24 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="cargo">cargo&lt;/h2>
 &lt;p>To create new project, run &lt;code>cargo new&lt;/code>.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-01-00" aria-selected="false">executable&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-01-01" aria-selected="false">library&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
 id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cargo new dir_name --bin
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo new dir_name --bin&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cargo new dir_name --lib
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo new dir_name --lib&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;p>If you don&amp;rsquo;t use version control such as git, add &lt;code>--vcs none&lt;/code>.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo new dir_name --bin --vcs none
@@ -1126,36 +1109,33 @@ Copy the tag in the upper right corner of the Gist repository and paste it into 
 &lt;h2 id="ssh-key-generation">SSH Key Generation&lt;/h2>
 &lt;p>Executing ssh-keygen as follows will generate a key using the algorithm you have selected.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">EdDSA&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">RSA&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-02-tab" data-toggle="tab" href="#tabs-00-02" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-02" aria-selected="false">ECDSA&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b 4096
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b &lt;span style="color:#3677a9">4096&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-02" role="tabpanel" aria-labelled-by="tabs-00-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b 521
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b &lt;span style="color:#3677a9">521&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;p>If you do not make any changes during the generation, the private key &lt;code>id_[algorithm]&lt;/code> and the public key &lt;code>id_[algorithm].pub&lt;/code> will be generated in &lt;code>~/.ssh&lt;/code>.&lt;/p>
 &lt;h2 id="registering-a-private-key-to-ssh-agent">Registering a Private Key to SSH Agent&lt;/h2>
@@ -2733,26 +2713,26 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;p>A flowchart can be written by using &lt;code>flowchart&lt;/code>. The flow direction can be specified by appending T (top), B (bottom), L (left), or R (right) after &lt;code>flowchart&lt;/code>.&lt;/p>
 &lt;div class="book-columns flex flex-wrap">
 &lt;div class="flex-even markdown-inner">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>flowchart TB
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> A--&amp;gt;B
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">flowchart TB
+A--&amp;gt;B
+&lt;/code>&lt;/pre>
 &lt;/div>
 &lt;div class="flex-even markdown-inner">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>flowchart TB
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> A--&amp;gt;B
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">flowchart TB
+A--&amp;gt;B
+&lt;/code>&lt;/pre>
 &lt;/div>
 &lt;/div>
 &lt;div class="book-columns flex flex-wrap">
 &lt;div class="flex-even markdown-inner">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>flowchart RL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> A--&amp;gt;B
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">flowchart RL
+A--&amp;gt;B
+&lt;/code>&lt;/pre>
 &lt;/div>
 &lt;div class="flex-even markdown-inner">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>flowchart RL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> A--&amp;gt;B
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">flowchart RL
+A--&amp;gt;B
+&lt;/code>&lt;/pre>
 &lt;/div>
 &lt;/div></description></item><item><title>Docs: System Call</title><link>http://forest0923.github.io/memo/en/docs/lang/rust/systemcall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/lang/rust/systemcall/</guid><description>
 &lt;h2 id="use-system-call-crate">Use &lt;code>system-call&lt;/code> crate&lt;/h2>
@@ -3057,17 +3037,17 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;ul>
 &lt;li>Host&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>mori@arch-server ~ % speedtest-cli --server 15047
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Retrieving speedtest.net configuration...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Testing from NTT (122.24.178.237)...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Retrieving speedtest.net server list...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Retrieving information for the selected server...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Hosted by OPEN Project (via 20G SINET) (Tokyo) [1.82 km]: 50.513 ms
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Testing download speed................................................................................
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Download: 83.80 Mbit/s
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Testing upload speed......................................................................................................
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Upload: 98.05 Mbit/s
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;pre tabindex="0">&lt;code class="language-test" data-lang="test">mori@arch-server ~ % speedtest-cli --server 15047
+Retrieving speedtest.net configuration...
+Testing from NTT (122.24.178.237)...
+Retrieving speedtest.net server list...
+Retrieving information for the selected server...
+Hosted by OPEN Project (via 20G SINET) (Tokyo) [1.82 km]: 50.513 ms
+Testing download speed................................................................................
+Download: 83.80 Mbit/s
+Testing upload speed......................................................................................................
+Upload: 98.05 Mbit/s
+&lt;/code>&lt;/pre>&lt;ul>
 &lt;li>VM1&lt;/li>
 &lt;/ul>
 &lt;p>&lt;img src="vm1-speedtest.png" alt="vm1-speedtest">&lt;/p>
@@ -3347,60 +3327,55 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;h2 id="how-to-use-ssh-client">How to use SSH (client)&lt;/h2>
 &lt;h3 id="install">Install&lt;/h3>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S openssh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S openssh&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install openssh-client
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install openssh-client&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h3 id="key-generation">Key Generation&lt;/h3>
 &lt;p>Generate a key with ssh-keygen.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-01-00" aria-selected="false">RSA&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
-aria-controls="tabs-01-01" aria-selected="false">ECDSA&lt;/a>
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-01" aria-selected="false">Tab 2&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-01-02-tab" data-toggle="tab" href="#tabs-01-02" role="tab"
-aria-controls="tabs-01-02" aria-selected="false">EdDSA&lt;/a>
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-02" aria-selected="false">Tab 3&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
 id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b 4096
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b &lt;span style="color:#3677a9">4096&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b 521
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b &lt;span style="color:#3677a9">521&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-01-02" role="tabpanel" aria-labelled-by="tabs-01-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;p>By default, the public key &lt;code>id_[algorithm].pub&lt;/code> and the private key &lt;code>id_[algorithm]&lt;/code> are created in &lt;code>~/.ssh/&lt;/code>. You can communicate without password authentication by registering a public key with the SSH server.&lt;/p></description></item><item><title>Docs: Submodule</title><link>http://forest0923.github.io/memo/en/docs/git/submodule/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/git/submodule/</guid><description>
 &lt;p>The submodule is a feature that allows you to include another Git repository as a sub directory in your repository. If you want to use the contents of a library or another project you are developing, you can include it in the project while managing it separately from the main project.&lt;/p>
@@ -3630,26 +3605,24 @@ Git Large File Storage enables to upload large file that is larger than 100MB.&l
 &lt;h2 id="install">&lt;strong>Install&lt;/strong>&lt;/h2>
 &lt;p>Install git-lfs with following commands.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S git-lfs
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S git-lfs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install git-lfs
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install git-lfs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;p>Use the following command to confirm that the installation is complete.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git lfs install

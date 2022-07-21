@@ -78,25 +78,25 @@ Copy the tag in the upper right corner of the Gist repository and paste it into 
 &lt;p>A flowchart can be written by using &lt;code>flowchart&lt;/code>. The flow direction can be specified by appending T (top), B (bottom), L (left), or R (right) after &lt;code>flowchart&lt;/code>.&lt;/p>
 &lt;div class="book-columns flex flex-wrap">
 &lt;div class="flex-even markdown-inner">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>flowchart TB
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> A--&amp;gt;B
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">flowchart TB
+A--&amp;gt;B
+&lt;/code>&lt;/pre>
 &lt;/div>
 &lt;div class="flex-even markdown-inner">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>flowchart TB
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> A--&amp;gt;B
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">flowchart TB
+A--&amp;gt;B
+&lt;/code>&lt;/pre>
 &lt;/div>
 &lt;/div>
 &lt;div class="book-columns flex flex-wrap">
 &lt;div class="flex-even markdown-inner">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>flowchart RL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> A--&amp;gt;B
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">flowchart RL
+A--&amp;gt;B
+&lt;/code>&lt;/pre>
 &lt;/div>
 &lt;div class="flex-even markdown-inner">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>flowchart RL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> A--&amp;gt;B
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">flowchart RL
+A--&amp;gt;B
+&lt;/code>&lt;/pre>
 &lt;/div>
 &lt;/div></description></item><item><title>Docs: Web Tools</title><link>http://forest0923.github.io/memo/en/docs/web/webtools/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/web/webtools/</guid><description/></item></channel></rss>

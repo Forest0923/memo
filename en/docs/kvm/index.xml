@@ -1,28 +1,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – KVM</title><link>http://forest0923.github.io/memo/en/docs/kvm/</link><description>Recent content in KVM on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/kvm/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Install KVM</title><link>http://forest0923.github.io/memo/en/docs/kvm/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/kvm/install/</guid><description>
 &lt;h2 id="install">Install&lt;/h2>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 \
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ebtables dnsmasq bridge-utils openbsd-netcat
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> ebtables dnsmasq bridge-utils openbsd-netcat&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install qemu-kvm libvirt-daemon-system \
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> libvirt-clients bridge-utils virtinst
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install qemu-kvm libvirt-daemon-system &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> libvirt-clients bridge-utils virtinst&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h2 id="configrations">Configrations&lt;/h2>
 &lt;p>Configure the systemd service to automatically enable the libvirt daemon.&lt;/p>
@@ -347,17 +345,17 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;ul>
 &lt;li>Host&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>mori@arch-server ~ % speedtest-cli --server 15047
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Retrieving speedtest.net configuration...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Testing from NTT (122.24.178.237)...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Retrieving speedtest.net server list...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Retrieving information for the selected server...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Hosted by OPEN Project (via 20G SINET) (Tokyo) [1.82 km]: 50.513 ms
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Testing download speed................................................................................
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Download: 83.80 Mbit/s
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Testing upload speed......................................................................................................
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Upload: 98.05 Mbit/s
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;pre tabindex="0">&lt;code class="language-test" data-lang="test">mori@arch-server ~ % speedtest-cli --server 15047
+Retrieving speedtest.net configuration...
+Testing from NTT (122.24.178.237)...
+Retrieving speedtest.net server list...
+Retrieving information for the selected server...
+Hosted by OPEN Project (via 20G SINET) (Tokyo) [1.82 km]: 50.513 ms
+Testing download speed................................................................................
+Download: 83.80 Mbit/s
+Testing upload speed......................................................................................................
+Upload: 98.05 Mbit/s
+&lt;/code>&lt;/pre>&lt;ul>
 &lt;li>VM1&lt;/li>
 &lt;/ul>
 &lt;p>&lt;img src="vm1-speedtest.png" alt="vm1-speedtest">&lt;/p>

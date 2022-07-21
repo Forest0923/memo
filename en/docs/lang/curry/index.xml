@@ -2,29 +2,27 @@
 &lt;p>Curry is a language that has features of both functional and logic programming languages. PAKCS is an interpreter that can execute programs written in Curry. PAKCS converts Curry code into Prolog and executes it.&lt;/p>
 &lt;h2 id="install">Install&lt;/h2>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active"
+&lt;a class="nav-link active persistLang-sh"
 id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
 &lt;/li>
 &lt;li class="nav-item">
-&lt;a class="nav-link"
+&lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -S pakcs
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S pakcs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-fallback" data-lang="fallback">&lt;span style="display:flex;">&lt;span>```sh
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt-add-repository ppa:swi-prolog/stable
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt-add-repository ppa:swi-prolog/stable
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt update
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install swi-prolog
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install pakcs
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo apt install pakcs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;p>&lt;a href="https://www.informatik.uni-kiel.de/~pakcs/download.html">download site&lt;/a>&lt;/p>
 &lt;h2 id="basic-usage">Basic Usage&lt;/h2>

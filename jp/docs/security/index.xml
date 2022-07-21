@@ -1,0 +1,135 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Security</title><link>http://forest0923.github.io/memo/jp/docs/security/</link><description>Recent content in Security on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/jp/docs/security/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: 公開鍵暗号</title><link>http://forest0923.github.io/memo/jp/docs/security/pkc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/security/pkc/</guid><description>
+&lt;p>公開鍵暗号は公開鍵と秘密鍵の2つを用いた暗号方式で署名や鍵交換などに利用されます．&lt;/p>
+&lt;p>$x$ が与えられたときに $y=f(x)$ となる $y$ を計算するのは簡単ですが，$y$ から $x$ を求めるのが困難であるような問題を利用することでセキュリティを担保しています．&lt;/p>
+&lt;h2 id="rsa">RSA&lt;/h2>
+&lt;p>RSA は素因数分解の困難性を利用した暗号方式です．
+2つの素数 $p, q$ について，合成数である $n = pq$ を計算するのは簡単ですが， $n$ から因数である $q, p$ を求めるのが困難であることを利用しています．&lt;/p>
+&lt;h3 id="アルゴリズム">&lt;strong>アルゴリズム&lt;/strong>&lt;/h3>
+&lt;p>RSA を用いて安全にメッセージをやり取りする際のアルゴリズムを説明します．ここではメッセージを受信する人を Alice 送信する人を Bob とします．&lt;/p>
+&lt;h4 id="鍵の生成">&lt;strong>鍵の生成&lt;/strong>&lt;/h4>
+&lt;p>Alice は以下の操作で鍵を生成します．&lt;/p>
+&lt;ol>
+&lt;li>2つの大きな素数 $p, q$ を選び，$N = pq$ を計算する．&lt;/li>
+&lt;li>$\gcd((p-1)(q-1), e) = 1$ となる自然数 $e$ を選ぶ．&lt;/li>
+&lt;li>$ed \equiv 1 \pmod{(p-1)(q-1)}$ となる $d$ を求める．&lt;/li>
+&lt;li>$key_p = (N, e)$ を公開鍵，$key_s = d$ を秘密鍵とする．&lt;/li>
+&lt;/ol>
+&lt;h4 id="暗号化">&lt;strong>暗号化&lt;/strong>&lt;/h4>
+&lt;p>Bob は $key_p = (N,e)$ と平文 $M \in {0,1,2, \dots , N-1}$ を入力として暗号文&lt;/p>
+&lt;p>$$
+C = M^e \pmod N
+$$&lt;/p>
+&lt;p>を求めます．&lt;/p>
+&lt;h4 id="復号">&lt;strong>復号&lt;/strong>&lt;/h4>
+&lt;p>Alice は $key_s = d$ と $C$ から&lt;/p>
+&lt;p>$$
+M&amp;rsquo; \equiv C^d \pmod N
+$$&lt;/p>
+&lt;p>を求めます．ここで $M = M&amp;rsquo;$となるため，メッセージを復元できます．&lt;/p>
+&lt;h3 id="署名のアルゴリズム">&lt;strong>署名のアルゴリズム&lt;/strong>&lt;/h3>
+&lt;p>署名は安全性の要件のうち，認証（authentication）と否認不可（non-requdiation）を満たすことができます．&lt;/p>
+&lt;blockquote>
+&lt;p>認証（authentication）：正当な署名者であることを証明する&lt;/p>
+&lt;p>否認不可（non-requdiation）：署名者はその署名を後で否定することができない&lt;/p>
+&lt;/blockquote>
+&lt;h4 id="署名">&lt;strong>署名&lt;/strong>&lt;/h4>
+&lt;p>署名者: Alice，受け手: Bob&lt;/p>
+&lt;ol>
+&lt;li>Alice は公開鍵 $key_p = (N, e)$ と秘密鍵 $key_s = d$ を作成する．&lt;/li>
+&lt;li>Alice はメッセージ $M \in {0,\dots,N-1}$ に対して署名 $\sigma^e \equiv M^d \pmod N$ を計算し，$(M, \sigma)$ を Bob に送信する．&lt;/li>
+&lt;li>Bob は受信した $(M, \sigma)$ と公開鍵 $(N,e)$ を用いて $\sigma^e \equiv M \pmod N$ が成立すれば受理，そうでなければ否認する．&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>RSA 暗号の性質より&lt;/p>
+&lt;p>$$
+\sigma^e = (M^d)^e = M^{ed} \equiv M \pmod N
+$$&lt;/p>
+&lt;/blockquote></description></item><item><title>Docs: GNU Privacy Guard</title><link>http://forest0923.github.io/memo/jp/docs/security/gpg/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/security/gpg/</guid><description>
+&lt;p>GnuPG は OpenPGP 標準の暗号化規格でデータや通信に暗号化を行ったり署名をしたりすることができます．&lt;/p>
+&lt;h2 id="gnupg-の使い方">GnuPG の使い方&lt;/h2>
+&lt;h3 id="登録されている鍵の表示">&lt;strong>登録されている鍵の表示&lt;/strong>&lt;/h3>
+&lt;p>公開鍵の表示：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gpg --list-keys
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>秘密鍵の表示：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gpg --list-secret-keys
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="新しい公開鍵の追加">&lt;strong>新しい公開鍵の追加&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gpg --keyserver keys.gnupg.net --recv-keys [key id]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="鍵の削除">&lt;strong>鍵の削除&lt;/strong>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gpg --delete-keys [key id]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="key-servers">Key Servers&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://keys.openpgp.org">keys.openpgp.org&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://keys.gnupg.net">keys.gnupg.net&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://keys.mailvelope.com">keys.mailvelope.com&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://pgp.mit.edu">pgp.mit.edu&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Docs: SSH</title><link>http://forest0923.github.io/memo/jp/docs/security/ssh/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/security/ssh/</guid><description>
+&lt;p>SSH は Secure Shell の略で，リモートから安全にコンピュータと通信することができるプロトコルを指します．&lt;/p>
+&lt;h2 id="ssh-の使い方クライアント">SSH の使い方（クライアント）&lt;/h2>
+&lt;h3 id="インストール">インストール&lt;/h3>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S openssh&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install openssh-client&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="鍵の生成">鍵の生成&lt;/h3>
+&lt;p>ssh-keygen で鍵を生成します．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-00" aria-selected="false">RSA&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-01" aria-selected="false">ECDSA&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-01-02-tab" data-toggle="tab" href="#tabs-01-02" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-02" aria-selected="false">EdDSA&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
+id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b &lt;span style="color:#3677a9">4096&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b &lt;span style="color:#3677a9">521&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-01-02" role="tabpanel" aria-labelled-by="tabs-01-02-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;p>デフォルトでは &lt;code>~/.ssh/&lt;/code> に公開鍵 &lt;code>id_[algorithm].pub&lt;/code> と秘密鍵 &lt;code>id_[algorithm]&lt;/code> が作られるので，SSH サーバに公開鍵を登録することでパスワード認証せずに通信を行うことができます．&lt;/p></description></item><item><title>Docs: Hack</title><link>http://forest0923.github.io/memo/jp/docs/security/hack/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/security/hack/</guid><description>
+&lt;h2 id="links">Links&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://tryhackme.com/">Try Hack Me&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.hackthebox.com/">Hack the Box&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.seccon.jp/">Security Contest&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://ksnctf.sweetduet.info/">ksnctf&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="dictionary-attack">Dictionary Attack&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://wiki.skullsecurity.org/index.php/Passwords">https://wiki.skullsecurity.org/index.php/Passwords&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://web.archive.org/web/20120207113205/http://www.insidepro.com/eng/download.shtml">https://web.archive.org/web/20120207113205/http://www.insidepro.com/eng/download.shtml&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.passwordrandom.com/most-popular-passwords">https://www.passwordrandom.com/most-popular-passwords&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/danielmiessler/SecLists/tree/master/Passwords">https://github.com/danielmiessler/SecLists/tree/master/Passwords&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm">https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -3,8 +3,8 @@ title = 'Memo'
 description = 'Technical notes written by Forest0923'
 theme = 'docsy'
 
-defaultContentLanguage = 'jp'
-defaultContentLanguageInSubdir = false
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = true
 enableMissingTranslationPlaceholders = true
 enableRobotsTXT = true
 enableGitInfo = true
@@ -101,7 +101,7 @@ github_repo = "https://github.com/forest0923/memo"
 github_branch= "master"
 
 # Google Custom Search Engine ID. Remove or comment out to disable search.
-gcs_engine_id = "d72aa9b2712488cc3"
+gcs_engine_id = "19d4a6fc33f1da533"
 
 # User interface configuration
 [params.ui]

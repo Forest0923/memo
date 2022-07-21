@@ -23,18 +23,14 @@ chmod +x ubuntu-initial-settings.sh
 次のコマンドで時間を設定します．
 
 {{< tabpane >}}
-{{< tab "Never">}}
+{{< tab header="Never" lang="sh">}}
 
-```sh
 gsettings set org.gnome.desktop.session idle-delay 0
-```
 
 {{< /tab>}}
-{{< tab "1 hours">}}
+{{< tab header="1 hours" lang="sh" >}}
 
-```sh
 gsettings set org.gnome.desktop.session idle-delay 3600
-```
 
 {{< /tab>}}
 {{< /tabpane >}}
@@ -56,18 +52,14 @@ gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
 ### **パッケージインストール時のサーバ変更**
 
 {{< tabpane >}}
-{{< tab "JAIST">}}
+{{< tab header="JAIST" lang="sh" >}}
 
-```sh
 sudo sed -i.bak -e 's%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.jaist.ac.jp/pub/Linux/ubuntu/archives/%g' /etc/apt/sources.list
-```
 
 {{< /tab>}}
-{{< tab "Yamagata Univ.">}}
+{{< tab header="Yamagata Univ." lang="sh" >}}
 
-```sh
 sudo sed -i.bak -e 's%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagata-u.ac.jp/pub/linux/ubuntu/archives/%g' /etc/apt/sources.list
-```
 
 {{< /tab>}}
 {{< /tabpane >}}
@@ -119,26 +111,20 @@ sudo sed -i 's/# set bell-style none/set bell-style none/' /etc/inputrc
 ### **エディタ**
 
 {{< tabpane >}}
-{{< tab "Vim" >}}
+{{< tab header="Vim" lang="sh" >}}
 
-```sh
 sudo apt install vim-gtk3
-```
 
 {{< /tab >}}
-{{< tab "VSCode" >}}
+{{< tab header="VSCode" lang="sh" >}}
 
-```sh
 sudo apt install snapd
 sudo snap install code
-```
 
 {{< /tab >}}
-{{< tab "Emacs" >}}
+{{< tab header="Emacs" lang="sh" >}}
 
-```sh
 sudo apt install emacs-nox
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

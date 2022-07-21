@@ -8,23 +8,19 @@ This is a memo on how to set up Japanese input using Fcitx (Flexible Input Metho
 ## Install
 
 {{< tabpane >}}
-{{< tab "fcitx5" >}}
+{{< tab header="fcitx5" lang="sh" >}}
 
-fcitx5 is a successor to fcitx.
-
-```sh
 sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool
-```
 
 {{< /tab >}}
-{{< tab "fcitx" >}}
+{{< tab header="fcitx" lang="sh" >}}
 
-```sh
 sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
-```
 
 {{< /tab >}}
 {{< /tabpane >}}
+
+fcitx5 is a successor to fcitx.
 
 ## Configurations
 

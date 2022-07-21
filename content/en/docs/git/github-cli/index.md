@@ -15,7 +15,7 @@ Use the following command to install GitHub CLI.
 sudo pacman -S github-cli
 
 {{< /tab >}}
-{{% tab header="Ubuntu" %}}
+{{% tab header="Ubuntu" text=true %}}
 
 For Ubuntu, it is not possible to install directly from apt, so you will have to install via snap.
 

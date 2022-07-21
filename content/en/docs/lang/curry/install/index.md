@@ -8,21 +8,17 @@ Curry is a language that has features of both functional and logic programming l
 ## Install
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 paru -S pakcs
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt-add-repository ppa:swi-prolog/stable
 sudo apt update
 sudo apt install swi-prolog
 sudo apt install pakcs
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

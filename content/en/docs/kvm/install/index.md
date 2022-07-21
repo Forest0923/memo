@@ -6,20 +6,16 @@ weight: 10
 ## Install
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 \
                ebtables dnsmasq bridge-utils openbsd-netcat
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install qemu-kvm libvirt-daemon-system \
                   libvirt-clients bridge-utils virtinst
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

@@ -12,20 +12,14 @@ weight: 50
 グラフィックドライバをインストールします．
 
 {{< tabpane >}}
-{{< tab "Intel" >}}
+{{< tab header="Intel" lang="sh" >}}
 
-```sh
 sudo pacman -S xf86-video-intel
-sudo pacman -S nvidia nvidia-utils nvidia-dkms
-```
 
 {{< /tab >}}
-{{< tab "Nvidia" >}}
+{{< tab header="Nvidia" lang="sh" >}}
 
-```sh
-sudo pacman -S xf86-video-intel
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
-```
 
 {{< /tab >}}
 {{< /tabpane >}}
@@ -43,18 +37,14 @@ sudo pacman -S xorg
 ログインを GUI で行うためにディスプレイマネージャをインストールします．
 
 {{< tabpane >}}
-{{< tab "lightdm" >}}
+{{< tab header="lightdm" lang="sh" >}}
 
-```sh
 sudo pacman -S lightdm lightdm-gtk-greeter
-```
 
 {{< /tab >}}
-{{< tab "gdm" >}}
+{{< tab header="gdm" lang="sh" >}}
 
-```sh
 sudo pacman -S gdm
-```
 
 {{< /tab >}}
 {{< /tabpane >}}
@@ -62,25 +52,19 @@ sudo pacman -S gdm
 ### **Desktop Environment**
 
 {{< tabpane >}}
-{{< tab "xfce" >}}
+{{< tab header="xfce" lang="sh" >}}
 
-```sh
 sudo pacman -S xfce4 xfce4-goodies
-```
 
 {{< /tab >}}
-{{< tab "gnome" >}}
+{{< tab header="gnome" lang="sh" >}}
 
-```sh
 sudo pacman -S gnome gnome-tweaks
-```
 
 {{< /tab >}}
-{{< tab "budgie" >}}
+{{< tab header="budgie" lang="sh" >}}
 
-```sh
 sudo pacman -S budgie-desktop gnome
-```
 
 {{< /tab >}}
 {{< /tabpane >}}
@@ -90,18 +74,14 @@ sudo pacman -S budgie-desktop gnome
 ディスプレイマネージャを自動で起動するように systemd を設定します．
 
 {{< tabpane >}}
-{{< tab "lightdm" >}}
+{{< tab header="lightdm" lang="sh" >}}
 
-```sh
 systemctl enable lightdm
-```
 
 {{< /tab >}}
-{{< tab "gdm" >}}
+{{< tab header="gdm" lang="sh" >}}
 
-```sh
 systemctl enable gdm
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

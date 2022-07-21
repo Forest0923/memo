@@ -8,25 +8,19 @@ weight: 20
 Executing ssh-keygen as follows will generate a key using the algorithm you have selected.
 
 {{< tabpane >}}
-{{< tab "EdDSA" >}}
+{{< tab header="EdDSA" lang="sh" >}}
 
-```sh
 ssh-keygen -t ed25519
-```
 
 {{< /tab >}}
-{{< tab "RSA" >}}
+{{< tab header="RSA" lang="sh" >}}
 
-```sh
 ssh-keygen -t rsa -b 4096
-```
 
 {{< /tab >}}
-{{< tab "ECDSA" >}}
+{{< tab header="ECDSA" lang="sh" >}}
 
-```sh
 ssh-keygen -t ecdsa -b 521
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

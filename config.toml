@@ -3,8 +3,8 @@ title = 'Memo'
 description = 'Technical notes written by Forest0923'
 theme = 'docsy'
 
-defaultContentLanguage = 'jp'
-defaultContentLanguageInSubdir = false
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = true
 enableMissingTranslationPlaceholders = true
 enableRobotsTXT = true
 enableGitInfo = true
@@ -79,7 +79,7 @@ weight = 2
   [markup.highlight]
     # https://xyproto.github.io/splash/docs/all.html
     style = "native"
-    guessSyntax = "true"
+    guessSyntax = false
 
 
 #########################
@@ -101,7 +101,7 @@ github_repo = "https://github.com/forest0923/memo"
 github_branch= "master"
 
 # Google Custom Search Engine ID. Remove or comment out to disable search.
-gcs_engine_id = "d72aa9b2712488cc3"
+gcs_engine_id = "19d4a6fc33f1da533"
 
 # User interface configuration
 [params.ui]
@@ -140,6 +140,12 @@ enable = false
   icon = "fab fa-gitlab"
   desc = "Development takes place here!"
 
+[params.katex]
+enable = true
+
+[params.mermaid]
+enable = true
+theme = 'dark'
 
 ####################################
 # hugo module configuration

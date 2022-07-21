@@ -10,18 +10,14 @@ SSH stands for Secure Shell, a protocol that allows you to communicate with a co
 ### Install
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh">}}
 
-```sh
 sudo pacman -S openssh
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install openssh-client
-```
 
 {{< /tab >}}
 {{< /tabpane >}}
@@ -31,25 +27,19 @@ sudo apt install openssh-client
 Generate a key with ssh-keygen.
 
 {{< tabpane >}}
-{{< tab "RSA" >}}
+{{< tab header="RSA" lang="sh" >}}
 
-```sh
 ssh-keygen -t rsa -b 4096
-```
 
 {{< /tab >}}
-{{< tab "ECDSA" >}}
+{{< tab head="ECDSA" lang="sh" >}}
 
-```sh
 ssh-keygen -t ecdsa -b 521
-```
 
 {{< /tab >}}
-{{< tab "EdDSA" >}}
+{{< tab head="EdDSA" lang="sh" >}}
 
-```sh
 ssh-keygen -t ed25519
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

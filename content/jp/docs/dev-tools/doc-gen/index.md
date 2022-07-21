@@ -8,18 +8,14 @@ weight: 70
 ### Install
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S doxygen
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install doxygen
-```
 
 {{< /tab >}}
 {{< /tabpane >}}
@@ -177,11 +173,9 @@ doxygen foo/bar/Doxygen
 Arch Linux の場合は AUR からインストールできます．Ubuntu では [GitHub: CoatiSoftware/Sourcetrail](https://github.com/CoatiSoftware/Sourcetrail/releases) からダウンロードする必要があります．
 
 {{< tabpane >}}
-{{< tab "Arch">}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 paru -S sourcetrail
-```
 
 {{< /tab>}}
 {{< /tabpane>}}

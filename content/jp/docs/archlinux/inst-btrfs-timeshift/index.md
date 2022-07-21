@@ -315,22 +315,18 @@ reboot
 AUR ヘルパーを用いて timeshift をインストールします．
 
 {{< tabpane >}}
-{{< tab "paru" >}}
+{{< tab header="paru" lang="sh" >}}
 
-```sh
 git clone https://aur.archlinux.org/paru
 cd paru
 makepkg -si
-```
 
 {{< /tab >}}
-{{< tab "yay" >}}
+{{< tab header="yay" lang="sh" >}}
 
-```sh
 git clone https://aur.archlinux.org/yay
 cd yay
 makepkg -si
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

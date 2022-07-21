@@ -10,18 +10,14 @@ SSH は Secure Shell の略で，リモートから安全にコンピュータ�
 ### インストール
 
 {{< tabpane >}}
-{{< tab "Arch" >}}
+{{< tab header="Arch" lang="sh" >}}
 
-```sh
 sudo pacman -S openssh
-```
 
 {{< /tab >}}
-{{< tab "Ubuntu" >}}
+{{< tab header="Ubuntu" lang="sh" >}}
 
-```sh
 sudo apt install openssh-client
-```
 
 {{< /tab >}}
 {{< /tabpane >}}
@@ -31,25 +27,19 @@ sudo apt install openssh-client
 ssh-keygen で鍵を生成します．
 
 {{< tabpane >}}
-{{< tab "RSA" >}}
+{{< tab header="RSA" lang="sh" >}}
 
-```sh
 ssh-keygen -t rsa -b 4096
-```
 
 {{< /tab >}}
-{{< tab "ECDSA" >}}
+{{< tab header="ECDSA" lang="sh" >}}
 
-```sh
 ssh-keygen -t ecdsa -b 521
-```
 
 {{< /tab >}}
-{{< tab "EdDSA" >}}
+{{< tab header="EdDSA" lang="sh" >}}
 
-```sh
 ssh-keygen -t ed25519
-```
 
 {{< /tab >}}
 {{< /tabpane >}}

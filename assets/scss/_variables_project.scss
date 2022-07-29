@@ -58,3 +58,15 @@ $navbar-dark-color: rgba($white, 0.75); // header text color
 $navbar-dark-hover-color: rgba($white, 0.5);
 $navbar-dark-active-color: $white;
 $navbar-dark-disabled-color: rgba($white, 0.25);
+
+
+// Scrollbar
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 0.5rem;
+}

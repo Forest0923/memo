@@ -1,5 +1,76 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Docs</title><link>http://forest0923.github.io/memo/jp/docs/</link><description>Recent content in Docs on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/jp/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: read</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/read/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/read/</guid><description>
-&lt;h2 id="definition">Definition&lt;/h2></description></item><item><title>Docs: write</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/write/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/write/</guid><description/></item><item><title>Docs: open</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/open/</guid><description/></item><item><title>Docs: close</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/close/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/close/</guid><description/></item><item><title>Docs: mmap</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/mmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/mmap/</guid><description/></item><item><title>Docs: Android x86</title><link>http://forest0923.github.io/memo/jp/docs/android/inst-x86/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/android/inst-x86/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_read&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, size_t count);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;ul>
+&lt;li>file: fs/read_write.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(read, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, buf, size_t, count)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ksys_read(fd, buf, count);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>ssize_t &lt;span style="color:#447fcf">ksys_read&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, size_t count)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = fdget_pos(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ssize_t ret = -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (f.file) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> loff_t pos, *ppos = file_ppos(f.file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ppos) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pos = *ppos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ppos = &amp;amp;pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = vfs_read(f.file, buf, count, ppos);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span> &amp;amp;&amp;amp; ppos)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f.file-&amp;gt;f_pos = pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fdput_pos(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: write</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/write/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/write/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_write&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, size_t count);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;ul>
+&lt;li>file: fs/read_write.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(write, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, buf,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> size_t, count)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ksys_write(fd, buf, count);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>ssize_t &lt;span style="color:#447fcf">ksys_write&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, size_t count)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = fdget_pos(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ssize_t ret = -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (f.file) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> loff_t pos, *ppos = file_ppos(f.file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ppos) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pos = *ppos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ppos = &amp;amp;pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = vfs_write(f.file, buf, count, ppos);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span> &amp;amp;&amp;amp; ppos)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f.file-&amp;gt;f_pos = pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fdput_pos(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: open</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/open/</guid><description/></item><item><title>Docs: close</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/close/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/close/</guid><description/></item><item><title>Docs: mmap</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/mmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/mmap/</guid><description/></item><item><title>Docs: Android x86</title><link>http://forest0923.github.io/memo/jp/docs/android/inst-x86/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/android/inst-x86/</guid><description>
 &lt;h2 id="環境">環境&lt;/h2>
 &lt;ul>
 &lt;li>Host: Linux KVM&lt;/li>

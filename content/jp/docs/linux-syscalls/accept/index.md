@@ -18,7 +18,10 @@ draft = false
 ## Abstract
 
 ```c
-accept(int fd, struct sockaddr __user *upeer_sockaddr, int __user *upeer_addrlen)
+long sys_accept(int fd, struct sockaddr __user *upeer_sockaddr,
+				int __user *upeer_addrlen);
+long sys_accept4(int fd, struct sockaddr __user *upeer_sockaddr,
+				int __user *upeer_addrlen, int flags);
 ```
 
 ## Arguments

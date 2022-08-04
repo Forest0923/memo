@@ -18,7 +18,7 @@ draft = false
 ## Abstract
 
 ```c
-socket(int family, int type, int protocol);
+long sys_socket(int family, int type, int protocol);
 ```
 
 ## Arguments

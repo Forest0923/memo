@@ -18,7 +18,7 @@ draft = false
 ## Abstract
 
 ```c
-listen(int fd, int backlog)
+long sys_listen(int fd, int backlog);
 ```
 
 ## Arguments

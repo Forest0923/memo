@@ -18,7 +18,7 @@ draft = false
 ## Abstract
 
 ```c
-bind(int fd, struct sockaddr __user *umyaddr, int addrlen)
+long sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
 ```
 
 ## Arguments
@@ -67,4 +67,25 @@ int __sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen)
 	}
 	return err;
 }
+```
+
+## Data Structure
+
+```c
+struct sockaddr {
+	sa_family_t	sa_family;	/* address family, AF_xxx	*/
+	char		sa_data[14];	/* 14 bytes of protocol address	*/
+};
+```
+
+```c
+struct sockaddr_in {
+  __kernel_sa_family_t	sin_family;	/* Address family		*/
+  __be16		sin_port;	/* Port number			*/
+  struct in_addr	sin_addr;	/* Internet address		*/
+
+  /* Pad to size of `struct sockaddr'. */
+  unsigned char		__pad[__SOCK_SIZE__ - sizeof(short int) -
+			sizeof(unsigned short int) - sizeof(struct in_addr)];
+};
 ```

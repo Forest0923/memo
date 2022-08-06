@@ -583,7 +583,10 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .tls = tls,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">kernel_clone&lt;/span>(&amp;amp;args);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!legacy_clone_args_valid(&amp;amp;args))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">_do_fork&lt;/span>(&amp;amp;args);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
@@ -594,28 +597,14 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * args-&amp;gt;exit_signal is expected to be checked for sanity by the caller.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pid_t &lt;span style="color:#447fcf">kernel_clone&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kernel_clone_args *args)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">_do_fork&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kernel_clone_args *args)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 clone_flags = args-&amp;gt;flags;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> completion vfork;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> pid *pid;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *p;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> trace = &lt;span style="color:#3677a9">0&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pid_t nr;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * For legacy clone() calls, CLONE_PIDFD uses the parent_tid argument
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * to return the pidfd. Hence, CLONE_PIDFD and CLONE_PARENT_SETTID are
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * mutually exclusive. With clone3() CLONE_PIDFD has grown a separate
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * field in struct clone_args and it still doesn&amp;#39;t make sense to have
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * them both point at the same memory location. Performing this check
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * here has the advantage that we don&amp;#39;t need to have a separate helper
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * to check for legacy clone().
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> ((args-&amp;gt;flags &amp;amp; CLONE_PIDFD) &amp;amp;&amp;amp;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (args-&amp;gt;flags &amp;amp; CLONE_PARENT_SETTID) &amp;amp;&amp;amp;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (args-&amp;gt;pidfd == args-&amp;gt;parent_tid))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> nr;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Determine whether and which event to report to ptracer. When
@@ -773,22 +762,20 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> recalc_sigpending();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spin_unlock_irq(&amp;amp;current-&amp;gt;sighand-&amp;gt;siglock);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = -ERESTARTNOINTR;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (task_sigpending(current))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (signal_pending(current))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> fork_out;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = -ENOMEM;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p = dup_task_struct(current, node);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!p)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> fork_out;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (args-&amp;gt;io_thread) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Mark us an IO worker, and block any signal that isn&amp;#39;t
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * fatal or STOP
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;flags |= PF_IO_WORKER;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> siginitsetinv(&amp;amp;p-&amp;gt;blocked, sigmask(SIGKILL)|sigmask(SIGSTOP));
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * This _must_ happen before we call free_task(), i.e. before we jump
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * to any of the bad_fork_* labels. This is to avoid freeing
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * p-&amp;gt;set_child_tid which is (ab)used as a kthread&amp;#39;s data pointer for
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * kernel threads (PF_KTHREAD).
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;set_child_tid = (clone_flags &amp;amp; CLONE_CHILD_SETTID) ? args-&amp;gt;child_tid : &lt;span style="color:#24909d">NULL&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Clear TID on mm_release()?
@@ -799,21 +786,22 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rt_mutex_init_task(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lockdep_assert_irqs_enabled();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_PROVE_LOCKING
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> DEBUG_LOCKS_WARN_ON(!p-&amp;gt;softirqs_enabled);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> DEBUG_LOCKS_WARN_ON(!p-&amp;gt;hardirqs_enabled);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DEBUG_LOCKS_WARN_ON(!p-&amp;gt;softirqs_enabled);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> retval = copy_creds(p, clone_flags);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (retval &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_free;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = -EAGAIN;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (is_ucounts_overlimit(task_ucounts(p), UCOUNT_RLIMIT_NPROC, rlimit(RLIMIT_NPROC))) {
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> retval = -EAGAIN;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (atomic_read(&amp;amp;p-&amp;gt;real_cred-&amp;gt;user-&amp;gt;processes) &amp;gt;=
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> task_rlimit(p, RLIMIT_NPROC)) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (p-&amp;gt;real_cred-&amp;gt;user != INIT_USER &amp;amp;&amp;amp;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !capable(CAP_SYS_RESOURCE) &amp;amp;&amp;amp; !capable(CAP_SYS_ADMIN))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cleanup_count;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_free;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> current-&amp;gt;flags &amp;amp;= ~PF_NPROC_EXCEEDED;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = copy_creds(p, clone_flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (retval &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_free;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * If multiple threads are within copy_process(), then this check
@@ -825,7 +813,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cleanup_count;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> delayacct_tsk_init(p); &lt;span style="color:#999;font-style:italic">/* Must remain after dup_task_struct() */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;flags &amp;amp;= ~(PF_SUPERPRIV | PF_WQ_WORKER | PF_IDLE | PF_NO_SETAFFINITY);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;flags &amp;amp;= ~(PF_SUPERPRIV | PF_WQ_WORKER | PF_IDLE);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;flags |= PF_FORKNOEXEC;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> INIT_LIST_HEAD(&amp;amp;p-&amp;gt;children);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> INIT_LIST_HEAD(&amp;amp;p-&amp;gt;sibling);
@@ -847,10 +835,6 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;vtime.state = VTIME_INACTIVE;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_IO_URING
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> p-&amp;gt;io_uring = &lt;span style="color:#24909d">NULL&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#if defined(SPLIT_RSS_COUNTING)
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> memset(&amp;amp;p-&amp;gt;rss_stat, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(p-&amp;gt;rss_stat));
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
@@ -869,28 +853,32 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;io_context = &lt;span style="color:#24909d">NULL&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> audit_set_context(p, &lt;span style="color:#24909d">NULL&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cgroup_fork(p);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (p-&amp;gt;flags &amp;amp; PF_KTHREAD) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!set_kthread_struct(p))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cleanup_delayacct;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_NUMA
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> p-&amp;gt;mempolicy = mpol_dup(p-&amp;gt;mempolicy);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ERR(p-&amp;gt;mempolicy)) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = PTR_ERR(p-&amp;gt;mempolicy);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;mempolicy = &lt;span style="color:#24909d">NULL&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cleanup_delayacct;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cleanup_threadgroup_lock;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_CPUSETS
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> p-&amp;gt;cpuset_mem_spread_rotor = NUMA_NO_NODE;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;cpuset_slab_spread_rotor = NUMA_NO_NODE;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> seqcount_spinlock_init(&amp;amp;p-&amp;gt;mems_allowed_seq, &amp;amp;p-&amp;gt;alloc_lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> seqcount_init(&amp;amp;p-&amp;gt;mems_allowed_seq);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_TRACE_IRQFLAGS
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> memset(&amp;amp;p-&amp;gt;irqtrace, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(p-&amp;gt;irqtrace));
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;irqtrace.hardirq_disable_ip = _THIS_IP_;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;irqtrace.softirq_enable_ip = _THIS_IP_;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> p-&amp;gt;irq_events = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;hardirqs_enabled = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;hardirq_enable_ip = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;hardirq_enable_event = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;hardirq_disable_ip = _THIS_IP_;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;hardirq_disable_event = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;softirqs_enabled = &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;softirq_enable_ip = _THIS_IP_;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;softirq_enable_event = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;softirq_disable_ip = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;softirq_disable_event = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;hardirq_context = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;softirq_context = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
@@ -907,17 +895,13 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> p-&amp;gt;sequential_io = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;sequential_io_avg = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_BPF_SYSCALL
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> RCU_INIT_POINTER(p-&amp;gt;bpf_storage, &lt;span style="color:#24909d">NULL&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;bpf_ctx = &lt;span style="color:#24909d">NULL&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Perform scheduler related setup. Assign this task to a CPU. */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = sched_fork(clone_flags, p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (retval)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cleanup_policy;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = perf_event_init_task(p, clone_flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = perf_event_init_task(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (retval)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cleanup_policy;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = audit_alloc(p);
@@ -952,7 +936,8 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = copy_io(clone_flags, p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (retval)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cleanup_namespaces;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = copy_thread(clone_flags, args-&amp;gt;stack, args-&amp;gt;stack_size, p, args-&amp;gt;tls);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = copy_thread_tls(clone_flags, args-&amp;gt;stack, args-&amp;gt;stack_size, p,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> args-&amp;gt;tls);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (retval)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cleanup_io;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -1009,18 +994,23 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * child regardless of CLONE_PTRACE.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> user_disable_single_step(p);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clear_task_syscall_work(p, SYSCALL_TRACE);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#if defined(CONFIG_GENERIC_ENTRY) || defined(TIF_SYSCALL_EMU)
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> clear_task_syscall_work(p, SYSCALL_EMU);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clear_tsk_thread_flag(p, TIF_SYSCALL_TRACE);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef TIF_SYSCALL_EMU
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> clear_tsk_thread_flag(p, TIF_SYSCALL_EMU);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> clear_tsk_latency_tracing(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* ok, now we should be set up.. */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;pid = pid_nr(pid);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (clone_flags &amp;amp; CLONE_THREAD) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;exit_signal = -&lt;span style="color:#3677a9">1&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;group_leader = current-&amp;gt;group_leader;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;tgid = current-&amp;gt;tgid;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (clone_flags &amp;amp; CLONE_PARENT)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;exit_signal = current-&amp;gt;group_leader-&amp;gt;exit_signal;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;exit_signal = args-&amp;gt;exit_signal;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;group_leader = p;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;tgid = p-&amp;gt;pid;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
@@ -1032,32 +1022,16 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;pdeath_signal = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> INIT_LIST_HEAD(&amp;amp;p-&amp;gt;thread_group);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;task_works = &lt;span style="color:#24909d">NULL&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clear_posix_cputimers_work(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_KRETPROBES
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> p-&amp;gt;kretprobe_instances.first = &lt;span style="color:#24909d">NULL&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Ensure that the cgroup subsystem policies allow the new process to be
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * forked. It should be noted that the new process&amp;#39;s css_set can be changed
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * forked. It should be noted the the new process&amp;#39;s css_set can be changed
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * between here and cgroup_post_fork() if an organisation operation is in
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * progress.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = cgroup_can_fork(p, args);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (retval)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_put_pidfd;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Now that the cgroups are pinned, re-clone the parent cgroup and put
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * the new task on the correct runqueue. All this *before* the task
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * becomes visible.
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * This isn&amp;#39;t part of -&amp;gt;can_fork() because while the re-cloning is
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * cgroup specific, it unconditionally needs to place the task on a
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * runqueue.
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sched_cgroup_fork(p, args);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * From this point on we must avoid any synchronous user-space
@@ -1080,19 +1054,12 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (clone_flags &amp;amp; (CLONE_PARENT|CLONE_THREAD)) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;real_parent = current-&amp;gt;real_parent;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;parent_exec_id = current-&amp;gt;parent_exec_id;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (clone_flags &amp;amp; CLONE_THREAD)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;exit_signal = -&lt;span style="color:#3677a9">1&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;exit_signal = current-&amp;gt;group_leader-&amp;gt;exit_signal;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;real_parent = current;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;parent_exec_id = current-&amp;gt;self_exec_id;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;exit_signal = args-&amp;gt;exit_signal;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> klp_copy_process(p);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sched_core_fork(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spin_lock(&amp;amp;current-&amp;gt;sighand-&amp;gt;siglock);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -1115,6 +1082,10 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = -EINTR;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> bad_fork_cancel_cgroup;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* past the last point of failure */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (pidfile)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd_install(pidfd, pidfile);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> init_task_pid_links(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (likely(p-&amp;gt;pid)) {
@@ -1164,23 +1135,16 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> syscall_tracepoint_update(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> write_unlock_irq(&amp;amp;tasklist_lock);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (pidfile)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd_install(pidfd, pidfile);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> proc_fork_connector(p);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sched_post_fork(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cgroup_post_fork(p, args);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> perf_event_fork(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> trace_task_newtask(p, clone_flags);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> uprobe_copy_process(p, clone_flags);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> copy_oom_score_adj(clone_flags, p);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> p;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bad_fork_cancel_cgroup:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sched_core_free(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spin_unlock(&amp;amp;current-&amp;gt;sighand-&amp;gt;siglock);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> write_unlock_irq(&amp;amp;tasklist_lock);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cgroup_cancel_fork(p, args);
@@ -1225,14 +1189,14 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lockdep_free_task(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_NUMA
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> mpol_put(p-&amp;gt;mempolicy);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bad_fork_cleanup_threadgroup_lock:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>bad_fork_cleanup_delayacct:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> delayacct_tsk_free(p);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> delayacct_tsk_free(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bad_fork_cleanup_count:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dec_rlimit_ucounts(task_ucounts(p), UCOUNT_RLIMIT_NPROC, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> atomic_dec(&amp;amp;p-&amp;gt;cred-&amp;gt;user-&amp;gt;processes);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> exit_creds(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bad_fork_free:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> WRITE_ONCE(p-&amp;gt;__state, TASK_DEAD);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;state = TASK_DEAD;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> put_task_stack(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> delayed_free_task(p);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fork_out:
@@ -1348,6 +1312,109 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> free_task_struct(tsk);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">NULL&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *&lt;span style="color:#447fcf">dup_task_struct&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *orig, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> node)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *tsk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> *stack;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> vm_struct *stack_vm_area __maybe_unused;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> err;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (node == NUMA_NO_NODE)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> node = tsk_fork_get_node(orig);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tsk = alloc_task_struct_node(node);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!tsk)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> stack = alloc_thread_stack_node(tsk, node);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!stack)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> free_tsk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (memcg_charge_kernel_stack(tsk))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> free_stack;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> stack_vm_area = task_stack_vm_area(tsk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = arch_dup_task_struct(tsk, orig);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * arch_dup_task_struct() clobbers the stack-related fields. Make
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * sure they&amp;#39;re properly initialized before using any stack-related
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * functions again.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tsk-&amp;gt;stack = stack;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_VMAP_STACK
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> tsk-&amp;gt;stack_vm_area = stack_vm_area;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_THREAD_INFO_IN_TASK
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> refcount_set(&amp;amp;tsk-&amp;gt;stack_refcount, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> free_stack;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = scs_prepare(tsk, node);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> free_stack;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_SECCOMP
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * We must handle setting up seccomp filters once we&amp;#39;re under
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * the sighand lock in case orig has changed between now and
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * then. Until then, filter must be NULL to avoid messing up
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * the usage counts on the error path calling free_task.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tsk-&amp;gt;seccomp.filter = &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> setup_thread_stack(tsk, orig);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clear_user_return_notifier(tsk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clear_tsk_need_resched(tsk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> set_task_stack_end_magic(tsk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_STACKPROTECTOR
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> tsk-&amp;gt;stack_canary = get_random_canary();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (orig-&amp;gt;cpus_ptr == &amp;amp;orig-&amp;gt;cpus_mask)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tsk-&amp;gt;cpus_ptr = &amp;amp;tsk-&amp;gt;cpus_mask;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * One for the user space visible state that goes away when reaped.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * One for the scheduler.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> refcount_set(&amp;amp;tsk-&amp;gt;rcu_users, &lt;span style="color:#3677a9">2&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* One for the rcu users */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> refcount_set(&amp;amp;tsk-&amp;gt;usage, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_BLK_DEV_IO_TRACE
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> tsk-&amp;gt;btrace_seq = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> tsk-&amp;gt;splice_pipe = &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tsk-&amp;gt;task_frag.page = &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tsk-&amp;gt;wake_q.next = &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> account_kernel_stack(tsk, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kcov_task_init(tsk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_FAULT_INJECTION
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> tsk-&amp;gt;fail_nth = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_BLK_CGROUP
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> tsk-&amp;gt;throttle_queue = &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tsk-&amp;gt;use_memdelay = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_MEMCG
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> tsk-&amp;gt;active_memcg = &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> tsk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>free_stack:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> free_thread_stack(tsk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>free_tsk:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> free_task_struct(tsk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>file: arch/x86/kernel/process.c&lt;/li>
 &lt;/ul>
@@ -1361,10 +1428,8 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_VM86
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> dst-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.vm86 = &lt;span style="color:#24909d">NULL&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#999;font-style:italic">/* Drop the copied pointer to current&amp;#39;s fpstate */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dst-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.fpu.fpstate = &lt;span style="color:#24909d">NULL&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fpu__copy(dst, src);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="data-structures">data structures&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kernel_clone_args {
@@ -1380,7 +1445,6 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Number of elements in *set_tid */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> size_t set_tid_size;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cgroup;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> io_thread;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> cgroup *cgrp;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> css_set *cset;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};

@@ -262,6 +262,7 @@ static __latent_entropy struct task_struct *copy_process(
 	 */
 	...
 
+
 	/* p is the new task_struct, copied from current */
 	p = dup_task_struct(current, node);
 	if (!p)
@@ -362,6 +363,7 @@ static __latent_entropy struct task_struct *copy_process(
 	}
 
 	...
+
 	/* ok, now we should be set up.. */
 	p->pid = pid_nr(pid);
 	if (clone_flags & CLONE_THREAD) {

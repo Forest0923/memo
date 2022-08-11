@@ -23,7 +23,33 @@ long sys_clone3(struct clone_args __user *uargs, size_t size);
 
 ## Arguments
 
+### arg1: `struct clone_args __user *uargs`
+
+- kernel/fork.c
+
+```c
+struct clone_args {
+	__aligned_u64 flags;
+	__aligned_u64 pidfd;
+	__aligned_u64 child_tid;
+	__aligned_u64 parent_tid;
+	__aligned_u64 exit_signal;
+	__aligned_u64 stack;
+	__aligned_u64 stack_size;
+	__aligned_u64 tls;
+	__aligned_u64 set_tid;
+	__aligned_u64 set_tid_size;
+	__aligned_u64 cgroup;
+};
+```
+
+### arg2: `size_t size`
+
+`sizeof(clone_args)`
+
 ## Return
+
+返り値は生成されたスレッドの tid．失敗した場合は -1 が返る．
 
 ## Definitions
 
@@ -57,28 +83,10 @@ SYSCALL_DEFINE2(clone3, struct clone_args __user *, uargs, size_t, size)
 	if (!clone3_args_valid(&kargs))
 		return -EINVAL;
 
-	return kernel_clone(&kargs);
+	return _do_fork(&kargs);
 }
 ```
 
-## Data Structures
-
-- kernel/fork.c
-
-```c
-struct clone_args {
-	__aligned_u64 flags;
-	__aligned_u64 pidfd;
-	__aligned_u64 child_tid;
-	__aligned_u64 parent_tid;
-	__aligned_u64 exit_signal;
-	__aligned_u64 stack;
-	__aligned_u64 stack_size;
-	__aligned_u64 tls;
-	__aligned_u64 set_tid;
-	__aligned_u64 set_tid_size;
-	__aligned_u64 cgroup;
-};
-```
+[see also linux-syscalls/clone](../clone/)
 
 ## Examples

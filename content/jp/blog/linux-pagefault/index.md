@@ -1,5 +1,5 @@
 +++
-title = "Linux におけるページフォルトのハンドリング"
+title = "Page Fault handling in Linux"
 description = ""
 date = 2022-04-13T12:44:49+09:00
 tags = [

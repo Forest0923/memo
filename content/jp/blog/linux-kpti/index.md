@@ -1,5 +1,5 @@
 +++
-title = "Linux における KPTI のページテーブル切り替え"
+title = "KPTI Support in Linux"
 description = ""
 date = 2022-04-09T06:32:00+09:00
 tags = [

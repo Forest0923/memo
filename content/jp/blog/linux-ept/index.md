@@ -1,5 +1,5 @@
 +++
-title = "QEMU/KVM における EPT の操作"
+title = "EPT Management in QEMU/KVM"
 description = ""
 date = 2022-04-15T12:20:18+09:00
 tags = [

@@ -1,13 +1,13 @@
 +++
-title = "accept"
-description = "NR = 43 <br> cf. [accept4](/memo/jp/docs/linux-syscalls/accept4/)"
+title = "accept4"
+description = "NR = 288 <br> cf. [accept](/memo/jp/docs/linux-syscalls/accept/)"
 tags = [
   "Linux", "System Calls"
 ]
 categories = [
   "Linux Code Reading"
 ]
-weight = 43
+weight = 288
 draft = false
 +++
 
@@ -18,8 +18,8 @@ draft = false
 ## Abstract
 
 ```c
-long sys_accept(int fd, struct sockaddr __user *upeer_sockaddr,
-				int __user *upeer_addrlen);
+long sys_accept4(int fd, struct sockaddr __user *upeer_sockaddr,
+				int __user *upeer_addrlen, int flags);
 ```
 
 ## Arguments
@@ -31,10 +31,10 @@ long sys_accept(int fd, struct sockaddr __user *upeer_sockaddr,
 - file: net/socket.c
 
 ```c
-SYSCALL_DEFINE3(accept, int, fd, struct sockaddr __user *, upeer_sockaddr,
-		int __user *, upeer_addrlen)
+SYSCALL_DEFINE4(accept4, int, fd, struct sockaddr __user *, upeer_sockaddr,
+		int __user *, upeer_addrlen, int, flags)
 {
-	return __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, 0);
+	return __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, flags);
 }
 ```
 

@@ -1,5 +1,5 @@
 +++
-title = "Manipulating FS"
+title = "Manipulating FS/GS Segment Registers"
 description = ""
 date = 2022-07-01T13:12:18+09:00
 tags = [

@@ -70,7 +70,72 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: open</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/open/</guid><description/></item><item><title>Docs: close</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/close/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/close/</guid><description/></item><item><title>Docs: mmap</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/mmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/mmap/</guid><description/></item><item><title>Docs: munmap</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/munmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/munmap/</guid><description/></item><item><title>Docs: brk</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/brk/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/brk/</guid><description/></item><item><title>Docs: pipe</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/pipe/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/pipe/</guid><description/></item><item><title>Docs: socket</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/socket/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/socket/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: open</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/open/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(open, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, flags, umode_t, mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ksys_open(filename, flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>include/linux/syscalls.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">inline&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">ksys_open&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> umode_t mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (force_o_largefile())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flags |= O_LARGEFILE;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> do_sys_open(AT_FDCWD, filename, flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">do_sys_open&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> dfd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags, umode_t mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_how how = build_open_how(flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> do_sys_openat2(dfd, filename, &amp;amp;how);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">do_sys_openat2&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> dfd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_how *how)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_flags op;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = build_open_flags(how, &amp;amp;op);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> filename *tmp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp = getname(filename);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ERR(tmp))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> PTR_ERR(tmp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = get_unused_fd_flags(how-&amp;gt;flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *f = do_filp_open(dfd, tmp, &amp;amp;op);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ERR(f)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> put_unused_fd(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = PTR_ERR(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fsnotify_open(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd_install(fd, f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> putname(tmp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: close</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/close/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/close/</guid><description/></item><item><title>Docs: mmap</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/mmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/mmap/</guid><description/></item><item><title>Docs: munmap</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/munmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/munmap/</guid><description/></item><item><title>Docs: brk</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/brk/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/brk/</guid><description/></item><item><title>Docs: pipe</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/pipe/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/pipe/</guid><description/></item><item><title>Docs: socket</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/socket/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/socket/</guid><description>
 &lt;h2 id="version">Version&lt;/h2>
 &lt;ul>
 &lt;li>Linux v5.8.13&lt;/li>
@@ -292,7 +357,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> file;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>EXPORT_SYMBOL(sock_alloc_file);
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: connect</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/connect/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/connect/</guid><description/></item><item><title>Docs: accept/accept4</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/accept/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/accept/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: connect</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/connect/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/connect/</guid><description/></item><item><title>Docs: accept</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/accept/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/accept/</guid><description>
 &lt;h2 id="version">Version&lt;/h2>
 &lt;ul>
 &lt;li>Linux v5.8.13&lt;/li>
@@ -300,21 +365,13 @@
 &lt;h2 id="abstract">Abstract&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_accept&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr __user *upeer_sockaddr,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *upeer_addrlen);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_accept4&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr __user *upeer_sockaddr,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *upeer_addrlen, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
 &lt;h2 id="return">Return&lt;/h2>
 &lt;h2 id="definition">Definition&lt;/h2>
 &lt;ul>
 &lt;li>file: net/socket.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE4(accept4, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr __user *, upeer_sockaddr,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *, upeer_addrlen, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, flags)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, flags);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(accept, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr __user *, upeer_sockaddr,
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(accept, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr __user *, upeer_sockaddr,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *, upeer_addrlen)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, &lt;span style="color:#3677a9">0&lt;/span>);
@@ -1101,7 +1158,194 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> cgroup *cgrp;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> css_set *cset;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: openat</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/openat/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/openat/</guid><description/></item><item><title>Docs: pipe2</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/pipe2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/pipe2/</guid><description/></item><item><title>Docs: clone3</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/clone3/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/clone3/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: openat</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/openat/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/openat/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE4(openat, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, dfd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> umode_t, mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (force_o_largefile())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flags |= O_LARGEFILE;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_sys_open&lt;/span>(dfd, filename, flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">do_sys_open&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> dfd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags, umode_t mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_how how = build_open_how(flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> do_sys_openat2(dfd, filename, &amp;amp;how);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">do_sys_openat2&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> dfd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_how *how)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_flags op;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = build_open_flags(how, &amp;amp;op);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> filename *tmp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp = getname(filename);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ERR(tmp))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> PTR_ERR(tmp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = get_unused_fd_flags(how-&amp;gt;flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *f = do_filp_open(dfd, tmp, &amp;amp;op);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ERR(f)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> put_unused_fd(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = PTR_ERR(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fsnotify_open(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd_install(fd, f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> putname(tmp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: accept4</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/accept4/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/accept4/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_accept4&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr __user *upeer_sockaddr,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *upeer_addrlen, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definition">Definition&lt;/h2>
+&lt;ul>
+&lt;li>file: net/socket.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE4(accept4, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr __user *, upeer_sockaddr,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *, upeer_addrlen, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * For accept, we attempt to create a new socket, set up the link
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * with the client, wake up the client, then return the new
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * connected fd. We collect the address of the connector in kernel
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * space and move it to user at the very end. This is unclean because
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * we open the socket then return an error.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * 1003.1g adds the ability to recvmsg() to query connection pending
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * status to recvmsg. We need to add that support in a way thats
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * clean when we restructure accept also.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">__sys_accept4&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr __user *upeer_sockaddr,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *upeer_addrlen, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ret = -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f = fdget(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (f.file) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = __sys_accept4_file(f.file, &lt;span style="color:#3677a9">0&lt;/span>, upeer_sockaddr,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> upeer_addrlen, flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rlimit(RLIMIT_NOFILE));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (f.flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fput(f.file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">__sys_accept4_file&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *file, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> file_flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr __user *upeer_sockaddr,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *upeer_addrlen, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> nofile)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> socket *sock, *newsock;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *newfile;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> err, len, newfd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr_storage address;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (flags &amp;amp; ~(SOCK_CLOEXEC | SOCK_NONBLOCK))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (SOCK_NONBLOCK != O_NONBLOCK &amp;amp;&amp;amp; (flags &amp;amp; SOCK_NONBLOCK))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flags = (flags &amp;amp; ~SOCK_NONBLOCK) | O_NONBLOCK;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sock = sock_from_file(file, &amp;amp;err);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!sock)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = -ENFILE;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newsock = sock_alloc();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!newsock)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newsock-&amp;gt;type = sock-&amp;gt;type;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newsock-&amp;gt;ops = sock-&amp;gt;ops;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * We don&amp;#39;t need try_module_get here, as the listening socket (sock)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * has the protocol module (sock-&amp;gt;ops-&amp;gt;owner) held.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __module_get(newsock-&amp;gt;ops-&amp;gt;owner);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newfd = __get_unused_fd_flags(flags, nofile);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (unlikely(newfd &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = newfd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sock_release(newsock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newfile = sock_alloc_file(newsock, flags, sock-&amp;gt;sk-&amp;gt;sk_prot_creator-&amp;gt;name);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ERR(newfile)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = PTR_ERR(newfile);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> put_unused_fd(newfd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = security_socket_accept(sock, newsock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = sock-&amp;gt;ops-&amp;gt;accept(sock, newsock, sock-&amp;gt;file-&amp;gt;f_flags | file_flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">false&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (err &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (upeer_sockaddr) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len = newsock-&amp;gt;ops-&amp;gt;getname(newsock,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sockaddr *)&amp;amp;address, &lt;span style="color:#3677a9">2&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (len &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = -ECONNABORTED;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = move_addr_to_user(&amp;amp;address,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len, upeer_sockaddr, upeer_addrlen);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (err &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* File flags are not inherited via accept() unlike another OSes. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd_install(newfd, newfile);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err = newfd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> err;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out_fd:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fput(newfile);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> put_unused_fd(newfd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: pipe2</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/pipe2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/pipe2/</guid><description/></item><item><title>Docs: clone3</title><link>http://forest0923.github.io/memo/jp/docs/linux-syscalls/clone3/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/jp/docs/linux-syscalls/clone3/</guid><description>
 &lt;h2 id="version">Version&lt;/h2>
 &lt;ul>
 &lt;li>Linux v5.8.13&lt;/li>

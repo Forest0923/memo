@@ -13,8 +13,6 @@ enableGitInfo = true
 # Taxonomy
 #############
 
-# disableKinds = ["taxonomy", "taxonomyTerm"]
-
 [taxonomies]
 tag = "tags"
 category = "categories"
@@ -83,36 +81,24 @@ weight = 2
 
 
 #########################
-# Site parameters
+# Other parameters
 #########################
-
-# Comment out if you don't want the "print entire section" link enabled.
-# [outputs]
-# section = ["HTML", "print", "RSS"]
 
 [params]
 copyright = "Forest0923"
-
-# First one is picked as the Twitter card image if not set on page.
-# images = ["images/project-illustration.png"]
 
 github_repo = "https://github.com/forest0923/memo"
 # github_project_repo = "https://github.com/google/docsy"
 github_branch= "master"
 
-# Google Custom Search Engine ID. Remove or comment out to disable search.
-gcs_engine_id = "19d4a6fc33f1da533"
+offlineSearch = true
 
 # User interface configuration
 [params.ui]
 breadcrumb_disable = false
-# Set to true to disable the About link in the site footer
 footer_about_disable = true
-# Set to false if you don't want to display a logo (/assets/icons/logo.svg) in the top navbar
 navbar_logo = true
-# Set to true if you don't want the top navbar to be translucent when over a `block/cover`, like on the homepage.
 navbar_translucent_over_cover_disable = false
-# Enable to show the side bar menu in its compact state.
 sidebar_menu_compact = true
 sidebar_menu_foldable = true
 sidebar_search_disable = false

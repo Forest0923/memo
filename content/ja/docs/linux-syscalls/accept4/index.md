@@ -1,6 +1,6 @@
 +++
 title = "accept4"
-description = "NR = 288 <br> cf. [accept](/memo/jp/docs/linux-syscalls/accept/)"
+description = "NR = 288 <br> cf. [accept](/memo/ja/docs/linux-syscalls/accept/)"
 tags = [
   "Linux", "System Calls"
 ]

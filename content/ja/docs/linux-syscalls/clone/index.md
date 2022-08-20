@@ -1,6 +1,6 @@
 +++
 title = "clone"
-description = "NR = 56 <br> cf. [clone3](/memo/jp/docs/linux-syscalls/clone3/)"
+description = "NR = 56 <br> cf. [clone3](/memo/ja/docs/linux-syscalls/clone3/)"
 tags = [
   "Linux", "System Calls"
 ]

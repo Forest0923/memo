@@ -52,20 +52,12 @@ id = "UA-00000000-0"
 ###########################
 
 [languages]
-
-[languages.jp]
-title = "Memo"
-description = "Technical notes written by Forest0923"
-contentDir = 'content/jp'
+[languages.ja]
+contentDir = 'content/ja'
 languageName ="Japanese"
-weight = 1
-
 [languages.en]
-title = "Memo"
-description = "Technical notes written by Forest0923"
 contentDir = 'content/en'
 languageName ="English"
-weight = 2
 
 ##########################
 # Markdown parser

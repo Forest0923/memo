@@ -1,6 +1,6 @@
 +++
 title = "open"
-description = "NR = 2 <br> cf. [openat](/memo/jp/docs/linux-syscalls/openat/)"
+description = "NR = 2 <br> cf. [openat](/memo/ja/docs/linux-syscalls/openat/)"
 tags = [
   "Linux", "System Calls"
 ]

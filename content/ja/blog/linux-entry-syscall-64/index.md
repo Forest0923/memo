@@ -8,7 +8,7 @@ tags = [
 categories = [
   "Linuc Code Reading"
 ]
-draft = true
+draft = false
 +++
 
 ## Version
@@ -21,7 +21,7 @@ draft = true
 
 arch/x86/entry/entry_64.S
 
-```sx
+```gas
 SYM_CODE_START(entry_SYSCALL_64)
 	UNWIND_HINT_EMPTY
 

@@ -1,0 +1,79 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Untrusted OS</title><link>http://forest0923.github.io/memo/ja/tags/untrusted-os/</link><description>Recent content in Untrusted OS on Memo</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Wed, 15 Dec 2021 12:04:09 +0900</lastBuildDate><atom:link href="http://forest0923.github.io/memo/ja/tags/untrusted-os/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Secure In-VM Monitoring Using Hardware Virtualization</title><link>http://forest0923.github.io/memo/ja/blog/2021/12/15/secure-in-vm-monitoring-using-hardware-virtualization/</link><pubDate>Wed, 15 Dec 2021 12:04:09 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2021/12/15/secure-in-vm-monitoring-using-hardware-virtualization/</guid><description>
+&lt;h2 id="references">References&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Info.&lt;/th>
+&lt;th>Detail (URL and etc.)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Authors&lt;/td>
+&lt;td>Monirul I. Sharif, Wenke Lee, Weidong Cui, and Andrea Lanzi&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Affiliation&lt;/td>
+&lt;td>Georgia Institute of Technology, Microsoft Research&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Book Title&lt;/td>
+&lt;td>In Proceedings of the 16th ACM Conference on Computer and Communications Security (CCS’09), pages 477-487, 2009&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>URL&lt;/td>
+&lt;td>&lt;a href="https://dl.acm.org/doi/10.1145/1653662.1653720">https://dl.acm.org/doi/10.1145/1653662.1653720&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>PDF&lt;/td>
+&lt;td>&lt;a href="https://dl.acm.org/doi/pdf/10.1145/1653662.1653720">https://dl.acm.org/doi/pdf/10.1145/1653662.1653720&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Slides&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Video&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Blog: EPTI: Efficient Defence against Meltdown Attack for Unpatched VMs</title><link>http://forest0923.github.io/memo/ja/blog/2021/12/03/epti-efficient-defence-against-meltdown-attack-for-unpatched-vms/</link><pubDate>Fri, 03 Dec 2021 11:07:19 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2021/12/03/epti-efficient-defence-against-meltdown-attack-for-unpatched-vms/</guid><description>
+&lt;h2 id="references">References&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Info.&lt;/th>
+&lt;th>Detail (URL and etc.)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Authors&lt;/td>
+&lt;td>Zhichao Hua, Dong Du, Yubin Xia, Haibo Chen and Binyu Zang&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Affiliation&lt;/td>
+&lt;td>Shanghai Jiao Tong University&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Book Title&lt;/td>
+&lt;td>In the proceedings of the 2018 USENIX Annual Technical Conference (USENIX ATC &amp;lsquo;18), pages 255-266, 2018&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>URL&lt;/td>
+&lt;td>&lt;a href="https://www.usenix.org/conference/atc18/presentation/hua">https://www.usenix.org/conference/atc18/presentation/hua&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>PDF&lt;/td>
+&lt;td>&lt;a href="https://www.usenix.org/system/files/conference/atc18/atc18-hua.pdf">https://www.usenix.org/system/files/conference/atc18/atc18-hua.pdf&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Slides&lt;/td>
+&lt;td>&lt;a href="https://www.usenix.org/sites/default/files/conference/protected-files/atc18_slides_hua.pdf">https://www.usenix.org/sites/default/files/conference/protected-files/atc18_slides_hua.pdf&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Video&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item></channel></rss>

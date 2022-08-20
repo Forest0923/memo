@@ -1,0 +1,123 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Shell Script</title><link>http://forest0923.github.io/memo/ja/docs/lang/shellscript/</link><description>Recent content in Shell Script on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/ja/docs/lang/shellscript/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Shell Script Cheat Sheet</title><link>http://forest0923.github.io/memo/ja/docs/lang/shellscript/sh-cs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/shellscript/sh-cs/</guid><description>
+&lt;h2 id="array">Array&lt;/h2>
+&lt;ul>
+&lt;li>Test code:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#!/bin/sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">array&lt;/span>=(&lt;span style="color:#3677a9">0&lt;/span> &lt;span style="color:#3677a9">1&lt;/span> &lt;span style="color:#3677a9">2&lt;/span> 3)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">$array&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#ed9d13">${&lt;/span>&lt;span style="color:#40ffff">array&lt;/span>[0]&lt;span style="color:#ed9d13">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#ed9d13">${&lt;/span>&lt;span style="color:#40ffff">array&lt;/span>[@]&lt;span style="color:#ed9d13">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Output:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0 1 2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="if">if&lt;/h2>
+&lt;ul>
+&lt;li>Test code:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#!/bin/sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">val0&lt;/span>=&lt;span style="color:#3677a9">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">val1&lt;/span>=&lt;span style="color:#3677a9">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> [ &lt;span style="color:#40ffff">$val0&lt;/span> = &lt;span style="color:#3677a9">0&lt;/span> ]; &lt;span style="color:#6ab825;font-weight:bold">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">val0&lt;/span> = &lt;span style="color:#3677a9">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">elif&lt;/span> [ &lt;span style="color:#40ffff">$val0&lt;/span> = &lt;span style="color:#3677a9">1&lt;/span> ]; &lt;span style="color:#6ab825;font-weight:bold">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">val0&lt;/span> = &lt;span style="color:#3677a9">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> otherwise
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># AND&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> [ &lt;span style="color:#40ffff">$val0&lt;/span> = &lt;span style="color:#3677a9">0&lt;/span> ] &amp;amp;&amp;amp; [ &lt;span style="color:#40ffff">$val1&lt;/span> != &lt;span style="color:#3677a9">1&lt;/span> ]; &lt;span style="color:#6ab825;font-weight:bold">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#24909d">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># OR&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> [ &lt;span style="color:#40ffff">$val0&lt;/span> = &lt;span style="color:#3677a9">1&lt;/span> ] || [ &lt;span style="color:#40ffff">$val1&lt;/span> = &lt;span style="color:#3677a9">1&lt;/span> ]; &lt;span style="color:#6ab825;font-weight:bold">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#24909d">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">file&lt;/span>=foo.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">dir&lt;/span>=bar
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># Existing of file or dir&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> [ -f &lt;span style="color:#ed9d13">${&lt;/span>&lt;span style="color:#40ffff">file&lt;/span>&lt;span style="color:#ed9d13">}&lt;/span> ] &amp;amp;&amp;amp; [ -d &lt;span style="color:#ed9d13">${&lt;/span>&lt;span style="color:#40ffff">dir&lt;/span>&lt;span style="color:#ed9d13">}&lt;/span> ]; &lt;span style="color:#6ab825;font-weight:bold">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#24909d">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Output:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>val0 = 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>false
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>true
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>false
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="for">for&lt;/h2>
+&lt;ul>
+&lt;li>Test code:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#!/bin/sh
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">array&lt;/span>=(&lt;span style="color:#3677a9">0&lt;/span> &lt;span style="color:#3677a9">1&lt;/span> 2)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> i in &lt;span style="color:#ed9d13">`&lt;/span>seq 10&lt;span style="color:#ed9d13">`&lt;/span>; &lt;span style="color:#6ab825;font-weight:bold">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">$i&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">done&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> j in &lt;span style="color:#ed9d13">${&lt;/span>&lt;span style="color:#40ffff">array&lt;/span>[@]&lt;span style="color:#ed9d13">}&lt;/span>; &lt;span style="color:#6ab825;font-weight:bold">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">$j&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">done&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Output:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>4
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>6
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>7
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>8
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>10
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="input">Input&lt;/h2>
+&lt;ul>
+&lt;li>Test code:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -n &lt;span style="color:#ed9d13">&amp;#34;input &amp;gt; &amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">read&lt;/span> VAR
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#ed9d13">&amp;#34;output &amp;gt; &lt;/span>&lt;span style="color:#40ffff">$VAR&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Output:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>input &amp;gt; hello
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>output &amp;gt; hello
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="function">Function&lt;/h2>
+&lt;ul>
+&lt;li>Definition:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>func() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> hello
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>func_arg() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#ed9d13">&amp;#34;arg1 = &lt;/span>&lt;span style="color:#40ffff">$1&lt;/span>&lt;span style="color:#ed9d13">, arg2 = &lt;/span>&lt;span style="color:#40ffff">$2&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

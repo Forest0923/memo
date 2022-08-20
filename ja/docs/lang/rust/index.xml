@@ -1,0 +1,194 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Rust</title><link>http://forest0923.github.io/memo/ja/docs/lang/rust/</link><description>Recent content in Rust on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/ja/docs/lang/rust/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Rust 環境構築</title><link>http://forest0923.github.io/memo/ja/docs/lang/rust/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/rust/install/</guid><description>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;p>rustup を用いて rust のインストールやバージョン管理を行います．
+rustup をインストールしたら &lt;code>$HOME/.cargo/bin&lt;/code> を PATH に追加します．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-01" aria-selected="false">Otherwise&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S rustup&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl --proto &lt;span style="color:#ed9d13">&amp;#39;=https&amp;#39;&lt;/span> --tlsv1.2 -sSf https://sh.rustup.rs | sh&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h2 id="rustup">rustup&lt;/h2>
+&lt;p>rustup を用いて rustc などをアップデートする際には &lt;code>rustup update&lt;/code> を実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>rustup update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>rustup 自体をアップデートする場合にはディストリビューションのパケージマネージャでアップデートするか，&lt;code>rustup self update&lt;/code> でアップデートします．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>rustup self update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>アンインストールは下記のコマンドで行います．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>rustup self uninstall
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="cargo">cargo&lt;/h2>
+&lt;p>新しいプロジェクトは &lt;code>cargo new&lt;/code> で作成します．&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-00" aria-selected="false">executable&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-01" aria-selected="false">library&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
+id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo new dir_name --bin&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo new dir_name --lib&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;p>git などのバージョン管理を行わない場合は &lt;code>--vcs none&lt;/code> をつけます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo new dir_name --bin --vcs none
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ビルドは &lt;code>cargo build&lt;/code> で行いますが，実行ファイルを作らなくていい場合は &lt;code>cargo check&lt;/code> を実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo build &lt;span style="color:#999;font-style:italic"># create executable file&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cargo check &lt;span style="color:#999;font-style:italic"># don&amp;#39;t create executable file&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>実行する場合は &lt;code>cargo run&lt;/code> を使います．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo run
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>nightly 版の rust で実行したい場合は下記のように実行します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>rustup run nightly cargo run
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="rustc">rustc&lt;/h2>
+&lt;p>rustc は rust のコンパイラで小さなコードであれば cargo を使わなくてもこれだけで対応できます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>rustc main.rs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./main
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="rustfmt">rustfmt&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>rustfmt main.rs
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Inline Assembly</title><link>http://forest0923.github.io/memo/ja/docs/lang/rust/asm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/rust/asm/</guid><description>
+&lt;h2 id="llvm_asm">&lt;code>llvm_asm!()&lt;/code>&lt;/h2>
+&lt;ul>
+&lt;li>Sample code:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-rust" data-lang="rust">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#![feature(llvm_asm)]&lt;/span>&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">fn&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>()&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span>&lt;span style="color:#666"> &lt;/span>i: &lt;span style="color:#6ab825;font-weight:bold">u64&lt;/span> =&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#3677a9">3&lt;/span>;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span>&lt;span style="color:#666"> &lt;/span>j: &lt;span style="color:#6ab825;font-weight:bold">u64&lt;/span> =&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#3677a9">5&lt;/span>;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span>&lt;span style="color:#666"> &lt;/span>o: &lt;span style="color:#6ab825;font-weight:bold">u64&lt;/span>;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">unsafe&lt;/span>&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>llvm_asm!(&lt;span style="color:#ed9d13">&amp;#34;mov $1, $0; add $2, $0;&amp;#34;&lt;/span>&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>: &lt;span style="color:#ed9d13">&amp;#34;=r&amp;#34;&lt;/span>(o)&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>: &lt;span style="color:#ed9d13">&amp;#34;{bx}&amp;#34;&lt;/span>(i),&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#ed9d13">&amp;#34;{cx}&amp;#34;&lt;/span>(j));&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>println!(&lt;span style="color:#ed9d13">&amp;#34;{}&amp;#34;&lt;/span>,&lt;span style="color:#666"> &lt;/span>o);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">&lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Output:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>% rustup run nightly cargo run
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Compiling asm_test v0.1.0 (/home/mori/playground/rust/asm_test)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Finished dev [unoptimized + debuginfo] target(s) in 0.82s
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Running `target/debug/asm_test`
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>8
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="asm">&lt;code>asm!()&lt;/code>&lt;/h2>
+&lt;ul>
+&lt;li>Sample code:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-rust" data-lang="rust">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#![feature(asm)]&lt;/span>&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">fn&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>()&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span>&lt;span style="color:#666"> &lt;/span>i: &lt;span style="color:#6ab825;font-weight:bold">u64&lt;/span> =&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#3677a9">3&lt;/span>;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span>&lt;span style="color:#666"> &lt;/span>o: &lt;span style="color:#6ab825;font-weight:bold">u64&lt;/span>;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">unsafe&lt;/span>&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>asm!(&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#ed9d13">&amp;#34;mov {0}, {1}&amp;#34;&lt;/span>,&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#ed9d13">&amp;#34;add {0}, {number}&amp;#34;&lt;/span>,&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>out(reg)&lt;span style="color:#666"> &lt;/span>o,&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">in&lt;/span>(reg)&lt;span style="color:#666"> &lt;/span>i,&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>number&lt;span style="color:#666"> &lt;/span>=&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#3677a9">5&lt;/span>,&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>println!(&lt;span style="color:#ed9d13">&amp;#34;{}&amp;#34;&lt;/span>,&lt;span style="color:#666"> &lt;/span>o);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">&lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Output:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>% rustup run nightly cargo run
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Compiling llvm_asm_test v0.1.0 (/home/mori/playground/rust/llvm_asm_test)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Finished dev [unoptimized + debuginfo] target(s) in 0.16s
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Running `target/debug/llvm_asm_test`
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>8
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="output-assembly-code">Output assembly code&lt;/h2>
+&lt;ul>
+&lt;li>Commands:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo rustc -- --emit asm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># or&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rustup run nightly cargo rustc -- --emit asm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cat target/debug/deps/*.s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>References&lt;/p>
+&lt;p>&lt;a href="https://blog.rust-lang.org/inside-rust/2020/06/08/new-inline-asm.html">https://blog.rust-lang.org/inside-rust/2020/06/08/new-inline-asm.html&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://doc.rust-lang.org/beta/unstable-book/library-features/asm.html">https://doc.rust-lang.org/beta/unstable-book/library-features/asm.html&lt;/a>&lt;/p>
+&lt;/blockquote></description></item><item><title>Docs: System Call</title><link>http://forest0923.github.io/memo/ja/docs/lang/rust/systemcall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/rust/systemcall/</guid><description>
+&lt;h2 id="use-system-call-crate">Use &lt;code>system-call&lt;/code> crate&lt;/h2>
+&lt;ul>
+&lt;li>Add a dependency to &lt;code>Cargo.toml&lt;/code>:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-toml" data-lang="toml">&lt;span style="display:flex;">&lt;span>[dependencies]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>system-call=&lt;span style="color:#ed9d13">&amp;#34;0.1.3&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Sample code:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-rust" data-lang="rust">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#[macro_use]&lt;/span>&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">extern&lt;/span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">crate&lt;/span>&lt;span style="color:#666"> &lt;/span>syscall;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">fn&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>()&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">mut&lt;/span>&lt;span style="color:#666"> &lt;/span>pid;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span>&lt;span style="color:#666"> &lt;/span>cpid;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">mut&lt;/span>&lt;span style="color:#666"> &lt;/span>val&lt;span style="color:#666"> &lt;/span>=&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#3677a9">0&lt;/span>;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">unsafe&lt;/span>&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>pid&lt;span style="color:#666"> &lt;/span>=&lt;span style="color:#666"> &lt;/span>syscall!(GETPID);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>println!(&lt;span style="color:#ed9d13">&amp;#34;before: val is {}, pid is {}&amp;#34;&lt;/span>,&lt;span style="color:#666"> &lt;/span>val,&lt;span style="color:#666"> &lt;/span>pid);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">unsafe&lt;/span>&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>cpid&lt;span style="color:#666"> &lt;/span>=&lt;span style="color:#666"> &lt;/span>syscall!(FORK);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">if&lt;/span>&lt;span style="color:#666"> &lt;/span>cpid&lt;span style="color:#666"> &lt;/span>&amp;lt;&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#3677a9">0&lt;/span>&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>println!(&lt;span style="color:#ed9d13">&amp;#34;Fork error&amp;#34;&lt;/span>);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>}&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">if&lt;/span>&lt;span style="color:#666"> &lt;/span>cpid&lt;span style="color:#666"> &lt;/span>==&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#3677a9">0&lt;/span>&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>val&lt;span style="color:#666"> &lt;/span>+=&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#3677a9">1&lt;/span>;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">unsafe&lt;/span>&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>pid&lt;span style="color:#666"> &lt;/span>=&lt;span style="color:#666"> &lt;/span>syscall!(GETPID);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>println!(&lt;span style="color:#ed9d13">&amp;#34;child: val is {}, pid is {}&amp;#34;&lt;/span>,&lt;span style="color:#666"> &lt;/span>val,&lt;span style="color:#666"> &lt;/span>pid);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">unsafe&lt;/span>&lt;span style="color:#666"> &lt;/span>{&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>pid&lt;span style="color:#666"> &lt;/span>=&lt;span style="color:#666"> &lt;/span>syscall!(GETPID);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>println!(&lt;span style="color:#ed9d13">&amp;#34;parent: val is {}, pid is {}&amp;#34;&lt;/span>,&lt;span style="color:#666"> &lt;/span>val,&lt;span style="color:#666"> &lt;/span>pid);&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">&lt;/span>}&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Output:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>% rustup run nightly cargo run
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>warning: comparison is useless due to type limits
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> --&amp;gt; src/main.rs:15:8
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> |
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>15 | if cpid &amp;lt; 0 {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> | ^^^^^^^^
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> |
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> = note: `#[warn(unused_comparisons)]` on by default
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>warning: 1 warning emitted
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Running `target/debug/syscall_crate_test`
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>before: val is 0, pid is 3497
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>parent: val is 0, pid is 3497
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>child: val is 1, pid is 3499
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Source code of syscall crate is in the &lt;code>~/.cargo/registry/src/github.com-[hash]/system-call-[version]/&lt;/code>.&lt;/li>
+&lt;/ul></description></item><item><title>Docs: Rust Cheat Sheet</title><link>http://forest0923.github.io/memo/ja/docs/lang/rust/cheatsheet/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/rust/cheatsheet/</guid><description/></item></channel></rss>

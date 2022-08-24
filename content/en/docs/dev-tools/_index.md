@@ -1,5 +1,5 @@
 ---
-title: "App Settings and Tool Usages"
+title: "Dev. Tools"
 weight: 67
 bookFlatSection: false
 bookCollapseSection: true

@@ -1,5 +1,5 @@
 ---
-title: "開発ツールの使い方"
+title: "Dev. Tools"
 weight: 67
 bookFlatSection: false
 bookCollapseSection: true

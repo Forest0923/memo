@@ -1,5 +1,5 @@
 ---
-title: "Linux カーネル開発"
+title: "Linux Kernel Development"
 weight: 10
 bookFlatSection: false
 bookCollapseSection: true

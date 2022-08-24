@@ -1,5 +1,5 @@
 ---
-title: "Linux の設定いろいろ"
+title: "Linux Configurations"
 weight: 30
 bookFlatSection: false
 bookCollapseSection: true

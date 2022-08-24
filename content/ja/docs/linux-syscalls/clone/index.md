@@ -83,6 +83,8 @@ sys_clone()
 
 ## Definitions
 
+### `sys_clone()`
+
 システムコールの実装は `kernel/fork.c` にて次のように行われている．
 
 config によって定義が異なっているが，実験環境では `CONFIG_CLONE_BACKWARDS*` が定義されていなかったので一番下のものが有効になっていた．
@@ -152,7 +154,7 @@ sys_clone()
 		-> wake_up_new_task()
 ```
 
-### `_do_fork`
+### `_do_fork()`
 
 - kernel/fork.c
 
@@ -225,7 +227,7 @@ long _do_fork(struct kernel_clone_args *args)
 }
 ```
 
-### `copy_process`
+### `copy_process()`
 
 - kernel/fork.c
 
@@ -504,7 +506,7 @@ static __latent_entropy struct task_struct *copy_process(
 }
 ```
 
-### `dup_task_struct`
+### `dup_task_struct()`
 
 - kernel/fork.c
 
@@ -582,7 +584,7 @@ free_tsk:
 }
 ```
 
-### `arch_dup_task_struct`
+### `arch_dup_task_struct()`
 
 - file: arch/x86/kernel/process.c
 

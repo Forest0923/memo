@@ -27,6 +27,8 @@ long sys_bind(int fd, struct sockaddr __user *umyaddr, int addrlen);
 
 ## Definition
 
+### `sys_bind()`
+
 - file: net/socket.c
 
 ```c
@@ -35,6 +37,8 @@ SYSCALL_DEFINE3(bind, int, fd, struct sockaddr __user *, umyaddr, int, addrlen)
 	return __sys_bind(fd, umyaddr, addrlen);
 }
 ```
+
+### `__sys_bind()`
 
 ```c
 /*

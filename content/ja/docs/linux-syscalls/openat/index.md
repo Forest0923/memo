@@ -23,6 +23,8 @@ draft = false
 
 ## Definitions
 
+### `sys_openat()`
+
 - fs/open.c
 
 ```c
@@ -35,6 +37,8 @@ SYSCALL_DEFINE4(openat, int, dfd, const char __user *, filename, int, flags,
 }
 ```
 
+### `do_sys_open()`
+
 - fs/open.c
 
 ```c
@@ -44,6 +48,8 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 	return do_sys_openat2(dfd, filename, &how);
 }
 ```
+
+### `do_sys_openat2()`
 
 - fs/open.c
 

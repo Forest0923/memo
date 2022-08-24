@@ -23,6 +23,8 @@ draft = false
 
 ## Definitions
 
+### `sys_open()`
+
 - fs/open.c
 
 ```c
@@ -31,6 +33,8 @@ SYSCALL_DEFINE3(open, const char __user *, filename, int, flags, umode_t, mode)
 	return ksys_open(filename, flags, mode);
 }
 ```
+
+### `ksys_open()`
 
 - include/linux/syscalls.h
 
@@ -44,6 +48,8 @@ static inline long ksys_open(const char __user *filename, int flags,
 }
 ```
 
+### `do_sys_open()`
+
 - fs/open.c
 
 ```c
@@ -53,6 +59,8 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 	return do_sys_openat2(dfd, filename, &how);
 }
 ```
+
+### `do_sys_openat2()`
 
 - fs/open.c
 

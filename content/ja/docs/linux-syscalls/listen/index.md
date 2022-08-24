@@ -27,6 +27,8 @@ long sys_listen(int fd, int backlog);
 
 ## Definition
 
+### `sys_listen()`
+
 - file: net/socket.c
 
 ```c
@@ -35,6 +37,8 @@ SYSCALL_DEFINE2(listen, int, fd, int, backlog)
 	return __sys_listen(fd, backlog);
 }
 ```
+
+### `__sys_listen()`
 
 ```c
 /*

@@ -17,6 +17,10 @@ draft = true
 
 ## Abstract
 
+```c
+long sys_();
+```
+
 ## Arguments
 
 ## Return

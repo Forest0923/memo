@@ -28,6 +28,8 @@ long sys_accept(int fd, struct sockaddr __user *upeer_sockaddr,
 
 ## Definition
 
+### `sys_accept()`
+
 - file: net/socket.c
 
 ```c
@@ -37,6 +39,8 @@ SYSCALL_DEFINE3(accept, int, fd, struct sockaddr __user *, upeer_sockaddr,
 	return __sys_accept4(fd, upeer_sockaddr, upeer_addrlen, 0);
 }
 ```
+
+### `__sys_accept4()`
 
 ```c
 /*
@@ -69,6 +73,8 @@ int __sys_accept4(int fd, struct sockaddr __user *upeer_sockaddr,
 	return ret;
 }
 ```
+
+### `__sys_accept4_file()`
 
 ```c
 int __sys_accept4_file(struct file *file, unsigned file_flags,

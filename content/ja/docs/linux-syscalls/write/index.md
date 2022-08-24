@@ -27,6 +27,8 @@ long sys_write(unsigned int fd, const char __user *buf, size_t count);
 
 ## Definitions
 
+### `sys_write()`
+
 - file: fs/read_write.c
 
 ```c
@@ -36,6 +38,8 @@ SYSCALL_DEFINE3(write, unsigned int, fd, const char __user *, buf,
 	return ksys_write(fd, buf, count);
 }
 ```
+
+### `ksys_write()`
 
 ```c
 ssize_t ksys_write(unsigned int fd, const char __user *buf, size_t count)

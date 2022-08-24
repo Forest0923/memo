@@ -27,6 +27,8 @@ long sys_socket(int family, int type, int protocol);
 
 ## Definition
 
+### `sys_socket()`
+
 - file: net/socket.c
 
 ```c
@@ -35,6 +37,8 @@ SYSCALL_DEFINE3(socket, int, family, int, type, int, protocol)
 	return __sys_socket(family, type, protocol);
 }
 ```
+
+### `__sys_socket()`
 
 ```c
 int __sys_socket(int family, int type, int protocol)
@@ -65,6 +69,8 @@ int __sys_socket(int family, int type, int protocol)
 }
 ```
 
+### `sock_create()`
+
 ```c
 int sock_create(int family, int type, int protocol, struct socket **res)
 {
@@ -72,6 +78,8 @@ int sock_create(int family, int type, int protocol, struct socket **res)
 }
 EXPORT_SYMBOL(sock_create);
 ```
+
+### `__sock_create()`
 
 ```c
 /**
@@ -199,6 +207,8 @@ out_release:
 EXPORT_SYMBOL(__sock_create);
 ```
 
+### `sock_map_fd()`
+
 ```c
 static int sock_map_fd(struct socket *sock, int flags)
 {
@@ -219,6 +229,8 @@ static int sock_map_fd(struct socket *sock, int flags)
 	return PTR_ERR(newfile);
 }
 ```
+
+### `sock_alloc_file()`
 
 ```c
 /**

@@ -1,0 +1,172 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Meltdown</title><link>http://forest0923.github.io/memo/en/tags/meltdown/</link><description>Recent content in Meltdown on Memo</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Sat, 09 Apr 2022 06:32:00 +0900</lastBuildDate><atom:link href="http://forest0923.github.io/memo/en/tags/meltdown/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: KPTI Support in Linux</title><link>http://forest0923.github.io/memo/en/blog/2022/04/09/kpti-support-in-linux/</link><pubDate>Sat, 09 Apr 2022 06:32:00 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/04/09/kpti-support-in-linux/</guid><description>
+&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;p>CPU の脆弱性である Meltdown 脆弱性への対策手法として Linux では Kernel Page Table Isolation が行われています．このページでは Linux v5.8.13 上の KPTI によるページテーブルの切り替えがどのように行われるかを実際のコードを追って説明していきます．&lt;/p>
+&lt;!--
+## Background
+### Meltdown 脆弱性
+Meltdown 脆弱性は CPU の高速化手法である out-of-order 実行に起因する脆弱性である．
+[Meltdown](https://meltdownattack.com/meltdown.pdf)
+[Spectre](https://spectreattack.com/spectre.pdf)
+### KPTI
+-->
+&lt;h2 id="page-table-switching-at-system-call-entry">Page Table Switching at System Call Entry&lt;/h2>
+&lt;h3 id="user-to-kernel">&lt;strong>User to Kernel&lt;/strong>&lt;/h3>
+&lt;p>KPTI では kernel 用のページテーブルと user 用のページテーブルを分けているため，CPU モードが切り替わるタイミングでページテーブルを切り替える必要があります．ここではシステムコールを発行したときにページテーブルのルートポインタが格納されている CR3 が切り替えられる処理を見ていきます．&lt;/p>
+&lt;p>ユーザプロセスがシステムコールを発行すると，arch/x86/entry/entry_64.S にある entry_SYSCALL_64 というエントリーポイントから実行が始まります．システムコールを実行するためにページテーブルの切り替えやレジスタの退避を行ったあとに &lt;code>call do_syscall_64&lt;/code> を実行することでシステムコール本体が呼ばれます．&lt;/p>
+&lt;p>このページではページテーブルの切り替えについて見ていくので，&lt;code>SWITCH_TO_KERNEL_CR3 scratch_reg=%rsp&lt;/code> に注目します．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-asm" data-lang="asm">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_CODE_START&lt;/span>(&lt;span style="color:#40ffff">entry_SYSCALL_64&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">UNWIND_HINT_EMPTY&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">swapgs&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a61717;background-color:#e3d2d2">/*&lt;/span> &lt;span style="color:#447fcf">tss.sp2&lt;/span> &lt;span style="color:#40ffff">is&lt;/span> &lt;span style="color:#40ffff">scratch&lt;/span> &lt;span style="color:#40ffff">space.&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rsp&lt;/span>, &lt;span style="color:#40ffff">PER_CPU_VAR&lt;/span>(&lt;span style="color:#40ffff">cpu_tss_rw&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">+&lt;/span> &lt;span style="color:#40ffff">TSS_sp2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">SWITCH_TO_KERNEL_CR3&lt;/span> &lt;span style="color:#40ffff">scratch_reg&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=&lt;/span>&lt;span style="color:#40ffff">%rsp&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">PER_CPU_VAR&lt;/span>(&lt;span style="color:#40ffff">cpu_current_top_of_stack&lt;/span>), &lt;span style="color:#40ffff">%rsp&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a61717;background-color:#e3d2d2">/*&lt;/span> &lt;span style="color:#447fcf">Construct&lt;/span> &lt;span style="color:#40ffff">struct&lt;/span> &lt;span style="color:#40ffff">pt_regs&lt;/span> &lt;span style="color:#40ffff">on&lt;/span> &lt;span style="color:#40ffff">stack&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">$__USER_DS&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">pt_regs-&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">&amp;gt;&lt;/span>&lt;span style="color:#40ffff">ss&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">PER_CPU_VAR&lt;/span>(&lt;span style="color:#40ffff">cpu_tss_rw&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">+&lt;/span> &lt;span style="color:#40ffff">TSS_sp2&lt;/span>) &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">pt_regs-&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">&amp;gt;&lt;/span>&lt;span style="color:#40ffff">sp&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">%r11&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">pt_regs-&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">&amp;gt;&lt;/span>&lt;span style="color:#40ffff">flags&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">$__USER_CS&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">pt_regs-&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">&amp;gt;&lt;/span>&lt;span style="color:#40ffff">cs&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">%rcx&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">pt_regs-&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">&amp;gt;&lt;/span>&lt;span style="color:#40ffff">ip&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_INNER_LABEL&lt;/span>(&lt;span style="color:#40ffff">entry_SYSCALL_64_after_hwframe&lt;/span>, &lt;span style="color:#40ffff">SYM_L_GLOBAL&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">%rax&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">pt_regs-&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">&amp;gt;&lt;/span>&lt;span style="color:#40ffff">orig_ax&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">PUSH_AND_CLEAR_REGS&lt;/span> &lt;span style="color:#40ffff">rax&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=&lt;/span>&lt;span style="color:#40ffff">$-ENOSYS&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a61717;background-color:#e3d2d2">/*&lt;/span> &lt;span style="color:#447fcf">IRQs&lt;/span> &lt;span style="color:#40ffff">are&lt;/span> &lt;span style="color:#40ffff">off.&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rax&lt;/span>, &lt;span style="color:#40ffff">%rdi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rsp&lt;/span>, &lt;span style="color:#40ffff">%rsi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">call&lt;/span> &lt;span style="color:#40ffff">do_syscall_64&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">returns&lt;/span> &lt;span style="color:#40ffff">with&lt;/span> &lt;span style="color:#40ffff">IRQs&lt;/span> &lt;span style="color:#40ffff">disabled&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#bbb">...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>SWITCH_TO_KERNEL_CR3 は arch/x86/entry/calling.h で次のように定義されています．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>.macro SWITCH_TO_KERNEL_CR3 scratch_reg:req
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ALTERNATIVE &lt;span style="color:#ed9d13">&amp;#34;jmp .Lend_\@&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;&amp;#34;&lt;/span>, X86_FEATURE_PTI
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mov %cr3, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ADJUST_KERNEL_CR3 &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mov &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg, %cr3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lend_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.endm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>KPTI が有効な場合は ADJUST_KERNEL_CR3 が実行されます．これも arch/x86/entry/calling.h で定義されており，下記のようになっています．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#define PAGE_SHIFT 12
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PGTABLE_BIT PAGE_SHIFT
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PGTABLE_MASK (1 &amp;lt;&amp;lt; PTI_USER_PGTABLE_BIT)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#ifdef CONFIG_PAGE_TABLE_ISOLATION
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># define X86_CR3_PTI_PCID_USER_BIT 11
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PCID_BIT X86_CR3_PTI_PCID_USER_BIT
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PCID_MASK (1 &amp;lt;&amp;lt; PTI_USER_PCID_BIT)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PGTABLE_AND_PCID_MASK (PTI_USER_PCID_MASK | PTI_USER_PGTABLE_MASK)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.macro ADJUST_KERNEL_CR3 reg:req
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ALTERNATIVE &lt;span style="color:#ed9d13">&amp;#34;&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;SET_NOFLUSH_BIT &lt;/span>&lt;span style="color:#ed9d13">\r&lt;/span>&lt;span style="color:#ed9d13">eg&amp;#34;&lt;/span>, X86_FEATURE_PCID
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Clear PCID and &amp;#34;PAGE_TABLE_ISOLATION bit&amp;#34;, point CR3 at kernel pagetables: */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> andq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(~PTI_USER_PGTABLE_AND_PCID_MASK), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* andq ~(0x1800), \reg */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.endm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上記のコードによれば，11 bit 目と 12 bit 目をクリアすることでカーネル用のページテーブルのルートポインタに変換できます．&lt;/p>
+&lt;h3 id="kernel-to-user">&lt;strong>Kernel to User&lt;/strong>&lt;/h3>
+&lt;p>システムコールの実行が終了してユーザプロセスに戻る際の切り替えは SWITCH_TO_USER_CR3_STACK で行われます．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-asm" data-lang="asm">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#bbb">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">SWITCH_TO_USER_CR3_STACK&lt;/span> &lt;span style="color:#40ffff">scratch_reg&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=&lt;/span>&lt;span style="color:#40ffff">%rdi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">popq&lt;/span> &lt;span style="color:#40ffff">%rdi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">popq&lt;/span> &lt;span style="color:#40ffff">%rsp&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">USERGS_SYSRET64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_CODE_END&lt;/span>(&lt;span style="color:#40ffff">entry_SYSCALL_64&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>一見すると長いコードに見えますが，カーネルに切り替えるときと逆の処理を行うだけなので CR3 の 11 bit 目と 12 bit 目を適宜 1 にしているだけです．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>.macro SWITCH_TO_USER_CR3_NOSTACK scratch_reg:req scratch_reg2:req
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ALTERNATIVE &lt;span style="color:#ed9d13">&amp;#34;jmp .Lend_\@&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;&amp;#34;&lt;/span>, X86_FEATURE_PTI
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mov %cr3, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ALTERNATIVE &lt;span style="color:#ed9d13">&amp;#34;jmp .Lwrcr3_\@&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;&amp;#34;&lt;/span>, X86_FEATURE_PCID
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Test if the ASID needs a flush.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> andq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(&lt;span style="color:#3677a9">0x7FF&lt;/span>), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg &lt;span style="color:#999;font-style:italic">/* mask ASID */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> bt &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg, THIS_CPU_user_pcid_flush_mask
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jnc .Lnoflush_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Flush needed, clear the bit */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> btr &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg, THIS_CPU_user_pcid_flush_mask
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg2, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jmp .Lwrcr3_pcid_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lnoflush_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg2, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SET_NOFLUSH_BIT &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lwrcr3_pcid_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Flip the ASID to the user version */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> orq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(PTI_USER_PCID_MASK), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lwrcr3_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Flip the PGD to the user version */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> orq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(PTI_USER_PGTABLE_MASK), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mov &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg, %cr3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lend_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.endm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> SWITCH_TO_USER_CR3_STACK scratch_reg=%rdi
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.macro SWITCH_TO_USER_CR3_STACK scratch_reg:req
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq %rax
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SWITCH_TO_USER_CR3_NOSTACK scratch_reg=&lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg scratch_reg2=%rax
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> popq %rax
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.endm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="実験">実験&lt;/h2>
+&lt;p>実際にプロセスの CR3 をユーザプロセス実行中とカーネル実行中に出力したときの実験結果を見てみます．CR3 は QEMU/KVM で KVM 側から kvm_cr3_read() によって取得しました．&lt;/p>
+&lt;p>実験結果は下記のようになっており，ソースコードで確認したとおりの変換が行われていることがわかりました．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>kernel cr3 = 0x273abe003
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>user cr3 = 0x273abf803
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Blog: EPTI: Efficient Defence against Meltdown Attack for Unpatched VMs</title><link>http://forest0923.github.io/memo/en/blog/2021/12/03/epti-efficient-defence-against-meltdown-attack-for-unpatched-vms/</link><pubDate>Fri, 03 Dec 2021 11:07:19 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2021/12/03/epti-efficient-defence-against-meltdown-attack-for-unpatched-vms/</guid><description>
+&lt;h2 id="references">References&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Info.&lt;/th>
+&lt;th>Detail (URL and etc.)&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Authors&lt;/td>
+&lt;td>Zhichao Hua, Dong Du, Yubin Xia, Haibo Chen and Binyu Zang&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Affiliation&lt;/td>
+&lt;td>Shanghai Jiao Tong University&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Book Title&lt;/td>
+&lt;td>In the proceedings of the 2018 USENIX Annual Technical Conference (USENIX ATC &amp;lsquo;18), pages 255-266, 2018&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>URL&lt;/td>
+&lt;td>&lt;a href="https://www.usenix.org/conference/atc18/presentation/hua">https://www.usenix.org/conference/atc18/presentation/hua&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>PDF&lt;/td>
+&lt;td>&lt;a href="https://www.usenix.org/system/files/conference/atc18/atc18-hua.pdf">https://www.usenix.org/system/files/conference/atc18/atc18-hua.pdf&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Slides&lt;/td>
+&lt;td>&lt;a href="https://www.usenix.org/sites/default/files/conference/protected-files/atc18_slides_hua.pdf">https://www.usenix.org/sites/default/files/conference/protected-files/atc18_slides_hua.pdf&lt;/a>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Video&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item></channel></rss>

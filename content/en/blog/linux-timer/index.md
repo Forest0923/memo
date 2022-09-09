@@ -30,7 +30,7 @@ static const __initconst struct idt_data apic_idts[] = {
 };
 ```
 
-### `asm_sysvec_apic_timer_interrut()`
+### `asm_sysvec_apic_timer_interrupt()`
 
 - arch/x86/kernel/apic/apic.c
 

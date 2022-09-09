@@ -1,4 +1,374 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Linux Code Reading</title><link>http://forest0923.github.io/memo/en/categories/linux-code-reading/</link><description>Recent content in Linux Code Reading on Memo</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Mon, 22 Aug 2022 12:21:23 +0900</lastBuildDate><atom:link href="http://forest0923.github.io/memo/en/categories/linux-code-reading/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Linux Timer</title><link>http://forest0923.github.io/memo/en/blog/2022/08/22/linux-timer/</link><pubDate>Mon, 22 Aug 2022 12:21:23 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/08/22/linux-timer/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Linux Code Reading</title><link>http://forest0923.github.io/memo/en/categories/linux-code-reading/</link><description>Recent content in Linux Code Reading on Memo</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Wed, 07 Sep 2022 12:01:53 +0900</lastBuildDate><atom:link href="http://forest0923.github.io/memo/en/categories/linux-code-reading/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: kvm_x86_ops</title><link>http://forest0923.github.io/memo/en/blog/2022/09/07/kvm_x86_ops/</link><pubDate>Wed, 07 Sep 2022 12:01:53 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/09/07/kvm_x86_ops/</guid><description>
+&lt;h2 id="about">About&lt;/h2>
+&lt;p>KVM のコードを読んでいると &lt;code>kvm_x86_ops.func(arg, ...)&lt;/code> のように kvm_x86_ops という変数を介してオブジェクト指向プログラムのように様々な関数を呼び出している部分があることがわかる．&lt;/p>
+&lt;p>仕組みとしては kvm_x86_ops 構造体に登録された関数ポインタから関数を呼び出しているというだけだが，関係のある関数をすべてまとめることができるのでコードが読みやすくなっている印象がある．&lt;/p>
+&lt;p>この構造体の中にはカーネル開発をする上で役に立ちそうなものが多く含まれているので，このページでは各メンバ（関数）について適宜メモをしていく．&lt;/p>
+&lt;h2 id="struct-kvm_x86_ops">&lt;code>struct kvm_x86_ops&lt;/code>&lt;/h2>
+&lt;ul>
+&lt;li>arch/x86/include/asm/kvm_host.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_x86_ops {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*hardware_enable)(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*hardware_disable)(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*hardware_unsetup)(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (*cpu_has_accelerated_tpr)(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (*has_emulated_msr)(u32 index);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*cpuid_update)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> vm_size;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*vm_init)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*vm_destroy)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Create, but do not attach this VCPU */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*vcpu_create)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*vcpu_free)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*vcpu_reset)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> init_event);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*prepare_guest_switch)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*vcpu_load)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*vcpu_put)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*update_bp_intercept)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*get_msr)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> msr_data *msr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*set_msr)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> msr_data *msr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 (*get_segment_base)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> seg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*get_segment)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_segment *var, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> seg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*get_cpl)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_segment)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_segment *var, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> seg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*get_cs_db_l_bits)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> *db, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> *l);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_cr0)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> cr0);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*set_cr4)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> cr4);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_efer)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, u64 efer);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*get_idt)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> desc_ptr *dt);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_idt)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> desc_ptr *dt);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*get_gdt)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> desc_ptr *dt);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_gdt)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> desc_ptr *dt);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*sync_dirty_debug_regs)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_dr7)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> value);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*cache_reg)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">enum&lt;/span> kvm_reg reg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#447fcf">long&lt;/span> (*get_rflags)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_rflags)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> rflags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*tlb_flush_all)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*tlb_flush_current)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*tlb_remote_flush)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*tlb_remote_flush_with_range)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_tlb_range *range);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Flush any TLB entries associated with the given GVA.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Does not need to flush GPA-&amp;gt;HPA mappings.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Can potentially get non-canonical addresses through INVLPGs, which
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * the implementation may choose to ignore if appropriate.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*tlb_flush_gva)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, gva_t addr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Flush any TLB entries created by the guest. Like tlb_flush_gva(),
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * does not need to flush GPA-&amp;gt;HPA mappings.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*tlb_flush_guest)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">enum&lt;/span> &lt;span style="color:#447fcf">exit_fastpath_completion&lt;/span> (*run)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*handle_exit)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">enum&lt;/span> exit_fastpath_completion exit_fastpath);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*skip_emulated_instruction)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*update_emulated_instruction)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_interrupt_shadow)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> mask);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u32 (*get_interrupt_shadow)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*patch_hypercall)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *hypercall_addr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_irq)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_nmi)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*queue_exception)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*cancel_injection)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*interrupt_allowed)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> for_injection);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*nmi_allowed)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> for_injection);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (*get_nmi_mask)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_nmi_mask)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> masked);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*enable_nmi_window)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*enable_irq_window)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*update_cr8_intercept)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> tpr, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> irr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (*check_apicv_inhibit_reasons)(ulong bit);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*pre_update_apicv_exec_ctrl)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> activate);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*refresh_apicv_exec_ctrl)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*hwapic_irr_update)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> max_irr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*hwapic_isr_update)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> isr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (*guest_apic_has_interrupt)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*load_eoi_exitmap)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_virtual_apic_mode)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*set_apic_access_page_addr)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*deliver_posted_interrupt)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> vector);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*sync_pir_to_irr)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*set_tss_addr)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> addr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*set_identity_map_addr)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm, u64 ident_addr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*get_tdp_level)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 (*get_mt_mask)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, gfn_t gfn, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> is_mmio);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*load_mmu_pgd)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> cr3);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (*has_wbinvd_exit)(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Returns actual tsc_offset set in active VMCS */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 (*write_l1_tsc_offset)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, u64 offset);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*get_exit_info)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, u64 *info1, u64 *info2);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*check_intercept)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> x86_instruction_info *info,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">enum&lt;/span> x86_intercept_stage stage,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> x86_exception *exception);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*handle_exit_irqoff)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*request_immediate_exit)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*sched_in)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *kvm, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Arch-specific dirty logging hooks. These hooks are only supposed to
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * be valid if the specific arch has hardware-accelerated dirty logging
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * mechanism. Currently only for PML on VMX.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - slot_enable_log_dirty:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * called when enabling log dirty mode for the slot.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - slot_disable_log_dirty:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * called when disabling log dirty mode for the slot.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * also called when slot is created with log dirty disabled.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - flush_log_dirty:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * called before reporting dirty_bitmap to userspace.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - enable_log_dirty_pt_masked:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * called when reenabling log dirty for the GFNs in the mask after
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * corresponding bits are cleared in slot-&amp;gt;dirty_bitmap.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*slot_enable_log_dirty)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_memory_slot *slot);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*slot_disable_log_dirty)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_memory_slot *slot);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*flush_log_dirty)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*enable_log_dirty_pt_masked)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_memory_slot *slot,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> gfn_t offset, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> mask);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*write_log_dirty)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, gpa_t l2_gpa);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* pmu operations of sub-arch */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_pmu_ops *pmu_ops;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_x86_nested_ops *nested_ops;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Architecture specific hooks for vCPU blocking due to
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * HLT instruction.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Returns for .pre_block():
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - 0 means continue to block the vCPU.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - 1 means we cannot block the vCPU since some event
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * happens during this period, such as, &amp;#39;ON&amp;#39; bit in
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * posted-interrupts descriptor is set.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*pre_block)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*post_block)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*vcpu_blocking)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*vcpu_unblocking)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*update_pi_irte)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> host_irq,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">uint32_t&lt;/span> guest_irq, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> set);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*apicv_post_state_restore)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (*dy_apicv_has_pending_interrupt)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*set_hv_timer)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, u64 guest_deadline_tsc,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> *expired);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*cancel_hv_timer)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*setup_mce)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*smi_allowed)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> for_injection);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*pre_enter_smm)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *smstate);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*pre_leave_smm)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *smstate);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*enable_smi_window)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*mem_enc_op)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm, &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> __user *argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*mem_enc_reg_region)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_enc_region *argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*mem_enc_unreg_region)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_enc_region *argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*get_msr_feature)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_msr_entry *entry);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (*need_emulation_on_page_fault)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (*apic_init_signal_blocked)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*enable_direct_tlbflush)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*migrate_timers)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="get_msr">&lt;code>get_msr()&lt;/code>&lt;/h3>
+&lt;h4 id="definition">Definition&lt;/h4>
+&lt;ul>
+&lt;li>arch/x86/kvm/vmx/vmx.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Reads an msr value (of &amp;#39;msr_index&amp;#39;) into &amp;#39;pdata&amp;#39;.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Returns 0 on success, non-0 otherwise.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Assumes vcpu_load() was already called.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">vmx_get_msr&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> msr_data *msr_info)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> vcpu_vmx *vmx = to_vmx(vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> shared_msr_entry *msr;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u32 index;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">switch&lt;/span> (msr_info-&amp;gt;index) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_X86_64
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_FS_BASE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmcs_readl(GUEST_FS_BASE);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_GS_BASE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmcs_readl(GUEST_GS_BASE);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_KERNEL_GS_BASE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx_read_guest_kernel_gs_base(vmx);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_EFER:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> kvm_get_msr_common(vcpu, msr_info);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_TSX_CTRL:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!msr_info-&amp;gt;host_initiated &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !(vcpu-&amp;gt;arch.arch_capabilities &amp;amp; ARCH_CAP_TSX_CTRL_MSR))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> find_shared_msr;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_UMWAIT_CONTROL:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!msr_info-&amp;gt;host_initiated &amp;amp;&amp;amp; !vmx_has_waitpkg(vmx))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx-&amp;gt;msr_ia32_umwait_control;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_SPEC_CTRL:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!msr_info-&amp;gt;host_initiated &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !guest_cpuid_has(vcpu, X86_FEATURE_SPEC_CTRL))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = to_vmx(vcpu)-&amp;gt;spec_ctrl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_SYSENTER_CS:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmcs_read32(GUEST_SYSENTER_CS);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_SYSENTER_EIP:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmcs_readl(GUEST_SYSENTER_EIP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_SYSENTER_ESP:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmcs_readl(GUEST_SYSENTER_ESP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_BNDCFGS:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!kvm_mpx_supported() ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (!msr_info-&amp;gt;host_initiated &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !guest_cpuid_has(vcpu, X86_FEATURE_MPX)))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmcs_read64(GUEST_BNDCFGS);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_MCG_EXT_CTL:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!msr_info-&amp;gt;host_initiated &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !(vmx-&amp;gt;msr_ia32_feature_control &amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> FEAT_CTL_LMCE_ENABLED))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vcpu-&amp;gt;arch.mcg_ext_ctl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_FEAT_CTL:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx-&amp;gt;msr_ia32_feature_control;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_VMX_BASIC ... MSR_IA32_VMX_VMFUNC:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!nested_vmx_allowed(vcpu))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (vmx_get_vmx_msr(&amp;amp;vmx-&amp;gt;nested.msrs, msr_info-&amp;gt;index,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;amp;msr_info-&amp;gt;data))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Enlightened VMCS v1 doesn&amp;#39;t have certain fields, but buggy
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Hyper-V versions are still trying to use corresponding
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * features when they are exposed. Filter out the essential
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * minimum.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!msr_info-&amp;gt;host_initiated &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vmx-&amp;gt;nested.enlightened_vmcs_enabled)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> nested_evmcs_filter_control_msr(msr_info-&amp;gt;index,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;amp;msr_info-&amp;gt;data);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_RTIT_CTL:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vmx_pt_mode_is_host_guest())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx-&amp;gt;pt_desc.guest.ctl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_RTIT_STATUS:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vmx_pt_mode_is_host_guest())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx-&amp;gt;pt_desc.guest.status;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_RTIT_CR3_MATCH:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vmx_pt_mode_is_host_guest() ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !intel_pt_validate_cap(vmx-&amp;gt;pt_desc.caps,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PT_CAP_cr3_filtering))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx-&amp;gt;pt_desc.guest.cr3_match;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_RTIT_OUTPUT_BASE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vmx_pt_mode_is_host_guest() ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (!intel_pt_validate_cap(vmx-&amp;gt;pt_desc.caps,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PT_CAP_topa_output) &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !intel_pt_validate_cap(vmx-&amp;gt;pt_desc.caps,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PT_CAP_single_range_output)))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx-&amp;gt;pt_desc.guest.output_base;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_RTIT_OUTPUT_MASK:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vmx_pt_mode_is_host_guest() ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (!intel_pt_validate_cap(vmx-&amp;gt;pt_desc.caps,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PT_CAP_topa_output) &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !intel_pt_validate_cap(vmx-&amp;gt;pt_desc.caps,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PT_CAP_single_range_output)))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx-&amp;gt;pt_desc.guest.output_mask;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_IA32_RTIT_ADDR0_A ... MSR_IA32_RTIT_ADDR3_B:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> index = msr_info-&amp;gt;index - MSR_IA32_RTIT_ADDR0_A;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vmx_pt_mode_is_host_guest() ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (index &amp;gt;= &lt;span style="color:#3677a9">2&lt;/span> * intel_pt_validate_cap(vmx-&amp;gt;pt_desc.caps,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PT_CAP_num_address_ranges)))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (index % &lt;span style="color:#3677a9">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx-&amp;gt;pt_desc.guest.addr_b[index / &lt;span style="color:#3677a9">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = vmx-&amp;gt;pt_desc.guest.addr_a[index / &lt;span style="color:#3677a9">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> MSR_TSC_AUX:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!msr_info-&amp;gt;host_initiated &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !guest_cpuid_has(vcpu, X86_FEATURE_RDTSCP))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> find_shared_msr;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">default&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> find_shared_msr:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr = find_msr_entry(vmx, msr_info-&amp;gt;index);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (msr) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> msr_info-&amp;gt;data = msr-&amp;gt;data;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> kvm_get_msr_common(vcpu, msr_info);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="example-usage">Example Usage&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>u64 &lt;span style="color:#447fcf">get_fsgsbase_from_vmcs&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, u32 index)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> msr_data *g_msr = (&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> msr_data *)kmalloc(&lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> msr_data), GFP_KERNEL);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> g_msr-&amp;gt;index = index;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_x86_ops.get_msr(vcpu, g_msr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = g_msr-&amp;gt;data;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kfree(g_msr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>EXPORT_SYMBOL(get_fsgsbase_from_vmcs);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Blog: Linux Timer</title><link>http://forest0923.github.io/memo/en/blog/2022/08/22/linux-timer/</link><pubDate>Mon, 22 Aug 2022 12:21:23 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/08/22/linux-timer/</guid><description>
 &lt;h2 id="local-apic">Local APIC&lt;/h2>
 &lt;h3 id="idt">IDT&lt;/h3>
 &lt;ul>
@@ -14,7 +384,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>};
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="asm_sysvec_apic_timer_interrut">&lt;code>asm_sysvec_apic_timer_interrut()&lt;/code>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="asm_sysvec_apic_timer_interrupt">&lt;code>asm_sysvec_apic_timer_interrupt()&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>arch/x86/kernel/apic/apic.c&lt;/li>
 &lt;/ul>

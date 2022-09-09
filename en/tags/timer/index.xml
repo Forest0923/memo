@@ -14,7 +14,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>};
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="asm_sysvec_apic_timer_interrut">&lt;code>asm_sysvec_apic_timer_interrut()&lt;/code>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="asm_sysvec_apic_timer_interrupt">&lt;code>asm_sysvec_apic_timer_interrupt()&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>arch/x86/kernel/apic/apic.c&lt;/li>
 &lt;/ul>

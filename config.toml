@@ -15,7 +15,7 @@ enableGitInfo = true
 
 [taxonomies]
 tag = "tags"
-category = "categories"
+# category = "categories"
 
 [params.taxonomy]
 taxonomyCloudTitle  = ["Categories", "Tags Cloud"] 

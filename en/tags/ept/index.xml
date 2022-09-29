@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – EPT</title><link>http://forest0923.github.io/memo/en/tags/ept/</link><description>Recent content in EPT on Memo</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Fri, 15 Apr 2022 12:20:18 +0900</lastBuildDate><atom:link href="http://forest0923.github.io/memo/en/tags/ept/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: EPT Management in QEMU/KVM</title><link>http://forest0923.github.io/memo/en/blog/2022/04/15/ept-management-in-qemu/kvm/</link><pubDate>Fri, 15 Apr 2022 12:20:18 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/04/15/ept-management-in-qemu/kvm/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – EPT</title><link>http://forest0923.github.io/memo/en/tags/ept/</link><description>Recent content in EPT on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/tags/ept/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: [KVM] EPT</title><link>http://forest0923.github.io/memo/en/docs/code-reading/linux/linux-ept/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/linux/linux-ept/</guid><description>
 &lt;!-- ## Introduction
 ## Background -->
 &lt;h2 id="initialize-ept">Initialize EPT&lt;/h2>
@@ -95,43 +95,4 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> need_flush;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="free-ept">Free EPT&lt;/h2></description></item><item><title>Blog: EPTI: Efficient Defence against Meltdown Attack for Unpatched VMs</title><link>http://forest0923.github.io/memo/en/blog/2021/12/03/epti-efficient-defence-against-meltdown-attack-for-unpatched-vms/</link><pubDate>Fri, 03 Dec 2021 11:07:19 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2021/12/03/epti-efficient-defence-against-meltdown-attack-for-unpatched-vms/</guid><description>
-&lt;h2 id="references">References&lt;/h2>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Info.&lt;/th>
-&lt;th>Detail (URL and etc.)&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>Authors&lt;/td>
-&lt;td>Zhichao Hua, Dong Du, Yubin Xia, Haibo Chen and Binyu Zang&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Affiliation&lt;/td>
-&lt;td>Shanghai Jiao Tong University&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Book Title&lt;/td>
-&lt;td>In the proceedings of the 2018 USENIX Annual Technical Conference (USENIX ATC &amp;lsquo;18), pages 255-266, 2018&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>URL&lt;/td>
-&lt;td>&lt;a href="https://www.usenix.org/conference/atc18/presentation/hua">https://www.usenix.org/conference/atc18/presentation/hua&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>PDF&lt;/td>
-&lt;td>&lt;a href="https://www.usenix.org/system/files/conference/atc18/atc18-hua.pdf">https://www.usenix.org/system/files/conference/atc18/atc18-hua.pdf&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Slides&lt;/td>
-&lt;td>&lt;a href="https://www.usenix.org/sites/default/files/conference/protected-files/atc18_slides_hua.pdf">https://www.usenix.org/sites/default/files/conference/protected-files/atc18_slides_hua.pdf&lt;/a>&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Video&lt;/td>
-&lt;td>&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table></description></item></channel></rss>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="free-ept">Free EPT&lt;/h2></description></item></channel></rss>

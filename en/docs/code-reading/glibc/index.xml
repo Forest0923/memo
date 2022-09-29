@@ -1,0 +1,258 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – glibc</title><link>http://forest0923.github.io/memo/en/docs/code-reading/glibc/</link><description>Recent content in glibc on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/code-reading/glibc/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: glibc open</title><link>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-open/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>glibc v2.35&lt;/li>
+&lt;/ul>
+&lt;h2 id="example-code">Example Code&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;unistd.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;fcntl.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = open(&lt;span style="color:#ed9d13">&amp;#34;/path/to/test.txt&amp;#34;&lt;/span>, O_RDONLY);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> str[&lt;span style="color:#3677a9">10&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> read(fd, str, &lt;span style="color:#3677a9">10&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf(&lt;span style="color:#ed9d13">&amp;#34;%s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, str);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="definition">Definition&lt;/h2>
+&lt;ul>
+&lt;li>File: sysdeps/unix/sysv/linux/open64.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/* Open FILE with access OFLAG. If O_CREAT or O_TMPFILE is in OFLAG,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> a third argument is the file protection. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">__libc_open64&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *file, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> oflag, ...)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> mode = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (__OPEN_NEEDS_MODE (oflag))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list arg;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_start (arg, oflag);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = va_arg (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_end (arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> SYSCALL_CANCEL (openat, AT_FDCWD, file, oflag | O_LARGEFILE,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>strong_alias (__libc_open64, __open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>libc_hidden_weak (__open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>weak_alias (__libc_open64, open64)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>File: sysdeps/unix/sysdep.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#if IS_IN (rtld)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>&lt;span style="color:#999;font-style:italic">/* All cancellation points are compiled out in the dynamic loader. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># define NO_SYSCALL_CANCEL_CHECKING 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#else
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># define NO_SYSCALL_CANCEL_CHECKING SINGLE_THREAD_P
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define SYSCALL_CANCEL(...) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ({ \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> long int sc_ret; \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> if (NO_SYSCALL_CANCEL_CHECKING) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> sc_ret = INLINE_SYSCALL_CALL (__VA_ARGS__); \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> else \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> { \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> int sc_cancel_oldtype = LIBC_CANCEL_ASYNC (); \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> sc_ret = INLINE_SYSCALL_CALL (__VA_ARGS__); \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> LIBC_CANCEL_RESET (sc_cancel_oldtype); \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> } \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> sc_ret; \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> })
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="補足">補足&lt;/h2>
+&lt;p>open 関連のファイルを探すときに io/open* 系のファイルと sysdeps/unix/sysv/linux/open* 系の２つの系統があった．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ find glibc -name &amp;#34;open*&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./catgets/open_catalog.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./dirent/opendir-tst1.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./dirent/opendir.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./hurd/openport.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./io/open.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./io/open64.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./io/open64_2.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./io/open_2.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./io/openat.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./io/openat64.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./io/openat64_2.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./io/openat_2.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./login/openpty.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./socket/opensock.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sunrpc/openchild.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/mach/hurd/open.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/mach/hurd/open64.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/mach/hurd/open_nocancel.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/mach/hurd/openat.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/mach/hurd/openat64.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/mach/hurd/openat_nocancel.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/mach/hurd/opendir.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/posix/open64.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/open.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/open64.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/open64_nocancel.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/open_by_handle_at.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/open_nocancel.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/openat.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/openat64.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/openat64_nocancel.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/openat_nocancel.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./sysdeps/unix/sysv/linux/opendir.c
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>io/open64.c を見ると __libc_open64 の定義は以下のようになっておりちょっと様子が違う．return も -1 となっておりこっちは呼ばれてなさそう&amp;hellip;？&lt;/p>
+&lt;p>OS ごとにシステムコールが異なることを考えると，sysdeps/ （system dependent?）以下のものが実際には呼ばれていそうなのでおそらくそっちが正しい．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/* Open FILE with access OFLAG. If O_CREAT or O_TMPFILE is in OFLAG,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> a third argument is the file protection. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">__libc_open64&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *file, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> oflag)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> mode;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (file == &lt;span style="color:#24909d">NULL&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __set_errno (EINVAL);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -&lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (__OPEN_NEEDS_MODE (oflag))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list arg;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_start (arg, oflag);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = va_arg (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_end (arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __set_errno (ENOSYS);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -&lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>strong_alias (__libc_open64, __open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>libc_hidden_def (__open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>weak_alias (__libc_open64, open64)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: glibc printf</title><link>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-printf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-printf/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>glibc v2.35&lt;/li>
+&lt;/ul>
+&lt;h2 id="definition">Definition&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// stdio-common/printf.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">__printf&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *format, ...)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list arg;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> done;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_start (arg, format);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> done = __vfprintf_internal (stdout, format, arg, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_end (arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> done;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#undef _IO_printf
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>ldbl_strong_alias (__printf, printf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ldbl_strong_alias (__printf, _IO_printf);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// stdio-common/vfprintf-internal.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#cd2828;font-weight:bold"># define vfprintf __vfprintf_internal
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vfprintf (FILE *s, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> CHAR_T *format, va_list ap, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> mode_flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Hand off processing for positional parameters. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>do_positional:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> done = printf_positional (s, format, readonly_format, ap, &amp;amp;ap_save,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> done, nspecs_done, lead_str_end, work_buffer,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> save_errno, grouping, thousands_sep, mode_flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>all_done:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Unlock the stream. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _IO_funlockfile (s);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _IO_cleanup_region_end (&lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> done;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// stdio-common/vfprintf-internal.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>printf_positional (FILE *s, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> CHAR_T *format, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> readonly_format,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list ap, va_list *ap_savep, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> done, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> nspecs_done,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> UCHAR_T *lead_str_end,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CHAR_T *work_buffer, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> save_errno,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *grouping, THOUSANDS_SEP_T thousands_sep,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> mode_flags)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// stdio-common/vfprintf-internal.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#cd2828;font-weight:bold"># define PUT(F, S, N) _IO_sputn ((F), (S), (N))
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">inline&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>outstring_func (FILE *s, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> UCHAR_T *string, size_t length, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> done)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> assert ((size_t) done &amp;lt;= (size_t) INT_MAX);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> ((size_t) PUT (s, string, length) != (size_t) (length))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -&lt;span style="color:#3677a9">1&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">done_add_func&lt;/span> (length, done);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define outstring(String, Len) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> do \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> { \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> const void *string_ = (String); \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> done = outstring_func (s, string_, (Len), done); \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> if (done &amp;lt; 0) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> goto all_done; \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> } \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> while (0)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: glibc syscall</title><link>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-syscall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-syscall/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>glibc v2.35&lt;/li>
+&lt;/ul>
+&lt;h2 id="definition">Definition&lt;/h2>
+&lt;ul>
+&lt;li>include/unistd.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifndef _UNISTD_H
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># include &amp;lt;posix/unistd.h&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>include/posix/unistd.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef __USE_MISC
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>&lt;span style="color:#999;font-style:italic">/* Invoke `system call&amp;#39; number SYSNO, passing it the remaining arguments.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> This is completely system-dependent, and not often useful.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> In Unix, `syscall&amp;#39; sets `errno&amp;#39; for all errors and most calls return -1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> for errors; in many systems you cannot pass arguments or get return
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> values for all system calls (`pipe&amp;#39;, `fork&amp;#39;, and `getppid&amp;#39; typically
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> among them).
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> In Mach, all system calls take normal arguments and always return an
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> error code (zero for success). */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">extern&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">syscall&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __sysno, ...) __THROW;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif &lt;/span>&lt;span style="color:#999;font-style:italic">/* Use misc. */&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>sysdeps/unix/sysv/linux/x86_64/syscall.S&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-asm" data-lang="asm">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#bbb">.text&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">ENTRY&lt;/span> (&lt;span style="color:#40ffff">syscall&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rdi&lt;/span>, &lt;span style="color:#40ffff">%rax&lt;/span> &lt;span style="color:#999;font-style:italic">/* Syscall number -&amp;gt; rax. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rsi&lt;/span>, &lt;span style="color:#40ffff">%rdi&lt;/span> &lt;span style="color:#999;font-style:italic">/* shift arg1 - arg5. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rdx&lt;/span>, &lt;span style="color:#40ffff">%rsi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rcx&lt;/span>, &lt;span style="color:#40ffff">%rdx&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%r8&lt;/span>, &lt;span style="color:#40ffff">%r10&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%r9&lt;/span>, &lt;span style="color:#40ffff">%r8&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#3677a9">8&lt;/span>(&lt;span style="color:#40ffff">%rsp&lt;/span>),&lt;span style="color:#40ffff">%r9&lt;/span> &lt;span style="color:#999;font-style:italic">/* arg6 is on the stack. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">syscall&lt;/span> &lt;span style="color:#999;font-style:italic">/* Do the system call. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">cmpq&lt;/span> &lt;span style="color:#40ffff">$-4095&lt;/span>, &lt;span style="color:#40ffff">%rax&lt;/span> &lt;span style="color:#999;font-style:italic">/* Check %rax for error. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jae&lt;/span> &lt;span style="color:#40ffff">SYSCALL_ERROR_LABEL&lt;/span> &lt;span style="color:#999;font-style:italic">/* Jump to error handler if error. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ret&lt;/span> &lt;span style="color:#999;font-style:italic">/* Return to caller. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">PSEUDO_END&lt;/span> (&lt;span style="color:#40ffff">syscall&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>sysdeps/unix/sysv/linux/x86_64/sysdep.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># undef PSEUDO_END
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># define PSEUDO_END(name) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> SYSCALL_ERROR_HANDLER \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> END (name)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

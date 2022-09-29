@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – glibc</title><link>http://forest0923.github.io/memo/en/tags/glibc/</link><description>Recent content in glibc on Memo</description><generator>Hugo -- gohugo.io</generator><lastBuildDate>Tue, 05 Jul 2022 10:51:35 +0900</lastBuildDate><atom:link href="http://forest0923.github.io/memo/en/tags/glibc/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: glibc open</title><link>http://forest0923.github.io/memo/en/blog/2022/07/05/glibc-open/</link><pubDate>Tue, 05 Jul 2022 10:51:35 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/07/05/glibc-open/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – glibc</title><link>http://forest0923.github.io/memo/en/tags/glibc/</link><description>Recent content in glibc on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/tags/glibc/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: glibc open</title><link>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-open/</guid><description>
 &lt;h2 id="version">Version&lt;/h2>
 &lt;ul>
 &lt;li>glibc v2.35&lt;/li>
@@ -129,61 +129,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>strong_alias (__libc_open64, __open64)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>libc_hidden_def (__open64)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>weak_alias (__libc_open64, open64)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Blog: glibc syscall</title><link>http://forest0923.github.io/memo/en/blog/2022/06/20/glibc-syscall/</link><pubDate>Mon, 20 Jun 2022 13:35:51 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/06/20/glibc-syscall/</guid><description>
-&lt;h2 id="version">Version&lt;/h2>
-&lt;ul>
-&lt;li>glibc v2.35&lt;/li>
-&lt;/ul>
-&lt;h2 id="definition">Definition&lt;/h2>
-&lt;ul>
-&lt;li>include/unistd.h&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifndef _UNISTD_H
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># include &amp;lt;posix/unistd.h&amp;gt;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>...
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>include/posix/unistd.h&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef __USE_MISC
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>&lt;span style="color:#999;font-style:italic">/* Invoke `system call&amp;#39; number SYSNO, passing it the remaining arguments.
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> This is completely system-dependent, and not often useful.
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> In Unix, `syscall&amp;#39; sets `errno&amp;#39; for all errors and most calls return -1
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> for errors; in many systems you cannot pass arguments or get return
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> values for all system calls (`pipe&amp;#39;, `fork&amp;#39;, and `getppid&amp;#39; typically
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> among them).
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> In Mach, all system calls take normal arguments and always return an
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> error code (zero for success). */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">extern&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">syscall&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __sysno, ...) __THROW;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif &lt;/span>&lt;span style="color:#999;font-style:italic">/* Use misc. */&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>sysdeps/unix/sysv/linux/x86_64/syscall.S&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-asm" data-lang="asm">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#bbb">.text&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">ENTRY&lt;/span> (&lt;span style="color:#40ffff">syscall&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rdi&lt;/span>, &lt;span style="color:#40ffff">%rax&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">Syscall&lt;/span> &lt;span style="color:#40ffff">number&lt;/span> -&lt;span style="color:#a61717;background-color:#e3d2d2">&amp;gt;&lt;/span> &lt;span style="color:#40ffff">rax.&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rsi&lt;/span>, &lt;span style="color:#40ffff">%rdi&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">shift&lt;/span> &lt;span style="color:#40ffff">arg1&lt;/span> - &lt;span style="color:#40ffff">arg5.&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rdx&lt;/span>, &lt;span style="color:#40ffff">%rsi&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rcx&lt;/span>, &lt;span style="color:#40ffff">%rdx&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%r8&lt;/span>, &lt;span style="color:#40ffff">%r10&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%r9&lt;/span>, &lt;span style="color:#40ffff">%r8&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#3677a9">8&lt;/span>(&lt;span style="color:#40ffff">%rsp&lt;/span>),&lt;span style="color:#40ffff">%r9&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">arg6&lt;/span> &lt;span style="color:#40ffff">is&lt;/span> &lt;span style="color:#40ffff">on&lt;/span> &lt;span style="color:#40ffff">the&lt;/span> &lt;span style="color:#40ffff">stack.&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">syscall&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">Do&lt;/span> &lt;span style="color:#40ffff">the&lt;/span> &lt;span style="color:#40ffff">system&lt;/span> &lt;span style="color:#40ffff">call.&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">cmpq&lt;/span> &lt;span style="color:#40ffff">$-4095&lt;/span>, &lt;span style="color:#40ffff">%rax&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">Check&lt;/span> &lt;span style="color:#40ffff">%rax&lt;/span> &lt;span style="color:#40ffff">for&lt;/span> &lt;span style="color:#40ffff">error.&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jae&lt;/span> &lt;span style="color:#40ffff">SYSCALL_ERROR_LABEL&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">Jump&lt;/span> &lt;span style="color:#40ffff">to&lt;/span> &lt;span style="color:#40ffff">error&lt;/span> &lt;span style="color:#40ffff">handler&lt;/span> &lt;span style="color:#40ffff">if&lt;/span> &lt;span style="color:#40ffff">error.&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ret&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>* &lt;span style="color:#40ffff">Return&lt;/span> &lt;span style="color:#40ffff">to&lt;/span> &lt;span style="color:#40ffff">caller.&lt;/span> *&lt;span style="color:#a61717;background-color:#e3d2d2">/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">PSEUDO_END&lt;/span> (&lt;span style="color:#40ffff">syscall&lt;/span>)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>sysdeps/unix/sysv/linux/x86_64/sysdep.h&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># undef PSEUDO_END
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># define PSEUDO_END(name) \
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> SYSCALL_ERROR_HANDLER \
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> END (name)
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Blog: glibc printf</title><link>http://forest0923.github.io/memo/en/blog/2022/06/16/glibc-printf/</link><pubDate>Thu, 16 Jun 2022 13:16:58 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/06/16/glibc-printf/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: glibc printf</title><link>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-printf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-printf/</guid><description>
 &lt;h2 id="version">Version&lt;/h2>
 &lt;ul>
 &lt;li>glibc v2.35&lt;/li>
@@ -255,4 +201,58 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> goto all_done; \
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> } \
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> while (0)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: glibc syscall</title><link>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-syscall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-syscall/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>glibc v2.35&lt;/li>
+&lt;/ul>
+&lt;h2 id="definition">Definition&lt;/h2>
+&lt;ul>
+&lt;li>include/unistd.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifndef _UNISTD_H
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># include &amp;lt;posix/unistd.h&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>include/posix/unistd.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef __USE_MISC
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>&lt;span style="color:#999;font-style:italic">/* Invoke `system call&amp;#39; number SYSNO, passing it the remaining arguments.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> This is completely system-dependent, and not often useful.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> In Unix, `syscall&amp;#39; sets `errno&amp;#39; for all errors and most calls return -1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> for errors; in many systems you cannot pass arguments or get return
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> values for all system calls (`pipe&amp;#39;, `fork&amp;#39;, and `getppid&amp;#39; typically
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> among them).
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> In Mach, all system calls take normal arguments and always return an
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> error code (zero for success). */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">extern&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">syscall&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __sysno, ...) __THROW;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif &lt;/span>&lt;span style="color:#999;font-style:italic">/* Use misc. */&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>sysdeps/unix/sysv/linux/x86_64/syscall.S&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-asm" data-lang="asm">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#bbb">.text&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">ENTRY&lt;/span> (&lt;span style="color:#40ffff">syscall&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rdi&lt;/span>, &lt;span style="color:#40ffff">%rax&lt;/span> &lt;span style="color:#999;font-style:italic">/* Syscall number -&amp;gt; rax. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rsi&lt;/span>, &lt;span style="color:#40ffff">%rdi&lt;/span> &lt;span style="color:#999;font-style:italic">/* shift arg1 - arg5. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rdx&lt;/span>, &lt;span style="color:#40ffff">%rsi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rcx&lt;/span>, &lt;span style="color:#40ffff">%rdx&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%r8&lt;/span>, &lt;span style="color:#40ffff">%r10&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%r9&lt;/span>, &lt;span style="color:#40ffff">%r8&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#3677a9">8&lt;/span>(&lt;span style="color:#40ffff">%rsp&lt;/span>),&lt;span style="color:#40ffff">%r9&lt;/span> &lt;span style="color:#999;font-style:italic">/* arg6 is on the stack. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">syscall&lt;/span> &lt;span style="color:#999;font-style:italic">/* Do the system call. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">cmpq&lt;/span> &lt;span style="color:#40ffff">$-4095&lt;/span>, &lt;span style="color:#40ffff">%rax&lt;/span> &lt;span style="color:#999;font-style:italic">/* Check %rax for error. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jae&lt;/span> &lt;span style="color:#40ffff">SYSCALL_ERROR_LABEL&lt;/span> &lt;span style="color:#999;font-style:italic">/* Jump to error handler if error. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ret&lt;/span> &lt;span style="color:#999;font-style:italic">/* Return to caller. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">PSEUDO_END&lt;/span> (&lt;span style="color:#40ffff">syscall&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>sysdeps/unix/sysv/linux/x86_64/sysdep.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># undef PSEUDO_END
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># define PSEUDO_END(name) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> SYSCALL_ERROR_HANDLER \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> END (name)
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

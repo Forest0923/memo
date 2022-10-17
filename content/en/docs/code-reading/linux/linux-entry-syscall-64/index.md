@@ -17,7 +17,7 @@ draft = false
 
 以下はコメントを追加した entry_SYSCALL_64(arch/x86/entry/entry_64.S) のソースコード．
 
-```c
+```asm
 SYM_CODE_START(entry_SYSCALL_64)
 	/*
 	 * I still  don't understand it well enough.

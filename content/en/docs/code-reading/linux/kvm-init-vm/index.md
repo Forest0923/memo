@@ -1,21 +1,11 @@
 +++
-title = "KVM での VM 作成"
-description = ""
+title = "[KVM] Creating VMs"
+description = "QEMU/KVM において VM が作成されて実行されるまでの流れを調べたときのメモ"
 tags = [
   "Linux", "QEMU/KVM"
 ]
-draft = true
+draft = false
 +++
-
-## About
-
-この wiki では，QEMU/KVM において VM を作成して実際に動作していく際の流れを実際のコードをたどりながら説明する．説明する内容は次の3点：
-
-- [About](#about)
-- [環境](#環境)
-- [VM・vCPU の作成](#vmvcpu-の作成)
-- [VM の実行](#vm-の実行)
-- [VM Entry/Exit](#vm-entryexit)
 
 ## 環境
 
@@ -23,21 +13,24 @@ draft = true
 - QEMU v6.2.0
 - x86
 
-## VM・vCPU の作成
+## VM の作成
 
-ここではそもそもどうやって KVM のモジュールにアクセスして VM を作成するかを見ていく．
+VM や vCPU の作成には sys_ioctl を用いる．sys_ioctl() はスペシャルファイルを介してデバイスの制御を行うためのシステムコールで定義は下記のようになっている．
 
-KVM は /dev/kvm というデバイスファイル（スペシャルファイル）を提供している．VM 作成などの操作をするためには /dev/kvm に対して ioctl() を実行する．
-ioctl() はデバイスを制御したりデータをやり取りするために使用されるシステムコールであり，open したファイルディスクリプタ，リクエスト内容を示すコード，引数ベクタへのポインタの3つを渡す必要がある．
-例えば KVM で VM を作成するには下記のように /dev/kvm をオープンして ioctl() を実行する．
+```c
+long sys_ioctl(unsigned int fd, unsigned int cmd, unsigned long arg);
+```
+
+KVM にアクセスする場合は /dev/kvm というスペシャルファイルを用いる．例えば KVM で VM を作成するには下記のように /dev/kvm をオープンして ioctl() を実行する．
 
 ```c
 int kvmfd = open("/dev/kvm", O_RDWR);
 int vmfd = ioctl(kvmfd, KVM_CREATE_VM, 0);
 ```
 
-QEMU/KVM では，QEMU のコード内で上記のような VM 作成のためのコードが実行される．実際のコードは下記のようなもので kvm_init() から呼び出される一連の関数の中で ioctl が呼ばれる．
-ioctl() のハンドラは KVM 内にあり，kvm 構造体などが作成される．詳細は [kvm 構造体の作成](KVMのデータ構造#kvm-構造体の作成) を参照する．
+QEMU/KVM では，QEMU のコード内で上記のような VM 作成のためのコードが実行される．
+実際には下記の kvm_init() から呼び出される一連の関数の中で ioctl が呼ばれる．
+ioctl() のハンドラは KVM 内にあり，kvm 構造体などが作成される．
 
 ```c
 // accel/kvm/kvm-all.c
@@ -134,7 +127,9 @@ int kvm_ioctl(KVMState *s, int type, ...)
 }
 ```
 
-VM のための virtual CPU（vCPU） を作成する場合は，下記のように VM のファイルディスクリプタを引数として ioctl() を実行する．
+## vCPU の作成
+
+vCPU を作成する場合は，下記のように VM のファイルディスクリプタを引数として ioctl() を実行する．
 
 ```c
 //int kvmfd = open("/dev/kvm", O_RDWR);
@@ -143,7 +138,7 @@ int vcpufd = ioctl(vmfd, KVM_CREATE_VCPU, 0);
 ```
 
 QEMU では kvm_init_vcpu() によって vCPU を作成するための ioctl() が実行される．
-この ioctl() に対するハンドラも VM 作成時と同様に KVM 内に書かれており，詳細は [kvm_vcpu 構造体の作成](KVMのデータ構造#kvm_vcpu-構造体の作成) を参照する．
+この ioctl() に対するハンドラも VM 作成時と同様に KVM 内に書かれている．
 
 ```c
 // accel/kvm/kvm-accel-ops.c
@@ -223,7 +218,6 @@ int ret = ioctl(vcpufd, KVM_RUN, 0);
 ```
 
 QEMU では vCPU のスレッドを作成するときに kvm_init_vcpu() で vCPU が作成され，その後の kvm_cpu_exec() で KVM_RUN の ioctl が実行される．
-実際のコードを抜粋したものを以下に示す．
 
 ```c
 // accel/kvm/kvm-accel-ops.c
@@ -480,7 +474,7 @@ SYM_FUNC_END(__vmx_vcpu_run)
 ```
 
 VM exit のハンドリングは vmx_handle_exit() から kvm_vmx_exit_handlers[] に登録されたハンドラを呼び出すことで行われる．
-各ハンドラは [arch/x86/kvm/vmx/vmx.c](https://elixir.bootlin.com/linux/v5.8.13/source/arch/x86/kvm/vmx/vmx.c#L5669) で登録されているので詳しく中身を見たい場合はここからたどれば良い．
+各ハンドラは [arch/x86/kvm/vmx/vmx.c](https://elixir.bootlin.com/linux/v5.8.13/source/arch/x86/kvm/vmx/vmx.c#L5669) で登録されている．
 
 ```c
 // arch/x86/kvm/vmx/vmx.c

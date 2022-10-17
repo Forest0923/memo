@@ -75,7 +75,7 @@ SWITCH_TO_KERNEL_CR3 は arch/x86/entry/calling.h で次のように定義され
 
 KPTI が有効な場合は ADJUST_KERNEL_CR3 が実行されます．これも arch/x86/entry/calling.h で定義されており，下記のようになっています．
 
-```c
+```asm
 /*
 #define PAGE_SHIFT			12
 */
@@ -120,7 +120,7 @@ SYM_CODE_END(entry_SYSCALL_64)
 
 一見すると長いコードに見えますが，カーネルに切り替えるときと逆の処理を行うだけなので CR3 の 11 bit 目と 12 bit 目を適宜 1 にしているだけです．
 
-```c
+```asm
 .macro SWITCH_TO_USER_CR3_NOSTACK scratch_reg:req scratch_reg2:req
 	ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
 	mov	%cr3, \scratch_reg

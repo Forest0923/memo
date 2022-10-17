@@ -6,7 +6,7 @@
 &lt;h2 id="definition">Definition&lt;/h2>
 &lt;p>&lt;code>entry_SYSCALL_64&lt;/code> はシステムコールが発行されたときに user-kernel の切り替えが行われるエントリポイントに該当する関数である．&lt;/p>
 &lt;p>以下はコメントを追加した entry_SYSCALL_64(arch/x86/entry/entry_64.S) のソースコード．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYM_CODE_START(entry_SYSCALL_64)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-asm" data-lang="asm">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_CODE_START&lt;/span>(&lt;span style="color:#40ffff">entry_SYSCALL_64&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * I still don&amp;#39;t understand it well enough.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * It might be only for debugging.
@@ -15,7 +15,7 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - Comment of `arch/x86/include/asm/unwind_hints.h`
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - Kernel documents (ORC unwinder)
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> UNWIND_HINT_EMPTY
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">UNWIND_HINT_EMPTY&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Swap user GS and kernel GS.
@@ -26,48 +26,48 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * #define MSR_KERNEL_GS_BASE 0xc0000102
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * ```
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> swapgs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">swapgs&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Save user stack pointer to TSS.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * sp2 means stack pointer for ring-2 but it doesn&amp;#39;t used on Linux.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq %rsp, PER_CPU_VAR(cpu_tss_rw + TSS_sp2)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rsp&lt;/span>, &lt;span style="color:#40ffff">PER_CPU_VAR&lt;/span>(&lt;span style="color:#40ffff">cpu_tss_rw&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">+&lt;/span> &lt;span style="color:#40ffff">TSS_sp2&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Switch page table.(user-&amp;gt;kernel)
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * See also:
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - blog/linux-kpti
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SWITCH_TO_KERNEL_CR3 scratch_reg=%rsp
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">SWITCH_TO_KERNEL_CR3&lt;/span> &lt;span style="color:#40ffff">scratch_reg&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=&lt;/span>&lt;span style="color:#40ffff">%rsp&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * cpu_current_top_of_stack equals to TSS_sp1.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Store kernel stack pointer to rsp.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">PER_CPU_VAR&lt;/span>(&lt;span style="color:#40ffff">cpu_current_top_of_stack&lt;/span>), &lt;span style="color:#40ffff">%rsp&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Construct struct pt_regs on stack.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * This is one of the arguments of do_syscall_64().
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>__USER_DS &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;ss */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq PER_CPU_VAR(cpu_tss_rw + TSS_sp2) &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;sp (saved at the beginning) */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq %r11 &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;flags */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>__USER_CS &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;cs */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq %rcx &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;ip */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYM_INNER_LABEL(entry_SYSCALL_64_after_hwframe, SYM_L_GLOBAL)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq %rax &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;orig_ax */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">$__USER_DS&lt;/span> &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;ss */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">PER_CPU_VAR&lt;/span>(&lt;span style="color:#40ffff">cpu_tss_rw&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">+&lt;/span> &lt;span style="color:#40ffff">TSS_sp2&lt;/span>) &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;sp (saved at the beginning) */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">%r11&lt;/span> &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;flags */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">$__USER_CS&lt;/span> &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;cs */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">%rcx&lt;/span> &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;ip */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_INNER_LABEL&lt;/span>(&lt;span style="color:#40ffff">entry_SYSCALL_64_after_hwframe&lt;/span>, &lt;span style="color:#40ffff">SYM_L_GLOBAL&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">%rax&lt;/span> &lt;span style="color:#999;font-style:italic">/* pt_regs-&amp;gt;orig_ax */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Push the other registers in the kernel stack.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PUSH_AND_CLEAR_REGS rax=&lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>-ENOSYS
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">PUSH_AND_CLEAR_REGS&lt;/span> &lt;span style="color:#40ffff">rax&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=&lt;/span>&lt;span style="color:#40ffff">$-ENOSYS&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* IRQs are off. */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq %rax, %rdi &lt;span style="color:#999;font-style:italic">/* System call nr. (the first argument) */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq %rsp, %rsi &lt;span style="color:#999;font-style:italic">/* pointer of struct pt_regs. (the second argument) */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> call do_syscall_64 &lt;span style="color:#999;font-style:italic">/* returns with IRQs disabled */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rax&lt;/span>, &lt;span style="color:#40ffff">%rdi&lt;/span> &lt;span style="color:#999;font-style:italic">/* System call nr. (the first argument) */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rsp&lt;/span>, &lt;span style="color:#40ffff">%rsi&lt;/span> &lt;span style="color:#999;font-style:italic">/* pointer of struct pt_regs. (the second argument) */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">call&lt;/span> &lt;span style="color:#40ffff">do_syscall_64&lt;/span> &lt;span style="color:#999;font-style:italic">/* returns with IRQs disabled */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* ================================= */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* ======= DEBUG PHASE START ======= */&lt;/span>
@@ -78,11 +78,11 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * a completely clean 64-bit userspace context. If we&amp;#39;re not,
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * go to the slow exit path.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq RCX(%rsp), %rcx
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq RIP(%rsp), %r11
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">RCX&lt;/span>(&lt;span style="color:#40ffff">%rsp&lt;/span>), &lt;span style="color:#40ffff">%rcx&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">RIP&lt;/span>(&lt;span style="color:#40ffff">%rsp&lt;/span>), &lt;span style="color:#40ffff">%r11&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmpq %rcx, %r11 &lt;span style="color:#999;font-style:italic">/* SYSRET requires RCX == RIP */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jne swapgs_restore_regs_and_return_to_usermode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">cmpq&lt;/span> &lt;span style="color:#40ffff">%rcx&lt;/span>, &lt;span style="color:#40ffff">%r11&lt;/span> &lt;span style="color:#999;font-style:italic">/* SYSRET requires RCX == RIP */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jne&lt;/span> &lt;span style="color:#40ffff">swapgs_restore_regs_and_return_to_usermode&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * On Intel CPUs, SYSRET with non-canonical RCX/RIP will #GP
@@ -95,26 +95,26 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Change top bits to match most significant bit (47th or 56th bit
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * depending on paging mode) in the address.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_X86_5LEVEL
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#999;font-style:italic">/* 5-level page table */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ALTERNATIVE &lt;span style="color:#ed9d13">&amp;#34;shl $(64 - 48), %rcx; sar $(64 - 48), %rcx&amp;#34;&lt;/span>, \
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ed9d13">&amp;#34;shl $(64 - 57), %rcx; sar $(64 - 57), %rcx&amp;#34;&lt;/span>, X86_FEATURE_LA57
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#else
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#999;font-style:italic">/* 4-level page table */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> shl &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(&lt;span style="color:#3677a9">64&lt;/span> - (__VIRTUAL_MASK_SHIFT+&lt;span style="color:#3677a9">1&lt;/span>)), %rcx
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sar &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(&lt;span style="color:#3677a9">64&lt;/span> - (__VIRTUAL_MASK_SHIFT+&lt;span style="color:#3677a9">1&lt;/span>)), %rcx
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#ifdef CONFIG_X86_5LEVEL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#999;font-style:italic">/* 5-level page table */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ALTERNATIVE&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#34;&lt;/span>&lt;span style="color:#40ffff">shl&lt;/span> &lt;span style="color:#40ffff">$&lt;/span>(&lt;span style="color:#3677a9">64&lt;/span> - &lt;span style="color:#3677a9">48&lt;/span>), &lt;span style="color:#40ffff">%rcx&lt;/span>&lt;span style="color:#999;font-style:italic">; sar $(64 - 48), %rcx&amp;#34;, \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#34;&lt;/span>&lt;span style="color:#447fcf">shl&lt;/span> &lt;span style="color:#40ffff">$&lt;/span>(&lt;span style="color:#3677a9">64&lt;/span> - &lt;span style="color:#3677a9">57&lt;/span>), &lt;span style="color:#40ffff">%rcx&lt;/span>&lt;span style="color:#999;font-style:italic">; sar $(64 - 57), %rcx&amp;#34;, X86_FEATURE_LA57
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#else
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#999;font-style:italic">/* 4-level page table */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">shl&lt;/span> &lt;span style="color:#40ffff">$&lt;/span>(&lt;span style="color:#3677a9">64&lt;/span> - (&lt;span style="color:#40ffff">__VIRTUAL_MASK_SHIFT&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">+&lt;/span>&lt;span style="color:#3677a9">1&lt;/span>)), &lt;span style="color:#40ffff">%rcx&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">sar&lt;/span> &lt;span style="color:#40ffff">$&lt;/span>(&lt;span style="color:#3677a9">64&lt;/span> - (&lt;span style="color:#40ffff">__VIRTUAL_MASK_SHIFT&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">+&lt;/span>&lt;span style="color:#3677a9">1&lt;/span>)), &lt;span style="color:#40ffff">%rcx&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* If this changed %rcx, it was not canonical */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmpq %rcx, %r11
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jne swapgs_restore_regs_and_return_to_usermode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">cmpq&lt;/span> &lt;span style="color:#40ffff">%rcx&lt;/span>, &lt;span style="color:#40ffff">%r11&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jne&lt;/span> &lt;span style="color:#40ffff">swapgs_restore_regs_and_return_to_usermode&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmpq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>__USER_CS, CS(%rsp) &lt;span style="color:#999;font-style:italic">/* CS must match SYSRET */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jne swapgs_restore_regs_and_return_to_usermode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">cmpq&lt;/span> &lt;span style="color:#40ffff">$__USER_CS&lt;/span>, &lt;span style="color:#40ffff">CS&lt;/span>(&lt;span style="color:#40ffff">%rsp&lt;/span>) &lt;span style="color:#999;font-style:italic">/* CS must match SYSRET */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jne&lt;/span> &lt;span style="color:#40ffff">swapgs_restore_regs_and_return_to_usermode&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq R11(%rsp), %r11
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmpq %r11, EFLAGS(%rsp) &lt;span style="color:#999;font-style:italic">/* R11 == RFLAGS */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jne swapgs_restore_regs_and_return_to_usermode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">R11&lt;/span>(&lt;span style="color:#40ffff">%rsp&lt;/span>), &lt;span style="color:#40ffff">%r11&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">cmpq&lt;/span> &lt;span style="color:#40ffff">%r11&lt;/span>, &lt;span style="color:#40ffff">EFLAGS&lt;/span>(&lt;span style="color:#40ffff">%rsp&lt;/span>) &lt;span style="color:#999;font-style:italic">/* R11 == RFLAGS */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jne&lt;/span> &lt;span style="color:#40ffff">swapgs_restore_regs_and_return_to_usermode&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * SYSCALL clears RF when it saves RFLAGS in R11 and SYSRET cannot
@@ -134,13 +134,13 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * would never get past &amp;#39;stuck_here&amp;#39;.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> testq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(X86_EFLAGS_RF|X86_EFLAGS_TF), %r11
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jnz swapgs_restore_regs_and_return_to_usermode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">testq&lt;/span> &lt;span style="color:#40ffff">$&lt;/span>(&lt;span style="color:#40ffff">X86_EFLAGS_RF&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">|&lt;/span>&lt;span style="color:#40ffff">X86_EFLAGS_TF&lt;/span>), &lt;span style="color:#40ffff">%r11&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jnz&lt;/span> &lt;span style="color:#40ffff">swapgs_restore_regs_and_return_to_usermode&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* nothing to check for RSP */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmpq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>__USER_DS, SS(%rsp) &lt;span style="color:#999;font-style:italic">/* SS must match SYSRET */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jne swapgs_restore_regs_and_return_to_usermode
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">cmpq&lt;/span> &lt;span style="color:#40ffff">$__USER_DS&lt;/span>, &lt;span style="color:#40ffff">SS&lt;/span>(&lt;span style="color:#40ffff">%rsp&lt;/span>) &lt;span style="color:#999;font-style:italic">/* SS must match SYSRET */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jne&lt;/span> &lt;span style="color:#40ffff">swapgs_restore_regs_and_return_to_usermode&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* ================================= */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* ======== DEBUG PHASE END ======== */&lt;/span>
@@ -155,41 +155,41 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * rcx and r11 are already restored (see code above)
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Pop registers and restore user context.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> POP_REGS pop_rdi=&lt;span style="color:#3677a9">0&lt;/span> skip_r11rcx=&lt;span style="color:#3677a9">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">POP_REGS&lt;/span> &lt;span style="color:#40ffff">pop_rdi&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=&lt;/span>&lt;span style="color:#3677a9">0&lt;/span> &lt;span style="color:#40ffff">skip_r11rcx&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=&lt;/span>&lt;span style="color:#3677a9">1&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Now all regs are restored except RSP and RDI.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Save old stack pointer and switch to trampoline stack.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq %rsp, %rdi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">%rsp&lt;/span>, &lt;span style="color:#40ffff">%rdi&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * TSS_sp0 is the trampoline stack.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq PER_CPU_VAR(cpu_tss_rw + TSS_sp0), %rsp
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> UNWIND_HINT_EMPTY
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#40ffff">PER_CPU_VAR&lt;/span>(&lt;span style="color:#40ffff">cpu_tss_rw&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">+&lt;/span> &lt;span style="color:#40ffff">TSS_sp0&lt;/span>), &lt;span style="color:#40ffff">%rsp&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">UNWIND_HINT_EMPTY&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Push user RSP to trampoline stack. It is from pt_regs */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq RSP-RDI(%rdi)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">RSP-RDI&lt;/span>(&lt;span style="color:#40ffff">%rdi&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Push user RDI to trampoline stack. It is from pt_regs */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq (%rdi)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> (&lt;span style="color:#40ffff">%rdi&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * We are on the trampoline stack. All regs except RDI are live.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * We can do future final exit work right here.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> STACKLEAK_ERASE_NOCLOBBER
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">STACKLEAK_ERASE_NOCLOBBER&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Switch page table.(kernel-&amp;gt;user)
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * See also:
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - blog/linux-kpti
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SWITCH_TO_USER_CR3_STACK scratch_reg=%rdi
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">SWITCH_TO_USER_CR3_STACK&lt;/span> &lt;span style="color:#40ffff">scratch_reg&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=&lt;/span>&lt;span style="color:#40ffff">%rdi&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Restore rdi and rsp, and return to user */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> popq %rdi
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> popq %rsp
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> USERGS_SYSRET64
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYM_CODE_END(entry_SYSCALL_64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">popq&lt;/span> &lt;span style="color:#40ffff">%rdi&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">popq&lt;/span> &lt;span style="color:#40ffff">%rsp&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">USERGS_SYSRET64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_CODE_END&lt;/span>(&lt;span style="color:#40ffff">entry_SYSCALL_64&lt;/span>)
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

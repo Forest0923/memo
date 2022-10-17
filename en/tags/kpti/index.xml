@@ -48,30 +48,30 @@ Meltdown 脆弱性は CPU の高速化手法である out-of-order 実行に起�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lend_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.endm
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>KPTI が有効な場合は ADJUST_KERNEL_CR3 が実行されます．これも arch/x86/entry/calling.h で定義されており，下記のようになっています．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-asm" data-lang="asm">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#define PAGE_SHIFT 12
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">*/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PGTABLE_BIT PAGE_SHIFT
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PGTABLE_MASK (1 &amp;lt;&amp;lt; PTI_USER_PGTABLE_BIT)
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#define PTI_USER_PGTABLE_BIT PAGE_SHIFT
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#define PTI_USER_PGTABLE_MASK (1 &amp;lt;&amp;lt; PTI_USER_PGTABLE_BIT)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#ifdef CONFIG_PAGE_TABLE_ISOLATION
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># define X86_CR3_PTI_PCID_USER_BIT 11
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">*/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PCID_BIT X86_CR3_PTI_PCID_USER_BIT
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PCID_MASK (1 &amp;lt;&amp;lt; PTI_USER_PCID_BIT)
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define PTI_USER_PGTABLE_AND_PCID_MASK (PTI_USER_PCID_MASK | PTI_USER_PGTABLE_MASK)
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#define PTI_USER_PCID_BIT X86_CR3_PTI_PCID_USER_BIT
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#define PTI_USER_PCID_MASK (1 &amp;lt;&amp;lt; PTI_USER_PCID_BIT)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#define PTI_USER_PGTABLE_AND_PCID_MASK (PTI_USER_PCID_MASK | PTI_USER_PGTABLE_MASK)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">...&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.macro ADJUST_KERNEL_CR3 reg:req
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ALTERNATIVE &lt;span style="color:#ed9d13">&amp;#34;&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;SET_NOFLUSH_BIT &lt;/span>&lt;span style="color:#ed9d13">\r&lt;/span>&lt;span style="color:#ed9d13">eg&amp;#34;&lt;/span>, X86_FEATURE_PCID
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.macro&lt;/span> &lt;span style="color:#40ffff">ADJUST_KERNEL_CR3&lt;/span> &lt;span style="color:#40ffff">reg&lt;/span>:&lt;span style="color:#40ffff">req&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ALTERNATIVE&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#34;&amp;#34;&lt;/span>, &lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#34;&lt;/span>&lt;span style="color:#40ffff">SET_NOFLUSH_BIT&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">reg&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#34;&lt;/span>, &lt;span style="color:#40ffff">X86_FEATURE_PCID&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Clear PCID and &amp;#34;PAGE_TABLE_ISOLATION bit&amp;#34;, point CR3 at kernel pagetables: */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> andq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(~PTI_USER_PGTABLE_AND_PCID_MASK), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">andq&lt;/span> &lt;span style="color:#40ffff">$&lt;/span>(&lt;span style="color:#a61717;background-color:#e3d2d2">~&lt;/span>&lt;span style="color:#40ffff">PTI_USER_PGTABLE_AND_PCID_MASK&lt;/span>), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">reg&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* andq ~(0x1800), \reg */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.endm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.endm&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上記のコードによれば，11 bit 目と 12 bit 目をクリアすることでカーネル用のページテーブルのルートポインタに変換できます．&lt;/p>
 &lt;h3 id="kernel-to-user">&lt;strong>Kernel to User&lt;/strong>&lt;/h3>
 &lt;p>システムコールの実行が終了してユーザプロセスに戻る際の切り替えは SWITCH_TO_USER_CR3_STACK で行われます．&lt;/p>
@@ -83,48 +83,48 @@ Meltdown 脆弱性は CPU の高速化手法である out-of-order 実行に起�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">USERGS_SYSRET64&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_CODE_END&lt;/span>(&lt;span style="color:#40ffff">entry_SYSCALL_64&lt;/span>)
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>一見すると長いコードに見えますが，カーネルに切り替えるときと逆の処理を行うだけなので CR3 の 11 bit 目と 12 bit 目を適宜 1 にしているだけです．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>.macro SWITCH_TO_USER_CR3_NOSTACK scratch_reg:req scratch_reg2:req
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ALTERNATIVE &lt;span style="color:#ed9d13">&amp;#34;jmp .Lend_\@&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;&amp;#34;&lt;/span>, X86_FEATURE_PTI
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mov %cr3, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-asm" data-lang="asm">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.macro&lt;/span> &lt;span style="color:#40ffff">SWITCH_TO_USER_CR3_NOSTACK&lt;/span> &lt;span style="color:#40ffff">scratch_reg&lt;/span>:&lt;span style="color:#40ffff">req&lt;/span> &lt;span style="color:#40ffff">scratch_reg2&lt;/span>:&lt;span style="color:#40ffff">req&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ALTERNATIVE&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#34;&lt;/span>&lt;span style="color:#40ffff">jmp&lt;/span> &lt;span style="color:#40ffff">.Lend_&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">\@&amp;#34;&lt;/span>, &lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#34;&amp;#34;&lt;/span>, &lt;span style="color:#40ffff">X86_FEATURE_PTI&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">%cr3&lt;/span>, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ALTERNATIVE &lt;span style="color:#ed9d13">&amp;#34;jmp .Lwrcr3_\@&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;&amp;#34;&lt;/span>, X86_FEATURE_PCID
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ALTERNATIVE&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#34;&lt;/span>&lt;span style="color:#40ffff">jmp&lt;/span> &lt;span style="color:#40ffff">.Lwrcr3_&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">\@&amp;#34;&lt;/span>, &lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#34;&amp;#34;&lt;/span>, &lt;span style="color:#40ffff">X86_FEATURE_PCID&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Test if the ASID needs a flush.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> andq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(&lt;span style="color:#3677a9">0x7FF&lt;/span>), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg &lt;span style="color:#999;font-style:italic">/* mask ASID */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> bt &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg, THIS_CPU_user_pcid_flush_mask
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jnc .Lnoflush_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">andq&lt;/span> &lt;span style="color:#40ffff">$&lt;/span>(&lt;span style="color:#3677a9">0x7FF&lt;/span>), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span> &lt;span style="color:#999;font-style:italic">/* mask ASID */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">bt&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>, &lt;span style="color:#40ffff">THIS_CPU_user_pcid_flush_mask&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jnc&lt;/span> &lt;span style="color:#40ffff">.Lnoflush_&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Flush needed, clear the bit */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> btr &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg, THIS_CPU_user_pcid_flush_mask
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg2, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> jmp .Lwrcr3_pcid_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">btr&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>, &lt;span style="color:#40ffff">THIS_CPU_user_pcid_flush_mask&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg2&lt;/span>, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jmp&lt;/span> &lt;span style="color:#40ffff">.Lwrcr3_pcid_&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lnoflush_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> movq &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg2, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SET_NOFLUSH_BIT &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.Lnoflush_&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">movq&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg2&lt;/span>, &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">SET_NOFLUSH_BIT&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lwrcr3_pcid_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.Lwrcr3_pcid_&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Flip the ASID to the user version */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> orq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(PTI_USER_PCID_MASK), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">orq&lt;/span> &lt;span style="color:#40ffff">$&lt;/span>(&lt;span style="color:#40ffff">PTI_USER_PCID_MASK&lt;/span>), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lwrcr3_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.Lwrcr3_&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Flip the PGD to the user version */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> orq &lt;span style="color:#a61717;background-color:#e3d2d2">$&lt;/span>(PTI_USER_PGTABLE_MASK), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mov &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg, %cr3
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.Lend_&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.endm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">orq&lt;/span> &lt;span style="color:#40ffff">$&lt;/span>(&lt;span style="color:#40ffff">PTI_USER_PGTABLE_MASK&lt;/span>), &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span>, &lt;span style="color:#40ffff">%cr3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.Lend_&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">\@&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.endm&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> SWITCH_TO_USER_CR3_STACK scratch_reg=%rdi
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">*/&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.macro SWITCH_TO_USER_CR3_STACK scratch_reg:req
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pushq %rax
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> SWITCH_TO_USER_CR3_NOSTACK scratch_reg=&lt;span style="color:#a61717;background-color:#e3d2d2">\&lt;/span>scratch_reg scratch_reg2=%rax
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> popq %rax
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>.endm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.macro&lt;/span> &lt;span style="color:#40ffff">SWITCH_TO_USER_CR3_STACK&lt;/span> &lt;span style="color:#40ffff">scratch_reg&lt;/span>:&lt;span style="color:#40ffff">req&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pushq&lt;/span> &lt;span style="color:#40ffff">%rax&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">SWITCH_TO_USER_CR3_NOSTACK&lt;/span> &lt;span style="color:#40ffff">scratch_reg&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=\&lt;/span>&lt;span style="color:#40ffff">scratch_reg&lt;/span> &lt;span style="color:#40ffff">scratch_reg2&lt;/span>&lt;span style="color:#a61717;background-color:#e3d2d2">=&lt;/span>&lt;span style="color:#40ffff">%rax&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">popq&lt;/span> &lt;span style="color:#40ffff">%rax&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">.endm&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="実験">実験&lt;/h2>
 &lt;p>実際にプロセスの CR3 をユーザプロセス実行中とカーネル実行中に出力したときの実験結果を見てみます．CR3 は QEMU/KVM で KVM 側から kvm_cr3_read() によって取得しました．&lt;/p>
 &lt;p>実験結果は下記のようになっており，ソースコードで確認したとおりの変換が行われていることがわかりました．&lt;/p>

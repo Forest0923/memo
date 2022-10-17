@@ -1,4 +1,400 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – QEMU/KVM</title><link>http://forest0923.github.io/memo/en/tags/qemu/kvm/</link><description>Recent content in QEMU/KVM on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/tags/qemu/kvm/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: [KVM] EPT</title><link>http://forest0923.github.io/memo/en/docs/code-reading/linux/linux-ept/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/linux/linux-ept/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – QEMU/KVM</title><link>http://forest0923.github.io/memo/en/tags/qemu/kvm/</link><description>Recent content in QEMU/KVM on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/tags/qemu/kvm/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: [KVM] Creating VMs</title><link>http://forest0923.github.io/memo/en/docs/code-reading/linux/kvm-init-vm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/linux/kvm-init-vm/</guid><description>
+&lt;h2 id="環境">環境&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;li>QEMU v6.2.0&lt;/li>
+&lt;li>x86&lt;/li>
+&lt;/ul>
+&lt;h2 id="vm-の作成">VM の作成&lt;/h2>
+&lt;p>VM や vCPU の作成には sys_ioctl を用いる．sys_ioctl() はスペシャルファイルを介してデバイスの制御を行うためのシステムコールで定義は下記のようになっている．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_ioctl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>KVM にアクセスする場合は /dev/kvm というスペシャルファイルを用いる．例えば KVM で VM を作成するには下記のように /dev/kvm をオープンして ioctl() を実行する．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> kvmfd = open(&lt;span style="color:#ed9d13">&amp;#34;/dev/kvm&amp;#34;&lt;/span>, O_RDWR);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> vmfd = ioctl(kvmfd, KVM_CREATE_VM, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>QEMU/KVM では，QEMU のコード内で上記のような VM 作成のためのコードが実行される．
+実際には下記の kvm_init() から呼び出される一連の関数の中で ioctl が呼ばれる．
+ioctl() のハンドラは KVM 内にあり，kvm 構造体などが作成される．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// accel/kvm/kvm-all.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_init&lt;/span>(MachineState *ms)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> s-&amp;gt;fd = qemu_open_old(&lt;span style="color:#ed9d13">&amp;#34;/dev/kvm&amp;#34;&lt;/span>, O_RDWR); &lt;span style="color:#999;font-style:italic">// /dev/kvm を open する
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (s-&amp;gt;fd == -&lt;span style="color:#3677a9">1&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fprintf(stderr, &lt;span style="color:#ed9d13">&amp;#34;Could not access KVM kernel module: %m&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = -errno;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> err;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">do&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = kvm_ioctl(s, KVM_CREATE_VM, type); &lt;span style="color:#999;font-style:italic">// ioctl を発行して VM を作成する
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> } &lt;span style="color:#6ab825;font-weight:bold">while&lt;/span> (ret == -EINTR);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fprintf(stderr, &lt;span style="color:#ed9d13">&amp;#34;ioctl(KVM_CREATE_VM) failed: %d %s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, -ret,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> strerror(-ret));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// util/osdep.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">qemu_open_old&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *name, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags, ...)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = qemu_open_internal(name, flags, mode, &lt;span style="color:#24909d">NULL&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef O_DIRECT
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret == -&lt;span style="color:#3677a9">1&lt;/span> &amp;amp;&amp;amp; errno == EINVAL &amp;amp;&amp;amp; (flags &amp;amp; O_DIRECT)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error_report(&lt;span style="color:#ed9d13">&amp;#34;file system may not support O_DIRECT&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> errno = EINVAL; &lt;span style="color:#999;font-style:italic">/* in case it was clobbered */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif &lt;/span>&lt;span style="color:#999;font-style:italic">/* O_DIRECT */&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// util/osdep.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">qemu_open_internal&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *name, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags, mode_t mode, Error **errp)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = qemu_open_cloexec(name, flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret == -&lt;span style="color:#3677a9">1&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// util/osdep.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">qemu_open_cloexec&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *name, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags, mode_t mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef O_CLOEXEC
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> ret = open(name, flags | O_CLOEXEC, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#else
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> ret = open(name, flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> qemu_set_cloexec(ret);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// accel/kvm/kvm-all.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_ioctl&lt;/span>(KVMState *s, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> type, ...)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *arg;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list ap;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_start(ap, type);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> arg = va_arg(ap, &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_end(ap);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> trace_kvm_ioctl(type, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = ioctl(s-&amp;gt;fd, type, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret == -&lt;span style="color:#3677a9">1&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = -errno;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="vcpu-の作成">vCPU の作成&lt;/h2>
+&lt;p>vCPU を作成する場合は，下記のように VM のファイルディスクリプタを引数として ioctl() を実行する．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">//int kvmfd = open(&amp;#34;/dev/kvm&amp;#34;, O_RDWR);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">//int vmfd = ioctl(kvmfd, KVM_CREATE_VM, 0);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> vcpufd = ioctl(vmfd, KVM_CREATE_VCPU, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>QEMU では kvm_init_vcpu() によって vCPU を作成するための ioctl() が実行される．
+この ioctl() に対するハンドラも VM 作成時と同様に KVM 内に書かれている．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// accel/kvm/kvm-accel-ops.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *&lt;span style="color:#447fcf">kvm_vcpu_thread_fn&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = kvm_init_vcpu(cpu, &amp;amp;error_fatal); &lt;span style="color:#999;font-style:italic">// vcpu を作成する
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">do&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cpu_can_run(cpu)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = kvm_cpu_exec(cpu); &lt;span style="color:#999;font-style:italic">// KVM_RUN
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">while&lt;/span> (!cpu-&amp;gt;unplug || cpu_can_run(cpu));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_destroy_vcpu(cpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// accel/kvm/kvm-all.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_init_vcpu&lt;/span>(CPUState *cpu, Error **errp)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error_setg_errno(errp, -ret, &lt;span style="color:#ed9d13">&amp;#34;kvm_init_vcpu: kvm_get_vcpu failed (%lu)&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_arch_vcpu_id(cpu));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> err;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = kvm_arch_init_vcpu(cpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error_setg_errno(errp, -ret,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ed9d13">&amp;#34;kvm_init_vcpu: kvm_arch_init_vcpu failed (%lu)&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_arch_vcpu_id(cpu));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>err:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// accel/kvm/kvm-all.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_get_vcpu&lt;/span>(KVMState *s, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> vcpu_id)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> kvm_vm_ioctl(s, KVM_CREATE_VCPU, (&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *)vcpu_id);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// accel/kvm/kvm-all.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_vm_ioctl&lt;/span>(KVMState *s, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> type, ...)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = ioctl(s-&amp;gt;vmfd, type, arg); &lt;span style="color:#999;font-style:italic">// ioctl() を発行
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret == -&lt;span style="color:#3677a9">1&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = -errno;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="vm-の実行">VM の実行&lt;/h2>
+&lt;p>VM を実行するには vcpu のファイルディスクリプタを引数として下記のように ioctl を発行する．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">//int kvmfd = open(&amp;#34;/dev/kvm&amp;#34;, O_RDWR);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">//int vmfd = ioctl(kvmfd, KVM_CREATE_VM, 0);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">//int vcpufd = ioctl(vmfd, KVM_CREATE_VCPU, 0);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ret = ioctl(vcpufd, KVM_RUN, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>QEMU では vCPU のスレッドを作成するときに kvm_init_vcpu() で vCPU が作成され，その後の kvm_cpu_exec() で KVM_RUN の ioctl が実行される．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// accel/kvm/kvm-accel-ops.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *&lt;span style="color:#447fcf">kvm_vcpu_thread_fn&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = kvm_init_vcpu(cpu, &amp;amp;error_fatal); &lt;span style="color:#999;font-style:italic">// vcpu を作成する
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">do&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cpu_can_run(cpu)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = kvm_cpu_exec(cpu); &lt;span style="color:#999;font-style:italic">// KVM_RUN のリクエストをループして実行し続ける
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">while&lt;/span> (!cpu-&amp;gt;unplug || cpu_can_run(cpu));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_destroy_vcpu(cpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// accel/kvm/kvm-all.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_cpu_exec&lt;/span>(CPUState *cpu)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">do&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> run_ret = kvm_vcpu_ioctl(cpu, KVM_RUN, &lt;span style="color:#3677a9">0&lt;/span>); &lt;span style="color:#999;font-style:italic">// ioctl
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">switch&lt;/span> (run-&amp;gt;exit_reason) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> KVM_EXIT_IO:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> KVM_EXIT_MMIO:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> KVM_EXIT_IRQ_WINDOW_OPEN:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> KVM_EXIT_SHUTDOWN:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> KVM_EXIT_UNKNOWN:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> KVM_EXIT_INTERNAL_ERROR:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> KVM_EXIT_DIRTY_RING_FULL:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> KVM_EXIT_SYSTEM_EVENT:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">default&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">while&lt;/span> (ret == &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// accel/kvm/kvm-all.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_vcpu_ioctl&lt;/span>(CPUState *cpu, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> type, ...)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = ioctl(cpu-&amp;gt;kvm_fd, type, arg); &lt;span style="color:#999;font-style:italic">// ioctl() を実行
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret == -&lt;span style="color:#3677a9">1&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = -errno;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="vm-entryexit">VM Entry/Exit&lt;/h2>
+&lt;p>QEMU から ioctl() で KVM_RUN のリクエストを受け付けると VM が実行され，VM 内で処理できない部分は適宜 VM exit して KVM でハンドリングを行う．
+KVM での処理が終了したら VM entry して VM の実行を継続する．以下ではこの VM entry/exit が実際にどのコード上で行われるかを追っていく．&lt;/p>
+&lt;p>KVM_RUN の ioctl は kvm_vcpu_ioctl() でハンドリングされ，kvm_arch_vcpu_ioctl_run() が呼び出される．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// virt/kvm/kvm_main.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">kvm_vcpu_ioctl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *filp,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ioctl, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">switch&lt;/span> (ioctl) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> KVM_RUN: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = kvm_arch_vcpu_ioctl_run(vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> r;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>kvm_arch_vcpu_ioctl_run() で vcpu_run() が呼び出されると，vcpu が停止されるまで vcpu_enter_guest() が無限ループで呼び出される．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// arch/x86/kvm/x86.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_arch_vcpu_ioctl_run&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (kvm_run-&amp;gt;immediate_exit)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = -EINTR;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = vcpu_run(vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> r;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// arch/x86/kvm/x86.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">vcpu_run&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> r;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm = vcpu-&amp;gt;kvm;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (;;) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (kvm_vcpu_running(vcpu)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = vcpu_enter_guest(vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = vcpu_block(kvm, vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> r;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>vcpu_enter_guest() 内では，kvm_x86_ops 構造体の run() というメンバに登録された関数ポインタから vmx_vcpu_run() が呼び出される．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// arch/x86/kvm/x86.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">vcpu_enter_guest&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> r;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fastpath_t exit_fastpath;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> exit_fastpath = kvm_x86_ops.run(vcpu); &lt;span style="color:#999;font-style:italic">// ここで VM entry/exit がおこる
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r = kvm_x86_ops.handle_exit(vcpu, exit_fastpath); &lt;span style="color:#999;font-style:italic">// VM exit したときのハンドリングを行う
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> r;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>vmx_vcpu_run() は __vmx_vcpu_run() を呼び出すが，この関数の実体は arch/x86/kvm/vmx/vmenter.S 内のアセンブリコードとなっている．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// arch/x86/kvm/vmx/vmx.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> fastpath_t &lt;span style="color:#447fcf">vmx_vcpu_run&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> vcpu_vmx *vmx = to_vmx(vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vmx-&amp;gt;fail = __vmx_vcpu_run(vmx, (&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> *)&amp;amp;vcpu-&amp;gt;arch.regs,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vmx-&amp;gt;loaded_vmcs-&amp;gt;launched);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-asm" data-lang="asm">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/* arch/x86/kvm/vmx/vmenter.S */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * vmx_vmenter - VM-Enter the current loaded VMCS
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * %RFLAGS.ZF: !VMCS.LAUNCHED, i.e. controls VMLAUNCH vs. VMRESUME
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Returns:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * %RFLAGS.CF is set on VM-Fail Invalid
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * %RFLAGS.ZF is set on VM-Fail Valid
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * %RFLAGS.{CF,ZF} are cleared on VM-Success, i.e. VM-Exit
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Note that VMRESUME/VMLAUNCH fall-through and return directly if
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * they VM-Fail, whereas a successful VM-Enter + VM-Exit will jump
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * to vmx_vmexit.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_FUNC_START&lt;/span>(&lt;span style="color:#40ffff">vmx_vmenter&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* EFLAGS.ZF is set if VMCS.LAUNCHED == 0 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">je&lt;/span> &lt;span style="color:#3677a9">2&lt;/span>&lt;span style="color:#40ffff">f&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* VM を再開するための命令 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a61717;background-color:#e3d2d2">1:&lt;/span> &lt;span style="color:#447fcf">vmresume&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ret&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* VM 起動時の命令 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a61717;background-color:#e3d2d2">2:&lt;/span> &lt;span style="color:#447fcf">vmlaunch&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ret&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a61717;background-color:#e3d2d2">3:&lt;/span> &lt;span style="color:#447fcf">cmpb&lt;/span> &lt;span style="color:#40ffff">$0&lt;/span>, &lt;span style="color:#40ffff">kvm_rebooting&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">je&lt;/span> &lt;span style="color:#3677a9">4&lt;/span>&lt;span style="color:#40ffff">f&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ret&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a61717;background-color:#e3d2d2">4:&lt;/span> &lt;span style="color:#447fcf">ud2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">_ASM_EXTABLE&lt;/span>(&lt;span style="color:#3677a9">1&lt;/span>&lt;span style="color:#40ffff">b&lt;/span>, &lt;span style="color:#3677a9">3&lt;/span>&lt;span style="color:#40ffff">b&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">_ASM_EXTABLE&lt;/span>(&lt;span style="color:#3677a9">2&lt;/span>&lt;span style="color:#40ffff">b&lt;/span>, &lt;span style="color:#3677a9">3&lt;/span>&lt;span style="color:#40ffff">b&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_FUNC_END&lt;/span>(&lt;span style="color:#40ffff">vmx_vmenter&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * __vmx_vcpu_run - Run a vCPU via a transition to VMX guest mode
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * @vmx: struct vcpu_vmx * (forwarded to vmx_update_host_rsp)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * @regs: unsigned long * (to guest registers)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * @launched: %true if the VMCS has been launched
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Returns:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * 0 on VM-Exit, 1 on VM-Fail
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_FUNC_START&lt;/span>(&lt;span style="color:#40ffff">__vmx_vcpu_run&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#bbb">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Load guest registers. Don&amp;#39;t clobber flags. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_RCX&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%_ASM_CX&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_RDX&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%_ASM_DX&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_RBX&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%_ASM_BX&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_RBP&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%_ASM_BP&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_RSI&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%_ASM_SI&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_RDI&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%_ASM_DI&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#ifdef CONFIG_X86_64
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_R8&lt;/span> (&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%r8&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_R9&lt;/span> (&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%r9&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_R10&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%r10&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_R11&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%r11&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_R12&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%r12&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_R13&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%r13&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_R14&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%r14&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_R15&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%r15&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#999;font-style:italic">/* Load guest RAX. This kills the @regs pointer! */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mov&lt;/span> &lt;span style="color:#40ffff">VCPU_RAX&lt;/span>(&lt;span style="color:#40ffff">%_ASM_AX&lt;/span>), &lt;span style="color:#40ffff">%_ASM_AX&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Enter guest mode */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">call&lt;/span> &lt;span style="color:#40ffff">vmx_vmenter&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Jump on VM-Fail. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">jbe&lt;/span> &lt;span style="color:#3677a9">2&lt;/span>&lt;span style="color:#40ffff">f&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#bbb">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYM_FUNC_END&lt;/span>(&lt;span style="color:#40ffff">__vmx_vcpu_run&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>VM exit のハンドリングは vmx_handle_exit() から kvm_vmx_exit_handlers[] に登録されたハンドラを呼び出すことで行われる．
+各ハンドラは &lt;a href="https://elixir.bootlin.com/linux/v5.8.13/source/arch/x86/kvm/vmx/vmx.c#L5669">arch/x86/kvm/vmx/vmx.c&lt;/a> で登録されている．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// arch/x86/kvm/vmx/vmx.c
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">vmx_handle_exit&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> vcpu_vmx *vmx = to_vmx(vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u32 exit_reason = vmx-&amp;gt;exit_reason;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> kvm_vmx_exit_handlers[exit_reason](vcpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: [KVM] EPT</title><link>http://forest0923.github.io/memo/en/docs/code-reading/linux/linux-ept/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/linux/linux-ept/</guid><description>
 &lt;!-- ## Introduction
 ## Background -->
 &lt;h2 id="initialize-ept">Initialize EPT&lt;/h2>

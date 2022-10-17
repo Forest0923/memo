@@ -1520,7 +1520,171 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmap_write_unlock(mm);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> retval;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</title><link>http://forest0923.github.io/memo/ja/docs/archlinux/inst-btrfs-snapper/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/archlinux/inst-btrfs-snapper/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: ioctl</title><link>http://forest0923.github.io/memo/ja/docs/linux-syscalls/ioctl/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/linux-syscalls/ioctl/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_ioctl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>sys_ioctl()
+&lt;ul>
+&lt;li>ksys_ioctl()
+&lt;ul>
+&lt;li>security_file_ioctl()&lt;/li>
+&lt;li>do_vfs_ioctl()&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_ioctl">&lt;code>sys_ioctl()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/ioctl.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(ioctl, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ksys_ioctl(fd, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_ioctl">&lt;code>ksys_ioctl()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/ioctl.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">ksys_ioctl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = fdget(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!f.file)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = security_file_ioctl(f.file, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = do_vfs_ioctl(f.file, fd, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error == -ENOIOCTLCMD)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = vfs_ioctl(f.file, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fdput(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_vfs_ioctl">&lt;code>do_vfs_ioctl()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/ioctl.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * do_vfs_ioctl() is not for drivers and not intended to be EXPORT_SYMBOL()&amp;#39;d.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * It&amp;#39;s just a simple helper for sys_ioctl and compat_sys_ioctl.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * When you add any new common ioctls to the switches above and below,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * please ensure they have compatible arguments in compat mode.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">do_vfs_ioctl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *filp, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> __user *argp = (&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> __user *)arg;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> inode *inode = file_inode(filp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">switch&lt;/span> (cmd) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIOCLEX:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> set_close_on_exec(fd, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIONCLEX:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> set_close_on_exec(fd, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIONBIO:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fionbio(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIOASYNC:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fioasync(fd, filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIOQSIZE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (S_ISDIR(inode-&amp;gt;i_mode) || S_ISREG(inode-&amp;gt;i_mode) ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> S_ISLNK(inode-&amp;gt;i_mode)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> loff_t res = inode_get_bytes(inode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> copy_to_user(argp, &amp;amp;res, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(res)) ?
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -EFAULT : &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -ENOTTY;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIFREEZE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fsfreeze(filp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FITHAW:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fsthaw(filp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FS_IOC_FIEMAP:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fiemap(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIGETBSZ:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* anon_bdev filesystems may not have a block size */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!inode-&amp;gt;i_sb-&amp;gt;s_blocksize)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> put_user(inode-&amp;gt;i_sb-&amp;gt;s_blocksize, (&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *)argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FICLONE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_file_clone(filp, arg, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FICLONERANGE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_file_clone_range(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIDEDUPERANGE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_file_dedupe_range(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIONREAD:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!S_ISREG(inode-&amp;gt;i_mode))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> vfs_ioctl(filp, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> put_user(i_size_read(inode) - filp-&amp;gt;f_pos,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *)argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">default&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (S_ISREG(inode-&amp;gt;i_mode))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> file_ioctl(filp, cmd, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -ENOIOCTLCMD;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="わからない部分">わからない部分&lt;/h2>
+&lt;p>KVM の VM 作成などに ioctl を使うが，sys_ioctl のコードを読んでも KVM_CREATE_VM の処理などは書かれていない．&lt;/p>
+&lt;p>モジュール用の ioctl のハンドラはそのモジュール内で定義されるが，どうやってそこに飛んでいるのか今のところわかっていない．&lt;/p>
+&lt;p>以下は KVM_CREATE_VM のマクロを追ったときのメモ．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define KVMIO 0xAE
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># define _IOC_NONE 0U
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define _IOC(dir,type,nr,size) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> (((dir) &amp;lt;&amp;lt; 0+8+8+14) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((type) &amp;lt;&amp;lt; 0+8) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((nr) &amp;lt;&amp;lt; 0) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((size) &amp;lt;&amp;lt; 0+8+8))
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define _IO(type,nr) _IOC(_IOC_NONE,(type),(nr),0)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define KVM_CREATE_VM _IO(KVMIO, 0x01)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define KVM_CREATE_VM _IOC(0U,(0xAE),(0x01),0)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define KVM_CREATE_VM (((0) &amp;lt;&amp;lt; 30) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((0xAE) &amp;lt;&amp;lt; 8) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((0x01) &amp;lt;&amp;lt; 0) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((0) &amp;lt;&amp;lt; 16))
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>0000 0000 0000 0000
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>1010 1110 0000 0000
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0000 0000 0000 0001
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0000 0000 0000 0000
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xAE01
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Arch Linux のインストール（Multi-disks + BTRFS + Snapper）</title><link>http://forest0923.github.io/memo/ja/docs/archlinux/inst-btrfs-snapper/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/archlinux/inst-btrfs-snapper/</guid><description>
 &lt;p>Arch Linux のインストールマニュアルです．ファイルシステムとして BTRFS を選択し，Snapper でスナップショットを保存する方法を紹介します．&lt;/p>
 &lt;h2 id="環境">環境&lt;/h2>
 &lt;ul>
@@ -3645,59 +3809,4 @@ Upload: 98.05 Mbit/s
 &lt;p>&lt;a href="https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/">https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/&lt;/a>&lt;/p>
 &lt;p>&lt;a href="https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_(ACS_override_patch)">https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_(ACS_override_patch)&lt;/a>&lt;/p>
 &lt;p>&lt;a href="https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive">https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu">https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu&lt;/a>&lt;/p></description></item><item><title>Docs: SSH</title><link>http://forest0923.github.io/memo/ja/docs/security/ssh/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/security/ssh/</guid><description>
-&lt;p>SSH は Secure Shell の略で，リモートから安全にコンピュータと通信することができるプロトコルを指します．&lt;/p>
-&lt;h2 id="ssh-の使い方クライアント">SSH の使い方（クライアント）&lt;/h2>
-&lt;h3 id="インストール">インストール&lt;/h3>
-&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
-id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S openssh&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install openssh-client&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;h3 id="鍵の生成">鍵の生成&lt;/h3>
-&lt;p>ssh-keygen で鍵を生成します．&lt;/p>
-&lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-01-00" aria-selected="false">RSA&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-01-01" aria-selected="false">ECDSA&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-01-02-tab" data-toggle="tab" href="#tabs-01-02" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-01-02" aria-selected="false">EdDSA&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
-id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b &lt;span style="color:#3677a9">4096&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b &lt;span style="color:#3677a9">521&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-01-02" role="tabpanel" aria-labelled-by="tabs-01-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;p>デフォルトでは &lt;code>~/.ssh/&lt;/code> に公開鍵 &lt;code>id_[algorithm].pub&lt;/code> と秘密鍵 &lt;code>id_[algorithm]&lt;/code> が作られるので，SSH サーバに公開鍵を登録することでパスワード認証せずに通信を行うことができます．&lt;/p></description></item></channel></rss>
+&lt;p>&lt;a href="https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu">https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu&lt;/a>&lt;/p></description></item></channel></rss>

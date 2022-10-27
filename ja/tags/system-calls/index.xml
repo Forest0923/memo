@@ -1185,8 +1185,8 @@
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>sys_clone()
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; _do_fork()
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; copy_process()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; copy_thread_tls() file: arch/x86/kernel/process.c
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; set_new_tls() file: arch/x86/kernel/process.c
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; copy_thread_tls()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; set_new_tls() &amp;lt;-- ここで tls を更新 (file: arch/x86/kernel/process.c)
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="return">Return&lt;/h2>
 &lt;p>返り値は生成されたスレッドの tid．失敗した場合は -1 が返る．&lt;/p>
 &lt;h2 id="definitions">Definitions&lt;/h2>
@@ -1238,20 +1238,51 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>sys_fork でも呼ばれる &lt;code>_do_fork()&lt;/code> が実際の sys_clone の処理を行っている．&lt;/p>
 &lt;p>気になった関数などをピックアップした関数呼び出しフロー．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>sys_clone()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; _do_fork()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; copy_process()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; dup_task_struct()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; alloc_thread_stack_node()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; arch_dup_task_struct()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; setup_thread_task()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; copy_files()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; copy_fs()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; copy_sighand()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; copy_mm()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; copy_thread_tls()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -&amp;gt; wake_up_new_task()
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="_do_fork">&lt;code>_do_fork()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>sys_clone()
+&lt;ul>
+&lt;li>_do_fork()
+&lt;ul>
+&lt;li>copy_process()
+&lt;ul>
+&lt;li>dup_task_struct()
+&lt;ul>
+&lt;li>alloc_thread_stack_node()&lt;/li>
+&lt;li>arch_dup_task_struct()&lt;/li>
+&lt;li>setup_thread_task()&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>sched_fork()&lt;/li>
+&lt;li>copy_files()&lt;/li>
+&lt;li>copy_fs()&lt;/li>
+&lt;li>copy_sighand()&lt;/li>
+&lt;li>copy_mm()&lt;/li>
+&lt;li>copy_thread_tls()
+&lt;ul>
+&lt;li>set_new_tls()&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>wake_up_new_task()
+&lt;ul>
+&lt;li>activate_task()
+&lt;ul>
+&lt;li>enqueue_task()
+&lt;ul>
+&lt;li>p-&amp;gt;sched_class-&amp;gt;enqueue_task()&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="_do_fork">&lt;code>_do_fork()&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>kernel/fork.c&lt;/li>
 &lt;/ul>
@@ -1689,6 +1720,447 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fpu__copy(dst, src);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="copy_files">&lt;code>copy_files()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>kernel/fork.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">copy_files&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> clone_flags, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *tsk)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> files_struct *oldf, *newf;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> error = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * A background process may not have any files ...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> oldf = current-&amp;gt;files;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!oldf)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (clone_flags &amp;amp; CLONE_FILES) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> atomic_inc(&amp;amp;oldf-&amp;gt;count);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newf = dup_fd(oldf, &amp;amp;error);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!newf)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tsk-&amp;gt;files = newf;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="copy_fs">&lt;code>copy_fs()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>kernel/fork.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">copy_fs&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> clone_flags, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *tsk)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fs_struct *fs = current-&amp;gt;fs;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (clone_flags &amp;amp; CLONE_FS) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* tsk-&amp;gt;fs is already what we want */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spin_lock(&amp;amp;fs-&amp;gt;lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fs-&amp;gt;in_exec) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spin_unlock(&amp;amp;fs-&amp;gt;lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EAGAIN;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fs-&amp;gt;users++;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spin_unlock(&amp;amp;fs-&amp;gt;lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tsk-&amp;gt;fs = copy_fs_struct(fs);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!tsk-&amp;gt;fs)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -ENOMEM;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="copy_thread_tls">&lt;code>copy_thread_tls()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>arch/x86/kernel/process.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">copy_thread_tls&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> clone_flags, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> sp,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *p, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> tls)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> inactive_task_frame *frame;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fork_frame *fork_frame;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> pt_regs *childregs;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ret = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> childregs = task_pt_regs(p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fork_frame = container_of(childregs, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fork_frame, regs);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> frame = &amp;amp;fork_frame-&amp;gt;frame;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> frame-&amp;gt;bp = encode_frame_pointer(childregs);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> frame-&amp;gt;ret_addr = (&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>) ret_from_fork;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.sp = (&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>) fork_frame;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.io_bitmap = &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> memset(p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.ptrace_bps, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.ptrace_bps));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_X86_64
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> savesegment(gs, p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.gsindex);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.gsbase = p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.gsindex ? &lt;span style="color:#3677a9">0&lt;/span> : current-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.gsbase;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> savesegment(fs, p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.fsindex);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.fsbase = p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.fsindex ? &lt;span style="color:#3677a9">0&lt;/span> : current-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.fsbase;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> savesegment(es, p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.es);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> savesegment(ds, p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.ds);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#else
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> p-&amp;gt;&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>.sp0 = (&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>) (childregs + &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Clear all status flags including IF and set fixed bit. 64bit
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * does not have this initialization as the frame does not contain
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * flags. The flags consistency (especially vs. AC) is there
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * ensured via objtool, which lacks 32bit support.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> frame-&amp;gt;flags = X86_EFLAGS_FIXED;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Kernel thread ? */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (unlikely(p-&amp;gt;flags &amp;amp; PF_KTHREAD)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> memset(childregs, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> pt_regs));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kthread_frame_init(frame, sp, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> frame-&amp;gt;bx = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> *childregs = *current_pt_regs();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> childregs-&amp;gt;ax = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (sp)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> childregs-&amp;gt;sp = sp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_X86_32
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> task_user_gs(p) = get_user_gs(current_pt_regs());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Set a new TLS for the child thread? */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (clone_flags &amp;amp; CLONE_SETTLS)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = set_new_tls(p, tls);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!ret &amp;amp;&amp;amp; unlikely(test_tsk_thread_flag(current, TIF_IO_BITMAP)))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> io_bitmap_share(p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="wake_up_new_task">&lt;code>wake_up_new_task()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>file: kernel/sched/core.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * wake_up_new_task - wake up a newly created task for the first time.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * This function will do some initial scheduler statistics housekeeping
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * that must be done for every newly created context, then puts the task
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * on the runqueue and wakes it.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">wake_up_new_task&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *p)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq_flags rf;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq *rq;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> raw_spin_lock_irqsave(&amp;amp;p-&amp;gt;pi_lock, rf.flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;state = TASK_RUNNING;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_SMP
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Fork balancing, do it here and not earlier because:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - cpus_ptr can change in the fork path
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - any previously selected CPU might disappear through hotplug
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Use __set_task_cpu() to avoid calling sched_class::migrate_task_rq,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * as we&amp;#39;re not fully set-up yet.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;recent_used_cpu = task_cpu(p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rseq_migrate(p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __set_task_cpu(p, select_task_rq(p, task_cpu(p), SD_BALANCE_FORK, &lt;span style="color:#3677a9">0&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> rq = __task_rq_lock(p, &amp;amp;rf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> update_rq_clock(rq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> post_init_entity_util_avg(p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> activate_task(rq, p, ENQUEUE_NOCLOCK);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> trace_sched_wakeup_new(p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> check_preempt_curr(rq, p, WF_FORK);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_SMP
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (p-&amp;gt;sched_class-&amp;gt;task_woken) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Nothing relies on rq-&amp;gt;lock after this, so its fine to
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * drop it.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq_unpin_lock(rq, &amp;amp;rf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;sched_class-&amp;gt;task_woken(rq, p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq_repin_lock(rq, &amp;amp;rf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> task_rq_unlock(rq, p, &amp;amp;rf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="activate_task">&lt;code>activate_task()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>file: kernel/sched/core.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">activate_task&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq *rq, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *p, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> enqueue_task(rq, p, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;on_rq = TASK_ON_RQ_QUEUED;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="enqueue_task">&lt;code>enqueue_task()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>file: kernel/sched/core.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">inline&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">enqueue_task&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq *rq, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *p, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!(flags &amp;amp; ENQUEUE_NOCLOCK))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> update_rq_clock(rq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!(flags &amp;amp; ENQUEUE_RESTORE)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sched_info_queued(rq, p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> psi_enqueue(p, flags &amp;amp; ENQUEUE_WAKEUP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> uclamp_rq_inc(rq, p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p-&amp;gt;sched_class-&amp;gt;enqueue_task(rq, p, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="sched_class-enqueue_task">&lt;code>sched_class-&amp;gt;enqueue_task()&lt;/code>&lt;/h3>
+&lt;h4 id="enqueue_task_fair">&lt;code>enqueue_task_fair()&lt;/code>&lt;/h4>
+&lt;ul>
+&lt;li>kernel/sched/fair.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * The enqueue_task method is called before nr_running is
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * increased. Here we update the fair scheduling stats and
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * then put the task into the rbtree:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">enqueue_task_fair&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq *rq, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *p, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> cfs_rq *cfs_rq;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sched_entity *se = &amp;amp;p-&amp;gt;se;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> idle_h_nr_running = task_has_idle_policy(p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * The code below (indirectly) updates schedutil which looks at
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * the cfs_rq utilization to select a frequency.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Let&amp;#39;s add the task&amp;#39;s estimated utilization to the cfs_rq&amp;#39;s
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * estimated utilization, before we update schedutil.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> util_est_enqueue(&amp;amp;rq-&amp;gt;cfs, p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * If in_iowait is set, the code below may not trigger any cpufreq
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * utilization updates, so do it here explicitly with the IOWAIT flag
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * passed.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (p-&amp;gt;in_iowait)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cpufreq_update_util(rq, SCHED_CPUFREQ_IOWAIT);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> for_each_sched_entity(se) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (se-&amp;gt;on_rq)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cfs_rq = cfs_rq_of(se);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> enqueue_entity(cfs_rq, se, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cfs_rq-&amp;gt;h_nr_running++;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cfs_rq-&amp;gt;idle_h_nr_running += idle_h_nr_running;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* end evaluation on encountering a throttled cfs_rq */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cfs_rq_throttled(cfs_rq))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> enqueue_throttle;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flags = ENQUEUE_WAKEUP;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> for_each_sched_entity(se) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cfs_rq = cfs_rq_of(se);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> update_load_avg(cfs_rq, se, UPDATE_TG);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> se_update_runnable(se);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> update_cfs_group(se);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cfs_rq-&amp;gt;h_nr_running++;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cfs_rq-&amp;gt;idle_h_nr_running += idle_h_nr_running;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* end evaluation on encountering a throttled cfs_rq */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cfs_rq_throttled(cfs_rq))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> enqueue_throttle;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * One parent has been throttled and cfs_rq removed from the
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * list. Add it back to not break the leaf list.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (throttled_hierarchy(cfs_rq))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> list_add_leaf_cfs_rq(cfs_rq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* At this point se is NULL and we are at root level*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> add_nr_running(rq, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Since new tasks are assigned an initial util_avg equal to
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * half of the spare capacity of their CPU, tiny tasks have the
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * ability to cross the overutilized threshold, which will
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * result in the load balancer ruining all the task placement
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * done by EAS. As a way to mitigate that effect, do not account
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * for the first enqueue operation of new tasks during the
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * overutilized flag detection.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * A better way of solving this problem would be to wait for
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * the PELT signals of tasks to converge before taking them
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * into account, but that is not straightforward to implement,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * and the following generally works well enough in practice.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (flags &amp;amp; ENQUEUE_WAKEUP)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> update_overutilized_status(rq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>enqueue_throttle:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cfs_bandwidth_used()) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * When bandwidth control is enabled; the cfs_rq_throttled()
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * breaks in the above iteration can result in incomplete
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * leaf list maintenance, resulting in triggering the assertion
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * below.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> for_each_sched_entity(se) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cfs_rq = cfs_rq_of(se);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (list_add_leaf_cfs_rq(cfs_rq))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> assert_list_leaf_cfs_rq(rq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> hrtick_update(rq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * All the scheduling class methods:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sched_class fair_sched_class = {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .next = &amp;amp;idle_sched_class,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .enqueue_task = enqueue_task_fair,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="enqueue_task_dl">&lt;code>enqueue_task_dl()&lt;/code>&lt;/h4>
+&lt;ul>
+&lt;li>kernel/sched/deadline.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">enqueue_task_dl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq *rq, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *p, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *pi_task = rt_mutex_get_top_task(p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sched_dl_entity *pi_se = &amp;amp;p-&amp;gt;dl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Use the scheduling parameters of the top pi-waiter task if:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - we have a top pi-waiter which is a SCHED_DEADLINE task AND
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * - our dl_boosted is set (i.e. the pi-waiter&amp;#39;s (absolute) deadline is
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * smaller than our deadline OR we are a !SCHED_DEADLINE task getting
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * boosted due to a SCHED_DEADLINE pi-waiter).
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Otherwise we keep our runtime and deadline.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (pi_task &amp;amp;&amp;amp; dl_prio(pi_task-&amp;gt;normal_prio) &amp;amp;&amp;amp; p-&amp;gt;dl.dl_boosted) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pi_se = &amp;amp;pi_task-&amp;gt;dl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!dl_prio(p-&amp;gt;normal_prio)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Special case in which we have a !SCHED_DEADLINE task
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * that is going to be deboosted, but exceeds its
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * runtime while doing so. No point in replenishing
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * it, as it&amp;#39;s going to return back to its original
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * scheduling class after this.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BUG_ON(!p-&amp;gt;dl.dl_boosted || flags != ENQUEUE_REPLENISH);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Check if a constrained deadline task was activated
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * after the deadline but before the next period.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * If that is the case, the task will be throttled and
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * the replenishment timer will be set to the next period.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!p-&amp;gt;dl.dl_throttled &amp;amp;&amp;amp; !dl_is_implicit(&amp;amp;p-&amp;gt;dl))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dl_check_constrained_dl(&amp;amp;p-&amp;gt;dl);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (p-&amp;gt;on_rq == TASK_ON_RQ_MIGRATING || flags &amp;amp; ENQUEUE_RESTORE) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> add_rq_bw(&amp;amp;p-&amp;gt;dl, &amp;amp;rq-&amp;gt;dl);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> add_running_bw(&amp;amp;p-&amp;gt;dl, &amp;amp;rq-&amp;gt;dl);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * If p is throttled, we do not enqueue it. In fact, if it exhausted
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * its budget it needs a replenishment and, since it now is on
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * its rq, the bandwidth timer callback (which clearly has not
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * run yet) will take care of this.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * However, the active utilization does not depend on the fact
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * that the task is on the runqueue or not (but depends on the
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * task&amp;#39;s state - in GRUB parlance, &amp;#34;inactive&amp;#34; vs &amp;#34;active contending&amp;#34;).
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * In other words, even if a task is throttled its utilization must
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * be counted in the active utilization; hence, we need to call
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * add_running_bw().
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (p-&amp;gt;dl.dl_throttled &amp;amp;&amp;amp; !(flags &amp;amp; ENQUEUE_REPLENISH)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (flags &amp;amp; ENQUEUE_WAKEUP)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> task_contending(&amp;amp;p-&amp;gt;dl, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> enqueue_dl_entity(&amp;amp;p-&amp;gt;dl, pi_se, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!task_current(rq, p) &amp;amp;&amp;amp; p-&amp;gt;nr_cpus_allowed &amp;gt; &lt;span style="color:#3677a9">1&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> enqueue_pushable_dl_task(rq, p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sched_class dl_sched_class = {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .next = &amp;amp;rt_sched_class,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .enqueue_task = enqueue_task_dl,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="enqueue_task_rt">&lt;code>enqueue_task_rt()&lt;/code>&lt;/h4>
+&lt;ul>
+&lt;li>kernel/sched/rt.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Adding/removing a task to/from a priority array:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">enqueue_task_rt&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq *rq, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *p, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sched_rt_entity *rt_se = &amp;amp;p-&amp;gt;rt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (flags &amp;amp; ENQUEUE_WAKEUP)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rt_se-&amp;gt;timeout = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> enqueue_rt_entity(rt_se, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!task_current(rq, p) &amp;amp;&amp;amp; p-&amp;gt;nr_cpus_allowed &amp;gt; &lt;span style="color:#3677a9">1&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> enqueue_pushable_task(rq, p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sched_class rt_sched_class = {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .next = &amp;amp;fair_sched_class,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .enqueue_task = enqueue_task_rt,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="enqueue_task_stop">&lt;code>enqueue_task_stop()&lt;/code>&lt;/h4>
+&lt;ul>
+&lt;li>kernel/sched/stop_task.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">enqueue_task_stop&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq *rq, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *p, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> add_nr_running(rq, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Simple, special scheduling class for the per-CPU stop tasks:
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> sched_class stop_sched_class = {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .next = &amp;amp;dl_sched_class,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .enqueue_task = enqueue_task_stop,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="related-data-structures">Related Data Structures&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kernel_clone_args {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 flags;

@@ -1,0 +1,35 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Java</title><link>http://forest0923.github.io/memo/ja/docs/lang/java/</link><description>Recent content in Java on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/ja/docs/lang/java/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Java 環境構築</title><link>http://forest0923.github.io/memo/ja/docs/lang/java/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/java/install/</guid><description>
+&lt;h2 id="system">System&lt;/h2>
+&lt;ul>
+&lt;li>JDK v11 temurin&lt;/li>
+&lt;li>IntelliJ Community Edition&lt;/li>
+&lt;/ul>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S jdk11-temurin intellij-idea-community-edition&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h2 id="java-のバージョン管理">Java のバージョン管理&lt;/h2>
+&lt;p>複数のバージョンの Java がインストールされている場合のバージョンの切り替え方法．&lt;/p>
+&lt;p>現在利用可能なバージョンとデフォルトで使用される環境は下記のように確認できる．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>archlinux-java status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>実行結果の例↓&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>Available Java environments:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> java-11-temurin
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> java-17-openjdk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> java-18-openjdk (default)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> java-8-openjdk/jre
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>デフォルトを &lt;code>java-11-temurin&lt;/code> にするには &lt;code>set&lt;/code> を用いる．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo archlinux-java &lt;span style="color:#24909d">set&lt;/span> java-11-temurin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ java -version
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openjdk version &amp;#34;11.0.16.1&amp;#34; 2022-08-12
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>OpenJDK Runtime Environment Temurin-11.0.16.1+1 (build 11.0.16.1+1)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>OpenJDK 64-Bit Server VM Temurin-11.0.16.1+1 (build 11.0.16.1+1, mixed mode)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

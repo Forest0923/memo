@@ -24,3 +24,9 @@ sudo /usr/lib/gdm-disable-wayland
 ```sh
 dconf write /org/gnome/desktop/sound/event-sounds "false"
 ```
+
+or
+
+```sh
+gsettings set org.gnome.desktop.sound event-sounds false
+```

@@ -73,8 +73,8 @@ fsbase の設定は `do_arch_prctl_64()` で行う．
 sys_clone()
 	-> _do_fork()
 		-> copy_process()
-			-> copy_thread_tls()	file: arch/x86/kernel/process.c
-				-> set_new_tls()	file: arch/x86/kernel/process.c
+			-> copy_thread_tls()
+				-> set_new_tls()	<-- ここで tls を更新 (file: arch/x86/kernel/process.c)
 ```
 
 ## Return
@@ -138,21 +138,24 @@ sys_fork でも呼ばれる `_do_fork()` が実際の sys_clone の処理を行�
 
 気になった関数などをピックアップした関数呼び出しフロー．
 
-```text
-sys_clone()
-	-> _do_fork()
-		-> copy_process()
-			-> dup_task_struct()
-				-> alloc_thread_stack_node()
-				-> arch_dup_task_struct()
-				-> setup_thread_task()
-			-> copy_files()
-			-> copy_fs()
-			-> copy_sighand()
-			-> copy_mm()
-			-> copy_thread_tls()
-		-> wake_up_new_task()
-```
+- sys_clone()
+	- _do_fork()
+		- copy_process()
+			- dup_task_struct()
+				- alloc_thread_stack_node()
+				- arch_dup_task_struct()
+				- setup_thread_task()
+			- sched_fork()
+			- copy_files()
+			- copy_fs()
+			- copy_sighand()
+			- copy_mm()
+			- copy_thread_tls()
+				- set_new_tls()
+		- wake_up_new_task()
+			- activate_task()
+				- enqueue_task()
+					- p->sched_class->enqueue_task()
 
 ### `_do_fork()`
 
@@ -602,6 +605,478 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
 
 	return fpu__copy(dst, src);
 }
+```
+
+### `copy_files()`
+
+- kernel/fork.c
+
+```c
+static int copy_files(unsigned long clone_flags, struct task_struct *tsk)
+{
+	struct files_struct *oldf, *newf;
+	int error = 0;
+
+	/*
+	 * A background process may not have any files ...
+	 */
+	oldf = current->files;
+	if (!oldf)
+		goto out;
+
+	if (clone_flags & CLONE_FILES) {
+		atomic_inc(&oldf->count);
+		goto out;
+	}
+
+	newf = dup_fd(oldf, &error);
+	if (!newf)
+		goto out;
+
+	tsk->files = newf;
+	error = 0;
+out:
+	return error;
+}
+```
+
+### `copy_fs()`
+
+- kernel/fork.c
+
+```c
+static int copy_fs(unsigned long clone_flags, struct task_struct *tsk)
+{
+	struct fs_struct *fs = current->fs;
+	if (clone_flags & CLONE_FS) {
+		/* tsk->fs is already what we want */
+		spin_lock(&fs->lock);
+		if (fs->in_exec) {
+			spin_unlock(&fs->lock);
+			return -EAGAIN;
+		}
+		fs->users++;
+		spin_unlock(&fs->lock);
+		return 0;
+	}
+	tsk->fs = copy_fs_struct(fs);
+	if (!tsk->fs)
+		return -ENOMEM;
+	return 0;
+}
+```
+
+### `copy_thread_tls()`
+
+- arch/x86/kernel/process.c
+
+```c
+int copy_thread_tls(unsigned long clone_flags, unsigned long sp,
+		    unsigned long arg, struct task_struct *p, unsigned long tls)
+{
+	struct inactive_task_frame *frame;
+	struct fork_frame *fork_frame;
+	struct pt_regs *childregs;
+	int ret = 0;
+
+	childregs = task_pt_regs(p);
+	fork_frame = container_of(childregs, struct fork_frame, regs);
+	frame = &fork_frame->frame;
+
+	frame->bp = encode_frame_pointer(childregs);
+	frame->ret_addr = (unsigned long) ret_from_fork;
+	p->thread.sp = (unsigned long) fork_frame;
+	p->thread.io_bitmap = NULL;
+	memset(p->thread.ptrace_bps, 0, sizeof(p->thread.ptrace_bps));
+
+#ifdef CONFIG_X86_64
+	savesegment(gs, p->thread.gsindex);
+	p->thread.gsbase = p->thread.gsindex ? 0 : current->thread.gsbase;
+	savesegment(fs, p->thread.fsindex);
+	p->thread.fsbase = p->thread.fsindex ? 0 : current->thread.fsbase;
+	savesegment(es, p->thread.es);
+	savesegment(ds, p->thread.ds);
+#else
+	p->thread.sp0 = (unsigned long) (childregs + 1);
+	/*
+	 * Clear all status flags including IF and set fixed bit. 64bit
+	 * does not have this initialization as the frame does not contain
+	 * flags. The flags consistency (especially vs. AC) is there
+	 * ensured via objtool, which lacks 32bit support.
+	 */
+	frame->flags = X86_EFLAGS_FIXED;
+#endif
+
+	/* Kernel thread ? */
+	if (unlikely(p->flags & PF_KTHREAD)) {
+		memset(childregs, 0, sizeof(struct pt_regs));
+		kthread_frame_init(frame, sp, arg);
+		return 0;
+	}
+
+	frame->bx = 0;
+	*childregs = *current_pt_regs();
+	childregs->ax = 0;
+	if (sp)
+		childregs->sp = sp;
+
+#ifdef CONFIG_X86_32
+	task_user_gs(p) = get_user_gs(current_pt_regs());
+#endif
+
+	/* Set a new TLS for the child thread? */
+	if (clone_flags & CLONE_SETTLS)
+		ret = set_new_tls(p, tls);
+
+	if (!ret && unlikely(test_tsk_thread_flag(current, TIF_IO_BITMAP)))
+		io_bitmap_share(p);
+
+	return ret;
+}
+```
+
+### `wake_up_new_task()`
+
+- file: kernel/sched/core.c
+
+```c
+/*
+ * wake_up_new_task - wake up a newly created task for the first time.
+ *
+ * This function will do some initial scheduler statistics housekeeping
+ * that must be done for every newly created context, then puts the task
+ * on the runqueue and wakes it.
+ */
+void wake_up_new_task(struct task_struct *p)
+{
+	struct rq_flags rf;
+	struct rq *rq;
+
+	raw_spin_lock_irqsave(&p->pi_lock, rf.flags);
+	p->state = TASK_RUNNING;
+#ifdef CONFIG_SMP
+	/*
+	 * Fork balancing, do it here and not earlier because:
+	 *  - cpus_ptr can change in the fork path
+	 *  - any previously selected CPU might disappear through hotplug
+	 *
+	 * Use __set_task_cpu() to avoid calling sched_class::migrate_task_rq,
+	 * as we're not fully set-up yet.
+	 */
+	p->recent_used_cpu = task_cpu(p);
+	rseq_migrate(p);
+	__set_task_cpu(p, select_task_rq(p, task_cpu(p), SD_BALANCE_FORK, 0));
+#endif
+	rq = __task_rq_lock(p, &rf);
+	update_rq_clock(rq);
+	post_init_entity_util_avg(p);
+
+	activate_task(rq, p, ENQUEUE_NOCLOCK);
+	trace_sched_wakeup_new(p);
+	check_preempt_curr(rq, p, WF_FORK);
+#ifdef CONFIG_SMP
+	if (p->sched_class->task_woken) {
+		/*
+		 * Nothing relies on rq->lock after this, so its fine to
+		 * drop it.
+		 */
+		rq_unpin_lock(rq, &rf);
+		p->sched_class->task_woken(rq, p);
+		rq_repin_lock(rq, &rf);
+	}
+#endif
+	task_rq_unlock(rq, p, &rf);
+}
+```
+
+### `activate_task()`
+
+- file: kernel/sched/core.c
+
+```c
+void activate_task(struct rq *rq, struct task_struct *p, int flags)
+{
+	enqueue_task(rq, p, flags);
+
+	p->on_rq = TASK_ON_RQ_QUEUED;
+}
+```
+
+### `enqueue_task()`
+
+- file: kernel/sched/core.c
+
+```c
+static inline void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
+{
+	if (!(flags & ENQUEUE_NOCLOCK))
+		update_rq_clock(rq);
+
+	if (!(flags & ENQUEUE_RESTORE)) {
+		sched_info_queued(rq, p);
+		psi_enqueue(p, flags & ENQUEUE_WAKEUP);
+	}
+
+	uclamp_rq_inc(rq, p);
+	p->sched_class->enqueue_task(rq, p, flags);
+}
+```
+
+### `sched_class->enqueue_task()`
+
+#### `enqueue_task_fair()`
+
+- kernel/sched/fair.c
+
+```c
+/*
+ * The enqueue_task method is called before nr_running is
+ * increased. Here we update the fair scheduling stats and
+ * then put the task into the rbtree:
+ */
+static void
+enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
+{
+	struct cfs_rq *cfs_rq;
+	struct sched_entity *se = &p->se;
+	int idle_h_nr_running = task_has_idle_policy(p);
+
+	/*
+	 * The code below (indirectly) updates schedutil which looks at
+	 * the cfs_rq utilization to select a frequency.
+	 * Let's add the task's estimated utilization to the cfs_rq's
+	 * estimated utilization, before we update schedutil.
+	 */
+	util_est_enqueue(&rq->cfs, p);
+
+	/*
+	 * If in_iowait is set, the code below may not trigger any cpufreq
+	 * utilization updates, so do it here explicitly with the IOWAIT flag
+	 * passed.
+	 */
+	if (p->in_iowait)
+		cpufreq_update_util(rq, SCHED_CPUFREQ_IOWAIT);
+
+	for_each_sched_entity(se) {
+		if (se->on_rq)
+			break;
+		cfs_rq = cfs_rq_of(se);
+		enqueue_entity(cfs_rq, se, flags);
+
+		cfs_rq->h_nr_running++;
+		cfs_rq->idle_h_nr_running += idle_h_nr_running;
+
+		/* end evaluation on encountering a throttled cfs_rq */
+		if (cfs_rq_throttled(cfs_rq))
+			goto enqueue_throttle;
+
+		flags = ENQUEUE_WAKEUP;
+	}
+
+	for_each_sched_entity(se) {
+		cfs_rq = cfs_rq_of(se);
+
+		update_load_avg(cfs_rq, se, UPDATE_TG);
+		se_update_runnable(se);
+		update_cfs_group(se);
+
+		cfs_rq->h_nr_running++;
+		cfs_rq->idle_h_nr_running += idle_h_nr_running;
+
+		/* end evaluation on encountering a throttled cfs_rq */
+		if (cfs_rq_throttled(cfs_rq))
+			goto enqueue_throttle;
+
+		/*
+		 * One parent has been throttled and cfs_rq removed from the
+		 * list. Add it back to not break the leaf list.
+		 */
+		if (throttled_hierarchy(cfs_rq))
+			list_add_leaf_cfs_rq(cfs_rq);
+	}
+
+	/* At this point se is NULL and we are at root level*/
+	add_nr_running(rq, 1);
+
+	/*
+	 * Since new tasks are assigned an initial util_avg equal to
+	 * half of the spare capacity of their CPU, tiny tasks have the
+	 * ability to cross the overutilized threshold, which will
+	 * result in the load balancer ruining all the task placement
+	 * done by EAS. As a way to mitigate that effect, do not account
+	 * for the first enqueue operation of new tasks during the
+	 * overutilized flag detection.
+	 *
+	 * A better way of solving this problem would be to wait for
+	 * the PELT signals of tasks to converge before taking them
+	 * into account, but that is not straightforward to implement,
+	 * and the following generally works well enough in practice.
+	 */
+	if (flags & ENQUEUE_WAKEUP)
+		update_overutilized_status(rq);
+
+enqueue_throttle:
+	if (cfs_bandwidth_used()) {
+		/*
+		 * When bandwidth control is enabled; the cfs_rq_throttled()
+		 * breaks in the above iteration can result in incomplete
+		 * leaf list maintenance, resulting in triggering the assertion
+		 * below.
+		 */
+		for_each_sched_entity(se) {
+			cfs_rq = cfs_rq_of(se);
+
+			if (list_add_leaf_cfs_rq(cfs_rq))
+				break;
+		}
+	}
+
+	assert_list_leaf_cfs_rq(rq);
+
+	hrtick_update(rq);
+}
+
+...
+
+/*
+ * All the scheduling class methods:
+ */
+const struct sched_class fair_sched_class = {
+	.next			= &idle_sched_class,
+	.enqueue_task		= enqueue_task_fair,
+	...
+```
+
+#### `enqueue_task_dl()`
+
+- kernel/sched/deadline.c
+
+```c
+static void enqueue_task_dl(struct rq *rq, struct task_struct *p, int flags)
+{
+	struct task_struct *pi_task = rt_mutex_get_top_task(p);
+	struct sched_dl_entity *pi_se = &p->dl;
+
+	/*
+	 * Use the scheduling parameters of the top pi-waiter task if:
+	 * - we have a top pi-waiter which is a SCHED_DEADLINE task AND
+	 * - our dl_boosted is set (i.e. the pi-waiter's (absolute) deadline is
+	 *   smaller than our deadline OR we are a !SCHED_DEADLINE task getting
+	 *   boosted due to a SCHED_DEADLINE pi-waiter).
+	 * Otherwise we keep our runtime and deadline.
+	 */
+	if (pi_task && dl_prio(pi_task->normal_prio) && p->dl.dl_boosted) {
+		pi_se = &pi_task->dl;
+	} else if (!dl_prio(p->normal_prio)) {
+		/*
+		 * Special case in which we have a !SCHED_DEADLINE task
+		 * that is going to be deboosted, but exceeds its
+		 * runtime while doing so. No point in replenishing
+		 * it, as it's going to return back to its original
+		 * scheduling class after this.
+		 */
+		BUG_ON(!p->dl.dl_boosted || flags != ENQUEUE_REPLENISH);
+		return;
+	}
+
+	/*
+	 * Check if a constrained deadline task was activated
+	 * after the deadline but before the next period.
+	 * If that is the case, the task will be throttled and
+	 * the replenishment timer will be set to the next period.
+	 */
+	if (!p->dl.dl_throttled && !dl_is_implicit(&p->dl))
+		dl_check_constrained_dl(&p->dl);
+
+	if (p->on_rq == TASK_ON_RQ_MIGRATING || flags & ENQUEUE_RESTORE) {
+		add_rq_bw(&p->dl, &rq->dl);
+		add_running_bw(&p->dl, &rq->dl);
+	}
+
+	/*
+	 * If p is throttled, we do not enqueue it. In fact, if it exhausted
+	 * its budget it needs a replenishment and, since it now is on
+	 * its rq, the bandwidth timer callback (which clearly has not
+	 * run yet) will take care of this.
+	 * However, the active utilization does not depend on the fact
+	 * that the task is on the runqueue or not (but depends on the
+	 * task's state - in GRUB parlance, "inactive" vs "active contending").
+	 * In other words, even if a task is throttled its utilization must
+	 * be counted in the active utilization; hence, we need to call
+	 * add_running_bw().
+	 */
+	if (p->dl.dl_throttled && !(flags & ENQUEUE_REPLENISH)) {
+		if (flags & ENQUEUE_WAKEUP)
+			task_contending(&p->dl, flags);
+
+		return;
+	}
+
+	enqueue_dl_entity(&p->dl, pi_se, flags);
+
+	if (!task_current(rq, p) && p->nr_cpus_allowed > 1)
+		enqueue_pushable_dl_task(rq, p);
+}
+
+...
+
+const struct sched_class dl_sched_class = {
+	.next			= &rt_sched_class,
+	.enqueue_task		= enqueue_task_dl,
+	...
+```
+
+#### `enqueue_task_rt()`
+
+- kernel/sched/rt.c
+
+```c
+/*
+ * Adding/removing a task to/from a priority array:
+ */
+static void
+enqueue_task_rt(struct rq *rq, struct task_struct *p, int flags)
+{
+	struct sched_rt_entity *rt_se = &p->rt;
+
+	if (flags & ENQUEUE_WAKEUP)
+		rt_se->timeout = 0;
+
+	enqueue_rt_entity(rt_se, flags);
+
+	if (!task_current(rq, p) && p->nr_cpus_allowed > 1)
+		enqueue_pushable_task(rq, p);
+}
+
+...
+
+const struct sched_class rt_sched_class = {
+	.next			= &fair_sched_class,
+	.enqueue_task		= enqueue_task_rt,
+	...
+```
+
+#### `enqueue_task_stop()`
+
+- kernel/sched/stop_task.c
+
+```c
+static void
+enqueue_task_stop(struct rq *rq, struct task_struct *p, int flags)
+{
+	add_nr_running(rq, 1);
+}
+
+...
+
+/*
+ * Simple, special scheduling class for the per-CPU stop tasks:
+ */
+const struct sched_class stop_sched_class = {
+	.next			= &dl_sched_class,
+
+	.enqueue_task		= enqueue_task_stop,
+	...
 ```
 
 ## Related Data Structures

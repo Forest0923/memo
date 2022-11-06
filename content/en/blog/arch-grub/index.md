@@ -1,8 +1,15 @@
----
-title: "[Solved] Arch Linux will not boot after upgrading GRUB (August 27, 2022)"
-draft: false
-weight: 999
----
++++
+title = "[Solved] Arch Linux will not boot after upgrading GRUB (August 27, 2022)"
+description = ""
+date = 2022-08-27
+tags = [
+
+]
+categories = [
+
+]
+draft = false
++++
 
 ## Issue
 

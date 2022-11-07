@@ -1,1 +1,57 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/en/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/blog/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/en/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: [Solved] paru, AUR helper didn't work due to openssl version error (November 7, 2022)</title><link>http://forest0923.github.io/memo/en/blog/2022/11/07/solved-paru-aur-helper-didnt-work-due-to-openssl-version-error-november-7-2022/</link><pubDate>Mon, 07 Nov 2022 08:21:51 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/11/07/solved-paru-aur-helper-didnt-work-due-to-openssl-version-error-november-7-2022/</guid><description>
+&lt;h2 id="issue">Issue&lt;/h2>
+&lt;p>I couldn&amp;rsquo;t upgrade application via paru this morning. I got the error message as follows.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ paru -Syu
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru: error while loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The problem was that the version of openssl had been updated from 1.1 to 3 and the version of the library that paru was using was gone.&lt;/p>
+&lt;h2 id="solution">Solution&lt;/h2>
+&lt;p>I installed openssl v1.1 via pacman. Fortunately pacman was available this time.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S openssl-1.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Blog: [Solved] Arch Linux will not boot after upgrading GRUB (August 27, 2022)</title><link>http://forest0923.github.io/memo/en/blog/2022/08/27/solved-arch-linux-will-not-boot-after-upgrading-grub-august-27-2022/</link><pubDate>Sat, 27 Aug 2022 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/08/27/solved-arch-linux-will-not-boot-after-upgrading-grub-august-27-2022/</guid><description>
+&lt;h2 id="issue">Issue&lt;/h2>
+&lt;p>After upgrading grub, Arch Linux will not boot.
+All I get is &amp;ldquo;Welcome to GRUB!&amp;rdquo; message and no boot menu.&lt;/p>
+&lt;h3 id="systems">Systems&lt;/h3>
+&lt;ul>
+&lt;li>GRUB version
+&lt;ul>
+&lt;li>2:2.06.r322.gd9b4638c5-1&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>My machine is dual boot and the partition layout is as follows:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>nvme0n1 259:0 0 476.9G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─nvme0n1p1 259:1 0 100M 0 part &amp;lt;- EFI partition
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─nvme0n1p2 259:2 0 16M 0 part
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─nvme0n1p3 259:3 0 220.3G 0 part &amp;lt;- Windows C drive
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─nvme0n1p4 259:4 0 548M 0 part
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─nvme0n1p5 259:5 0 256G 0 part &amp;lt;- Linux filesystem
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="solution">Solution&lt;/h2>
+&lt;p>To solve the problem, I reinstalled GRUB with the following.&lt;/p>
+&lt;ol>
+&lt;li>Boot from Arch ISO (USB)&lt;/li>
+&lt;li>Mount partitions&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkdir /mnt/boot
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/nvme0n1p5 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/nvme0n1p1 /mnt/boot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>chroot&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;li>Reinstall GRUB&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
+&lt;li>Update config&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="6">
+&lt;li>exit, unmount and reboot&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt/boot
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

@@ -13,9 +13,9 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> &lt;span style="color:#447fcf">mmu_spte_update&lt;/span>(u64 *sptep, u64 new_spte)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> flush = &lt;span style="color:#24909d">false&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 old_spte = mmu_spte_update_no_track(sptep, new_spte);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 old_spte = &lt;span style="color:#447fcf">mmu_spte_update_no_track&lt;/span>(sptep, new_spte);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!is_shadow_present_pte(old_spte))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!&lt;span style="color:#447fcf">is_shadow_present_pte&lt;/span>(old_spte))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">false&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
@@ -23,8 +23,8 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * we always atomically update it, see the comments in
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * spte_has_volatile_bits().
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (spte_can_locklessly_be_made_writable(old_spte) &amp;amp;&amp;amp;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !is_writable_pte(new_spte))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">spte_can_locklessly_be_made_writable&lt;/span>(old_spte) &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> !&lt;span style="color:#447fcf">is_writable_pte&lt;/span>(new_spte))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flush = &lt;span style="color:#24909d">true&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
@@ -32,14 +32,14 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * to guarantee consistency between TLB and page tables.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (is_accessed_spte(old_spte) &amp;amp;&amp;amp; !is_accessed_spte(new_spte)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">is_accessed_spte&lt;/span>(old_spte) &amp;amp;&amp;amp; !&lt;span style="color:#447fcf">is_accessed_spte&lt;/span>(new_spte)) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flush = &lt;span style="color:#24909d">true&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_set_pfn_accessed(spte_to_pfn(old_spte));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kvm_set_pfn_accessed&lt;/span>(&lt;span style="color:#447fcf">spte_to_pfn&lt;/span>(old_spte));
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (is_dirty_spte(old_spte) &amp;amp;&amp;amp; !is_dirty_spte(new_spte)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">is_dirty_spte&lt;/span>(old_spte) &amp;amp;&amp;amp; !&lt;span style="color:#447fcf">is_dirty_spte&lt;/span>(new_spte)) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flush = &lt;span style="color:#24909d">true&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_set_pfn_dirty(spte_to_pfn(old_spte));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kvm_set_pfn_dirty&lt;/span>(&lt;span style="color:#447fcf">spte_to_pfn&lt;/span>(old_spte));
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> flush;
@@ -51,28 +51,28 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; kvm_handle_hva_range()
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--&amp;gt; kvm_set_pte_rmapp()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">kvm_set_pte_rmapp&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm *kvm, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_rmap_head *rmap_head,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_memory_slot *slot, gfn_t gfn, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> level,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> kvm_memory_slot *slot, &lt;span style="color:#6ab825;font-weight:bold">gfn_t&lt;/span> gfn, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> level,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> data)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 *sptep;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rmap_iterator iter;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> need_flush = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 new_spte;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pte_t *ptep = (pte_t *)data;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_pfn_t new_pfn;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">pte_t&lt;/span> *ptep = (&lt;span style="color:#6ab825;font-weight:bold">pte_t&lt;/span> *)data;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">kvm_pfn_t&lt;/span> new_pfn;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> WARN_ON(pte_huge(*ptep));
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_pfn = pte_pfn(*ptep);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">WARN_ON&lt;/span>(&lt;span style="color:#447fcf">pte_huge&lt;/span>(*ptep));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_pfn = &lt;span style="color:#447fcf">pte_pfn&lt;/span>(*ptep);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>restart:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> for_each_rmap_spte(rmap_head, &amp;amp;iter, sptep) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rmap_printk(&lt;span style="color:#ed9d13">&amp;#34;kvm_set_pte_rmapp: spte %p %llx gfn %llx (%d)&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">for_each_rmap_spte&lt;/span>(rmap_head, &amp;amp;iter, sptep) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">rmap_printk&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;kvm_set_pte_rmapp: spte %p %llx gfn %llx (%d)&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sptep, *sptep, gfn, level);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> need_flush = &lt;span style="color:#3677a9">1&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (pte_write(*ptep)) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pte_list_remove(rmap_head, sptep);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">pte_write&lt;/span>(*ptep)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pte_list_remove&lt;/span>(rmap_head, sptep);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> restart;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_spte = *sptep &amp;amp; ~PT64_BASE_ADDR_MASK; &lt;span style="color:#999;font-style:italic">// update PFN
@@ -81,15 +81,15 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_spte &amp;amp;= ~PT_WRITABLE_MASK; &lt;span style="color:#999;font-style:italic">// unwritable
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> new_spte &amp;amp;= ~SPTE_HOST_WRITEABLE;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_spte = mark_spte_for_access_track(new_spte);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_spte = &lt;span style="color:#447fcf">mark_spte_for_access_track&lt;/span>(new_spte);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmu_spte_clear_track_bits(sptep);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmu_spte_set(sptep, new_spte);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmu_spte_clear_track_bits&lt;/span>(sptep);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmu_spte_set&lt;/span>(sptep, new_spte);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (need_flush &amp;amp;&amp;amp; kvm_available_flush_tlb_with_range()) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_flush_remote_tlbs_with_address(kvm, gfn, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (need_flush &amp;amp;&amp;amp; &lt;span style="color:#447fcf">kvm_available_flush_tlb_with_range&lt;/span>()) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kvm_flush_remote_tlbs_with_address&lt;/span>(kvm, gfn, &lt;span style="color:#3677a9">1&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>

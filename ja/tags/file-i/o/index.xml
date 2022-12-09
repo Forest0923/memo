@@ -44,16 +44,16 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * read mostly part
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> atomic_t count;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">atomic_t&lt;/span> count;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> resize_in_progress;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> wait_queue_head_t resize_wait;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">wait_queue_head_t&lt;/span> resize_wait;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fdtable __rcu *fdt;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fdtable fdtab;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * written part on a separate cache line in SMP
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spinlock_t file_lock ____cacheline_aligned_in_smp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">spinlock_t&lt;/span> file_lock ____cacheline_aligned_in_smp;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> next_fd;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> close_on_exec_init[&lt;span style="color:#3677a9">1&lt;/span>];
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> open_fds_init[&lt;span style="color:#3677a9">1&lt;/span>];
@@ -84,13 +84,13 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Protects f_ep_links, f_flags.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Must not be taken from IRQ context.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spinlock_t f_lock;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">spinlock_t&lt;/span> f_lock;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">enum&lt;/span> rw_hint f_write_hint;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> atomic_long_t f_count;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">atomic_long_t&lt;/span> f_count;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> f_flags;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fmode_t f_mode;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">fmode_t&lt;/span> f_mode;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> mutex f_pos_lock;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> loff_t f_pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">loff_t&lt;/span> f_pos;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fown_struct f_owner;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> cred *f_cred;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file_ra_state f_ra;
@@ -108,10 +108,10 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> list_head f_tfile_llink;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif &lt;/span>&lt;span style="color:#999;font-style:italic">/* #ifdef CONFIG_EPOLL */&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> address_space *f_mapping;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> errseq_t f_wb_err;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> errseq_t f_sb_err; &lt;span style="color:#999;font-style:italic">/* for syncfs */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">errseq_t&lt;/span> f_wb_err;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">errseq_t&lt;/span> f_sb_err; &lt;span style="color:#999;font-style:italic">/* for syncfs */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} __randomize_layout
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __attribute__((aligned(&lt;span style="color:#3677a9">4&lt;/span>))); &lt;span style="color:#999;font-style:italic">/* lest something weird decides that 2 is OK */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">__attribute__&lt;/span>((&lt;span style="color:#447fcf">aligned&lt;/span>(&lt;span style="color:#3677a9">4&lt;/span>))); &lt;span style="color:#999;font-style:italic">/* lest something weird decides that 2 is OK */&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: glibc open</title><link>http://forest0923.github.io/memo/ja/docs/code-reading/glibc/glibc-open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/code-reading/glibc/glibc-open/</guid><description>
 &lt;h2 id="version">Version&lt;/h2>
 &lt;ul>
@@ -123,10 +123,10 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;fcntl.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = open(&lt;span style="color:#ed9d13">&amp;#34;/path/to/test.txt&amp;#34;&lt;/span>, O_RDONLY);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = &lt;span style="color:#447fcf">open&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;/path/to/test.txt&amp;#34;&lt;/span>, O_RDONLY);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> str[&lt;span style="color:#3677a9">10&lt;/span>];
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> read(fd, str, &lt;span style="color:#3677a9">10&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf(&lt;span style="color:#ed9d13">&amp;#34;%s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, str);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">read&lt;/span>(fd, str, &lt;span style="color:#3677a9">10&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">printf&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;%s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, str);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="definition">Definition&lt;/h2>
@@ -140,21 +140,21 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> mode = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (__OPEN_NEEDS_MODE (oflag))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">__OPEN_NEEDS_MODE&lt;/span> (oflag))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list arg;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_start (arg, oflag);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = va_arg (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_end (arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_start&lt;/span> (arg, oflag);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = &lt;span style="color:#447fcf">va_arg&lt;/span> (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_end&lt;/span> (arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> SYSCALL_CANCEL (openat, AT_FDCWD, file, oflag | O_LARGEFILE,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">SYSCALL_CANCEL&lt;/span> (openat, AT_FDCWD, file, oflag | O_LARGEFILE,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>strong_alias (__libc_open64, __open64)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>libc_hidden_weak (__open64)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>weak_alias (__libc_open64, open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">strong_alias&lt;/span> (__libc_open64, __open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">libc_hidden_weak&lt;/span> (__open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">weak_alias&lt;/span> (__libc_open64, open64)
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>File: sysdeps/unix/sysdep.h&lt;/li>
 &lt;/ul>
@@ -225,22 +225,22 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (file == &lt;span style="color:#24909d">NULL&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __set_errno (EINVAL);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">__set_errno&lt;/span> (EINVAL);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -&lt;span style="color:#3677a9">1&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (__OPEN_NEEDS_MODE (oflag))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">__OPEN_NEEDS_MODE&lt;/span> (oflag))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list arg;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_start (arg, oflag);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = va_arg (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_end (arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_start&lt;/span> (arg, oflag);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = &lt;span style="color:#447fcf">va_arg&lt;/span> (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_end&lt;/span> (arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __set_errno (ENOSYS);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">__set_errno&lt;/span> (ENOSYS);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -&lt;span style="color:#3677a9">1&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>strong_alias (__libc_open64, __open64)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>libc_hidden_def (__open64)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>weak_alias (__libc_open64, open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">strong_alias&lt;/span> (__libc_open64, __open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">libc_hidden_def&lt;/span> (__open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">weak_alias&lt;/span> (__libc_open64, open64)
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

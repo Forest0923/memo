@@ -4,7 +4,7 @@
 &lt;li>Linux v5.8.13&lt;/li>
 &lt;/ul>
 &lt;h2 id="abstract">Abstract&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_read&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, size_t count);
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_read&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> count);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
 &lt;h2 id="return">Return&lt;/h2>
 &lt;h2 id="definitions">Definitions&lt;/h2>
@@ -12,26 +12,26 @@
 &lt;ul>
 &lt;li>file: fs/read_write.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(read, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, buf, size_t, count)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(read, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>, count)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ksys_read(fd, buf, count);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ksys_read&lt;/span>(fd, buf, count);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_read">&lt;code>ksys_read()&lt;/code>&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>ssize_t &lt;span style="color:#447fcf">ksys_read&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, size_t count)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">ssize_t&lt;/span> &lt;span style="color:#447fcf">ksys_read&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> count)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = fdget_pos(fd);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ssize_t ret = -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = &lt;span style="color:#447fcf">fdget_pos&lt;/span>(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">ssize_t&lt;/span> ret = -EBADF;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (f.file) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> loff_t pos, *ppos = file_ppos(f.file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">loff_t&lt;/span> pos, *ppos = &lt;span style="color:#447fcf">file_ppos&lt;/span>(f.file);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ppos) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pos = *ppos;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ppos = &amp;amp;pos;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = vfs_read(f.file, buf, count, ppos);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">vfs_read&lt;/span>(f.file, buf, count, ppos);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span> &amp;amp;&amp;amp; ppos)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f.file-&amp;gt;f_pos = pos;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fdput_pos(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fdput_pos&lt;/span>(f);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
@@ -41,7 +41,7 @@
 &lt;li>Linux v5.8.13&lt;/li>
 &lt;/ul>
 &lt;h2 id="abstract">Abstract&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_write&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, size_t count);
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_write&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> count);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
 &lt;h2 id="return">Return&lt;/h2>
 &lt;h2 id="definitions">Definitions&lt;/h2>
@@ -49,27 +49,27 @@
 &lt;ul>
 &lt;li>file: fs/read_write.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(write, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, buf,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> size_t, count)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(write, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, buf,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>, count)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ksys_write(fd, buf, count);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ksys_write&lt;/span>(fd, buf, count);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_write">&lt;code>ksys_write()&lt;/code>&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>ssize_t &lt;span style="color:#447fcf">ksys_write&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, size_t count)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">ssize_t&lt;/span> &lt;span style="color:#447fcf">ksys_write&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> count)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = fdget_pos(fd);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ssize_t ret = -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = &lt;span style="color:#447fcf">fdget_pos&lt;/span>(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">ssize_t&lt;/span> ret = -EBADF;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (f.file) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> loff_t pos, *ppos = file_ppos(f.file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">loff_t&lt;/span> pos, *ppos = &lt;span style="color:#447fcf">file_ppos&lt;/span>(f.file);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ppos) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pos = *ppos;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ppos = &amp;amp;pos;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = vfs_write(f.file, buf, count, ppos);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">vfs_write&lt;/span>(f.file, buf, count, ppos);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span> &amp;amp;&amp;amp; ppos)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f.file-&amp;gt;f_pos = pos;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fdput_pos(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fdput_pos&lt;/span>(f);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
@@ -87,29 +87,29 @@
 &lt;ul>
 &lt;li>fs/open.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(open, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, flags, umode_t, mode)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(open, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, flags, &lt;span style="color:#6ab825;font-weight:bold">umode_t&lt;/span>, mode)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ksys_open(filename, flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ksys_open&lt;/span>(filename, flags, mode);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_open">&lt;code>ksys_open()&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>include/linux/syscalls.h&lt;/li>
 &lt;/ul>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">inline&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">ksys_open&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> umode_t mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">umode_t&lt;/span> mode)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (force_o_largefile())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">force_o_largefile&lt;/span>())
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flags |= O_LARGEFILE;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> do_sys_open(AT_FDCWD, filename, flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_sys_open&lt;/span>(AT_FDCWD, filename, flags, mode);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_sys_open">&lt;code>do_sys_open()&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>fs/open.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">do_sys_open&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> dfd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags, umode_t mode)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">do_sys_open&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> dfd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags, &lt;span style="color:#6ab825;font-weight:bold">umode_t&lt;/span> mode)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_how how = build_open_how(flags, mode);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> do_sys_openat2(dfd, filename, &amp;amp;how);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_how how = &lt;span style="color:#447fcf">build_open_how&lt;/span>(flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_sys_openat2&lt;/span>(dfd, filename, &amp;amp;how);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_sys_openat2">&lt;code>do_sys_openat2()&lt;/code>&lt;/h3>
 &lt;ul>
@@ -119,28 +119,28 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_how *how)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_flags op;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = build_open_flags(how, &amp;amp;op);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = &lt;span style="color:#447fcf">build_open_flags&lt;/span>(how, &amp;amp;op);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> filename *tmp;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fd;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp = getname(filename);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ERR(tmp))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> PTR_ERR(tmp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp = &lt;span style="color:#447fcf">getname&lt;/span>(filename);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">IS_ERR&lt;/span>(tmp))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">PTR_ERR&lt;/span>(tmp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = get_unused_fd_flags(how-&amp;gt;flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = &lt;span style="color:#447fcf">get_unused_fd_flags&lt;/span>(how-&amp;gt;flags);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *f = do_filp_open(dfd, tmp, &amp;amp;op);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ERR(f)) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> put_unused_fd(fd);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = PTR_ERR(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *f = &lt;span style="color:#447fcf">do_filp_open&lt;/span>(dfd, tmp, &amp;amp;op);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">IS_ERR&lt;/span>(f)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">put_unused_fd&lt;/span>(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = &lt;span style="color:#447fcf">PTR_ERR&lt;/span>(f);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fsnotify_open(f);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd_install(fd, f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fsnotify_open&lt;/span>(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fd_install&lt;/span>(fd, f);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> putname(tmp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">putname&lt;/span>(tmp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fd;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: close</title><link>http://forest0923.github.io/memo/ja/docs/linux-syscalls/close/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/linux-syscalls/close/</guid><description>
@@ -162,12 +162,12 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * releasing the fd. This ensures that one clone task can&amp;#39;t release
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * an fd while another clone is opening it.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE1(close, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(close, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> retval = __close_fd(current-&amp;gt;files, fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> retval = &lt;span style="color:#447fcf">__close_fd&lt;/span>(current-&amp;gt;files, fd);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* can&amp;#39;t restart close syscall because file table entry was cleared */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (unlikely(retval == -ERESTARTSYS ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(retval == -ERESTARTSYS ||
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval == -ERESTARTNOINTR ||
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval == -ERESTARTNOHAND ||
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval == -ERESTART_RESTARTBLOCK))
@@ -187,23 +187,23 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *file;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fdtable *fdt;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spin_lock(&amp;amp;files-&amp;gt;file_lock);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fdt = files_fdtable(files);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">spin_lock&lt;/span>(&amp;amp;files-&amp;gt;file_lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fdt = &lt;span style="color:#447fcf">files_fdtable&lt;/span>(files);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd &amp;gt;= fdt-&amp;gt;max_fds)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_unlock;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> file = fdt-&amp;gt;fd[fd];
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!file)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_unlock;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rcu_assign_pointer(fdt-&amp;gt;fd[fd], &lt;span style="color:#24909d">NULL&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __put_unused_fd(files, fd);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spin_unlock(&amp;amp;files-&amp;gt;file_lock);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> filp_close(file, files);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">rcu_assign_pointer&lt;/span>(fdt-&amp;gt;fd[fd], &lt;span style="color:#24909d">NULL&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">__put_unused_fd&lt;/span>(files, fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">spin_unlock&lt;/span>(&amp;amp;files-&amp;gt;file_lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">filp_close&lt;/span>(file, files);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out_unlock:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> spin_unlock(&amp;amp;files-&amp;gt;file_lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">spin_unlock&lt;/span>(&amp;amp;files-&amp;gt;file_lock);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EBADF;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>EXPORT_SYMBOL(__close_fd); &lt;span style="color:#999;font-style:italic">/* for ksys_close() */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">EXPORT_SYMBOL&lt;/span>(__close_fd); &lt;span style="color:#999;font-style:italic">/* for ksys_close() */&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: mmap</title><link>http://forest0923.github.io/memo/ja/docs/linux-syscalls/mmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/linux-syscalls/mmap/</guid><description>
 &lt;h2 id="version">Version&lt;/h2>
 &lt;ul>
@@ -212,7 +212,7 @@
 &lt;h2 id="abstract">Abstract&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_mmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> addr, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> len,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> prot, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> flags,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> fd, off_t pgoff);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">off_t&lt;/span> pgoff);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
 &lt;h2 id="return">Return&lt;/h2>
 &lt;h2 id="definitions">Definitions&lt;/h2>
@@ -220,7 +220,7 @@
 &lt;ul>
 &lt;li>arch/x86/kernel/sys_x86_64.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE6(mmap, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, addr, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, len,
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE6&lt;/span>(mmap, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, addr, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, len,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, prot, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, flags,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, off)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
@@ -229,7 +229,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (off &amp;amp; ~PAGE_MASK)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = ksys_mmap_pgoff(addr, len, prot, flags, fd, off &amp;gt;&amp;gt; PAGE_SHIFT);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">ksys_mmap_pgoff&lt;/span>(addr, len, prot, flags, fd, off &amp;gt;&amp;gt; PAGE_SHIFT);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
@@ -245,44 +245,44 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> retval;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!(flags &amp;amp; MAP_ANONYMOUS)) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> audit_mmap_fd(fd, flags);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> file = fget(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">audit_mmap_fd&lt;/span>(fd, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> file = &lt;span style="color:#447fcf">fget&lt;/span>(fd);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!file)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EBADF;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (is_file_hugepages(file))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len = ALIGN(len, huge_page_size(hstate_file(file)));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">is_file_hugepages&lt;/span>(file))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len = &lt;span style="color:#447fcf">ALIGN&lt;/span>(len, &lt;span style="color:#447fcf">huge_page_size&lt;/span>(&lt;span style="color:#447fcf">hstate_file&lt;/span>(file)));
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = -EINVAL;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (unlikely(flags &amp;amp; MAP_HUGETLB &amp;amp;&amp;amp; !is_file_hugepages(file)))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(flags &amp;amp; MAP_HUGETLB &amp;amp;&amp;amp; !&lt;span style="color:#447fcf">is_file_hugepages&lt;/span>(file)))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_fput;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (flags &amp;amp; MAP_HUGETLB) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> user_struct *user = &lt;span style="color:#24909d">NULL&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> hstate *hs;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> hs = hstate_sizelog((flags &amp;gt;&amp;gt; MAP_HUGE_SHIFT) &amp;amp; MAP_HUGE_MASK);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> hs = &lt;span style="color:#447fcf">hstate_sizelog&lt;/span>((flags &amp;gt;&amp;gt; MAP_HUGE_SHIFT) &amp;amp; MAP_HUGE_MASK);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!hs)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len = ALIGN(len, huge_page_size(hs));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len = &lt;span style="color:#447fcf">ALIGN&lt;/span>(len, &lt;span style="color:#447fcf">huge_page_size&lt;/span>(hs));
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * VM_NORESERVE is used because the reservations will be
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * taken when vm_ops-&amp;gt;mmap() is called
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * A dummy user value is used because we are not locking
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * memory so no accounting is necessary
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> file = hugetlb_file_setup(HUGETLB_ANON_FILE, len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> file = &lt;span style="color:#447fcf">hugetlb_file_setup&lt;/span>(HUGETLB_ANON_FILE, len,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> VM_NORESERVE,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;amp;user, HUGETLB_ANONHUGE_INODE,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (flags &amp;gt;&amp;gt; MAP_HUGE_SHIFT) &amp;amp; MAP_HUGE_MASK);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ERR(file))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> PTR_ERR(file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">IS_ERR&lt;/span>(file))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">PTR_ERR&lt;/span>(file);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flags &amp;amp;= ~(MAP_EXECUTABLE | MAP_DENYWRITE);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = vm_mmap_pgoff(file, addr, len, prot, flags, pgoff);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = &lt;span style="color:#447fcf">vm_mmap_pgoff&lt;/span>(file, addr, len, prot, flags, pgoff);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out_fput:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (file)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fput(file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fput&lt;/span>(file);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> retval;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="vm_mmap_pgoff">&lt;code>vm_mmap_pgoff()&lt;/code>&lt;/h3>
@@ -296,18 +296,18 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> ret;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> mm_struct *mm = current-&amp;gt;mm;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> populate;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LIST_HEAD(uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">LIST_HEAD&lt;/span>(uf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = security_mmap_file(file, prot, flag);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">security_mmap_file&lt;/span>(file, prot, flag);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!ret) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (mmap_write_lock_killable(mm))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">mmap_write_lock_killable&lt;/span>(mm))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINTR;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = do_mmap_pgoff(file, addr, len, prot, flag, pgoff,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">do_mmap_pgoff&lt;/span>(file, addr, len, prot, flag, pgoff,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;amp;populate, &amp;amp;uf);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmap_write_unlock(mm);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> userfaultfd_unmap_complete(mm, &amp;amp;uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">userfaultfd_unmap_complete&lt;/span>(mm, &amp;amp;uf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (populate)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm_populate(ret, populate);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mm_populate&lt;/span>(ret, populate);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
@@ -321,7 +321,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> pgoff, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> *populate,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> list_head *uf)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> do_mmap(file, addr, len, prot, flags, &lt;span style="color:#3677a9">0&lt;/span>, pgoff, populate, uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_mmap&lt;/span>(file, addr, len, prot, flags, &lt;span style="color:#3677a9">0&lt;/span>, pgoff, populate, uf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: Android x86</title><link>http://forest0923.github.io/memo/ja/docs/android/inst-x86/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/android/inst-x86/</guid><description>
 &lt;h2 id="環境">環境&lt;/h2>
@@ -895,7 +895,155 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mv jlisting.sty /usr/local/share/texmf/tex/latex/jlisting/
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> /usr/local/share/texmf/tex/latex/
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mktexlsr
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: OCaml 環境構築</title><link>http://forest0923.github.io/memo/ja/docs/lang/ocaml/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/ocaml/install/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: mprotect</title><link>http://forest0923.github.io/memo/ja/docs/linux-syscalls/mprotect/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/linux-syscalls/mprotect/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_mprotect&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> prot);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_mprotect">&lt;code>sys_mprotect()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>mm/mprotect.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(mprotect, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>, len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, prot)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_mprotect_pkey&lt;/span>(start, len, prot, -&lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_mprotect_pkey">&lt;code>do_mprotect_pkey()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>mm/mprotect.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * pkey==-1 when doing a legacy mprotect()
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">do_mprotect_pkey&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> prot, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> pkey)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> nstart, end, tmp, reqprot;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> vm_area_struct *vma, *prev;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> error = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> grows = prot &amp;amp; (PROT_GROWSDOWN|PROT_GROWSUP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> rier = (current-&amp;gt;personality &amp;amp; READ_IMPLIES_EXEC) &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (prot &amp;amp; PROT_READ);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> start = &lt;span style="color:#447fcf">untagged_addr&lt;/span>(start);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prot &amp;amp;= ~(PROT_GROWSDOWN|PROT_GROWSUP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (grows == (PROT_GROWSDOWN|PROT_GROWSUP)) &lt;span style="color:#999;font-style:italic">/* can&amp;#39;t be both */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (start &amp;amp; ~PAGE_MASK)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!len)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len = &lt;span style="color:#447fcf">PAGE_ALIGN&lt;/span>(len);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> end = start + len;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (end &amp;lt;= start)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -ENOMEM;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!&lt;span style="color:#447fcf">arch_validate_prot&lt;/span>(prot, start))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> reqprot = prot;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">mmap_write_lock_killable&lt;/span>(current-&amp;gt;mm))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINTR;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * If userspace did not allocate the pkey, do not let
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * them use it here.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> ((pkey != -&lt;span style="color:#3677a9">1&lt;/span>) &amp;amp;&amp;amp; !&lt;span style="color:#447fcf">mm_pkey_is_allocated&lt;/span>(current-&amp;gt;mm, pkey))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vma = &lt;span style="color:#447fcf">find_vma&lt;/span>(current-&amp;gt;mm, start);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -ENOMEM;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vma)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prev = vma-&amp;gt;vm_prev;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(grows &amp;amp; PROT_GROWSDOWN)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (vma-&amp;gt;vm_start &amp;gt;= end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> start = vma-&amp;gt;vm_start;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!(vma-&amp;gt;vm_flags &amp;amp; VM_GROWSDOWN))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (vma-&amp;gt;vm_start &amp;gt; start)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(grows &amp;amp; PROT_GROWSUP)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> end = vma-&amp;gt;vm_end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!(vma-&amp;gt;vm_flags &amp;amp; VM_GROWSUP))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (start &amp;gt; vma-&amp;gt;vm_start)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prev = vma;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (nstart = start ; ; ) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> mask_off_old_flags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> newflags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> new_vma_pkey;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Here we know that vma-&amp;gt;vm_start &amp;lt;= nstart &amp;lt; vma-&amp;gt;vm_end. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Does the application expect PROT_READ to imply PROT_EXEC */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (rier &amp;amp;&amp;amp; (vma-&amp;gt;vm_flags &amp;amp; VM_MAYEXEC))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prot |= PROT_EXEC;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Each mprotect() call explicitly passes r/w/x permissions.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * If a permission is not passed to mprotect(), it must be
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * cleared from the VMA.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mask_off_old_flags = VM_READ | VM_WRITE | VM_EXEC |
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> VM_FLAGS_CLEAR;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_vma_pkey = &lt;span style="color:#447fcf">arch_override_mprotect_pkey&lt;/span>(vma, prot, pkey);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newflags = &lt;span style="color:#447fcf">calc_vm_prot_bits&lt;/span>(prot, new_vma_pkey);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newflags |= (vma-&amp;gt;vm_flags &amp;amp; ~mask_off_old_flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* newflags &amp;gt;&amp;gt; 4 shift VM_MAY% in place of VM_% */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> ((newflags &amp;amp; ~(newflags &amp;gt;&amp;gt; &lt;span style="color:#3677a9">4&lt;/span>)) &amp;amp; VM_ACCESS_FLAGS) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EACCES;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">security_file_mprotect&lt;/span>(vma, reqprot, prot);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp = vma-&amp;gt;vm_end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (tmp &amp;gt; end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp = end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">mprotect_fixup&lt;/span>(vma, &amp;amp;prev, nstart, tmp, newflags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> nstart = tmp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (nstart &amp;lt; prev-&amp;gt;vm_end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> nstart = prev-&amp;gt;vm_end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (nstart &amp;gt;= end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vma = prev-&amp;gt;vm_next;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vma || vma-&amp;gt;vm_start != nstart) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -ENOMEM;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prot = reqprot;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(current-&amp;gt;mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: OCaml 環境構築</title><link>http://forest0923.github.io/memo/ja/docs/lang/ocaml/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/ocaml/install/</guid><description>
 &lt;h2 id="install">Install&lt;/h2>
 &lt;p>OCaml のパッケージマネージャである opam をインストールします．&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S opam
@@ -1416,7 +1564,7 @@ $$&lt;/p>
 &lt;li>Linux v5.8.13&lt;/li>
 &lt;/ul>
 &lt;h2 id="abstract">Abstract&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_munmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> addr, size_t len);
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_munmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> addr, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
 &lt;h2 id="return">Return&lt;/h2>
 &lt;h2 id="definitions">Definitions&lt;/h2>
@@ -1424,47 +1572,47 @@ $$&lt;/p>
 &lt;ul>
 &lt;li>mm/mmap.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE2(munmap, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, addr, size_t, len)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE2&lt;/span>(munmap, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, addr, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>, len)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> addr = untagged_addr(addr);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> profile_munmap(addr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> addr = &lt;span style="color:#447fcf">untagged_addr&lt;/span>(addr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">profile_munmap&lt;/span>(addr);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">__vm_munmap&lt;/span>(addr, len, &lt;span style="color:#24909d">true&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="__vm_munmap">&lt;code>__vm_munmap()&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>mm/mmap.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">__vm_munmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, size_t len, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> downgrade)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">__vm_munmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> downgrade)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ret;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> mm_struct *mm = current-&amp;gt;mm;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LIST_HEAD(uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">LIST_HEAD&lt;/span>(uf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (mmap_write_lock_killable(mm))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">mmap_write_lock_killable&lt;/span>(mm))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINTR;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = __do_munmap(mm, start, len, &amp;amp;uf, downgrade);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">__do_munmap&lt;/span>(mm, start, len, &amp;amp;uf, downgrade);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Returning 1 indicates mmap_lock is downgraded.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * But 1 is not legal return value of vm_munmap() and munmap(), reset
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * it to 0 before return.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret == &lt;span style="color:#3677a9">1&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmap_read_unlock(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_read_unlock&lt;/span>(mm);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmap_write_unlock(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(mm);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> userfaultfd_unmap_complete(mm, &amp;amp;uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">userfaultfd_unmap_complete&lt;/span>(mm, &amp;amp;uf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>mm/mmap.c の外から呼び出したい場合には &lt;code>vm_munmap()&lt;/code> を使用する．&lt;/p>
 &lt;p>プロトタイプは &lt;code>include/linux/mm.h&lt;/code> に宣言されている．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">vm_munmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, size_t len)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">vm_munmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> __vm_munmap(start, len, &lt;span style="color:#24909d">false&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">__vm_munmap&lt;/span>(start, len, &lt;span style="color:#24909d">false&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>EXPORT_SYMBOL(vm_munmap);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">EXPORT_SYMBOL&lt;/span>(vm_munmap);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: カーネルのインストール（Arch Linux 版）</title><link>http://forest0923.github.io/memo/ja/docs/linux-dev/custom-kernel-arch/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/linux-dev/custom-kernel-arch/</guid><description>
 &lt;p>Arch Linux で Linux カーネルの開発をしたときのメモです．基本的に研究では無難に Ubuntu を使用していますが，なんとなく Arch Linux にカスタムカーネルをインストールしようとしたら Ubuntu と同じ手順ではうまく行かないことがわかりました．Arch Build System を使う方法もありますが，ここでは PKGBUILD などは使わずにコンパイル，インストールする方法を紹介します．&lt;/p>
 &lt;h2 id="download-source-code">Download Source Code&lt;/h2>
@@ -1529,7 +1677,7 @@ $$&lt;/p>
 &lt;ul>
 &lt;li>mm/mmap.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE1(brk, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, brk)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(brk, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, brk)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> retval;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> newbrk, oldbrk, origbrk;
@@ -1538,9 +1686,9 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> min_brk;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> populate;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> downgraded = &lt;span style="color:#24909d">false&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LIST_HEAD(uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">LIST_HEAD&lt;/span>(uf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (mmap_write_lock_killable(mm))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">mmap_write_lock_killable&lt;/span>(mm))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINTR;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> origbrk = mm-&amp;gt;brk;
@@ -1567,12 +1715,12 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * segment grow beyond its set limit the in case where the limit is
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * not page aligned -Ram Gupta
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (check_data_rlimit(rlimit(RLIMIT_DATA), brk, mm-&amp;gt;start_brk,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">check_data_rlimit&lt;/span>(&lt;span style="color:#447fcf">rlimit&lt;/span>(RLIMIT_DATA), brk, mm-&amp;gt;start_brk,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;end_data, mm-&amp;gt;start_data))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newbrk = PAGE_ALIGN(brk);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> oldbrk = PAGE_ALIGN(mm-&amp;gt;brk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newbrk = &lt;span style="color:#447fcf">PAGE_ALIGN&lt;/span>(brk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> oldbrk = &lt;span style="color:#447fcf">PAGE_ALIGN&lt;/span>(mm-&amp;gt;brk);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (oldbrk == newbrk) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;brk = brk;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> success;
@@ -1591,7 +1739,7 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * mm-&amp;gt;brk will be restored from origbrk.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;brk = brk;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = __do_munmap(mm, newbrk, oldbrk-newbrk, &amp;amp;uf, &lt;span style="color:#24909d">true&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">__do_munmap&lt;/span>(mm, newbrk, oldbrk-newbrk, &amp;amp;uf, &lt;span style="color:#24909d">true&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;brk = origbrk;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
@@ -1602,29 +1750,29 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Check against existing mmap mappings. */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> next = find_vma(mm, oldbrk);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (next &amp;amp;&amp;amp; newbrk + PAGE_SIZE &amp;gt; vm_start_gap(next))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> next = &lt;span style="color:#447fcf">find_vma&lt;/span>(mm, oldbrk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (next &amp;amp;&amp;amp; newbrk + PAGE_SIZE &amp;gt; &lt;span style="color:#447fcf">vm_start_gap&lt;/span>(next))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Ok, looks good - let it rip. */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (do_brk_flags(oldbrk, newbrk-oldbrk, &lt;span style="color:#3677a9">0&lt;/span>, &amp;amp;uf) &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">do_brk_flags&lt;/span>(oldbrk, newbrk-oldbrk, &lt;span style="color:#3677a9">0&lt;/span>, &amp;amp;uf) &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;brk = brk;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>success:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> populate = newbrk &amp;gt; oldbrk &amp;amp;&amp;amp; (mm-&amp;gt;def_flags &amp;amp; VM_LOCKED) != &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (downgraded)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmap_read_unlock(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_read_unlock&lt;/span>(mm);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(mm);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> userfaultfd_unmap_complete(mm, &amp;amp;uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">userfaultfd_unmap_complete&lt;/span>(mm, &amp;amp;uf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (populate)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm_populate(oldbrk, newbrk - oldbrk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mm_populate&lt;/span>(oldbrk, newbrk - oldbrk);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> brk;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = origbrk;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mmap_write_unlock(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(mm);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> retval;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: ioctl</title><link>http://forest0923.github.io/memo/ja/docs/linux-syscalls/ioctl/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/linux-syscalls/ioctl/</guid><description>
@@ -1653,9 +1801,9 @@ $$&lt;/p>
 &lt;ul>
 &lt;li>fs/ioctl.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE3(ioctl, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, arg)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(ioctl, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, arg)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ksys_ioctl(fd, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ksys_ioctl&lt;/span>(fd, cmd, arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_ioctl">&lt;code>ksys_ioctl()&lt;/code>&lt;/h3>
 &lt;ul>
@@ -1663,22 +1811,22 @@ $$&lt;/p>
 &lt;/ul>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">ksys_ioctl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = fdget(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = &lt;span style="color:#447fcf">fdget&lt;/span>(fd);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> error;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!f.file)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EBADF;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = security_file_ioctl(f.file, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">security_file_ioctl&lt;/span>(f.file, cmd, arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = do_vfs_ioctl(f.file, fd, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">do_vfs_ioctl&lt;/span>(f.file, fd, cmd, arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error == -ENOIOCTLCMD)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = vfs_ioctl(f.file, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">vfs_ioctl&lt;/span>(f.file, cmd, arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fdput(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fdput&lt;/span>(f);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_vfs_ioctl">&lt;code>do_vfs_ioctl()&lt;/code>&lt;/h3>
@@ -1696,68 +1844,68 @@ $$&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> __user *argp = (&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> __user *)arg;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> inode *inode = file_inode(filp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> inode *inode = &lt;span style="color:#447fcf">file_inode&lt;/span>(filp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">switch&lt;/span> (cmd) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIOCLEX:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> set_close_on_exec(fd, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">set_close_on_exec&lt;/span>(fd, &lt;span style="color:#3677a9">1&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIONCLEX:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> set_close_on_exec(fd, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">set_close_on_exec&lt;/span>(fd, &lt;span style="color:#3677a9">0&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIONBIO:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fionbio(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fionbio&lt;/span>(filp, argp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIOASYNC:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fioasync(fd, filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fioasync&lt;/span>(fd, filp, argp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIOQSIZE:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (S_ISDIR(inode-&amp;gt;i_mode) || S_ISREG(inode-&amp;gt;i_mode) ||
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> S_ISLNK(inode-&amp;gt;i_mode)) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> loff_t res = inode_get_bytes(inode);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> copy_to_user(argp, &amp;amp;res, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(res)) ?
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">S_ISDIR&lt;/span>(inode-&amp;gt;i_mode) || &lt;span style="color:#447fcf">S_ISREG&lt;/span>(inode-&amp;gt;i_mode) ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">S_ISLNK&lt;/span>(inode-&amp;gt;i_mode)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">loff_t&lt;/span> res = &lt;span style="color:#447fcf">inode_get_bytes&lt;/span>(inode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">copy_to_user&lt;/span>(argp, &amp;amp;res, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(res)) ?
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -EFAULT : &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -ENOTTY;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIFREEZE:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fsfreeze(filp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fsfreeze&lt;/span>(filp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FITHAW:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fsthaw(filp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fsthaw&lt;/span>(filp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FS_IOC_FIEMAP:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_fiemap(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fiemap&lt;/span>(filp, argp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIGETBSZ:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* anon_bdev filesystems may not have a block size */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!inode-&amp;gt;i_sb-&amp;gt;s_blocksize)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> put_user(inode-&amp;gt;i_sb-&amp;gt;s_blocksize, (&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *)argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">put_user&lt;/span>(inode-&amp;gt;i_sb-&amp;gt;s_blocksize, (&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *)argp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FICLONE:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_file_clone(filp, arg, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_file_clone&lt;/span>(filp, arg, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FICLONERANGE:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_file_clone_range(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_file_clone_range&lt;/span>(filp, argp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIDEDUPERANGE:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ioctl_file_dedupe_range(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_file_dedupe_range&lt;/span>(filp, argp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIONREAD:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!S_ISREG(inode-&amp;gt;i_mode))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> vfs_ioctl(filp, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!&lt;span style="color:#447fcf">S_ISREG&lt;/span>(inode-&amp;gt;i_mode))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">vfs_ioctl&lt;/span>(filp, cmd, arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> put_user(i_size_read(inode) - filp-&amp;gt;f_pos,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">put_user&lt;/span>(&lt;span style="color:#447fcf">i_size_read&lt;/span>(inode) - filp-&amp;gt;f_pos,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *)argp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">default&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (S_ISREG(inode-&amp;gt;i_mode))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> file_ioctl(filp, cmd, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">S_ISREG&lt;/span>(inode-&amp;gt;i_mode))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">file_ioctl&lt;/span>(filp, cmd, argp);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -2788,9 +2936,9 @@ id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
 &lt;ul>
 &lt;li>fs/pipe.c&lt;/li>
 &lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE1(pipe, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *, fildes)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(pipe, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *, fildes)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> do_pipe2(fildes, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_pipe2&lt;/span>(fildes, &lt;span style="color:#3677a9">0&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_pipe2">&lt;code>do_pipe2()&lt;/code>&lt;/h3>
 &lt;ul>
@@ -2806,17 +2954,17 @@ id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd[&lt;span style="color:#3677a9">2&lt;/span>];
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> error;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = __do_pipe_flags(fd, files, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">__do_pipe_flags&lt;/span>(fd, files, flags);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!error) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (unlikely(copy_to_user(fildes, fd, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(fd)))) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fput(files[&lt;span style="color:#3677a9">0&lt;/span>]);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fput(files[&lt;span style="color:#3677a9">1&lt;/span>]);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> put_unused_fd(fd[&lt;span style="color:#3677a9">0&lt;/span>]);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> put_unused_fd(fd[&lt;span style="color:#3677a9">1&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(&lt;span style="color:#447fcf">copy_to_user&lt;/span>(fildes, fd, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(fd)))) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fput&lt;/span>(files[&lt;span style="color:#3677a9">0&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fput&lt;/span>(files[&lt;span style="color:#3677a9">1&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">put_unused_fd&lt;/span>(fd[&lt;span style="color:#3677a9">0&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">put_unused_fd&lt;/span>(fd[&lt;span style="color:#3677a9">1&lt;/span>]);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EFAULT;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd_install(fd[&lt;span style="color:#3677a9">0&lt;/span>], files[&lt;span style="color:#3677a9">0&lt;/span>]);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd_install(fd[&lt;span style="color:#3677a9">1&lt;/span>], files[&lt;span style="color:#3677a9">1&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fd_install&lt;/span>(fd[&lt;span style="color:#3677a9">0&lt;/span>], files[&lt;span style="color:#3677a9">0&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fd_install&lt;/span>(fd[&lt;span style="color:#3677a9">1&lt;/span>], files[&lt;span style="color:#3677a9">1&lt;/span>]);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
@@ -3428,15 +3576,15 @@ A--&amp;gt;B
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/syscalls.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;#34;my_syscall.h&amp;#34;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE0(hello_syscall)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE0&lt;/span>(hello_syscall)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printk(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: Hello world!&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">printk&lt;/span>(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: Hello world!&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>k&lt;/code> はシステムコールの引数の数に関係します．例えば引数が1つの場合は次のように記述します．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE1(hello_syscall, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, arg)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(hello_syscall, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, arg)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printk(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: arg = %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">printk&lt;/span>(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: arg = %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>次に &lt;code>my_syscalls/my_syscalls.h&lt;/code> にヘッダファイルを追加します．&lt;/p>
@@ -3471,7 +3619,7 @@ A--&amp;gt;B
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> argc, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> **argv)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> syscall(HELLO_SYSCALL);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">syscall&lt;/span>(HELLO_SYSCALL);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ログの確認：&lt;/p>
@@ -3707,4 +3855,4 @@ QEMU で実行する場合は下記のコマンドでブートしました．&lt
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Your program have to be saved in the &lt;code>src/&lt;/code>.&lt;/li>
 &lt;li>&lt;code>.pio&lt;/code> sometimes has an useful example code.&lt;/li>
-&lt;/ul></description></item><item><title>Docs: Rust Cheat Sheet</title><link>http://forest0923.github.io/memo/ja/docs/lang/rust/cheatsheet/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/rust/cheatsheet/</guid><description/></item></channel></rss>
+&lt;/ul></description></item></channel></rss>

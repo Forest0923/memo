@@ -138,15 +138,15 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/syscalls.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;#34;my_syscall.h&amp;#34;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE0(hello_syscall)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE0&lt;/span>(hello_syscall)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printk(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: Hello world!&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">printk&lt;/span>(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: Hello world!&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If the systemcall has some arguments, it could be written as follows.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE1(hello_syscall, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, arg)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(hello_syscall, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, arg)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printk(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: arg = %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">printk&lt;/span>(KERN_INFO &lt;span style="color:#ed9d13">&amp;#34;hello_syscall: arg = %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then create header files (&lt;code>my_syscalls/my_syscalls.h&lt;/code>) and modify &lt;code>include/linux/syscalls.h&lt;/code>.&lt;/p>
@@ -180,7 +180,7 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> argc, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> **argv)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> syscall(HELLO_SYSCALL);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">syscall&lt;/span>(HELLO_SYSCALL);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Result:&lt;/p>
@@ -226,15 +226,15 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;uapi/linux/kvm_para.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;#34;my_syscalls.h&amp;#34;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE0(hello_hypercall0)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE0&lt;/span>(hello_hypercall0)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_hypercall0(KVM_HC_HELLO_HYPERCALL0);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kvm_hypercall0&lt;/span>(KVM_HC_HELLO_HYPERCALL0);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SYSCALL_DEFINE1(hello_hypercall1, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, arg1)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(hello_hypercall1, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, arg1)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kvm_hypercall1(KVM_HC_HELLO_HYPERCALL1, arg1);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kvm_hypercall1&lt;/span>(KVM_HC_HELLO_HYPERCALL1, arg1);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>You need to add a system call to call &lt;code>kvm_hypercallk()&lt;/code> since it cannot be called directly from userspace. The following patch adds a system call to call a simple hypercall.&lt;/p>
@@ -337,8 +337,8 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> argc, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> **argv)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> syscall(&lt;span style="color:#3677a9">440&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> syscall(&lt;span style="color:#3677a9">441&lt;/span>, &lt;span style="color:#3677a9">123&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">syscall&lt;/span>(&lt;span style="color:#3677a9">440&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">syscall&lt;/span>(&lt;span style="color:#3677a9">441&lt;/span>, &lt;span style="color:#3677a9">123&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Check log on host:&lt;/p>
@@ -378,24 +378,24 @@
 &lt;p>The function specified by &lt;code>module_init([func]);&lt;/code> is executed on insmod, and the function specified by &lt;code>module_exit([func]);&lt;/code> is executed on rmmod.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/module.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_DESCRIPTION(&lt;span style="color:#ed9d13">&amp;#34;hello module&amp;#34;&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_AUTHOR(&lt;span style="color:#ed9d13">&amp;#34;Mori&amp;#34;&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_LICENSE(&lt;span style="color:#ed9d13">&amp;#34;GPL&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">MODULE_DESCRIPTION&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;hello module&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">MODULE_AUTHOR&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;Mori&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">MODULE_LICENSE&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;GPL&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">hello_init&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;hello: init&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;hello: init&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">hello_exit&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;hello: exit&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;hello: exit&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_init(hello_init);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_exit(hello_exit);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_init&lt;/span>(hello_init);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_exit&lt;/span>(hello_exit);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The Makefile was created as follows.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-makefile" data-lang="makefile">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">KDIR&lt;/span> := /lib/modules/&lt;span style="color:#ed9d13">`&lt;/span>uname -r&lt;span style="color:#ed9d13">`&lt;/span>/build
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">MODNAME&lt;/span> := hello
@@ -464,20 +464,20 @@
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/kernel.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/module.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_DESCRIPTION(&lt;span style="color:#ed9d13">&amp;#34;My Module&amp;#34;&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_AUTHOR(&lt;span style="color:#ed9d13">&amp;#34;Mori&amp;#34;&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_LICENSE(&lt;span style="color:#ed9d13">&amp;#34;GPL&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">MODULE_DESCRIPTION&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;My Module&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">MODULE_AUTHOR&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;Mori&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">MODULE_LICENSE&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;GPL&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">mymodule_sub&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">mymod_init&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;my_module: init&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mymodule_sub();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;my_module: init&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mymodule_sub&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_init(mymod_init);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_init&lt;/span>(mymod_init);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>exit.c&lt;/li>
 &lt;/ul>
@@ -486,10 +486,10 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">mymod_exit&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;my_module: exit&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;my_module: exit&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_exit(mymod_exit);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_exit&lt;/span>(mymod_exit);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>print.c&lt;/li>
 &lt;/ul>
@@ -497,7 +497,7 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/module.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">mymodule_sub&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;mymodule_sub: called&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;mymodule_sub: called&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>I created Makefile like below.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-makefile" data-lang="makefile">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">KDIR&lt;/span> := /lib/modules/&lt;span style="color:#ed9d13">`&lt;/span>uname -r&lt;span style="color:#ed9d13">`&lt;/span>/build
@@ -545,34 +545,34 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define BUF_SIZE 8
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define FILE_PATH_MAX 128
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_DESCRIPTION(&lt;span style="color:#ed9d13">&amp;#34;getargs module&amp;#34;&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_AUTHOR(&lt;span style="color:#ed9d13">&amp;#34;Mori&amp;#34;&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MODULE_LICENSE(&lt;span style="color:#ed9d13">&amp;#34;GPL&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">MODULE_DESCRIPTION&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;getargs module&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">MODULE_AUTHOR&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;Mori&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">MODULE_LICENSE&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;GPL&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> intparam, intparam2;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *file, file2[FILE_PATH_MAX];
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> array[BUF_SIZE], nr_arr;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param(intparam, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param(file, charp, &lt;span style="color:#3677a9">0&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param_named(arg, intparam2, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param_string(filepath, file2, &lt;span style="color:#3677a9">128&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_param_array(array, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, &amp;amp;nr_arr, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_param&lt;/span>(intparam, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_param&lt;/span>(file, charp, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_param_named&lt;/span>(arg, intparam2, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_param_string&lt;/span>(filepath, file2, &lt;span style="color:#3677a9">128&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_param_array&lt;/span>(array, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, &amp;amp;nr_arr, &lt;span style="color:#3677a9">0&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">getargs_init&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> i;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: init&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; intparam&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, intparam);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; intparam2&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, intparam2);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;getargs: init&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; intparam&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, intparam);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; intparam2&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %d&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, intparam2);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (file)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; file&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, file);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; file2&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, file2);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; file&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; file2&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= %s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, file2);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; array&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= [&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;getargs: =&amp;gt; array&lt;/span>&lt;span style="color:#ed9d13">\t&lt;/span>&lt;span style="color:#ed9d13">= [&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (i = &lt;span style="color:#3677a9">0&lt;/span>; i &amp;lt; BUF_SIZE; i++)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_cont(&lt;span style="color:#ed9d13">&amp;#34; %d&amp;#34;&lt;/span>, array[i]);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_cont(&lt;span style="color:#ed9d13">&amp;#34;]&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_cont&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34; %d&amp;#34;&lt;/span>, array[i]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_cont&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;]&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
@@ -582,8 +582,8 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_init(getargs_init);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module_exit(getargs_exit);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_init&lt;/span>(getargs_init);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">module_exit&lt;/span>(getargs_exit);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The module is installed as follows, and we have confirmed that the arguments have been obtained.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo insmod getargs.ko
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo rmmod getargs

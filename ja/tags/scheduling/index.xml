@@ -31,34 +31,34 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">while&lt;/span> (&lt;span style="color:#24909d">true&lt;/span>) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* We have work to do. */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> local_irq_enable();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">local_irq_enable&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cached_flags &amp;amp; _TIF_NEED_RESCHED)
-&lt;/span>&lt;/span>&lt;span style="display:flex; background-color:#363636">&lt;span> schedule();
+&lt;/span>&lt;/span>&lt;span style="display:flex; background-color:#363636">&lt;span> &lt;span style="color:#447fcf">schedule&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cached_flags &amp;amp; _TIF_UPROBE)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> uprobe_notify_resume(regs);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">uprobe_notify_resume&lt;/span>(regs);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cached_flags &amp;amp; _TIF_PATCH_PENDING)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> klp_update_patch_state(current);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">klp_update_patch_state&lt;/span>(current);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* deal with pending signal delivery */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cached_flags &amp;amp; _TIF_SIGPENDING)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> do_signal(regs);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">do_signal&lt;/span>(regs);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cached_flags &amp;amp; _TIF_NOTIFY_RESUME) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clear_thread_flag(TIF_NOTIFY_RESUME);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tracehook_notify_resume(regs);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rseq_handle_notify_resume(&lt;span style="color:#24909d">NULL&lt;/span>, regs);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">clear_thread_flag&lt;/span>(TIF_NOTIFY_RESUME);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">tracehook_notify_resume&lt;/span>(regs);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">rseq_handle_notify_resume&lt;/span>(&lt;span style="color:#24909d">NULL&lt;/span>, regs);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (cached_flags &amp;amp; _TIF_USER_RETURN_NOTIFY)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fire_user_return_notifiers();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fire_user_return_notifiers&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Disable IRQs and retry */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> local_irq_disable();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">local_irq_disable&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cached_flags = READ_ONCE(current_thread_info()-&amp;gt;flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cached_flags = &lt;span style="color:#447fcf">READ_ONCE&lt;/span>(&lt;span style="color:#447fcf">current_thread_info&lt;/span>()-&amp;gt;flags);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!(cached_flags &amp;amp; EXIT_TO_USERMODE_LOOP_FLAGS))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
@@ -72,15 +72,15 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *tsk = current;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sched_submit_work(tsk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">sched_submit_work&lt;/span>(tsk);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">do&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> preempt_disable();
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __schedule(&lt;span style="color:#24909d">false&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sched_preempt_enable_no_resched();
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">while&lt;/span> (need_resched());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sched_update_worker(tsk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">preempt_disable&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">__schedule&lt;/span>(&lt;span style="color:#24909d">false&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">sched_preempt_enable_no_resched&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">while&lt;/span> (&lt;span style="color:#447fcf">need_resched&lt;/span>());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">sched_update_worker&lt;/span>(tsk);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>EXPORT_SYMBOL(schedule);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">EXPORT_SYMBOL&lt;/span>(schedule);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="__schedule">&lt;code>__schedule()&lt;/code>&lt;/h3>
 &lt;ul>
 &lt;li>kernel/sched/core.c&lt;/li>
@@ -133,17 +133,17 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq *rq;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cpu;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cpu = smp_processor_id();
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq = cpu_rq(cpu);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cpu = &lt;span style="color:#447fcf">smp_processor_id&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq = &lt;span style="color:#447fcf">cpu_rq&lt;/span>(cpu);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prev = rq-&amp;gt;curr;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> schedule_debug(prev, preempt);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">schedule_debug&lt;/span>(prev, preempt);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (sched_feat(HRTICK))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> hrtick_clear(rq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">sched_feat&lt;/span>(HRTICK))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">hrtick_clear&lt;/span>(rq);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> local_irq_disable();
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rcu_note_context_switch(preempt);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">local_irq_disable&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">rcu_note_context_switch&lt;/span>(preempt);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Make sure that signal_pending_state()-&amp;gt;signal_pending() below
@@ -160,12 +160,12 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Also, the membarrier system call requires a full memory barrier
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * after coming from user-space, before storing to rq-&amp;gt;curr.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq_lock(rq, &amp;amp;rf);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> smp_mb__after_spinlock();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">rq_lock&lt;/span>(rq, &amp;amp;rf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">smp_mb__after_spinlock&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Promote REQ to ACT */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq-&amp;gt;clock_update_flags &amp;lt;&amp;lt;= &lt;span style="color:#3677a9">1&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> update_rq_clock(rq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">update_rq_clock&lt;/span>(rq);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> switch_count = &amp;amp;prev-&amp;gt;nivcsw;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -178,7 +178,7 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prev_state = prev-&amp;gt;state;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!preempt &amp;amp;&amp;amp; prev_state) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (signal_pending_state(prev_state, prev)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">signal_pending_state&lt;/span>(prev_state, prev)) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prev-&amp;gt;state = TASK_RUNNING;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prev-&amp;gt;sched_contributes_to_load =
@@ -200,27 +200,27 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * After this, schedule() must not care about p-&amp;gt;state any more.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> deactivate_task(rq, prev, DEQUEUE_SLEEP | DEQUEUE_NOCLOCK);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">deactivate_task&lt;/span>(rq, prev, DEQUEUE_SLEEP | DEQUEUE_NOCLOCK);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (prev-&amp;gt;in_iowait) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> atomic_inc(&amp;amp;rq-&amp;gt;nr_iowait);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> delayacct_blkio_start();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">atomic_inc&lt;/span>(&amp;amp;rq-&amp;gt;nr_iowait);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">delayacct_blkio_start&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> switch_count = &amp;amp;prev-&amp;gt;nvcsw;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> next = pick_next_task(rq, prev, &amp;amp;rf);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clear_tsk_need_resched(prev);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clear_preempt_need_resched();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> next = &lt;span style="color:#447fcf">pick_next_task&lt;/span>(rq, prev, &amp;amp;rf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">clear_tsk_need_resched&lt;/span>(prev);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">clear_preempt_need_resched&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (likely(prev != next)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">likely&lt;/span>(prev != next)) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq-&amp;gt;nr_switches++;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * RCU users of rcu_dereference(rq-&amp;gt;curr) may not see
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * changes to task_struct made by pick_next_task().
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> RCU_INIT_POINTER(rq-&amp;gt;curr, next);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">RCU_INIT_POINTER&lt;/span>(rq-&amp;gt;curr, next);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * The membarrier system call requires each architecture
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * to have a full memory barrier after updating
@@ -237,18 +237,18 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ++*switch_count;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> psi_sched_switch(prev, next, !task_on_rq_queued(prev));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">psi_sched_switch&lt;/span>(prev, next, !&lt;span style="color:#447fcf">task_on_rq_queued&lt;/span>(prev));
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> trace_sched_switch(preempt, prev, next);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">trace_sched_switch&lt;/span>(preempt, prev, next);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Also unlocks the rq: */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq = context_switch(rq, prev, next, &amp;amp;rf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq = &lt;span style="color:#447fcf">context_switch&lt;/span>(rq, prev, next, &amp;amp;rf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq-&amp;gt;clock_update_flags &amp;amp;= ~(RQCF_ACT_SKIP|RQCF_REQ_SKIP);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq_unlock_irq(rq, &amp;amp;rf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">rq_unlock_irq&lt;/span>(rq, &amp;amp;rf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> balance_callback(rq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">balance_callback&lt;/span>(rq);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="context_switch">&lt;code>context_switch()&lt;/code>&lt;/h3>
 &lt;ul>
@@ -261,14 +261,14 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">context_switch&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq *rq, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *prev,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *next, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq_flags *rf)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prepare_task_switch(rq, prev, next);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">prepare_task_switch&lt;/span>(rq, prev, next);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * For paravirt, this is coupled with an exit in switch_to to
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * combine the page table reload and the switch backend into
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * one hypercall.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> arch_start_context_switch(prev);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">arch_start_context_switch&lt;/span>(prev);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * kernel -&amp;gt; kernel lazy + transfer active
@@ -278,15 +278,15 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * user -&amp;gt; user switch
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!next-&amp;gt;mm) { &lt;span style="color:#999;font-style:italic">// to kernel
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> enter_lazy_tlb(prev-&amp;gt;active_mm, next);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#447fcf">enter_lazy_tlb&lt;/span>(prev-&amp;gt;active_mm, next);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> next-&amp;gt;active_mm = prev-&amp;gt;active_mm;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (prev-&amp;gt;mm) &lt;span style="color:#999;font-style:italic">// from user
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> mmgrab(prev-&amp;gt;active_mm);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#447fcf">mmgrab&lt;/span>(prev-&amp;gt;active_mm);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prev-&amp;gt;active_mm = &lt;span style="color:#24909d">NULL&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> { &lt;span style="color:#999;font-style:italic">// to user
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> membarrier_switch_mm(rq, prev-&amp;gt;active_mm, next-&amp;gt;mm);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#447fcf">membarrier_switch_mm&lt;/span>(rq, prev-&amp;gt;active_mm, next-&amp;gt;mm);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * sys_membarrier() requires an smp_mb() between setting
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * rq-&amp;gt;curr / membarrier_switch_mm() and returning to userspace.
@@ -295,7 +295,7 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * case &amp;#39;prev-&amp;gt;active_mm == next-&amp;gt;mm&amp;#39; through
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * finish_task_switch()&amp;#39;s mmdrop().
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> switch_mm_irqs_off(prev-&amp;gt;active_mm, next-&amp;gt;mm, next);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">switch_mm_irqs_off&lt;/span>(prev-&amp;gt;active_mm, next-&amp;gt;mm, next);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!prev-&amp;gt;mm) { &lt;span style="color:#999;font-style:italic">// from kernel
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> &lt;span style="color:#999;font-style:italic">/* will mmdrop() in finish_task_switch(). */&lt;/span>
@@ -306,13 +306,13 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rq-&amp;gt;clock_update_flags &amp;amp;= ~(RQCF_ACT_SKIP|RQCF_REQ_SKIP);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prepare_lock_switch(rq, next, rf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">prepare_lock_switch&lt;/span>(rq, next, rf);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Here we just switch the register state and the stack. */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> switch_to(prev, next, prev);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> barrier();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">switch_to&lt;/span>(prev, next, prev);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">barrier&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> finish_task_switch(prev);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">finish_task_switch&lt;/span>(prev);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="data-structures">Data Structures&lt;/h2>
 &lt;h3 id="struct-rq">&lt;code>struct rq&lt;/code>&lt;/h3>
@@ -328,7 +328,7 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> rq {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* runqueue lock: */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> raw_spinlock_t lock;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">raw_spinlock_t&lt;/span> lock;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * nr_running and cpu_load should be in the same cacheline because
@@ -344,10 +344,10 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_SMP
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> last_blocked_load_update_tick;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> has_blocked_load;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> call_single_data_t nohz_csd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">call_single_data_t&lt;/span> nohz_csd;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif &lt;/span>&lt;span style="color:#999;font-style:italic">/* CONFIG_SMP */&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> nohz_tick_stopped;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> atomic_t nohz_flags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">atomic_t&lt;/span> nohz_flags;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif &lt;/span>&lt;span style="color:#999;font-style:italic">/* CONFIG_NO_HZ_COMMON */&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_SMP
@@ -393,7 +393,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 clock_pelt;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> lost_idle_time;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> atomic_t nr_iowait;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">atomic_t&lt;/span> nr_iowait;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_MEMBARRIER
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> membarrier_state;
@@ -455,7 +455,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_SCHED_HRTICK
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_SMP
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> call_single_data_t hrtick_csd;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">call_single_data_t&lt;/span> hrtick_csd;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> hrtimer hrtick_timer;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif

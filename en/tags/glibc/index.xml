@@ -9,10 +9,10 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;fcntl.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = open(&lt;span style="color:#ed9d13">&amp;#34;/path/to/test.txt&amp;#34;&lt;/span>, O_RDONLY);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = &lt;span style="color:#447fcf">open&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;/path/to/test.txt&amp;#34;&lt;/span>, O_RDONLY);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> str[&lt;span style="color:#3677a9">10&lt;/span>];
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> read(fd, str, &lt;span style="color:#3677a9">10&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf(&lt;span style="color:#ed9d13">&amp;#34;%s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, str);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">read&lt;/span>(fd, str, &lt;span style="color:#3677a9">10&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">printf&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;%s&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>, str);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="definition">Definition&lt;/h2>
@@ -26,21 +26,21 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> mode = &lt;span style="color:#3677a9">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (__OPEN_NEEDS_MODE (oflag))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">__OPEN_NEEDS_MODE&lt;/span> (oflag))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list arg;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_start (arg, oflag);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = va_arg (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_end (arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_start&lt;/span> (arg, oflag);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = &lt;span style="color:#447fcf">va_arg&lt;/span> (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_end&lt;/span> (arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> SYSCALL_CANCEL (openat, AT_FDCWD, file, oflag | O_LARGEFILE,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">SYSCALL_CANCEL&lt;/span> (openat, AT_FDCWD, file, oflag | O_LARGEFILE,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>strong_alias (__libc_open64, __open64)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>libc_hidden_weak (__open64)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>weak_alias (__libc_open64, open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">strong_alias&lt;/span> (__libc_open64, __open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">libc_hidden_weak&lt;/span> (__open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">weak_alias&lt;/span> (__libc_open64, open64)
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>File: sysdeps/unix/sysdep.h&lt;/li>
 &lt;/ul>
@@ -111,24 +111,24 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (file == &lt;span style="color:#24909d">NULL&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __set_errno (EINVAL);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">__set_errno&lt;/span> (EINVAL);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -&lt;span style="color:#3677a9">1&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (__OPEN_NEEDS_MODE (oflag))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">__OPEN_NEEDS_MODE&lt;/span> (oflag))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list arg;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_start (arg, oflag);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = va_arg (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_end (arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_start&lt;/span> (arg, oflag);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mode = &lt;span style="color:#447fcf">va_arg&lt;/span> (arg, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_end&lt;/span> (arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> __set_errno (ENOSYS);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">__set_errno&lt;/span> (ENOSYS);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -&lt;span style="color:#3677a9">1&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>strong_alias (__libc_open64, __open64)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>libc_hidden_def (__open64)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>weak_alias (__libc_open64, open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">strong_alias&lt;/span> (__libc_open64, __open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">libc_hidden_def&lt;/span> (__open64)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">weak_alias&lt;/span> (__libc_open64, open64)
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: glibc printf</title><link>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-printf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/code-reading/glibc/glibc-printf/</guid><description>
 &lt;h2 id="version">Version&lt;/h2>
 &lt;ul>
@@ -142,39 +142,39 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list arg;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> done;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_start (arg, format);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> done = __vfprintf_internal (stdout, format, arg, &lt;span style="color:#3677a9">0&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_end (arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_start&lt;/span> (arg, format);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> done = &lt;span style="color:#447fcf">__vfprintf_internal&lt;/span> (stdout, format, arg, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">va_end&lt;/span> (arg);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> done;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#undef _IO_printf
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>ldbl_strong_alias (__printf, printf);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ldbl_strong_alias (__printf, _IO_printf);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>&lt;span style="color:#447fcf">ldbl_strong_alias&lt;/span> (__printf, printf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">ldbl_strong_alias&lt;/span> (__printf, _IO_printf);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// stdio-common/vfprintf-internal.c
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#cd2828;font-weight:bold"># define vfprintf __vfprintf_internal
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>...
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vfprintf (FILE *s, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> CHAR_T *format, va_list ap, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> mode_flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">vfprintf&lt;/span> (FILE *s, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> CHAR_T *format, va_list ap, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> mode_flags)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Hand off processing for positional parameters. */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>do_positional:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> done = printf_positional (s, format, readonly_format, ap, &amp;amp;ap_save,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> done = &lt;span style="color:#447fcf">printf_positional&lt;/span> (s, format, readonly_format, ap, &amp;amp;ap_save,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> done, nspecs_done, lead_str_end, work_buffer,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> save_errno, grouping, thousands_sep, mode_flags);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>all_done:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Unlock the stream. */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _IO_funlockfile (s);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _IO_cleanup_region_end (&lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">_IO_funlockfile&lt;/span> (s);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">_IO_cleanup_region_end&lt;/span> (&lt;span style="color:#3677a9">0&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> done;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">// stdio-common/vfprintf-internal.c
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>printf_positional (FILE *s, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> CHAR_T *format, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> readonly_format,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">printf_positional&lt;/span> (FILE *s, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> CHAR_T *format, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> readonly_format,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> va_list ap, va_list *ap_savep, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> done, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> nspecs_done,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> UCHAR_T *lead_str_end,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CHAR_T *work_buffer, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> save_errno,
@@ -184,10 +184,10 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span>&lt;span style="color:#cd2828;font-weight:bold"># define PUT(F, S, N) _IO_sputn ((F), (S), (N))
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>...
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">inline&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>outstring_func (FILE *s, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> UCHAR_T *string, size_t length, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> done)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">outstring_func&lt;/span> (FILE *s, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> UCHAR_T *string, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> length, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> done)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> assert ((size_t) done &amp;lt;= (size_t) INT_MAX);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> ((size_t) PUT (s, string, length) != (size_t) (length))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">assert&lt;/span> ((&lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>) done &amp;lt;= (&lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>) INT_MAX);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> ((&lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>) &lt;span style="color:#447fcf">PUT&lt;/span> (s, string, length) != (&lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>) (length))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -&lt;span style="color:#3677a9">1&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">done_add_func&lt;/span> (length, done);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}

@@ -10,7 +10,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> __initconst &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> idt_data apic_idts[] = {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_X86_LOCAL_APIC
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> INTG(LOCAL_TIMER_VECTOR, asm_sysvec_apic_timer_interrupt),
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#447fcf">INTG&lt;/span>(LOCAL_TIMER_VECTOR, asm_sysvec_apic_timer_interrupt),
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>};
@@ -26,16 +26,16 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * [ if a single-CPU system runs an SMP kernel then we call the local
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * interrupt as well. Thus we cannot inline the local irq ... ]
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DEFINE_IDTENTRY_SYSVEC(sysvec_apic_timer_interrupt)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">DEFINE_IDTENTRY_SYSVEC&lt;/span>(sysvec_apic_timer_interrupt)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> pt_regs *old_regs = set_irq_regs(regs);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> pt_regs *old_regs = &lt;span style="color:#447fcf">set_irq_regs&lt;/span>(regs);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ack_APIC_irq();
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> trace_local_timer_entry(LOCAL_TIMER_VECTOR);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> local_apic_timer_interrupt();
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> trace_local_timer_exit(LOCAL_TIMER_VECTOR);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ack_APIC_irq&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">trace_local_timer_entry&lt;/span>(LOCAL_TIMER_VECTOR);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">local_apic_timer_interrupt&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">trace_local_timer_exit&lt;/span>(LOCAL_TIMER_VECTOR);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> set_irq_regs(old_regs);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">set_irq_regs&lt;/span>(old_regs);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="pithpet">PIT/HPET&lt;/h2>
 &lt;h3 id="timer_interrupt">&lt;code>timer_interrupt()&lt;/code>&lt;/h3>
@@ -45,9 +45,9 @@
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Default timer interrupt handler for PIT/HPET
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> irqreturn_t &lt;span style="color:#447fcf">timer_interrupt&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> irq, &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *dev_id)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">irqreturn_t&lt;/span> &lt;span style="color:#447fcf">timer_interrupt&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> irq, &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *dev_id)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> global_clock_event-&amp;gt;event_handler(global_clock_event);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> global_clock_event-&amp;gt;&lt;span style="color:#447fcf">event_handler&lt;/span>(global_clock_event);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> IRQ_HANDLED;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="setup_default_timer_irq">&lt;code>setup_default_timer_irq()&lt;/code>&lt;/h3>
@@ -60,8 +60,8 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * without legacy PIC/PIT we need this for the HPET0 in legacy
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * replacement mode.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (request_irq(&lt;span style="color:#3677a9">0&lt;/span>, timer_interrupt, flags, &lt;span style="color:#ed9d13">&amp;#34;timer&amp;#34;&lt;/span>, &lt;span style="color:#24909d">NULL&lt;/span>))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pr_info(&lt;span style="color:#ed9d13">&amp;#34;Failed to register legacy timer interrupt&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">request_irq&lt;/span>(&lt;span style="color:#3677a9">0&lt;/span>, timer_interrupt, flags, &lt;span style="color:#ed9d13">&amp;#34;timer&amp;#34;&lt;/span>, &lt;span style="color:#24909d">NULL&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">pr_info&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;Failed to register legacy timer interrupt&lt;/span>&lt;span style="color:#ed9d13">\n&lt;/span>&lt;span style="color:#ed9d13">&amp;#34;&lt;/span>);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="request_irq">&lt;code>request_irq()&lt;/code>&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/**
@@ -78,10 +78,10 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * the documentation for request_threaded_irq() for details.
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">inline&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __must_check
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">request_irq&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> irq, irq_handler_t handler, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">request_irq&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> irq, &lt;span style="color:#6ab825;font-weight:bold">irq_handler_t&lt;/span> handler, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> flags,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *name, &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *dev)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> request_threaded_irq(irq, handler, &lt;span style="color:#24909d">NULL&lt;/span>, flags, name, dev);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">request_threaded_irq&lt;/span>(irq, handler, &lt;span style="color:#24909d">NULL&lt;/span>, flags, name, dev);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="request_threaded_irq">&lt;code>request_threaded_irq()&lt;/code>&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/**
@@ -126,8 +126,8 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * IRQF_TRIGGER_* Specify active edge(s) or level
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">request_threaded_irq&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> irq, irq_handler_t handler,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> irq_handler_t thread_fn, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> irqflags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">request_threaded_irq&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> irq, &lt;span style="color:#6ab825;font-weight:bold">irq_handler_t&lt;/span> handler,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">irq_handler_t&lt;/span> thread_fn, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> irqflags,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *devname, &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *dev_id)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> irqaction *action;
@@ -151,12 +151,12 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ((irqflags &amp;amp; IRQF_NO_SUSPEND) &amp;amp;&amp;amp; (irqflags &amp;amp; IRQF_COND_SUSPEND)))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> desc = irq_to_desc(irq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> desc = &lt;span style="color:#447fcf">irq_to_desc&lt;/span>(irq);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!desc)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!irq_settings_can_request(desc) ||
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> WARN_ON(irq_settings_is_per_cpu_devid(desc)))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!&lt;span style="color:#447fcf">irq_settings_can_request&lt;/span>(desc) ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">WARN_ON&lt;/span>(&lt;span style="color:#447fcf">irq_settings_is_per_cpu_devid&lt;/span>(desc)))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!handler) {
@@ -165,7 +165,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler = irq_default_primary_handler;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> action = kzalloc(&lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> irqaction), GFP_KERNEL);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> action = &lt;span style="color:#447fcf">kzalloc&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> irqaction), GFP_KERNEL);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!action)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -ENOMEM;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -175,18 +175,18 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> action-&amp;gt;name = devname;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> action-&amp;gt;dev_id = dev_id;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = irq_chip_pm_get(&amp;amp;desc-&amp;gt;irq_data);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = &lt;span style="color:#447fcf">irq_chip_pm_get&lt;/span>(&amp;amp;desc-&amp;gt;irq_data);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (retval &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kfree(action);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kfree&lt;/span>(action);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> retval;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = __setup_irq(irq, desc, action);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = &lt;span style="color:#447fcf">__setup_irq&lt;/span>(irq, desc, action);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (retval) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> irq_chip_pm_put(&amp;amp;desc-&amp;gt;irq_data);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kfree(action-&amp;gt;secondary);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> kfree(action);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">irq_chip_pm_put&lt;/span>(&amp;amp;desc-&amp;gt;irq_data);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kfree&lt;/span>(action-&amp;gt;secondary);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kfree&lt;/span>(action);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_DEBUG_SHIRQ_FIXME
@@ -199,18 +199,18 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> flags;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> disable_irq(irq);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> local_irq_save(flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">disable_irq&lt;/span>(irq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">local_irq_save&lt;/span>(flags);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> handler(irq, dev_id);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">handler&lt;/span>(irq, dev_id);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> local_irq_restore(flags);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> enable_irq(irq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">local_irq_restore&lt;/span>(flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">enable_irq&lt;/span>(irq);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> retval;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>EXPORT_SYMBOL(request_threaded_irq);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">EXPORT_SYMBOL&lt;/span>(request_threaded_irq);
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="data-structures">Data Structures&lt;/h2>
 &lt;h3 id="struct-clock_event_device">&lt;code>struct clock_event_device&lt;/code>&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/**
@@ -246,8 +246,8 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> clock_event_device {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> (*event_handler)(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> clock_event_device *);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*set_next_event)(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> evt, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> clock_event_device *);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*set_next_ktime)(ktime_t expires, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> clock_event_device *);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ktime_t next_event;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> (*set_next_ktime)(&lt;span style="color:#6ab825;font-weight:bold">ktime_t&lt;/span> expires, &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> clock_event_device *);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">ktime_t&lt;/span> next_event;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 max_delta_ns;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u64 min_delta_ns;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> u32 mult;
@@ -294,11 +294,11 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * @dir: pointer to the proc/irq/NN/name entry
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> irqaction {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> irq_handler_t handler;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">irq_handler_t&lt;/span> handler;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> *dev_id;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> __percpu *percpu_dev_id;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> irqaction *next;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> irq_handler_t thread_fn;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">irq_handler_t&lt;/span> thread_fn;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> task_struct *&lt;span style="color:#6ab825;font-weight:bold">thread&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> irqaction *secondary;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> irq;

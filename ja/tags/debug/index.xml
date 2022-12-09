@@ -8,16 +8,16 @@
 &lt;p>File: gdb/symtab.h&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> symbol : public general_symbol_info, public allocate_on_obstack
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> symbol ()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">symbol&lt;/span> ()
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Class-initialization of bitfields is only allowed in C++20. */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> : m_domain (UNDEF_DOMAIN),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> m_aclass_index (&lt;span style="color:#3677a9">0&lt;/span>),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> m_is_objfile_owned (&lt;span style="color:#3677a9">1&lt;/span>),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> m_is_argument (&lt;span style="color:#3677a9">0&lt;/span>),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> m_is_inlined (&lt;span style="color:#3677a9">0&lt;/span>),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> maybe_copied (&lt;span style="color:#3677a9">0&lt;/span>),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> subclass (SYMBOL_NONE),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> m_artificial (&lt;span style="color:#24909d">false&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> : &lt;span style="color:#447fcf">m_domain&lt;/span> (UNDEF_DOMAIN),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">m_aclass_index&lt;/span> (&lt;span style="color:#3677a9">0&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">m_is_objfile_owned&lt;/span> (&lt;span style="color:#3677a9">1&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">m_is_argument&lt;/span> (&lt;span style="color:#3677a9">0&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">m_is_inlined&lt;/span> (&lt;span style="color:#3677a9">0&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">maybe_copied&lt;/span> (&lt;span style="color:#3677a9">0&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">subclass&lt;/span> (SYMBOL_NONE),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">m_artificial&lt;/span> (&lt;span style="color:#24909d">false&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* We can&amp;#39;t use an initializer list for members of a base class, and
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> general_symbol_info needs to stay a POD type. */&lt;/span>
@@ -38,7 +38,7 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> is_objfile_owned is false, which only happens for
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> architecture-provided types. */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> symtab *symtab () &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> symtab *&lt;span style="color:#447fcf">symtab&lt;/span> () &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Set the symtab of this symbol to SYMTAB. It is an error to call
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> this if is_objfile_owned is false, which only happens for
@@ -61,7 +61,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Domain code. */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ENUM_BITFIELD(domain_enum) m_domain : SYMBOL_DOMAIN_BITS;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">ENUM_BITFIELD&lt;/span>(domain_enum) m_domain : SYMBOL_DOMAIN_BITS;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Address class. This holds an index into the &amp;#39;symbol_impls&amp;#39;
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> table. The actual enum address_class value is stored there,
@@ -82,32 +82,32 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> symtab
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> compunit_symtab *compunit () &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> compunit_symtab *&lt;span style="color:#447fcf">compunit&lt;/span> () &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> m_compunit;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> set_compunit (&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> compunit_symtab *compunit)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">set_compunit&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> compunit_symtab *compunit)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> m_compunit = compunit;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> linetable *linetable () &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> linetable *&lt;span style="color:#447fcf">linetable&lt;/span> () &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> m_linetable;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> set_linetable (&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> linetable *linetable)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">set_linetable&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> linetable *linetable)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> m_linetable = linetable;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">enum&lt;/span> language language () &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">enum&lt;/span> language &lt;span style="color:#447fcf">language&lt;/span> () &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> m_language;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> set_language (&lt;span style="color:#6ab825;font-weight:bold">enum&lt;/span> language language)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> &lt;span style="color:#447fcf">set_language&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">enum&lt;/span> language language)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> m_language = language;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
@@ -162,15 +162,15 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> gdb::function_view&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> (symtab *)&amp;gt; callback)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> compunit_symtab *cust;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span>* base_name = lbasename (name);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span>* base_name = &lt;span style="color:#447fcf">lbasename&lt;/span> (name);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (cust = first; cust != &lt;span style="color:#24909d">NULL&lt;/span> &amp;amp;&amp;amp; cust != after_last; cust = cust-&amp;gt;next)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (symtab *s : cust-&amp;gt;filetabs ())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (symtab *s : cust-&amp;gt;&lt;span style="color:#447fcf">filetabs&lt;/span> ())
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (compare_filenames_for_search (s-&amp;gt;filename, name))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">compare_filenames_for_search&lt;/span> (s-&amp;gt;filename, name))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (callback (s))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">callback&lt;/span> (s))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">true&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">continue&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
@@ -178,12 +178,12 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Before we invoke realpath, which can get expensive when many
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> files are involved, do a quick comparison of the basenames. */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (! basenames_may_differ
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;amp;&amp;amp; FILENAME_CMP (base_name, lbasename (s-&amp;gt;filename)) != &lt;span style="color:#3677a9">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;amp;&amp;amp; &lt;span style="color:#447fcf">FILENAME_CMP&lt;/span> (base_name, &lt;span style="color:#447fcf">lbasename&lt;/span> (s-&amp;gt;filename)) != &lt;span style="color:#3677a9">0&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">continue&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (compare_filenames_for_search (symtab_to_fullname (s), name))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">compare_filenames_for_search&lt;/span> (&lt;span style="color:#447fcf">symtab_to_fullname&lt;/span> (s), name))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (callback (s))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">callback&lt;/span> (s))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">true&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">continue&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
@@ -192,16 +192,16 @@
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> this symtab and use its absolute path. */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (real_path != &lt;span style="color:#24909d">NULL&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *fullname = symtab_to_fullname (s);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> *fullname = &lt;span style="color:#447fcf">symtab_to_fullname&lt;/span> (s);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> gdb_assert (IS_ABSOLUTE_PATH (real_path));
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> gdb_assert (IS_ABSOLUTE_PATH (name));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">gdb_assert&lt;/span> (&lt;span style="color:#447fcf">IS_ABSOLUTE_PATH&lt;/span> (real_path));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">gdb_assert&lt;/span> (&lt;span style="color:#447fcf">IS_ABSOLUTE_PATH&lt;/span> (name));
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> gdb::unique_xmalloc_ptr&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">char&lt;/span>&amp;gt; fullname_real_path
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> = gdb_realpath (fullname);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fullname = fullname_real_path.get ();
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (FILENAME_CMP (real_path, fullname) == &lt;span style="color:#3677a9">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> = &lt;span style="color:#447fcf">gdb_realpath&lt;/span> (fullname);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fullname = fullname_real_path.&lt;span style="color:#447fcf">get&lt;/span> ();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">FILENAME_CMP&lt;/span> (real_path, fullname) == &lt;span style="color:#3677a9">0&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (callback (s))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">callback&lt;/span> (s))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">true&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">continue&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
@@ -227,15 +227,15 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Here we are interested in canonicalizing an absolute path, not
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> absolutizing a relative path. */&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (IS_ABSOLUTE_PATH (name))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">IS_ABSOLUTE_PATH&lt;/span> (name))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> real_path = gdb_realpath (name);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> gdb_assert (IS_ABSOLUTE_PATH (real_path.get ()));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> real_path = &lt;span style="color:#447fcf">gdb_realpath&lt;/span> (name);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">gdb_assert&lt;/span> (&lt;span style="color:#447fcf">IS_ABSOLUTE_PATH&lt;/span> (real_path.&lt;span style="color:#447fcf">get&lt;/span> ()));
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (objfile *objfile : current_program_space-&amp;gt;objfiles ())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (objfile *objfile : current_program_space-&amp;gt;&lt;span style="color:#447fcf">objfiles&lt;/span> ())
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (iterate_over_some_symtabs (name, real_path.get (),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">iterate_over_some_symtabs&lt;/span> (name, real_path.&lt;span style="color:#447fcf">get&lt;/span> (),
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> objfile-&amp;gt;compunit_symtabs, &lt;span style="color:#24909d">NULL&lt;/span>,
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> callback))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;
@@ -244,9 +244,9 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Same search rules as above apply here, but now we look thru the
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> psymtabs. */&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (objfile *objfile : current_program_space-&amp;gt;objfiles ())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (objfile *objfile : current_program_space-&amp;gt;&lt;span style="color:#447fcf">objfiles&lt;/span> ())
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (objfile-&amp;gt;map_symtabs_matching_filename (name, real_path.get (),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (objfile-&amp;gt;&lt;span style="color:#447fcf">map_symtabs_matching_filename&lt;/span> (name, real_path.&lt;span style="color:#447fcf">get&lt;/span> (),
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> callback))
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
@@ -260,7 +260,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> symtab *result = &lt;span style="color:#24909d">NULL&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> iterate_over_symtabs (name, [&amp;amp;] (symtab *symtab)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">iterate_over_symtabs&lt;/span> (name, [&amp;amp;] (symtab *symtab)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> result = symtab;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#24909d">true&lt;/span>;

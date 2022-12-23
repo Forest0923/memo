@@ -1,21 +1,14 @@
 ---
-title: "Install Arch Linux (Multi-disks + BTRFS + Snapper)"
-draft: false
-weight: 20
+title: "Install Arch Linux (BTRFS + Timeshift)"
+draft: true
+weight: 10
 ---
-Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Snapper.
+Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Timeshift.
 
 ## System
 
 - Intel CPU
 - UEFI Boot
-- Disks
-
-```text
-/dev/vda
-/dev/vdb
-/dev/vdc
-```
 
 ## Install
 
@@ -56,26 +49,29 @@ The meaning of the reflector option is as follows.
 
 ### **Disk Partitioning and Formatting**
 
-Use gdisk to create partitions. We will create an EFI partition (about 200MB) in `/dev/vda`, and the rest of the space and devices will be Linux Filesystem.
+Use gdisk to change the partition. In this example, we assume that Arch Linux is installed in `/dev/vda`.
 
 ```sh
 gdisk /dev/vda
-gdisk /dev/vdb
-gdisk /dev/vdc
 ```
+
+Allocate the first partition as an EFI partition of about 200MB. The remaining space will be allocated as a Linux Filesystem. Assuming that there is enough memory, we will not allocate the swap space.
 
 ```text
 /dev/vda1: EFI system (200M)
 /dev/vda2: Linux filesystem
-/dev/vdb1: Linux filesystem
-/dev/vdc1: Linux filesystem
 ```
 
-EFI partition is formatted as fat, and Linux Filesystem is formatted as BTRFS.
+EFI partition is formatted with fat.
 
 ```sh
 mkfs.fat -F32 /dev/vda1
-mkfs.btrfs /dev/vda2 /dev/vdb1 /dev/vdc1
+```
+
+Linux Filesystem is formatted with BTRFS.
+
+```sh
+mkfs.btrfs /dev/vda2
 ```
 
 Create subvolume and mount devices.
@@ -83,30 +79,21 @@ Create subvolume and mount devices.
 ```sh
 mount /dev/vda2 /mnt
 btrfs su cr /mnt/@
-btrfs su cr /mnt/@home
-btrfs su cr /mnt/@snapshots
-btrfs su cr /mnt/@var_log
-
 umount /mnt
-
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/vda2 /mnt
-mkdir -p /mnt/{boot,home,.snapshots,var/log}
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/vda2 /mnt/home
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/vda2 /mnt/.snapshots
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/vda2 /mnt/var/log
-
-mount /dev/vda1 /mnt/boot
+mount -o compress=lzo,subvol=@ /dev/vda2 /mnt
+mkdir -p /mnt/boot/efi
+mount /dev/vda1 /mnt/boot/efi
 ```
 
-### **Base install**
+### **Base Install**
 
 Install the package in the root directory, `/mnt`.
 
 ```sh
-pacstrap /mnt base linux linux-firmware intel-ucode vim
+pacstrap /mnt base linux linux-firmware vim
 ```
 
-### **Create fstab File**
+### **fstab**
 
 Generate the fstab file, which holds the information about which device to mount.
 
@@ -142,7 +129,7 @@ To set the locale, first generate the locale. Uncomment the entries you want to 
 vim /etc/locale.gen
 ```
 
-```diff
+```udiff
 - # en_US.UTF-8 UTF-8
 + en_US.UTF-8 UTF-8
 ```
@@ -166,7 +153,7 @@ Register hostname in `/etc/hostname`.
 vim /etc/hostname
 ```
 
-```diff
+```udiff
 + arch
 ```
 
@@ -246,7 +233,7 @@ Install Git.
 pacman -S git
 ```
 
-Install cron which is used by Snapper. cron is used to execute the program on a scheduled basis.
+Install cron which is used by Timeshift. cron is used to execute the program on a scheduled basis.
 
 ```sh
 pacman -S cron
@@ -258,41 +245,12 @@ Install reflector to optimize the mirrorlist.
 pacman -S reflector
 ```
 
-Install Snapper.
-
-```sh
-pacman -S snapper
-```
-
-Install the PGP Keyring for Arch Linux.
-
-```sh
-sudo pacman -S archlinux-keyring
-```
-
-### **Configuring mkinitcpio**
-
-Change the configurations, and reflect the changes with mkinitcpio.
-
-```sh
-vim /etc/mkinitcpio.conf
-```
-
-```diff
-- MODULES=()
-+ MODULES=(btrfs)
-```
-
-```sh
-mkinitcpio -p linux
-```
-
 ### **Bootloader**
 
 Install Grub and create config file.
 
 ```sh
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
@@ -352,52 +310,27 @@ reboot
 
 [Desktop Environment](../desktop-env/)
 
-### **Configuring Snapper**
+### **Install Timeshift**
+
+Install Timeshift with AUR helper.
+
+{{< tabpane >}}
+{{< tab header="paru" lang="sh" >}}
+
+git clone https://aur.archlinux.org/paru
+cd paru
+makepkg -si
+
+{{< /tab >}}
+{{< tab header="yay" lang="sh" >}}
+
+git clone https://aur.archlinux.org/yay
+cd yay
+makepkg -si
+
+{{< /tab >}}
+{{< /tabpane >}}
 
 ```sh
-sudo umount /.snapshots
-sudo rm -r /.snapshots
-sudo snapper -c root create-config /
-sudo btrfs su delete /.snapshots
-sudo mkdir /.snapshots
-sudo mount -a
-sudo chmod 750 /.snapshots
-sudo vim /etc/snapper/configs/root
-```
-
-```diff
-+ TIMELINE_LIMIT_HOURLY="5"
-+ TIMELINE_LIMIT_DAILY="7"
-+ TIMELINE_LIMIT_WEEKLY="0"
-+ TIMELINE_LIMIT_MONTHLY="0"
-+ TIMELINE_LIMIT_YEARLY="0"
-```
-
-```sh
-sudo systemctl enable --now snapper-timeline.timer
-sudo systemctl enable --now snapper-cleanup.timer
-paru -S snap-pac-grub snapper-gui-git
-sudo mkdir /etc/pacman.d/hooks
-sudo vim /etc/pacman.d/hooks/50-bootbackup.hook
-```
-
-```diff
-+ [Trigger]
-+ Operation = Upgrade
-+ Operation = Install
-+ Operation = Remove
-+ Type = Path
-+ Target = boot/*
-+ 
-+ [Action]
-+ Depends = rsync
-+ Description = Backing up /boot...
-+ When = PreTransaction
-+ Exec = /usr/bin/rsync -a --delete /boot /.bootbackup
-```
-
-```sh
-sudo pacman -S rsync
-sudo chmod a+rx /.snapshots
-sudo chown :mori /.snapshots
+paru -S timeshift
 ```

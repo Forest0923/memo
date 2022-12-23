@@ -1,10 +1,18 @@
 ---
-title: "Dual Boot"
-draft: true
+title: "Dual boot (with Windows 11) + btrfs + systemd-boot"
+draft: false
 weight: 30
 ---
 
 ## Goal
+
+| Settings        |              |
+| --------------- | ------------ |
+| Dual Booting    | Windows 11   |
+| Filesystem      | Btrfs        |
+| Boot Loader     | Systemd-boot |
+| Disk            | single-disk  |
+| Disk Encryption | false        |
 
 - Dual boot booting Windows 11 and Arch Linux
 - Using systemd-boot as a bootloader

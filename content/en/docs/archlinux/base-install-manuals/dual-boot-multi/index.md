@@ -1,24 +1,28 @@
 ---
-title: "Dual Booting (mono disk + Windows10 and Arch Linux)"
+title: "Dual boot (with Windows 10) + multi-disks + btrfs + grub"
 draft: false
 weight: 30
 ---
+
+## Goal
+
+| Settings        |             |
+| --------------- | ----------- |
+| Dual Booting    | Windows 10  |
+| Filesystem      | Btrfs       |
+| Boot Loader     | GRUB        |
+| Disk            | multi-disks |
+| Disk Encryption | false       |
+
 ## System
 
 - Preinstalled OS: Windows 10 (64 bit Home)
 - CPU: Intel
-- Storage: `/dev/sda`
-
-## Preparation in Windows 10
-
-First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.
-
-- Before:
-![disk-layout-before](dual-boot-disk-before.png)
-- After:
-![disk-layout-after](dual-boot-disk-after.png)
-
-Then, install Arch Linux as follows.
+- GPU: Nvidia
+- Storage:
+  - `/dev/sda`: Windows sub
+  - `/dev/sdb`: Windows main
+  - `/dev/sdc`: Linux
 
 ## Install
 
@@ -50,48 +54,62 @@ reflector -c Japan --sort rate -a 6 --save /etc/pacman.d/mirrorlist
 
 The meaning of the reflector option is as follows.
 
-|Options|Description|
-|-|-|
-|`-c Japan`|Restrict mirrors to selected countries. |
-|`--sort rate`|Sort by download rate.|
-|`-a 6`|Restrict to servers synchronized within 6 hours.|
-|`--save /etc/pacman.d/mirrorlist`|Save the mirror list to the specified path.|
+| Options                           | Description                                      |
+| --------------------------------- | ------------------------------------------------ |
+| `-c Japan`                        | Restrict mirrors to selected countries.          |
+| `--sort rate`                     | Sort by download rate.                           |
+| `-a 6`                            | Restrict to servers synchronized within 6 hours. |
+| `--save /etc/pacman.d/mirrorlist` | Save the mirror list to the specified path.      |
 
 ### **Disk Partitioning and Formatting**
 
-We will assume that the partition in `/dev/sda` is as follows.
+First, find the EFI partition in Windows. Use the following command to find the devices allocated as an EFI partition.
+
+```sh
+fdisk -l
+```
+
+In this example, we assume that `/dev/sdb1` is the EFI partition. The size of the partition is a bit small (100MB), but it is no problem for now. We will use `/dev/sdc` as the Linux Filesystem.
 
 ```text
-sda
-├─sda1 <-- EFI Partition
-├─sda2
-├─sda3
-├─sda4
-└─sda5 <-- Empty Partition for Linux Filesystem
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 931.5G  0 disk
+└─sda1   8:1    0 931.5G  0 part /windows_d
+sdb      8:16   0 238.5G  0 disk
+├─sdb1   8:17   0   100M  0 part /boot/efi
+├─sdb2   8:18   0    16M  0 part
+├─sdb3   8:19   0 237.4G  0 part /windows_c
+└─sdb4   8:20   0   990M  0 part
+sdc      8:32   0 476.9G  0 disk
+└─sdc1   8:33   0 476.9G  0 part /
+sr0     11:0    1  1024M  0 rom
 ```
 
-First, update the partition table so that the empty partition you created is used as Linux Filesystem.
-
 ```sh
-cfdisk /dev/sda
+fdisk /dev/sdc
 ```
 
-Format the Linux filesystem partition with BTRFS, create a subvolume, and mount it.
+Format with BTRFS.
 
 ```sh
-mkfs.btrfs /dev/sda5
-mount /dev/sda5 /mnt
+mkfs.btrfs /dev/sdc1
+```
+
+Create subvolume and mount devices.
+
+```sh
+mount /dev/sdc1 /mnt
 btrfs su cr /mnt/@
-btrfs su cr /mnt/@home
-btrfs su cr /mnt/@snapshots
-btrfs su cr /mnt/@var_log
 umount /mnt
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/sda5 /mnt
-mkdir -p /mnt/{boot,home,.snapshots,var/log}
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/sda5 /mnt/home
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/sda5 /mnt/.snapshots
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var/log
-mount /dev/sda5 /mnt/boot
+mount -o compress=lzo,subvol=@ /dev/sdc1 /mnt
+mkdir -p /mnt/boot/efi
+mount /dev/sdb2 /mnt/boot/efi
+
+mkdir /mnt/windows_c
+mount /dev/sdb4 /mnt/windows_c
+
+mkdir /mnt/windows_d
+mount /dev/sdb1 /mnt/windows_d
 ```
 
 ### **Base install**
@@ -162,7 +180,7 @@ Register hostname in `/etc/hostname`.
 vim /etc/hostname
 ```
 
-```udiff
+```diff
 + arch
 ```
 
@@ -189,26 +207,9 @@ passwd
 ### **Install Additional Packages**
 
 ```sh
-pacman -S grub efibootmgr networkmanager network-manager-applet \
- dialog os-prober mtools dosfstools base-devel linux-headers snapper \
-reflector cron git xdg-utils xdg-user-dirs ntfs-3g
-```
-
-### **Configuring mkinitcpio**
-
-Change the configurations, and reflect the changes with mkinitcpio.
-
-```sh
-vim /etc/mkinitcpio.conf
-```
-
-```diff
-- MODULES=()
-+ MODULES=(btrfs)
-```
-
-```sh
-mkinitcpio -p linux
+pacman -S grub efibootmgr networkmanager network-manager-applet wireless_tools \
+wpa_supplicant dialog os-prober mtools dosfstools base-devel linux-headers git \
+reflector bluez bluez-utils pulseaudio-bluetooth ntfs-3g xdg-utils xdg-user-dirs
 ```
 
 ### **Bootloader**
@@ -216,7 +217,7 @@ mkinitcpio -p linux
 Install Grub and create config file.
 
 ```sh
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
@@ -272,8 +273,27 @@ umount -a
 reboot
 ```
 
-## Trouble shooting
+### **Graphic Driver**
 
-- Boot entry of windows disappears from grub boot loader
-  - Add `GRUB_DISABLE_OS_PROBER=false` to `/etc/default/grub` and recreate grub.cfg
-  - The problem is deactivated os-prober. os-prober automatically finds operating systems and adds their boot entry, but sometimes it is deactivated. The option reactivate os-prober.
+{{< tabpane >}}
+{{< tab header="Nvidia" lang="sh" >}}
+
+sudo pacman -S nvidia nvidia-utils nvidia-dkms
+
+{{< /tab >}}
+{{< /tabpane >}}
+
+### **Fonts**
+
+Copy fonts from windows partition.
+
+```sh
+sudo mkdir /usr/share/fonts/WindowsFonts
+sudo cp /windows/Windows/Fonts/* /usr/share/fonts/WindowsFonts/
+sudo chmod 644 /usr/share/fonts/WindowsFonts/*
+fc-cache -f
+```
+
+### **Install Desktop Environment**
+
+[Desktop Environment](../desktop-env/)

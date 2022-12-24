@@ -15,12 +15,15 @@ Install graphics driver.
 {{< tab header="Intel" lang="sh" >}}
 
 sudo pacman -S xf86-video-intel
-sudo pacman -S nvidia nvidia-utils nvidia-dkms
+
+{{< /tab >}}
+{{< tab header="AMD" lang="sh" >}}
+
+sudo pacman -S xf86-video-amdgpu
 
 {{< /tab >}}
 {{< tab header="Nvidia" lang="sh" >}}
 
-sudo pacman -S xf86-video-intel
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
 
 {{< /tab >}}
@@ -49,6 +52,11 @@ sudo pacman -S lightdm lightdm-gtk-greeter
 sudo pacman -S gdm
 
 {{< /tab >}}
+{{< tab header="sddm" lang="sh" >}}
+
+sudo pacman -S sddm
+
+{{< /tab >}}
 {{< /tabpane >}}
 
 ### **Desktop Environment**
@@ -69,6 +77,11 @@ sudo pacman -S gnome gnome-tweaks
 sudo pacman -S budgie-desktop gnome
 
 {{< /tab >}}
+{{< tab header="kde" lang="sh" >}}
+
+sudo pacman -S plasma kde-applications
+
+{{< /tab >}}
 {{< /tabpane >}}
 
 ### **Systemd**
@@ -84,6 +97,11 @@ systemctl enable lightdm
 {{< tab header="gdm" lang="sh" >}}
 
 systemctl enable gdm
+
+{{< /tab >}}
+{{< tab header="sddm" lang="sh" >}}
+
+systemctl enable sddm
 
 {{< /tab >}}
 {{< /tabpane >}}

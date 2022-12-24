@@ -13,10 +13,6 @@ weight: 30
 | Disk            | single-disk |
 | Disk Encryption | false       |
 
-- Preinstalled OS: Windows 10 (64 bit Home)
-- CPU: Intel
-- Storage: `/dev/sda`
-
 ## Preparation in Windows 10
 
 First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.
@@ -81,7 +77,7 @@ sda
 First, update the partition table so that the empty partition you created is used as Linux Filesystem.
 
 ```sh
-cfdisk /dev/sda
+gdisk /dev/sda
 ```
 
 Format the Linux filesystem partition with BTRFS, create a subvolume, and mount it.
@@ -94,11 +90,11 @@ btrfs su cr /mnt/@home
 btrfs su cr /mnt/@snapshots
 btrfs su cr /mnt/@var_log
 umount /mnt
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/sda5 /mnt
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda5 /mnt
 mkdir -p /mnt/{boot,home,.snapshots,var/log}
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/sda5 /mnt/home
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/sda5 /mnt/.snapshots
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var/log
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda5 /mnt/home
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda5 /mnt/.snapshots
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var/log
 mount /dev/sda5 /mnt/boot
 ```
 
@@ -106,9 +102,18 @@ mount /dev/sda5 /mnt/boot
 
 Install the package in the root directory, `/mnt`.
 
-```sh
+{{< tabpane >}}
+{{< tab header="Intel" lang="sh" >}}
+
 pacstrap /mnt base linux linux-firmware vim intel-ucode
-```
+
+{{< /tab >}}
+{{< tab header="AMD" lang="sh" >}}
+
+pacstrap /mnt base linux linux-firmware vim amd-ucode
+
+{{< /tab >}}
+{{< /tabpane >}}
 
 ### **fstab**
 
@@ -199,7 +204,7 @@ passwd
 ```sh
 pacman -S grub efibootmgr networkmanager network-manager-applet \
  dialog os-prober mtools dosfstools base-devel linux-headers snapper \
-reflector cron git xdg-utils xdg-user-dirs ntfs-3g
+ reflector cron git xdg-utils xdg-user-dirs ntfs-3g
 ```
 
 ### **Configuring mkinitcpio**
@@ -282,6 +287,6 @@ reboot
 
 ## Trouble shooting
 
-- Boot entry of windows disappears from grub boot loader
+- Boot entry for windows disappears from grub boot loader
   - Add `GRUB_DISABLE_OS_PROBER=false` to `/etc/default/grub` and recreate grub.cfg
   - The problem is deactivated os-prober. os-prober automatically finds operating systems and adds their boot entry, but sometimes it is deactivated. The option reactivate os-prober.

@@ -86,6 +86,18 @@ sudo pacman -S emacs-nox
 paru -S timeshift
 ```
 
+## zram
+
+- zramd
+
+```sh
+paru -S zramd
+```
+
+```sh
+sudo systemctl enable --now zramd.service
+```
+
 ## Browser
 
 - Brave browser

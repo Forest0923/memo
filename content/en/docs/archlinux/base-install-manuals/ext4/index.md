@@ -14,13 +14,6 @@ Install Arch Linux with the following settings.
 | Disk            | single-disk |
 | Disk Encryption | false       |
 
-## Install flow
-
-- Install Windows 11
-- shrink disk for linux
-- boot from live usb
-- install arch linux
-
 ## ISO
 
 [Arch Linux Downloads](https://archlinux.org/download/)
@@ -29,22 +22,15 @@ Install Arch Linux with the following settings.
 
 ```sh
 loadkeys jp106
-fdisk /dev/sda
-cryptsetup luksFormat /dev/sda4
-cryptsetup liksOpen /dev/sda4 luksroot
-mkfs.btrfs /dev/mapper/luksroot
-mount /dev/mapper/luksroot /mnt
-btrfs su cr /mnt/@
-btrfs su cr /mnt/@home
-btrfs su cr /mnt/@snapshots
-btrfs su cr /mnt/@var_log
-umount /mnt
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/mapper/luksroot /mnt
-mkdir -p /mnt/{boot,home,.snapshots,var/log}
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/mapper/luksroot /mnt/home
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/mapper/luksroot /mnt/.snapshots
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/mapper/luksroot /mnt/var/log
+timedatectl set-ntp true
+
+gdisk /dev/sda
+
+mkfs.fat -F32 /dev/sda1
+mkfs.ext4 /dev/sda2
+mount /dev/sda2 /mnt
 mount /dev/sda1 /mnt/boot
+
 pacman -Syy
 pacman -S archlinux-keyring
 pacstrap /mnt base linux linux-firmware vim intel-ucode # or amd-ucode
@@ -55,22 +41,22 @@ arch-chroot /mnt
 ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 hwclock --systohc
 
-vim /etc/locale.gen
+sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 echo KEYMAP=jp106 >> /etc/vconsole.conf
 echo arch > /etc/hostname
 vim /etc/hosts
+echo -e "127.0.0.1\tlocalhost
+::1\t\tlocalhost
+127.0.1.1\tarch.localdomain\tarch" >> /etc/hosts
+
 passwd
 
 pacman -S efibootmgr networkmanager network-manager-applet dialog os-prober mtools dosfstools base-devel linux-headers reflector git xdg-utils xdg-user-dirs bluez bluez-utils
 
-bootctl --path=/boot install
-vim /boot/loader/loader.conf
-
-vim /etc/mkinitcpio.conf
-# btrfs, encrypt
-mkinitcpio -p linux
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
 
 systemctl enable NetworkManager
 systemctl enable bluetooth

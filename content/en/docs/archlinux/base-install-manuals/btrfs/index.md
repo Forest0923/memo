@@ -4,7 +4,7 @@ draft: false
 weight: 11
 ---
 
-## Goal
+Install Arch Linux with the following settings.
 
 | Settings        |             |
 | --------------- | ----------- |
@@ -14,17 +14,6 @@ weight: 11
 | Disk            | single-disk |
 | Disk Encryption | false       |
 
-- Dual boot booting Windows 11 and Arch Linux
-- Using systemd-boot as a bootloader
-- Encrypt linux partition using LUKS
-
-## Install flow
-
-- Install Windows 11
-- shrink disk for linux
-- boot from live usb
-- install arch linux
-
 ## ISO
 
 [Arch Linux Downloads](https://archlinux.org/download/)
@@ -33,22 +22,28 @@ weight: 11
 
 ```sh
 loadkeys jp106
-fdisk /dev/sda
-cryptsetup luksFormat /dev/sda4
-cryptsetup liksOpen /dev/sda4 luksroot
-mkfs.btrfs /dev/mapper/luksroot
-mount /dev/mapper/luksroot /mnt
-btrfs su cr /mnt/@
-btrfs su cr /mnt/@home
-btrfs su cr /mnt/@snapshots
-btrfs su cr /mnt/@var_log
+timedatectl set-ntp true
+
+gdisk /dev/sda
+
+mkfs.fat -F32 /dev/sda1
+mkfs.btrfs /dev/sda2
+
+mount /dev/sda2 /mnt
+btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@snapshots
+btrfs subvolume create /mnt/@var_log
 umount /mnt
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/mapper/luksroot /mnt
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda2 /mnt
 mkdir -p /mnt/{boot,home,.snapshots,var/log}
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/mapper/luksroot /mnt/home
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/mapper/luksroot /mnt/.snapshots
-mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/mapper/luksroot /mnt/var/log
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda2 /mnt/home
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda2 /mnt/.snapshots
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
+
 mount /dev/sda1 /mnt/boot
+mount /dev/sda2 /mnt
+
 pacman -Syy
 pacman -S archlinux-keyring
 pacstrap /mnt base linux linux-firmware vim intel-ucode # or amd-ucode
@@ -59,22 +54,27 @@ arch-chroot /mnt
 ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 hwclock --systohc
 
-vim /etc/locale.gen
+sed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 locale-gen
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 echo KEYMAP=jp106 >> /etc/vconsole.conf
 echo arch > /etc/hostname
 vim /etc/hosts
+echo -e "127.0.0.1\tlocalhost
+::1\t\tlocalhost
+127.0.1.1\tarch.localdomain\tarch" >> /etc/hosts
+
 passwd
 
-pacman -S efibootmgr networkmanager network-manager-applet dialog os-prober mtools dosfstools base-devel linux-headers reflector git xdg-utils xdg-user-dirs bluez bluez-utils
+pacman -S grub efibootmgr networkmanager network-manager-applet \
+dialog os-prober mtools dosfstools base-devel linux-headers \
+reflector git xdg-utils xdg-user-dirs bluez bluez-utils
 
-bootctl --path=/boot install
-vim /boot/loader/loader.conf
-
-vim /etc/mkinitcpio.conf
-# btrfs, encrypt
+sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
 mkinitcpio -p linux
+
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
 
 systemctl enable NetworkManager
 systemctl enable bluetooth

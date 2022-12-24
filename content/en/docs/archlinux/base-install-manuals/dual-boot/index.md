@@ -4,7 +4,7 @@ draft: false
 weight: 30
 ---
 
-## Goal
+Install Arch Linux with the following settings.
 
 | Settings        |              |
 | --------------- | ------------ |
@@ -13,10 +13,6 @@ weight: 30
 | Boot Loader     | Systemd-boot |
 | Disk            | single-disk  |
 | Disk Encryption | false        |
-
-- Dual boot booting Windows 11 and Arch Linux
-- Using systemd-boot as a bootloader
-- Encrypt linux partition using LUKS
 
 ## Install flow
 
@@ -67,7 +63,9 @@ echo arch > /etc/hostname
 vim /etc/hosts
 passwd
 
-pacman -S efibootmgr networkmanager network-manager-applet dialog os-prober mtools dosfstools base-devel linux-headers reflector git xdg-utils xdg-user-dirs bluez bluez-utils
+pacman -S grub efibootmgr networkmanager network-manager-applet \
+dialog os-prober mtools dosfstools base-devel linux-headers \
+reflector git xdg-utils xdg-user-dirs bluez bluez-utils
 
 bootctl --path=/boot install
 vim /boot/loader/loader.conf

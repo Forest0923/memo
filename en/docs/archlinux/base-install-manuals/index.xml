@@ -30,33 +30,19 @@
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;h2 id="install-flow">Install flow&lt;/h2>
-&lt;ul>
-&lt;li>Install Windows 11&lt;/li>
-&lt;li>shrink disk for linux&lt;/li>
-&lt;li>boot from live usb&lt;/li>
-&lt;li>install arch linux&lt;/li>
-&lt;/ul>
 &lt;h2 id="iso">ISO&lt;/h2>
 &lt;p>&lt;a href="https://archlinux.org/download/">Arch Linux Downloads&lt;/a>&lt;/p>
 &lt;h2 id="install">Install&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fdisk /dev/sda
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cryptsetup luksFormat /dev/sda4
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cryptsetup liksOpen /dev/sda4 luksroot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/mapper/luksroot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/mapper/luksroot /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@var_log
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/mapper/luksroot /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,.snapshots,var/log}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/mapper/luksroot /mnt/home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/mapper/luksroot /mnt/.snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/mapper/luksroot /mnt/var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.fat -F32 /dev/sda1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.ext4 /dev/sda2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -Syy
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S archlinux-keyring
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode &lt;span style="color:#999;font-style:italic"># or amd-ucode&lt;/span>
@@ -67,22 +53,22 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hwclock --systohc
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/locale.gen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/#en_US.UTF-8/en_US.UTF-8/&amp;#39;&lt;/span> /etc/locale.gen
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>locale-gen
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/hosts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;127.0.0.1\tlocalhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">::1\t\tlocalhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">127.0.1.1\tarch.localdomain\tarch&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/hosts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S efibootmgr networkmanager network-manager-applet dialog os-prober mtools dosfstools base-devel linux-headers reflector git xdg-utils xdg-user-dirs bluez bluez-utils
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bootctl --path=/boot install
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /boot/loader/loader.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/mkinitcpio.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># btrfs, encrypt&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
@@ -98,7 +84,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: btrfs + grub</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/btrfs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/btrfs/</guid><description>
-&lt;h2 id="goal">Goal&lt;/h2>
+&lt;p>Install Arch Linux with the following settings.&lt;/p>
 &lt;table>
 &lt;thead>
 &lt;tr>
@@ -129,38 +115,32 @@
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;ul>
-&lt;li>Dual boot booting Windows 11 and Arch Linux&lt;/li>
-&lt;li>Using systemd-boot as a bootloader&lt;/li>
-&lt;li>Encrypt linux partition using LUKS&lt;/li>
-&lt;/ul>
-&lt;h2 id="install-flow">Install flow&lt;/h2>
-&lt;ul>
-&lt;li>Install Windows 11&lt;/li>
-&lt;li>shrink disk for linux&lt;/li>
-&lt;li>boot from live usb&lt;/li>
-&lt;li>install arch linux&lt;/li>
-&lt;/ul>
 &lt;h2 id="iso">ISO&lt;/h2>
 &lt;p>&lt;a href="https://archlinux.org/download/">Arch Linux Downloads&lt;/a>&lt;/p>
 &lt;h2 id="install">Install&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fdisk /dev/sda
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cryptsetup luksFormat /dev/sda4
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cryptsetup liksOpen /dev/sda4 luksroot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/mapper/luksroot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/mapper/luksroot /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@var_log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.fat -F32 /dev/sda1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sda2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@var_log
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/mapper/luksroot /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda2 /mnt
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,.snapshots,var/log}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/mapper/luksroot /mnt/home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/mapper/luksroot /mnt/.snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/mapper/luksroot /mnt/var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda2 /mnt/home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda2 /mnt/.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -Syy
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S archlinux-keyring
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode &lt;span style="color:#999;font-style:italic"># or amd-ucode&lt;/span>
@@ -171,22 +151,27 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hwclock --systohc
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/locale.gen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/#en_US.UTF-8/en_US.UTF-8/&amp;#39;&lt;/span> /etc/locale.gen
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>locale-gen
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/hosts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;127.0.0.1\tlocalhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">::1\t\tlocalhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">127.0.1.1\tarch.localdomain\tarch&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/hosts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S efibootmgr networkmanager network-manager-applet dialog os-prober mtools dosfstools base-devel linux-headers reflector git xdg-utils xdg-user-dirs bluez bluez-utils
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>dialog os-prober mtools dosfstools base-devel linux-headers &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>reflector git xdg-utils xdg-user-dirs bluez bluez-utils
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bootctl --path=/boot install
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /boot/loader/loader.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/mkinitcpio.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># btrfs, encrypt&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/MODULES=()/MODULES=(btrfs)/&amp;#39;&lt;/span> /etc/mkinitcpio.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
@@ -233,11 +218,6 @@
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;ul>
-&lt;li>Preinstalled OS: Windows 10 (64 bit Home)&lt;/li>
-&lt;li>CPU: Intel&lt;/li>
-&lt;li>Storage: &lt;code>/dev/sda&lt;/code>&lt;/li>
-&lt;/ul>
 &lt;h2 id="preparation-in-windows-10">Preparation in Windows 10&lt;/h2>
 &lt;p>First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.&lt;/p>
 &lt;ul>
@@ -295,7 +275,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda4
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sda5 &amp;lt;-- Empty Partition for Linux Filesystem
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>First, update the partition table so that the empty partition you created is used as Linux Filesystem.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cfdisk /dev/sda
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Format the Linux filesystem partition with BTRFS, create a subvolume, and mount it.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sda5
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda5 /mnt
@@ -304,16 +284,35 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@snapshots
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@var_log
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/sda5 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda5 /mnt
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,.snapshots,var/log}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/sda5 /mnt/home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/sda5 /mnt/.snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda5 /mnt/home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda5 /mnt/.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var/log
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda5 /mnt/boot
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="base-install">&lt;strong>Base install&lt;/strong>&lt;/h3>
 &lt;p>Install the package in the root directory, &lt;code>/mnt&lt;/code>.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="fstab">&lt;strong>fstab&lt;/strong>&lt;/h3>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Intel&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-01" aria-selected="false">AMD&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim amd-ucode&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="fstab">&lt;strong>fstab&lt;/strong>&lt;/h3>
 &lt;p>Generate the fstab file, which holds the information about which device to mount.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-the-root-directory">&lt;strong>Change the Root Directory&lt;/strong>&lt;/h3>
@@ -347,7 +346,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-additional-packages">&lt;strong>Install Additional Packages&lt;/strong>&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> dialog os-prober mtools dosfstools base-devel linux-headers snapper &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>reflector cron git xdg-utils xdg-user-dirs ntfs-3g
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> reflector cron git xdg-utils xdg-user-dirs ntfs-3g
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="configuring-mkinitcpio">&lt;strong>Configuring mkinitcpio&lt;/strong>&lt;/h3>
 &lt;p>Change the configurations, and reflect the changes with mkinitcpio.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/mkinitcpio.conf
@@ -380,7 +379,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="trouble-shooting">Trouble shooting&lt;/h2>
 &lt;ul>
-&lt;li>Boot entry of windows disappears from grub boot loader
+&lt;li>Boot entry for windows disappears from grub boot loader
 &lt;ul>
 &lt;li>Add &lt;code>GRUB_DISABLE_OS_PROBER=false&lt;/code> to &lt;code>/etc/default/grub&lt;/code> and recreate grub.cfg&lt;/li>
 &lt;li>The problem is deactivated os-prober. os-prober automatically finds operating systems and adds their boot entry, but sometimes it is deactivated. The option reactivate os-prober.&lt;/li>
@@ -583,7 +582,7 @@ id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fc-cache -f
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-desktop-environment">&lt;strong>Install Desktop Environment&lt;/strong>&lt;/h3>
 &lt;p>&lt;a href="../desktop-env/">Desktop Environment&lt;/a>&lt;/p></description></item><item><title>Docs: Dual boot (with Windows 11) + btrfs + systemd-boot</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot/</guid><description>
-&lt;h2 id="goal">Goal&lt;/h2>
+&lt;p>Install Arch Linux with the following settings.&lt;/p>
 &lt;table>
 &lt;thead>
 &lt;tr>
@@ -614,11 +613,6 @@ id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;ul>
-&lt;li>Dual boot booting Windows 11 and Arch Linux&lt;/li>
-&lt;li>Using systemd-boot as a bootloader&lt;/li>
-&lt;li>Encrypt linux partition using LUKS&lt;/li>
-&lt;/ul>
 &lt;h2 id="install-flow">Install flow&lt;/h2>
 &lt;ul>
 &lt;li>Install Windows 11&lt;/li>
@@ -664,7 +658,9 @@ id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/hosts
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S efibootmgr networkmanager network-manager-applet dialog os-prober mtools dosfstools base-devel linux-headers reflector git xdg-utils xdg-user-dirs bluez bluez-utils
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>dialog os-prober mtools dosfstools base-devel linux-headers &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>reflector git xdg-utils xdg-user-dirs bluez bluez-utils
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bootctl --path=/boot install
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /boot/loader/loader.conf

@@ -13,17 +13,24 @@ aria-controls="tabs-00-00" aria-selected="false">Intel&lt;/a>
 &lt;a class="nav-link persistLang-sh"
 id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
 onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-01" aria-selected="false">Nvidia&lt;/a>
+aria-controls="tabs-00-01" aria-selected="false">AMD&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-02-tab" data-toggle="tab" href="#tabs-00-02" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-02" aria-selected="false">Nvidia&lt;/a>
 &lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
 id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-intel
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-intel&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;div class="tab-pane fade"
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-intel
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-amdgpu&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-02" role="tabpanel" aria-labelled-by="tabs-00-02-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h3 id="display-server">&lt;strong>Display Server&lt;/strong>&lt;/h3>
 &lt;p>Install xorg as a display server. A display server is software that passes input and output using a GUI such as Gnome to the OS and hardware.&lt;/p>
@@ -42,6 +49,12 @@ id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
 onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-01-01" aria-selected="false">gdm&lt;/a>
 &lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-01-02-tab" data-toggle="tab" href="#tabs-01-02" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-02" aria-selected="false">sddm&lt;/a>
+&lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
 id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
@@ -49,6 +62,9 @@ id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
 &lt;div class="tab-pane fade"
 id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S gdm&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-01-02" role="tabpanel" aria-labelled-by="tabs-01-02-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S sddm&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h3 id="desktop-environment">&lt;strong>Desktop Environment&lt;/strong>&lt;/h3>
 &lt;ul class="nav nav-tabs" id="tabs-2" role="tablist">&lt;li class="nav-item">
@@ -69,6 +85,12 @@ id="tabs-02-02-tab" data-toggle="tab" href="#tabs-02-02" role="tab"
 onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-02-02" aria-selected="false">budgie&lt;/a>
 &lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-02-03-tab" data-toggle="tab" href="#tabs-02-03" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-02-03" aria-selected="false">kde&lt;/a>
+&lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-2-content">&lt;div class="tab-pane fade show active"
 id="tabs-02-00" role="tabpanel" aria-labelled-by="tabs-02-00-tab">
@@ -79,6 +101,9 @@ id="tabs-02-01" role="tabpanel" aria-labelled-by="tabs-02-01-tab">
 &lt;div class="tab-pane fade"
 id="tabs-02-02" role="tabpanel" aria-labelled-by="tabs-02-02-tab">
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S budgie-desktop gnome&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-02-03" role="tabpanel" aria-labelled-by="tabs-02-03-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S plasma kde-applications&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
 &lt;h3 id="systemd">&lt;strong>Systemd&lt;/strong>&lt;/h3>
 &lt;p>Set systemd to start the display manager automatically.&lt;/p>
@@ -94,6 +119,12 @@ id="tabs-03-01-tab" data-toggle="tab" href="#tabs-03-01" role="tab"
 onclick="persistLang(&amp;#34;sh&amp;#34;);"
 aria-controls="tabs-03-01" aria-selected="false">gdm&lt;/a>
 &lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-03-02-tab" data-toggle="tab" href="#tabs-03-02" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-03-02" aria-selected="false">sddm&lt;/a>
+&lt;/li>
 &lt;/ul>
 &lt;div class="tab-content" id="tabs-3-content">&lt;div class="tab-pane fade show active"
 id="tabs-03-00" role="tabpanel" aria-labelled-by="tabs-03-00-tab">
@@ -101,6 +132,9 @@ id="tabs-03-00" role="tabpanel" aria-labelled-by="tabs-03-00-tab">
 &lt;div class="tab-pane fade"
 id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> gdm&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-03-02" role="tabpanel" aria-labelled-by="tabs-03-02-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> sddm&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div></description></item><item><title>Docs: Installing BSPWM</title><link>http://forest0923.github.io/memo/en/docs/archlinux/bspwm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/bspwm/</guid><description>
 &lt;p>Install and customize a Tile-type window manager called BSPWM.&lt;/p>
 &lt;h2 id="install-and-configurations">Install and Configurations&lt;/h2>
@@ -239,6 +273,12 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;li>Timeshift&lt;/li>
 &lt;/ul>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S timeshift
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="zram">zram&lt;/h2>
+&lt;ul>
+&lt;li>zramd&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S zramd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> --now zramd.service
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="browser">Browser&lt;/h2>
 &lt;ul>
 &lt;li>Brave browser&lt;/li>

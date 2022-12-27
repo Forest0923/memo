@@ -497,4 +497,77 @@ By modifying &lt;code>/usr/share/applications/spotify.desktop&lt;/code> as follo
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gpg: Total number processed: 1
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gpg: imported: 1
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fetching devel info...
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Snapper</title><link>http://forest0923.github.io/memo/en/docs/archlinux/snapper/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/snapper/</guid><description>
+&lt;h2 id="setup">Setup&lt;/h2>
+&lt;h3 id="subvolume-layout">Subvolume layout&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/var/log
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="config">Config&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo umount /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo rm -r /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo snapper -c root create-config /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo btrfs su delete /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mkdir /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mount -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chmod &lt;span style="color:#3677a9">750&lt;/span> /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo vim /etc/snapper/configs/root
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_HOURLY=&amp;#34;5&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_DAILY=&amp;#34;7&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_WEEKLY=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_MONTHLY=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ TIMELINE_LIMIT_YEARLY=&amp;#34;0&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> --now snapper-timeline.timer
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> --now snapper-cleanup.timer
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -S snap-pac-grub snapper-gui-git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mkdir /etc/pacman.d/hooks
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo vim /etc/pacman.d/hooks/50-bootbackup.hook
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ [Trigger]
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Operation = Upgrade
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Operation = Install
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Operation = Remove
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Type = Path
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Target = boot/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ [Action]
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Depends = rsync
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Description = Backing up /boot...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ When = PreTransaction
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ Exec = /usr/bin/rsync -a --delete /boot /.bootbackup
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S rsync
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chmod a+rx /.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chown :mori /.snapshots
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Timeshift</title><link>http://forest0923.github.io/memo/en/docs/archlinux/timeshift/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/timeshift/</guid><description>
+&lt;h2 id="subvolume-layout">Subvolume layout&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/home
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="install">Install&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S timeshift[-bin] timeshift-autosnap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="cli">CLI&lt;/h2>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Action&lt;/th>
+&lt;th>Commands&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Lists snapshots&lt;/td>
+&lt;td>&lt;code>sudo timeshift --list&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Create snapshot&lt;/td>
+&lt;td>&lt;code>sudo timeshift --create [--comment &amp;quot;this is a test&amp;quot;] [--tag {O,B,H,D,W,M}]&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Delete snapshot&lt;/td>
+&lt;td>&lt;code>sudo timeshift --delete --snapshot '20xx-xx-xx_xx-xx-xx'&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Restore snapshot&lt;/td>
+&lt;td>&lt;code>sudo timeshift --restore --snapshot '20xx-xx-xx_xx-xx-xx'&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item></channel></rss>

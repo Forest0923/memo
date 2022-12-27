@@ -80,7 +80,6 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/hosts
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;127.0.0.1\tlocalhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">::1\t\tlocalhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">127.0.1.1\tarch.localdomain\tarch&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/hosts
@@ -1023,7 +1022,6 @@ Copy the tag in the upper right corner of the Gist repository and paste it into 
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -Syy
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S archlinux-keyring
@@ -1040,7 +1038,6 @@ Copy the tag in the upper right corner of the Gist repository and paste it into 
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/hosts
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;127.0.0.1\tlocalhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">::1\t\tlocalhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">127.0.1.1\tarch.localdomain\tarch&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/hosts
@@ -2042,7 +2039,7 @@ id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;h2 id="preparation-in-windows-10">Preparation in Windows 10&lt;/h2>
+&lt;h2 id="install-windows-10">Install Windows 10&lt;/h2>
 &lt;p>First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.&lt;/p>
 &lt;ul>
 &lt;li>Before:
@@ -2052,13 +2049,13 @@ id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
 &lt;/ul>
 &lt;p>Then, install Arch Linux as follows.&lt;/p>
 &lt;h2 id="install">Install&lt;/h2>
-&lt;h3 id="change-keymaps">&lt;strong>Change Keymaps&lt;/strong>&lt;/h3>
+&lt;h3 id="change-keymaps">Change Keymaps&lt;/h3>
 &lt;p>Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="time-settings">&lt;strong>Time Settings&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="time-settings">Time Settings&lt;/h3>
 &lt;p>Execute the following command to use the NTP (Network Time Protocol).&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="optimizing-mirrorlist">&lt;strong>Optimizing Mirrorlist&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="optimizing-mirrorlist">Optimizing Mirrorlist&lt;/h3>
 &lt;p>Optimize the mirror list using reflector to access mirror servers with fast access during installation.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S reflector &lt;span style="color:#999;font-style:italic"># `python` might be required&lt;/span>
@@ -2090,7 +2087,7 @@ id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
-&lt;h3 id="disk-partitioning-and-formatting">&lt;strong>Disk Partitioning and Formatting&lt;/strong>&lt;/h3>
+&lt;h3 id="disk-partitioning-and-formatting">Disk Partitioning and Formatting&lt;/h3>
 &lt;p>We will assume that the partition in &lt;code>/dev/sda&lt;/code> is as follows.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>sda
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda1 &amp;lt;-- EFI Partition
@@ -2114,7 +2111,7 @@ id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda5 /mnt/.snapshots
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var/log
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda5 /mnt/boot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="base-install">&lt;strong>Base install&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="base-install">Base install&lt;/h3>
 &lt;p>Install the package in the root directory, &lt;code>/mnt&lt;/code>.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
 &lt;a class="nav-link active persistLang-sh"
@@ -2136,13 +2133,13 @@ id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
 id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim amd-ucode&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
 &lt;/div>
-&lt;h3 id="fstab">&lt;strong>fstab&lt;/strong>&lt;/h3>
+&lt;h3 id="fstab">fstab&lt;/h3>
 &lt;p>Generate the fstab file, which holds the information about which device to mount.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-the-root-directory">&lt;strong>Change the Root Directory&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-the-root-directory">Change the Root Directory&lt;/h3>
 &lt;p>Use chroot to set &lt;code>/mnt&lt;/code> as the root directory.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="localization">&lt;strong>Localization&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="localization">Localization&lt;/h3>
 &lt;p>Create a symbolic link to &lt;code>/etc/localtime&lt;/code> to change the time zone.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.&lt;/p>
@@ -2155,7 +2152,7 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Execute the following command to set the locale of the system.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="hostname">&lt;strong>Hostname&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="hostname">Hostname&lt;/h3>
 &lt;p>Register hostname in &lt;code>/etc/hostname&lt;/code>.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hostname
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-udiff" data-lang="udiff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ arch
@@ -2164,24 +2161,24 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.0.1 localhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ ::1 localhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.1.1 arch.localdomain arch
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-password">&lt;strong>Root Password&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-password">Root Password&lt;/h3>
 &lt;p>Set the password of root user.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>passwd
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-additional-packages">&lt;strong>Install Additional Packages&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-additional-packages">Install Additional Packages&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> dialog os-prober mtools dosfstools base-devel linux-headers snapper &lt;span style="color:#ed9d13">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> reflector cron git xdg-utils xdg-user-dirs ntfs-3g
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="configuring-mkinitcpio">&lt;strong>Configuring mkinitcpio&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="configuring-mkinitcpio">Configuring mkinitcpio&lt;/h3>
 &lt;p>Change the configurations, and reflect the changes with mkinitcpio.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/mkinitcpio.conf
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- MODULES=()
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ MODULES=(btrfs)
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="bootloader">&lt;strong>Bootloader&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="bootloader">Bootloader&lt;/h3>
 &lt;p>Install Grub and create config file.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">&lt;strong>Systemd&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">Systemd&lt;/h3>
 &lt;p>Enables NetworkManager.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables Bluetooth.&lt;/p>
@@ -2189,7 +2186,7 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables reflector. The execution options are written in &lt;code>/etc/xdg/reflector/reflector.conf&lt;/code>.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service &lt;span style="color:#999;font-style:italic"># update mirrorlist every boot&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer &lt;span style="color:#999;font-style:italic"># update mirrorlist weekly&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="add-user">&lt;strong>Add User&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="add-user">Add User&lt;/h3>
 &lt;p>Add user with useradd and set the password.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
@@ -2197,7 +2194,7 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # %wheel ALL=(ALL) ALL
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ %wheel ALL=(ALL) ALL
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">&lt;strong>Reboot&lt;/strong>&lt;/h3>
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">Reboot&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot

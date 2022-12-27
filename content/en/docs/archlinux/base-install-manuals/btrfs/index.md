@@ -42,7 +42,6 @@ mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda2 /mnt/.
 mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
 
 mount /dev/sda1 /mnt/boot
-mount /dev/sda2 /mnt
 
 pacman -Syy
 pacman -S archlinux-keyring
@@ -59,7 +58,6 @@ locale-gen
 echo LANG=en_US.UTF-8 >> /etc/locale.conf
 echo KEYMAP=jp106 >> /etc/vconsole.conf
 echo arch > /etc/hostname
-vim /etc/hosts
 echo -e "127.0.0.1\tlocalhost
 ::1\t\tlocalhost
 127.0.1.1\tarch.localdomain\tarch" >> /etc/hosts

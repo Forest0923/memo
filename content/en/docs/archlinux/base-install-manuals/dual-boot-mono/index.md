@@ -3,6 +3,7 @@ title: "Dual boot (with Windows 10) + btrfs + grub"
 draft: false
 weight: 30
 ---
+
 ## System
 
 | Settings        |             |
@@ -13,7 +14,7 @@ weight: 30
 | Disk            | single-disk |
 | Disk Encryption | false       |
 
-## Preparation in Windows 10
+## Install Windows 10
 
 First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.
 
@@ -26,7 +27,7 @@ Then, install Arch Linux as follows.
 
 ## Install
 
-### **Change Keymaps**
+### Change Keymaps
 
 Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.
 
@@ -34,7 +35,7 @@ Change the keymap to the one you use for the installation. For a Japanese keyboa
 loadkeys jp106
 ```
 
-### **Time Settings**
+### Time Settings
 
 Execute the following command to use the NTP (Network Time Protocol).
 
@@ -42,7 +43,7 @@ Execute the following command to use the NTP (Network Time Protocol).
 timedatectl set-ntp true
 ```
 
-### **Optimizing Mirrorlist**
+### Optimizing Mirrorlist
 
 Optimize the mirror list using reflector to access mirror servers with fast access during installation.
 
@@ -61,7 +62,7 @@ The meaning of the reflector option is as follows.
 | `-a 6`                            | Restrict to servers synchronized within 6 hours. |
 | `--save /etc/pacman.d/mirrorlist` | Save the mirror list to the specified path.      |
 
-### **Disk Partitioning and Formatting**
+### Disk Partitioning and Formatting
 
 We will assume that the partition in `/dev/sda` is as follows.
 
@@ -98,7 +99,7 @@ mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var
 mount /dev/sda5 /mnt/boot
 ```
 
-### **Base install**
+### Base install
 
 Install the package in the root directory, `/mnt`.
 
@@ -115,7 +116,7 @@ pacstrap /mnt base linux linux-firmware vim amd-ucode
 {{< /tab >}}
 {{< /tabpane >}}
 
-### **fstab**
+### fstab
 
 Generate the fstab file, which holds the information about which device to mount.
 
@@ -123,7 +124,7 @@ Generate the fstab file, which holds the information about which device to mount
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
-### **Change the Root Directory**
+### Change the Root Directory
 
 Use chroot to set `/mnt` as the root directory.
 
@@ -131,7 +132,7 @@ Use chroot to set `/mnt` as the root directory.
 arch-chroot /mnt
 ```
 
-### **Localization**
+### Localization
 
 Create a symbolic link to `/etc/localtime` to change the time zone.
 
@@ -167,7 +168,7 @@ echo LANG=en_US.UTF-8 >> /etc/locale.conf
 echo KEYMAP=jp106 >> /etc/vconsole.conf
 ```
 
-### **Hostname**
+### Hostname
 
 Register hostname in `/etc/hostname`.
 
@@ -191,7 +192,7 @@ vim /etc/hosts
 + 127.0.1.1   arch.localdomain    arch
 ```
 
-### **Root Password**
+### Root Password
 
 Set the password of root user.
 
@@ -199,7 +200,7 @@ Set the password of root user.
 passwd
 ```
 
-### **Install Additional Packages**
+### Install Additional Packages
 
 ```sh
 pacman -S grub efibootmgr networkmanager network-manager-applet \
@@ -207,7 +208,7 @@ pacman -S grub efibootmgr networkmanager network-manager-applet \
  reflector cron git xdg-utils xdg-user-dirs ntfs-3g
 ```
 
-### **Configuring mkinitcpio**
+### Configuring mkinitcpio
 
 Change the configurations, and reflect the changes with mkinitcpio.
 
@@ -224,7 +225,7 @@ vim /etc/mkinitcpio.conf
 mkinitcpio -p linux
 ```
 
-### **Bootloader**
+### Bootloader
 
 Install Grub and create config file.
 
@@ -233,7 +234,7 @@ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
-### **Systemd**
+### Systemd
 
 Enables NetworkManager.
 
@@ -257,7 +258,7 @@ systemctl enable reflector.service  # update mirrorlist every boot
 systemctl enable reflector.timer    # update mirrorlist weekly
 ```
 
-### **Add User**
+### Add User
 
 Add user with useradd and set the password.
 
@@ -277,7 +278,7 @@ EDITOR=vim visudo
 + %wheel ALL=(ALL) ALL
 ```
 
-### **Reboot**
+### Reboot
 
 ```sh
 exit

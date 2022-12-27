@@ -3,6 +3,7 @@ title: "Install Arch Linux (Multi-disks + BTRFS + Snapper)"
 draft: true
 weight: 20
 ---
+
 Installation manual for Arch Linux. This article describes how to install Arch Linux on BTRFS filesystem and save snapshots with Snapper.
 
 ## System
@@ -47,12 +48,12 @@ reflector -c Japan --sort rate -a 6 --save /etc/pacman.d/mirrorlist
 
 The meaning of the reflector option is as follows.
 
-|Options|Description|
-|-|-|
-|`-c Japan`|Restrict mirrors to selected countries. |
-|`--sort rate`|Sort by download rate.|
-|`-a 6`|Restrict to servers synchronized within 6 hours.|
-|`--save /etc/pacman.d/mirrorlist`|Save the mirror list to the specified path.|
+| Options                           | Description                                      |
+| --------------------------------- | ------------------------------------------------ |
+| `-c Japan`                        | Restrict mirrors to selected countries.          |
+| `--sort rate`                     | Sort by download rate.                           |
+| `-a 6`                            | Restrict to servers synchronized within 6 hours. |
+| `--save /etc/pacman.d/mirrorlist` | Save the mirror list to the specified path.      |
 
 ### **Disk Partitioning and Formatting**
 

@@ -33,53 +33,135 @@
 &lt;h2 id="iso">ISO&lt;/h2>
 &lt;p>&lt;a href="https://archlinux.org/download/">Arch Linux Downloads&lt;/a>&lt;/p>
 &lt;h2 id="install">Install&lt;/h2>
+&lt;h3 id="keymaps">Keymaps&lt;/h3>
+&lt;p>Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.fat -F32 /dev/sda1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.ext4 /dev/sda2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="time-settings">Time Settings&lt;/h3>
+&lt;p>Execute the following command to use the NTP (Network Time Protocol).&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="optimizing-mirrorlist">Optimizing Mirrorlist&lt;/h3>
+&lt;p>Optimize the mirror list using reflector to access mirror servers with fast access during installation.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S reflector
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reflector -c Japan --sort rate -a &lt;span style="color:#3677a9">6&lt;/span> --save /etc/pacman.d/mirrorlist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The meaning of the reflector option is as follows.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Options&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>-c Japan&lt;/code>&lt;/td>
+&lt;td>Restrict mirrors to selected countries.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--sort rate&lt;/code>&lt;/td>
+&lt;td>Sort by download rate.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>-a 6&lt;/code>&lt;/td>
+&lt;td>Restrict to servers synchronized within 6 hours.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--save /etc/pacman.d/mirrorlist&lt;/code>&lt;/td>
+&lt;td>Save the mirror list to the specified path.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="disk-partitioning-and-formatting">Disk Partitioning and Formatting&lt;/h3>
+&lt;p>Use gdisk to change the partition. In this example, we assume that Arch Linux is installed in &lt;code>/dev/sda&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Allocate the first partition as an EFI partition of about 300MB. The remaining space will be allocated as a Linux Filesystem.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/dev/sda1: EFI system (300M)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sda2: Linux filesystem
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>EFI partition is formatted with fat.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.fat -F32 /dev/sda1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Linux Filesystem is formatted with ext4.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.ext4 /dev/sda2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then mount devices like following.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="base-install">Base Install&lt;/h3>
+&lt;p>Sometimes updating archlinux-keyring is needed.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S archlinux-keyring
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode &lt;span style="color:#999;font-style:italic"># or amd-ucode&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hwclock --systohc
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/#en_US.UTF-8/en_US.UTF-8/&amp;#39;&lt;/span> /etc/locale.gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Install packages in &lt;code>/mnt&lt;/code>.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Intel&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-01" aria-selected="false">AMD&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim amd-ucode&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="fstab">fstab&lt;/h3>
+&lt;p>Generate the fstab file, which holds the information about which device to mount.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-the-root-directory">Change the Root Directory&lt;/h3>
+&lt;p>Use chroot to set &lt;code>/mnt&lt;/code> as the root directory.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="localization">Localization&lt;/h3>
+&lt;p>Create a symbolic link to &lt;code>/etc/localtime&lt;/code> to change the time zone.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>hwclock --systohc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To set the locale, first generate the locale. Uncomment the entries you want to use in &lt;code>/etc/locale.gen&lt;/code> and run &lt;code>locale-gen&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/#en_US.UTF-8/en_US.UTF-8/&amp;#39;&lt;/span> /etc/locale.gen
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>locale-gen
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Execute the following command to set the locale of the system.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;127.0.0.1\tlocalhost
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="hostname">Hostname&lt;/h3>
+&lt;p>Register hostname in &lt;code>/etc/hostname&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Edit &lt;code>/etc/hosts&lt;/code> and set IP address corresponding to hostname.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;127.0.0.1\tlocalhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">::1\t\tlocalhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">127.0.1.1\tarch.localdomain\tarch&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/hosts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S efibootmgr networkmanager network-manager-applet dialog os-prober mtools dosfstools base-devel linux-headers reflector git xdg-utils xdg-user-dirs bluez bluez-utils
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-password">Root Password&lt;/h3>
+&lt;p>Set the password of root user.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>passwd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-additional-packages">Install Additional Packages&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> dialog os-prober mtools dosfstools base-devel linux-headers reflector &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> git xdg-utils xdg-user-dirs bluez bluez-utils
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="bootloader">Bootloader&lt;/h3>
+&lt;p>Install Grub and create config file.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">Systemd&lt;/h3>
+&lt;p>Enables NetworkManager.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables Bluetooth.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables reflector. The execution options are written in &lt;code>/etc/xdg/reflector/reflector.conf&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service &lt;span style="color:#999;font-style:italic"># update mirrorlist every boot&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer &lt;span style="color:#999;font-style:italic"># update mirrorlist weekly&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="add-user">Add User&lt;/h3>
+&lt;p>Add user with useradd and set the password.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Give the user priviledges.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">Reboot&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: btrfs + grub</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/btrfs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/btrfs/</guid><description>
@@ -117,15 +199,71 @@
 &lt;h2 id="iso">ISO&lt;/h2>
 &lt;p>&lt;a href="https://archlinux.org/download/">Arch Linux Downloads&lt;/a>&lt;/p>
 &lt;h2 id="install">Install&lt;/h2>
+&lt;h3 id="keymaps">Keymaps&lt;/h3>
+&lt;p>Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.fat -F32 /dev/sda1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sda2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="time-settings">Time Settings&lt;/h3>
+&lt;p>Execute the following command to use the NTP (Network Time Protocol).&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="optimizing-mirrorlist">Optimizing Mirrorlist&lt;/h3>
+&lt;p>Optimize the mirror list using reflector to access mirror servers with fast access during installation.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S reflector
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reflector -c Japan --sort rate -a &lt;span style="color:#3677a9">6&lt;/span> --save /etc/pacman.d/mirrorlist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The meaning of the reflector option is as follows.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Options&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>-c Japan&lt;/code>&lt;/td>
+&lt;td>Restrict mirrors to selected countries.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--sort rate&lt;/code>&lt;/td>
+&lt;td>Sort by download rate.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>-a 6&lt;/code>&lt;/td>
+&lt;td>Restrict to servers synchronized within 6 hours.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--save /etc/pacman.d/mirrorlist&lt;/code>&lt;/td>
+&lt;td>Save the mirror list to the specified path.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="disk-partitioning-and-formatting">Disk Partitioning and Formatting&lt;/h3>
+&lt;p>Use gdisk to change the partition. In this example, we assume that Arch Linux is installed in &lt;code>/dev/sda&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Allocate the first partition as an EFI partition of about 300MB. The remaining space will be allocated as a Linux Filesystem.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/dev/sda1: EFI system (300M)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sda2: Linux filesystem
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>EFI partition is formatted with fat.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.fat -F32 /dev/sda1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Linux Filesystem is formatted with ext4.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sda2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Here is a template of the subvolume layout for each snapshot manager used.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">snapper&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-01" aria-selected="false">timeshift&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@home
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@snapshots
@@ -136,55 +274,306 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda2 /mnt/home
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda2 /mnt/.snapshots
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs subvolume create /mnt/@var_log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,var/log}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda2 /mnt/home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="base-install">Base Install&lt;/h3>
+&lt;p>Sometimes updating archlinux-keyring is needed.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S archlinux-keyring
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode &lt;span style="color:#999;font-style:italic"># or amd-ucode&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hwclock --systohc
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/#en_US.UTF-8/en_US.UTF-8/&amp;#39;&lt;/span> /etc/locale.gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Install packages in &lt;code>/mnt&lt;/code>.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-00" aria-selected="false">Intel&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-01-01" aria-selected="false">AMD&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
+id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim amd-ucode&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="fstab">fstab&lt;/h3>
+&lt;p>Generate the fstab file, which holds the information about which device to mount.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-the-root-directory">Change the Root Directory&lt;/h3>
+&lt;p>Use chroot to set &lt;code>/mnt&lt;/code> as the root directory.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="localization">Localization&lt;/h3>
+&lt;p>Create a symbolic link to &lt;code>/etc/localtime&lt;/code> to change the time zone.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>hwclock --systohc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To set the locale, first generate the locale. Uncomment the entries you want to use in &lt;code>/etc/locale.gen&lt;/code> and run &lt;code>locale-gen&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/#en_US.UTF-8/en_US.UTF-8/&amp;#39;&lt;/span> /etc/locale.gen
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>locale-gen
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Execute the following command to set the locale of the system.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;127.0.0.1\tlocalhost
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="hostname">Hostname&lt;/h3>
+&lt;p>Register hostname in &lt;code>/etc/hostname&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Edit &lt;code>/etc/hosts&lt;/code> and set IP address corresponding to hostname.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;127.0.0.1\tlocalhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">::1\t\tlocalhost
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">127.0.1.1\tarch.localdomain\tarch&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/hosts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>dialog os-prober mtools dosfstools base-devel linux-headers &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>reflector git xdg-utils xdg-user-dirs bluez bluez-utils
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/MODULES=()/MODULES=(btrfs)/&amp;#39;&lt;/span> /etc/mkinitcpio.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-password">Root Password&lt;/h3>
+&lt;p>Set the password of root user.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>passwd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-additional-packages">Install Additional Packages&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> dialog os-prober mtools dosfstools base-devel linux-headers reflector &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> git xdg-utils xdg-user-dirs bluez bluez-utils
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="configuring-mkinitcpio">Configuring mkinitcpio&lt;/h3>
+&lt;p>Change the configurations, and reflect the changes with mkinitcpio.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/MODULES=()/MODULES=(btrfs)/&amp;#39;&lt;/span> /etc/mkinitcpio.conf
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="bootloader">Bootloader&lt;/h3>
+&lt;p>Install Grub and create config file.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">Systemd&lt;/h3>
+&lt;p>Enables NetworkManager.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables Bluetooth.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables reflector. The execution options are written in &lt;code>/etc/xdg/reflector/reflector.conf&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service &lt;span style="color:#999;font-style:italic"># update mirrorlist every boot&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer &lt;span style="color:#999;font-style:italic"># update mirrorlist weekly&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="add-user">Add User&lt;/h3>
+&lt;p>Add user with useradd and set the password.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Give the user priviledges.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">Reboot&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Dual boot (with Windows 10) + btrfs + grub</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-mono/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-mono/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: multi-disks + btrfs + grub</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/btrfs-multi-disks/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/btrfs-multi-disks/</guid><description>
+&lt;p>Install Arch Linux with the following settings.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Settings&lt;/th>
+&lt;th>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Dual Booting&lt;/td>
+&lt;td>false&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Filesystem&lt;/td>
+&lt;td>Btrfs&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Boot Loader&lt;/td>
+&lt;td>GRUB&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Disk&lt;/td>
+&lt;td>multi-disks&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Disk Encryption&lt;/td>
+&lt;td>false&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
 &lt;h2 id="system">System&lt;/h2>
+&lt;ul>
+&lt;li>Storages:
+&lt;ul>
+&lt;li>&lt;code>/dev/sda&lt;/code>&lt;/li>
+&lt;li>&lt;code>/dev/sdb&lt;/code>&lt;/li>
+&lt;li>&lt;code>/dev/sdc&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;h3 id="keymaps">Keymaps&lt;/h3>
+&lt;p>Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="time-settings">Time Settings&lt;/h3>
+&lt;p>Execute the following command to use the NTP (Network Time Protocol).&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="optimizing-mirrorlist">Optimizing Mirrorlist&lt;/h3>
+&lt;p>Optimize the mirror list using reflector to access mirror servers with fast access during installation.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S reflector
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reflector -c Japan --sort rate -a &lt;span style="color:#3677a9">6&lt;/span> --save /etc/pacman.d/mirrorlist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The meaning of the reflector option is as follows.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Options&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>-c Japan&lt;/code>&lt;/td>
+&lt;td>Restrict mirrors to selected countries.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--sort rate&lt;/code>&lt;/td>
+&lt;td>Sort by download rate.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>-a 6&lt;/code>&lt;/td>
+&lt;td>Restrict to servers synchronized within 6 hours.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>--save /etc/pacman.d/mirrorlist&lt;/code>&lt;/td>
+&lt;td>Save the mirror list to the specified path.&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="disk-partitioning-and-formatting">Disk Partitioning and Formatting&lt;/h3>
+&lt;p>Use gdisk to create partitions. We will create an EFI partition (about 200MB) in &lt;code>/dev/sda&lt;/code>, and the rest of the space and devices will be Linux Filesystem.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gdisk /dev/sdb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gdisk /dev/sdc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>/dev/sda1: EFI system (200M)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sda2: Linux filesystem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sdb1: Linux filesystem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/sdc1: Linux filesystem
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>EFI partition is formatted as fat, and Linux Filesystem is formatted as BTRFS.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.fat -F32 /dev/sda1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sda2 /dev/vdb1 /dev/vdc1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Create subvolume and mount devices.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mount /dev/sda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@var_log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/sda2 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,.snapshots,var/log}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/sda2 /mnt/home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/sda2 /mnt/.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="base-install">Base Install&lt;/h3>
+&lt;p>Sometimes updating archlinux-keyring is needed.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S archlinux-keyring
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Install packages in &lt;code>/mnt&lt;/code>.&lt;/p>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Intel&lt;/a>
+&lt;/li>
+&lt;li class="nav-item">
+&lt;a class="nav-link persistLang-sh"
+id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-01" aria-selected="false">AMD&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;div class="tab-pane fade"
+id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim amd-ucode&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h3 id="fstab">fstab&lt;/h3>
+&lt;p>Generate the fstab file, which holds the information about which device to mount.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-the-root-directory">Change the Root Directory&lt;/h3>
+&lt;p>Use chroot to set &lt;code>/mnt&lt;/code> as the root directory.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="localization">Localization&lt;/h3>
+&lt;p>Create a symbolic link to &lt;code>/etc/localtime&lt;/code> to change the time zone.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>hwclock --systohc
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To set the locale, first generate the locale. Uncomment the entries you want to use in &lt;code>/etc/locale.gen&lt;/code> and run &lt;code>locale-gen&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/#en_US.UTF-8/en_US.UTF-8/&amp;#39;&lt;/span> /etc/locale.gen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>locale-gen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Execute the following command to set the locale of the system.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="hostname">Hostname&lt;/h3>
+&lt;p>Register hostname in &lt;code>/etc/hostname&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Edit &lt;code>/etc/hosts&lt;/code> and set IP address corresponding to hostname.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;127.0.0.1\tlocalhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">::1\t\tlocalhost
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">127.0.1.1\tarch.localdomain\tarch&amp;#34;&lt;/span> &amp;gt;&amp;gt; /etc/hosts
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-password">Root Password&lt;/h3>
+&lt;p>Set the password of root user.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>passwd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-additional-packages">Install Additional Packages&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> dialog os-prober mtools dosfstools base-devel linux-headers reflector &lt;span style="color:#ed9d13">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> git xdg-utils xdg-user-dirs bluez bluez-utils
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="configuring-mkinitcpio">Configuring mkinitcpio&lt;/h3>
+&lt;p>Change the configurations, and reflect the changes with mkinitcpio.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sed -i &lt;span style="color:#ed9d13">&amp;#39;s/MODULES=()/MODULES=(btrfs)/&amp;#39;&lt;/span> /etc/mkinitcpio.conf
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="bootloader">Bootloader&lt;/h3>
+&lt;p>Install Grub and create config file.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">Systemd&lt;/h3>
+&lt;p>Enables NetworkManager.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables Bluetooth.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables reflector. The execution options are written in &lt;code>/etc/xdg/reflector/reflector.conf&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service &lt;span style="color:#999;font-style:italic"># update mirrorlist every boot&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer &lt;span style="color:#999;font-style:italic"># update mirrorlist weekly&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="add-user">Add User&lt;/h3>
+&lt;p>Add user with useradd and set the password.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Give the user priviledges.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ %wheel ALL=(ALL) ALL
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">Reboot&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="fonts">&lt;strong>Fonts&lt;/strong>&lt;/h3>
+&lt;p>Copy fonts from windows partition.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mkdir /usr/share/fonts/WindowsFonts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo cp /windows/Windows/Fonts/* /usr/share/fonts/WindowsFonts/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chmod &lt;span style="color:#3677a9">644&lt;/span> /usr/share/fonts/WindowsFonts/*
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fc-cache -f
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-desktop-environment">&lt;strong>Install Desktop Environment&lt;/strong>&lt;/h3>
+&lt;p>&lt;a href="../desktop-env/">Desktop Environment&lt;/a>&lt;/p></description></item><item><title>Docs: Dual boot (with Windows 10) + btrfs + grub</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-mono/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-mono/</guid><description>
+&lt;p>Install Arch Linux with the following settings.&lt;/p>
 &lt;table>
 &lt;thead>
 &lt;tr>
@@ -382,203 +771,7 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;li>The problem is deactivated os-prober. os-prober automatically finds operating systems and adds their boot entry, but sometimes it is deactivated. The option reactivate os-prober.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></description></item><item><title>Docs: Dual boot (with Windows 10) + multi-disks + btrfs + grub</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-multi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-multi/</guid><description>
-&lt;h2 id="goal">Goal&lt;/h2>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Settings&lt;/th>
-&lt;th>&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>Dual Booting&lt;/td>
-&lt;td>Windows 10&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Filesystem&lt;/td>
-&lt;td>Btrfs&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Boot Loader&lt;/td>
-&lt;td>GRUB&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Disk&lt;/td>
-&lt;td>multi-disks&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Disk Encryption&lt;/td>
-&lt;td>false&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;h2 id="system">System&lt;/h2>
-&lt;ul>
-&lt;li>Preinstalled OS: Windows 10 (64 bit Home)&lt;/li>
-&lt;li>CPU: Intel&lt;/li>
-&lt;li>GPU: Nvidia&lt;/li>
-&lt;li>Storage:
-&lt;ul>
-&lt;li>&lt;code>/dev/sda&lt;/code>: Windows sub&lt;/li>
-&lt;li>&lt;code>/dev/sdb&lt;/code>: Windows main&lt;/li>
-&lt;li>&lt;code>/dev/sdc&lt;/code>: Linux&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="install">Install&lt;/h2>
-&lt;h3 id="change-keymaps">&lt;strong>Change Keymaps&lt;/strong>&lt;/h3>
-&lt;p>Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="time-settings">&lt;strong>Time Settings&lt;/strong>&lt;/h3>
-&lt;p>Execute the following command to use the NTP (Network Time Protocol).&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>timedatectl set-ntp &lt;span style="color:#24909d">true&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="optimizing-mirrorlist">&lt;strong>Optimizing Mirrorlist&lt;/strong>&lt;/h3>
-&lt;p>Optimize the mirror list using reflector to access mirror servers with fast access during installation.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -Syy
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S reflector &lt;span style="color:#999;font-style:italic"># `python` might be required&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reflector -c Japan --sort rate -a &lt;span style="color:#3677a9">6&lt;/span> --save /etc/pacman.d/mirrorlist
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The meaning of the reflector option is as follows.&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Options&lt;/th>
-&lt;th>Description&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>&lt;code>-c Japan&lt;/code>&lt;/td>
-&lt;td>Restrict mirrors to selected countries.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;code>--sort rate&lt;/code>&lt;/td>
-&lt;td>Sort by download rate.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;code>-a 6&lt;/code>&lt;/td>
-&lt;td>Restrict to servers synchronized within 6 hours.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>&lt;code>--save /etc/pacman.d/mirrorlist&lt;/code>&lt;/td>
-&lt;td>Save the mirror list to the specified path.&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;h3 id="disk-partitioning-and-formatting">&lt;strong>Disk Partitioning and Formatting&lt;/strong>&lt;/h3>
-&lt;p>First, find the EFI partition in Windows. Use the following command to find the devices allocated as an EFI partition.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>fdisk -l
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In this example, we assume that &lt;code>/dev/sdb1&lt;/code> is the EFI partition. The size of the partition is a bit small (100MB), but it is no problem for now. We will use &lt;code>/dev/sdc&lt;/code> as the Linux Filesystem.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sda 8:0 0 931.5G 0 disk
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sda1 8:1 0 931.5G 0 part /windows_d
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdb 8:16 0 238.5G 0 disk
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sdb1 8:17 0 100M 0 part /boot/efi
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sdb2 8:18 0 16M 0 part
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sdb3 8:19 0 237.4G 0 part /windows_c
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sdb4 8:20 0 990M 0 part
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdc 8:32 0 476.9G 0 disk
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sdc1 8:33 0 476.9G 0 part /
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sr0 11:0 1 1024M 0 rom
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>fdisk /dev/sdc
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Format with BTRFS.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sdc1
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Create subvolume and mount devices.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mount /dev/sdc1 /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o &lt;span style="color:#40ffff">compress&lt;/span>=lzo,subvol=@ /dev/sdc1 /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/boot/efi
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sdb2 /mnt/boot/efi
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir /mnt/windows_c
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sdb4 /mnt/windows_c
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir /mnt/windows_d
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sdb1 /mnt/windows_d
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="base-install">&lt;strong>Base install&lt;/strong>&lt;/h3>
-&lt;p>Install the package in the root directory, &lt;code>/mnt&lt;/code>.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="fstab">&lt;strong>fstab&lt;/strong>&lt;/h3>
-&lt;p>Generate the fstab file, which holds the information about which device to mount.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-the-root-directory">&lt;strong>Change the Root Directory&lt;/strong>&lt;/h3>
-&lt;p>Use chroot to set &lt;code>/mnt&lt;/code> as the root directory.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="localization">&lt;strong>Localization&lt;/strong>&lt;/h3>
-&lt;p>Create a symbolic link to &lt;code>/etc/localtime&lt;/code> to change the time zone.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Set the hardware clock to the current system clock. The system clock is the clock managed by the OS, and the hardware clock is the clock managed by the motherboard (hardware). when the OS is rebooted, the system clock stored in memory is lost, so the time is obtained from the hardware clock.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>hwclock --systohc
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To set the locale, first generate the locale. Uncomment the entries you want to use in &lt;code>/etc/locale.gen&lt;/code> and run &lt;code>locale-gen&lt;/code>.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/locale.gen
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # en_US.UTF-8 UTF-8
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ en_US.UTF-8 UTF-8
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>locale-gen
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Execute the following command to set the locale of the system.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="hostname">&lt;strong>Hostname&lt;/strong>&lt;/h3>
-&lt;p>Register hostname in &lt;code>/etc/hostname&lt;/code>.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hostname
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ arch
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Edit &lt;code>/etc/hosts&lt;/code> and set IP address corresponding to hostname.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>vim /etc/hosts
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.0.1 localhost
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ ::1 localhost
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ 127.0.1.1 arch.localdomain arch
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="root-password">&lt;strong>Root Password&lt;/strong>&lt;/h3>
-&lt;p>Set the password of root user.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>passwd
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-additional-packages">&lt;strong>Install Additional Packages&lt;/strong>&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pacman -S grub efibootmgr networkmanager network-manager-applet wireless_tools &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>wpa_supplicant dialog os-prober mtools dosfstools base-devel linux-headers git &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>reflector bluez bluez-utils pulseaudio-bluetooth ntfs-3g xdg-utils xdg-user-dirs
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="bootloader">&lt;strong>Bootloader&lt;/strong>&lt;/h3>
-&lt;p>Install Grub and create config file.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="systemd">&lt;strong>Systemd&lt;/strong>&lt;/h3>
-&lt;p>Enables NetworkManager.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables Bluetooth.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> bluetooth
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Enables reflector. The execution options are written in &lt;code>/etc/xdg/reflector/reflector.conf&lt;/code>.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.service &lt;span style="color:#999;font-style:italic"># update mirrorlist every boot&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> reflector.timer &lt;span style="color:#999;font-style:italic"># update mirrorlist weekly&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="add-user">&lt;strong>Add User&lt;/strong>&lt;/h3>
-&lt;p>Add user with useradd and set the password.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Give the user priviledges.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">- # %wheel ALL=(ALL) ALL
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+ %wheel ALL=(ALL) ALL
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="reboot">&lt;strong>Reboot&lt;/strong>&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="graphic-driver">&lt;strong>Graphic Driver&lt;/strong>&lt;/h3>
-&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-00" aria-selected="false">Nvidia&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
-id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;h3 id="fonts">&lt;strong>Fonts&lt;/strong>&lt;/h3>
-&lt;p>Copy fonts from windows partition.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mkdir /usr/share/fonts/WindowsFonts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo cp /windows/Windows/Fonts/* /usr/share/fonts/WindowsFonts/
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chmod &lt;span style="color:#3677a9">644&lt;/span> /usr/share/fonts/WindowsFonts/*
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fc-cache -f
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-desktop-environment">&lt;strong>Install Desktop Environment&lt;/strong>&lt;/h3>
-&lt;p>&lt;a href="../desktop-env/">Desktop Environment&lt;/a>&lt;/p></description></item><item><title>Docs: Dual boot (with Windows 11) + btrfs + systemd-boot</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot/</guid><description>
+&lt;/ul></description></item><item><title>Docs: Dual boot (with Windows 11) + btrfs + systemd-boot</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot/</guid><description>
 &lt;p>Install Arch Linux with the following settings.&lt;/p>
 &lt;table>
 &lt;thead>

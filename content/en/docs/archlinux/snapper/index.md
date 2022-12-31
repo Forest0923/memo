@@ -4,9 +4,7 @@ draft: false
 weight: 999
 ---
 
-## Setup
-
-### Subvolume layout
+## Subvolume layout
 
 ```text
 /
@@ -15,7 +13,13 @@ weight: 999
 /var/log
 ```
 
-### Config
+## Install
+
+```sh
+sudo pacman -S snapper
+```
+
+## Config
 
 ```sh
 sudo umount /.snapshots

@@ -1,7 +1,7 @@
 ---
 title: "Dual boot (with Windows 11) + btrfs + systemd-boot"
 draft: false
-weight: 30
+weight: 50
 ---
 
 Install Arch Linux with the following settings.

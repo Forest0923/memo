@@ -1,10 +1,10 @@
 ---
 title: "Dual boot (with Windows 10) + btrfs + grub"
 draft: false
-weight: 30
+weight: 40
 ---
 
-## System
+Install Arch Linux with the following settings.
 
 | Settings        |             |
 | --------------- | ----------- |

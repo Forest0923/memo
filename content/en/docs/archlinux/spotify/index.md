@@ -3,6 +3,7 @@ title: "Configurations for Spotify"
 draft: false
 weight: 100
 ---
+
 This is a page about Spotify settings and troubleshooting.
 
 ## HiDPI

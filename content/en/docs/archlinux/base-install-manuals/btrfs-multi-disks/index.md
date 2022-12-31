@@ -1,7 +1,7 @@
 ---
-title: "ext4 + grub"
+title: "multi-disks + btrfs + grub"
 draft: false
-weight: 10
+weight: 30
 ---
 
 Install Arch Linux with the following settings.
@@ -9,14 +9,17 @@ Install Arch Linux with the following settings.
 | Settings        |             |
 | --------------- | ----------- |
 | Dual Booting    | false       |
-| Filesystem      | ext4        |
+| Filesystem      | Btrfs       |
 | Boot Loader     | GRUB        |
-| Disk            | single-disk |
+| Disk            | multi-disks |
 | Disk Encryption | false       |
 
-## ISO
+## System
 
-[Arch Linux Downloads](https://archlinux.org/download/)
+- Storages:
+  - `/dev/sda`
+  - `/dev/sdb`
+  - `/dev/sdc`
 
 ## Install
 
@@ -57,35 +60,45 @@ The meaning of the reflector option is as follows.
 
 ### Disk Partitioning and Formatting
 
-Use gdisk to change the partition. In this example, we assume that Arch Linux is installed in `/dev/sda`.
+Use gdisk to create partitions. We will create an EFI partition (about 200MB) in `/dev/sda`, and the rest of the space and devices will be Linux Filesystem.
 
 ```sh
 gdisk /dev/sda
+gdisk /dev/sdb
+gdisk /dev/sdc
 ```
-
-Allocate the first partition as an EFI partition of about 300MB. The remaining space will be allocated as a Linux Filesystem.
 
 ```text
-/dev/sda1: EFI system (300M)
+/dev/sda1: EFI system (200M)
 /dev/sda2: Linux filesystem
+/dev/sdb1: Linux filesystem
+/dev/sdc1: Linux filesystem
 ```
 
-EFI partition is formatted with fat.
+EFI partition is formatted as fat, and Linux Filesystem is formatted as BTRFS.
 
 ```sh
 mkfs.fat -F32 /dev/sda1
+mkfs.btrfs /dev/sda2 /dev/vdb1 /dev/vdc1
 ```
 
-Linux Filesystem is formatted with ext4.
-
-```sh
-mkfs.ext4 /dev/sda2
-```
-
-Then mount devices like following.
+Create subvolume and mount devices.
 
 ```sh
 mount /dev/sda2 /mnt
+btrfs su cr /mnt/@
+btrfs su cr /mnt/@home
+btrfs su cr /mnt/@snapshots
+btrfs su cr /mnt/@var_log
+
+umount /mnt
+
+mount -o noatime,compress=lzo,space_cache=v2,subvol=@ /dev/sda2 /mnt
+mkdir -p /mnt/{boot,home,.snapshots,var/log}
+mount -o noatime,compress=lzo,space_cache=v2,subvol=@home /dev/sda2 /mnt/home
+mount -o noatime,compress=lzo,space_cache=v2,subvol=@snapshots /dev/sda2 /mnt/.snapshots
+mount -o noatime,compress=lzo,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
+
 mount /dev/sda1 /mnt/boot
 ```
 
@@ -189,6 +202,15 @@ pacman -S grub efibootmgr networkmanager network-manager-applet \
   git xdg-utils xdg-user-dirs bluez bluez-utils
 ```
 
+### Configuring mkinitcpio
+
+Change the configurations, and reflect the changes with mkinitcpio.
+
+```sh
+sed -i 's/MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
+mkinitcpio -p linux
+```
+
 ### Bootloader
 
 Install Grub and create config file.
@@ -249,3 +271,18 @@ exit
 umount -a
 reboot
 ```
+
+### **Fonts**
+
+Copy fonts from windows partition.
+
+```sh
+sudo mkdir /usr/share/fonts/WindowsFonts
+sudo cp /windows/Windows/Fonts/* /usr/share/fonts/WindowsFonts/
+sudo chmod 644 /usr/share/fonts/WindowsFonts/*
+fc-cache -f
+```
+
+### **Install Desktop Environment**
+
+[Desktop Environment](../desktop-env/)

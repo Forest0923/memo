@@ -572,7 +572,7 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chmod &lt;span style="color:#3677a9">644&lt;/span> /usr/share/fonts/WindowsFonts/*
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fc-cache -f
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-desktop-environment">&lt;strong>Install Desktop Environment&lt;/strong>&lt;/h3>
-&lt;p>&lt;a href="../desktop-env/">Desktop Environment&lt;/a>&lt;/p></description></item><item><title>Docs: Dual boot (with Windows 10) + btrfs + grub</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-mono/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-mono/</guid><description>
+&lt;p>&lt;a href="../desktop-env/">Desktop Environment&lt;/a>&lt;/p></description></item><item><title>Docs: Dual boot (with Windows 10) + btrfs + grub</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-win10-grub/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-win10-grub/</guid><description>
 &lt;p>Install Arch Linux with the following settings.&lt;/p>
 &lt;table>
 &lt;thead>
@@ -605,15 +605,36 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/tbody>
 &lt;/table>
 &lt;h2 id="install-windows-10">Install Windows 10&lt;/h2>
-&lt;p>First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.&lt;/p>
-&lt;ul>
-&lt;li>Before:
-&lt;img src="dual-boot-disk-before.png" alt="disk-layout-before">&lt;/li>
-&lt;li>After:
-&lt;img src="dual-boot-disk-after.png" alt="disk-layout-after">&lt;/li>
-&lt;/ul>
-&lt;p>Then, install Arch Linux as follows.&lt;/p>
-&lt;h2 id="install">Install&lt;/h2>
+&lt;h3 id="diskpart">diskpart&lt;/h3>
+&lt;p>At first, install Windows 10.&lt;/p>
+&lt;p>Boot from ISO which can be downloaded from &lt;a href="https://www.microsoft.com/en-us/software-download/windows10">here&lt;/a>, and choose drive to install Windows 10.&lt;/p>
+&lt;p>You can install with the default layout, but I recommend to use custom layout.
+This is because the size of the default EFI partition is 100 MB.&lt;/p>
+&lt;p>It is possible to manage linux and windows images in that size of partition, but some tweaks is needed, for example, compressing initramfs with xz.&lt;/p>
+&lt;p>In this example I will allocate 500 MB for the EFI partition.&lt;/p>
+&lt;p>When the following installation screen appears, press shift + F10 to open cmd.&lt;/p>
+&lt;p>&lt;img src="windows10_setup.png" alt="">&lt;/p>
+&lt;p>Then, use diskpart for partitioning.&lt;/p>
+&lt;p>&lt;img src="diskpart1.png" alt="">&lt;/p>
+&lt;p>Select a disk with SELECT and convert it to GPT if necessary.&lt;/p>
+&lt;p>&lt;img src="diskpart2.png" alt="">&lt;/p>
+&lt;p>CREATE to create partitions.&lt;/p>
+&lt;p>&lt;img src="diskpart3.png" alt="">&lt;/p>
+&lt;p>Each command is explained by running help, so if you do not understand a command, you can look it up as needed.&lt;/p>
+&lt;p>After partitioning, exit diskpart and cmd.&lt;/p>
+&lt;p>Press Refresh and install Windows 10 on the primary partition.&lt;/p>
+&lt;h3 id="bypass-sign-in-option">Bypass sign-in (option)&lt;/h3>
+&lt;p>&lt;img src="signin.png" alt="">&lt;/p>
+&lt;p>When you see sign-in window like above, press Shift + F10 and run:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ipconfig release
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>It will turn off the network so that sign-in fails and you can install with a local account.&lt;/p>
+&lt;h3 id="shrink">Shrink&lt;/h3>
+&lt;p>We need to get a free disk for Linux, so we start the disk manager and shrink the disk.&lt;/p>
+&lt;p>&lt;img src="disk_manager.png" alt="">&lt;/p>
+&lt;p>&lt;img src="shrink.png" alt="">&lt;/p>
+&lt;p>&lt;img src="create_partition_for_linux.png" alt="">&lt;/p>
+&lt;p>After that, downloads Arch Linux ISO from &lt;a href="https://archlinux.org/download/">here&lt;/a> and boot.&lt;/p>
+&lt;h2 id="install-arch-linux">Install Arch Linux&lt;/h2>
 &lt;h3 id="change-keymaps">Change Keymaps&lt;/h3>
 &lt;p>Change the keymap to the one you use for the installation. For a Japanese keyboard, use jp106.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
@@ -656,26 +677,25 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;p>We will assume that the partition in &lt;code>/dev/sda&lt;/code> is as follows.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>sda
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda1 &amp;lt;-- EFI Partition
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda3
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda4
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sda5 &amp;lt;-- Empty Partition for Linux Filesystem
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda2 &amp;lt;-- MSR
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─sda3 &amp;lt;-- Windows
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sda4 &amp;lt;-- Empty Partition for Linux
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>First, update the partition table so that the empty partition you created is used as Linux Filesystem.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Format the Linux filesystem partition with BTRFS, create a subvolume, and mount it.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sda5
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda5 /mnt
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sda4
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda4 /mnt
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@home
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@snapshots
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@var_log
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda5 /mnt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda4 /mnt
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,.snapshots,var/log}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda5 /mnt/home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda5 /mnt/.snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var/log
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda5 /mnt/boot
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda4 /mnt/home
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda4 /mnt/.snapshots
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda4 /mnt/var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda4 /mnt/boot
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="base-install">Base install&lt;/h3>
 &lt;p>Install the package in the root directory, &lt;code>/mnt&lt;/code>.&lt;/p>
 &lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
@@ -771,7 +791,7 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;li>The problem is deactivated os-prober. os-prober automatically finds operating systems and adds their boot entry, but sometimes it is deactivated. The option reactivate os-prober.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></description></item><item><title>Docs: Dual boot (with Windows 11) + btrfs + systemd-boot</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot/</guid><description>
+&lt;/ul></description></item><item><title>Docs: Dual boot (with Windows 11) + btrfs + systemd-boot</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-win11-systemd-boot/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-win11-systemd-boot/</guid><description>
 &lt;p>Install Arch Linux with the following settings.&lt;/p>
 &lt;table>
 &lt;thead>

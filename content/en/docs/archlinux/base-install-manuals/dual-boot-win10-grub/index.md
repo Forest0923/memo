@@ -16,16 +16,66 @@ Install Arch Linux with the following settings.
 
 ## Install Windows 10
 
-First, install Windows 10, then run Disk Management to create a free space for the Linux installation. The layout before and after creating the free partition will look like this.
+### diskpart
 
-- Before:
-![disk-layout-before](dual-boot-disk-before.png)
-- After:
-![disk-layout-after](dual-boot-disk-after.png)
+At first, install Windows 10.
 
-Then, install Arch Linux as follows.
+Boot from ISO which can be downloaded from [here](https://www.microsoft.com/en-us/software-download/windows10), and choose drive to install Windows 10.
 
-## Install
+You can install with the default layout, but I recommend to use custom layout.
+This is because the size of the default EFI partition is 100 MB.
+
+It is possible to manage linux and windows images in that size of partition, but some tweaks is needed, for example, compressing initramfs with xz.
+
+In this example I will allocate 500 MB for the EFI partition.
+
+When the following installation screen appears, press shift + F10 to open cmd.
+
+![](windows10_setup.png)
+
+Then, use diskpart for partitioning.
+
+![](diskpart1.png)
+
+Select a disk with SELECT and convert it to GPT if necessary.
+
+![](diskpart2.png)
+
+CREATE to create partitions.
+
+![](diskpart3.png)
+
+Each command is explained by running help, so if you do not understand a command, you can look it up as needed.
+
+After partitioning, exit diskpart and cmd.
+
+Press Refresh and install Windows 10 on the primary partition.
+
+### Bypass sign-in (option)
+
+![](signin.png)
+
+When you see sign-in window like above, press Shift + F10 and run:
+
+```sh
+ipconfig release
+```
+
+It will turn off the network so that sign-in fails and you can install with a local account.
+
+### Shrink
+
+We need to get a free disk for Linux, so we start the disk manager and shrink the disk.
+
+![](disk_manager.png)
+
+![](shrink.png)
+
+![](create_partition_for_linux.png)
+
+After that, downloads Arch Linux ISO from [here](https://archlinux.org/download/) and boot.
+
+## Install Arch Linux
 
 ### Change Keymaps
 
@@ -69,10 +119,9 @@ We will assume that the partition in `/dev/sda` is as follows.
 ```text
 sda
 ├─sda1 <-- EFI Partition
-├─sda2
-├─sda3
-├─sda4
-└─sda5 <-- Empty Partition for Linux Filesystem
+├─sda2 <-- MSR
+├─sda3 <-- Windows
+└─sda4 <-- Empty Partition for Linux
 ```
 
 First, update the partition table so that the empty partition you created is used as Linux Filesystem.
@@ -84,19 +133,19 @@ gdisk /dev/sda
 Format the Linux filesystem partition with BTRFS, create a subvolume, and mount it.
 
 ```sh
-mkfs.btrfs /dev/sda5
-mount /dev/sda5 /mnt
+mkfs.btrfs /dev/sda4
+mount /dev/sda4 /mnt
 btrfs su cr /mnt/@
 btrfs su cr /mnt/@home
 btrfs su cr /mnt/@snapshots
 btrfs su cr /mnt/@var_log
 umount /mnt
-mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda5 /mnt
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda4 /mnt
 mkdir -p /mnt/{boot,home,.snapshots,var/log}
-mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda5 /mnt/home
-mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda5 /mnt/.snapshots
-mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda5 /mnt/var/log
-mount /dev/sda5 /mnt/boot
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda4 /mnt/home
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda4 /mnt/.snapshots
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda4 /mnt/var/log
+mount /dev/sda4 /mnt/boot
 ```
 
 ### Base install

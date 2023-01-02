@@ -1,18 +1,18 @@
 ---
-title: "Dual boot (with Windows 11) + btrfs + systemd-boot"
+title: "Dual Boot (with Windows 11) + btrfs + systemd-boot + dm-crypt (LUKS)"
 draft: false
-weight: 50
+weight: 60
 ---
 
 Install Arch Linux with the following settings.
 
-| Settings        |              |
-| --------------- | ------------ |
-| Dual Booting    | Windows 11   |
-| Filesystem      | Btrfs        |
-| Boot Loader     | Systemd-boot |
-| Disk            | single-disk  |
-| Disk Encryption | false        |
+| Settings        |                 |
+| --------------- | --------------- |
+| Dual Booting    | Windows 11      |
+| Filesystem      | Btrfs           |
+| Boot Loader     | Systemd-boot    |
+| Disk            | single-disk     |
+| Disk Encryption | dm-crypt (LUKS) |
 
 ## Install Windows 11
 
@@ -86,19 +86,21 @@ Finally, downloads Arch Linux ISO from [here](https://archlinux.org/download/) a
 
 ```sh
 loadkeys jp106
-gdisk /dev/sda
-mkfs.btrfs /dev/sda4
-mount /dev/sda4 /mnt
+fdisk /dev/sda
+cryptsetup luksFormat /dev/sda4
+cryptsetup luksOpen /dev/sda4 luksroot
+mkfs.btrfs /dev/mapper/luksroot
+mount /dev/mapper/luksroot /mnt
 btrfs su cr /mnt/@
 btrfs su cr /mnt/@home
 btrfs su cr /mnt/@snapshots
 btrfs su cr /mnt/@var_log
 umount /mnt
-mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda4 /mnt
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/mapper/luksroot /mnt
 mkdir -p /mnt/{boot,home,.snapshots,var/log}
-mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda4 /mnt/home
-mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda4 /mnt/.snapshots
-mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda4 /mnt/var/log
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/mapper/luksroot /mnt/home
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/mapper/luksroot /mnt/.snapshots
+mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/mapper/luksroot /mnt/var/log
 mount /dev/sda1 /mnt/boot
 pacman -Syy
 pacman -S archlinux-keyring
@@ -118,9 +120,22 @@ echo arch > /etc/hostname
 vim /etc/hosts
 passwd
 
+useradd -mG wheel mori
+passwd mori
+
+vim /etc/pacman.conf
+
 pacman -S efibootmgr networkmanager network-manager-applet \
-dialog os-prober mtools dosfstools base-devel linux-headers \
-git xdg-utils xdg-user-dirs
+  dialog os-prober mtools dosfstools base-devel linux-headers \
+  git xdg-utils xdg-user-dirs
+
+systemctl enable NetworkManager
+
+EDITOR=vim visudo
+
+vim /etc/mkinitcpio.conf
+# btrfs, encrypt
+mkinitcpio -p linux
 
 bootctl --path=/boot install
 echo -e "timeout 10
@@ -128,23 +143,11 @@ default arch" > /boot/loader/loader.conf
 echo -e "title Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
-options root=UUID=xxxx rootflags=subvol=@ rw" > /boot/loader/entries/arch.conf
+options cryptdevice=UUID=xxxx:root root=UUID=xxxx rootflags=subvol=@ rw" > /boot/loader/entries/arch.conf
 echo -e "title Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux-fallback.img
-options root=UUID=xxxx rootflags=subvol=@ rw" > /boot/loader/entries/arch-fallback.conf
-
-
-vim /etc/mkinitcpio.conf
-# btrfs, encrypt
-mkinitcpio -p linux
-
-systemctl enable NetworkManager
-
-useradd -mG wheel mori
-passwd mori
-
-EDITOR=vim visudo
+options cryptdevice=UUID=xxxx:root root=UUID=xxxx rootflags=subvol=@ rw" > /boot/loader/entries/arch-fallback.conf
 
 exit
 umount -a

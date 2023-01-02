@@ -7,7 +7,7 @@ This is a tutorial for installing desktop environment.
 
 ## Install
 
-### **Graphics Driver**
+### Graphics Driver
 
 Install graphics driver.
 
@@ -29,7 +29,7 @@ sudo pacman -S nvidia nvidia-utils nvidia-dkms
 {{< /tab >}}
 {{< /tabpane >}}
 
-### **Display Server**
+### Display Server
 
 Install xorg as a display server. A display server is software that passes input and output using a GUI such as Gnome to the OS and hardware.
 
@@ -37,7 +37,7 @@ Install xorg as a display server. A display server is software that passes input
 sudo pacman -S xorg
 ```
 
-### **Display Manager**
+### Display Manager
 
 Install the Display Manager to use the GUI for login.
 
@@ -59,7 +59,7 @@ sudo pacman -S sddm
 {{< /tab >}}
 {{< /tabpane >}}
 
-### **Desktop Environment**
+### Desktop Environment
 
 {{< tabpane >}}
 {{< tab header="xfce" lang="sh" >}}
@@ -84,7 +84,7 @@ sudo pacman -S plasma kde-applications
 {{< /tab >}}
 {{< /tabpane >}}
 
-### **Systemd**
+### Systemd
 
 Set systemd to start the display manager automatically.
 

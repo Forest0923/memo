@@ -127,7 +127,7 @@ vim /etc/pacman.conf
 
 pacman -S efibootmgr networkmanager network-manager-applet \
   dialog os-prober mtools dosfstools base-devel linux-headers \
-  git xdg-utils xdg-user-dirs
+  git xdg-utils xdg-user-dirs pipewire-pulse
 
 systemctl enable NetworkManager
 

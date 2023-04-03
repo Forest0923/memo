@@ -4039,7 +4039,7 @@ Select a disk with SELECT and convert it to GPT if necessary.&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> dialog os-prober mtools dosfstools base-devel linux-headers &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> git xdg-utils xdg-user-dirs
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> git xdg-utils xdg-user-dirs pipewire-pulse
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>

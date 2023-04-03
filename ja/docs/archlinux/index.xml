@@ -380,17 +380,17 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>PKGBUILD を修正してパッケージの名前変更したり，ドキュメントを生成させないように修正します．&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> linux
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim PKGBUILD
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>3c3
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt; pkgbase=linux
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">---
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&amp;gt; pkgbase=linux-custom
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>64d63
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt; make htmldocs
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>191c190
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34; &amp;#34;$pkgbase-docs&amp;#34;)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">---
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&amp;gt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34;)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>下記のコマンドでソースコードをダウンロードします．&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">3c3
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#d22323">&amp;lt; pkgbase=linux
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="font-weight:bold">---
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="font-weight:bold">&lt;/span>&lt;span style="color:#589819">&amp;gt; pkgbase=linux-custom
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">64d63
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#d22323">&amp;lt; make htmldocs
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">191c190
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#d22323">&amp;lt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34; &amp;#34;$pkgbase-docs&amp;#34;)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="font-weight:bold">---
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="font-weight:bold">&lt;/span>&lt;span style="color:#589819">&amp;gt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34;)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>下記のコマンドでソースコードをダウンロードします．&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>makepkg -so
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>.
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── archlinux-linux

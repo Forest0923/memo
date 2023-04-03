@@ -377,14 +377,17 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;li>Japanese:&lt;/li>
 &lt;/ul>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S otf-ipaexfont
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>yay -S ttf-ms-fonts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>yay -S ttf-windows
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru -S ttf-ms-fonts
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Chinese &amp;amp; Hangul:&lt;/li>
 &lt;/ul>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S adobe-source-han-sans-cn-fonts &lt;span style="color:#999;font-style:italic"># Chinese&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S adobe-source-han-sans-tw-fonts &lt;span style="color:#999;font-style:italic"># Chinese&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo pacman -S adobe-source-han-sans-kr-fonts &lt;span style="color:#999;font-style:italic"># hangul&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>For KDE:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S ttf-dejvu ttf-liberation
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ul></description></item><item><title>Docs: Power Management</title><link>http://forest0923.github.io/memo/en/docs/archlinux/power-mgr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/power-mgr/</guid><description>
 &lt;p>This is a memo about power management.&lt;/p>
@@ -424,17 +427,17 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Modify PKGBUILD to rename the package and prevent it from generating documentation.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> linux
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim PKGBUILD
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>3c3
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt; pkgbase=linux
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">---
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&amp;gt; pkgbase=linux-custom
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>64d63
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt; make htmldocs
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>191c190
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34; &amp;#34;$pkgbase-docs&amp;#34;)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">---
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&amp;gt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34;)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Use the following command to download the source code.&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">3c3
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#d22323">&amp;lt; pkgbase=linux
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="font-weight:bold">---
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="font-weight:bold">&lt;/span>&lt;span style="color:#589819">&amp;gt; pkgbase=linux-custom
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">64d63
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#d22323">&amp;lt; make htmldocs
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">191c190
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#d22323">&amp;lt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34; &amp;#34;$pkgbase-docs&amp;#34;)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="font-weight:bold">---
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="font-weight:bold">&lt;/span>&lt;span style="color:#589819">&amp;gt; pkgname=(&amp;#34;$pkgbase&amp;#34; &amp;#34;$pkgbase-headers&amp;#34;)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Use the following command to download the source code.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>makepkg -so
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>.
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── archlinux-linux

@@ -231,8 +231,7 @@ sudo pacman -S powerline powerline-fonts
 
   ```sh
   sudo pacman -S otf-ipaexfont
-  yay -S ttf-ms-fonts
-  yay -S ttf-windows
+  paru -S ttf-ms-fonts
   ```
 
   - Chinese & Hangul:
@@ -242,3 +241,10 @@ sudo pacman -S powerline powerline-fonts
   sudo pacman -S adobe-source-han-sans-tw-fonts # Chinese
   sudo pacman -S adobe-source-han-sans-kr-fonts # hangul
   ```
+  
+  - For KDE:
+
+  ```sh
+  sudo pacman -S ttf-dejvu ttf-liberation
+  ```
+  

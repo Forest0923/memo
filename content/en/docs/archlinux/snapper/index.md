@@ -68,3 +68,9 @@ sudo pacman -S rsync
 sudo chmod a+rx /.snapshots
 sudo chown :mori /.snapshots
 ```
+
+## more simple hook
+
+```sh
+paru -S snap-pac
+```

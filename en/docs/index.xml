@@ -1,4 +1,329 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Docs</title><link>http://forest0923.github.io/memo/en/docs/</link><description>Recent content in Docs on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Android x86</title><link>http://forest0923.github.io/memo/en/docs/android/inst-x86/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/android/inst-x86/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Docs</title><link>http://forest0923.github.io/memo/en/docs/</link><description>Recent content in Docs on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: read</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/read/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/read/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_read&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> count);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_read">&lt;code>sys_read()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>file: fs/read_write.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(read, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>, count)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ksys_read&lt;/span>(fd, buf, count);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_read">&lt;code>ksys_read()&lt;/code>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">ssize_t&lt;/span> &lt;span style="color:#447fcf">ksys_read&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> count)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = &lt;span style="color:#447fcf">fdget_pos&lt;/span>(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">ssize_t&lt;/span> ret = -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (f.file) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">loff_t&lt;/span> pos, *ppos = &lt;span style="color:#447fcf">file_ppos&lt;/span>(f.file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ppos) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pos = *ppos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ppos = &amp;amp;pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">vfs_read&lt;/span>(f.file, buf, count, ppos);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span> &amp;amp;&amp;amp; ppos)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f.file-&amp;gt;f_pos = pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fdput_pos&lt;/span>(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: write</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/write/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/write/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_write&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> count);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_write">&lt;code>sys_write()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>file: fs/read_write.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(write, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, buf,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>, count)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ksys_write&lt;/span>(fd, buf, count);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_write">&lt;code>ksys_write()&lt;/code>&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">ssize_t&lt;/span> &lt;span style="color:#447fcf">ksys_write&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *buf, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> count)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = &lt;span style="color:#447fcf">fdget_pos&lt;/span>(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">ssize_t&lt;/span> ret = -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (f.file) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">loff_t&lt;/span> pos, *ppos = &lt;span style="color:#447fcf">file_ppos&lt;/span>(f.file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ppos) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pos = *ppos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ppos = &amp;amp;pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">vfs_write&lt;/span>(f.file, buf, count, ppos);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span> &amp;amp;&amp;amp; ppos)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f.file-&amp;gt;f_pos = pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fdput_pos&lt;/span>(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: open</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/open/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_open">&lt;code>sys_open()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(open, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *, filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, flags, &lt;span style="color:#6ab825;font-weight:bold">umode_t&lt;/span>, mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ksys_open&lt;/span>(filename, flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_open">&lt;code>ksys_open()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>include/linux/syscalls.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">inline&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">ksys_open&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">umode_t&lt;/span> mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">force_o_largefile&lt;/span>())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flags |= O_LARGEFILE;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_sys_open&lt;/span>(AT_FDCWD, filename, flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_sys_open">&lt;code>do_sys_open()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">do_sys_open&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> dfd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags, &lt;span style="color:#6ab825;font-weight:bold">umode_t&lt;/span> mode)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_how how = &lt;span style="color:#447fcf">build_open_how&lt;/span>(flags, mode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_sys_openat2&lt;/span>(dfd, filename, &amp;amp;how);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_sys_openat2">&lt;code>do_sys_openat2()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">do_sys_openat2&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> dfd, &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> __user *filename,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_how *how)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> open_flags op;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd = &lt;span style="color:#447fcf">build_open_flags&lt;/span>(how, &amp;amp;op);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> filename *tmp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp = &lt;span style="color:#447fcf">getname&lt;/span>(filename);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">IS_ERR&lt;/span>(tmp))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">PTR_ERR&lt;/span>(tmp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = &lt;span style="color:#447fcf">get_unused_fd_flags&lt;/span>(how-&amp;gt;flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd &amp;gt;= &lt;span style="color:#3677a9">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *f = &lt;span style="color:#447fcf">do_filp_open&lt;/span>(dfd, tmp, &amp;amp;op);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">IS_ERR&lt;/span>(f)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">put_unused_fd&lt;/span>(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fd = &lt;span style="color:#447fcf">PTR_ERR&lt;/span>(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fsnotify_open&lt;/span>(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fd_install&lt;/span>(fd, f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">putname&lt;/span>(tmp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> fd;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: close</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/close/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/close/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_close&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_close">&lt;code>sys_close()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/open.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Careful here! We test whether the file pointer is NULL before
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * releasing the fd. This ensures that one clone task can&amp;#39;t release
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * an fd while another clone is opening it.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(close, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> retval = &lt;span style="color:#447fcf">__close_fd&lt;/span>(current-&amp;gt;files, fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* can&amp;#39;t restart close syscall because file table entry was cleared */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(retval == -ERESTARTSYS ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval == -ERESTARTNOINTR ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval == -ERESTARTNOHAND ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval == -ERESTART_RESTARTBLOCK))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = -EINTR;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> retval;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="__close_fd">&lt;code>__close_fd()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/file.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * The same warnings as for __alloc_fd()/__fd_install() apply here...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">__close_fd&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> files_struct *files, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> fd)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *file;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fdtable *fdt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">spin_lock&lt;/span>(&amp;amp;files-&amp;gt;file_lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fdt = &lt;span style="color:#447fcf">files_fdtable&lt;/span>(files);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (fd &amp;gt;= fdt-&amp;gt;max_fds)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_unlock;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> file = fdt-&amp;gt;fd[fd];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!file)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_unlock;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">rcu_assign_pointer&lt;/span>(fdt-&amp;gt;fd[fd], &lt;span style="color:#24909d">NULL&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">__put_unused_fd&lt;/span>(files, fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">spin_unlock&lt;/span>(&amp;amp;files-&amp;gt;file_lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">filp_close&lt;/span>(file, files);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out_unlock:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">spin_unlock&lt;/span>(&amp;amp;files-&amp;gt;file_lock);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">EXPORT_SYMBOL&lt;/span>(__close_fd); &lt;span style="color:#999;font-style:italic">/* for ksys_close() */&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: mmap</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/mmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/mmap/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_mmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> addr, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> prot, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">off_t&lt;/span> pgoff);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_mmap">&lt;code>sys_mmap()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>arch/x86/kernel/sys_x86_64.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE6&lt;/span>(mmap, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, addr, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, prot, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, off)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (off &amp;amp; ~PAGE_MASK)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">ksys_mmap_pgoff&lt;/span>(addr, len, prot, flags, fd, off &amp;gt;&amp;gt; PAGE_SHIFT);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_mmap_pgoff">&lt;code>ksys_mmap_pgoff()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>mm/mmap.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">ksys_mmap_pgoff&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> addr, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> prot, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> pgoff)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *file = &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> retval;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!(flags &amp;amp; MAP_ANONYMOUS)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">audit_mmap_fd&lt;/span>(fd, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> file = &lt;span style="color:#447fcf">fget&lt;/span>(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!file)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">is_file_hugepages&lt;/span>(file))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len = &lt;span style="color:#447fcf">ALIGN&lt;/span>(len, &lt;span style="color:#447fcf">huge_page_size&lt;/span>(&lt;span style="color:#447fcf">hstate_file&lt;/span>(file)));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(flags &amp;amp; MAP_HUGETLB &amp;amp;&amp;amp; !&lt;span style="color:#447fcf">is_file_hugepages&lt;/span>(file)))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out_fput;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (flags &amp;amp; MAP_HUGETLB) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> user_struct *user = &lt;span style="color:#24909d">NULL&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> hstate *hs;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> hs = &lt;span style="color:#447fcf">hstate_sizelog&lt;/span>((flags &amp;gt;&amp;gt; MAP_HUGE_SHIFT) &amp;amp; MAP_HUGE_MASK);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!hs)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len = &lt;span style="color:#447fcf">ALIGN&lt;/span>(len, &lt;span style="color:#447fcf">huge_page_size&lt;/span>(hs));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * VM_NORESERVE is used because the reservations will be
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * taken when vm_ops-&amp;gt;mmap() is called
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * A dummy user value is used because we are not locking
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * memory so no accounting is necessary
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> file = &lt;span style="color:#447fcf">hugetlb_file_setup&lt;/span>(HUGETLB_ANON_FILE, len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> VM_NORESERVE,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;amp;user, HUGETLB_ANONHUGE_INODE,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (flags &amp;gt;&amp;gt; MAP_HUGE_SHIFT) &amp;amp; MAP_HUGE_MASK);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">IS_ERR&lt;/span>(file))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">PTR_ERR&lt;/span>(file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> flags &amp;amp;= ~(MAP_EXECUTABLE | MAP_DENYWRITE);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = &lt;span style="color:#447fcf">vm_mmap_pgoff&lt;/span>(file, addr, len, prot, flags, pgoff);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out_fput:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (file)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fput&lt;/span>(file);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> retval;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="vm_mmap_pgoff">&lt;code>vm_mmap_pgoff()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>mm/util.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">vm_mmap_pgoff&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *file, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> addr,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> len, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> prot,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> flag, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> pgoff)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> mm_struct *mm = current-&amp;gt;mm;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> populate;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">LIST_HEAD&lt;/span>(uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">security_mmap_file&lt;/span>(file, prot, flag);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!ret) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">mmap_write_lock_killable&lt;/span>(mm))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINTR;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">do_mmap_pgoff&lt;/span>(file, addr, len, prot, flag, pgoff,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;amp;populate, &amp;amp;uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">userfaultfd_unmap_complete&lt;/span>(mm, &amp;amp;uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (populate)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mm_populate&lt;/span>(ret, populate);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_mmap_pgoff">&lt;code>do_mmap_pgoff()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>include/linux/mm.h&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">inline&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">do_mmap_pgoff&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *file, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> addr,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> len, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> prot, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> flags,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> pgoff, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> *populate,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> list_head *uf)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_mmap&lt;/span>(file, addr, len, prot, flags, &lt;span style="color:#3677a9">0&lt;/span>, pgoff, populate, uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: Android x86</title><link>http://forest0923.github.io/memo/en/docs/android/inst-x86/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/android/inst-x86/</guid><description>
 &lt;h2 id="system-setup">System Setup&lt;/h2>
 &lt;ul>
 &lt;li>Host: Linux KVM&lt;/li>
@@ -860,7 +1185,155 @@ id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mv jlisting.sty /usr/local/share/texmf/tex/latex/jlisting/
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> /usr/local/share/texmf/tex/latex/
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mktexlsr
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Public Key Cryptography</title><link>http://forest0923.github.io/memo/en/docs/security/pkc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/security/pkc/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: mprotect</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/mprotect/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/mprotect/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_mprotect&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> prot);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_mprotect">&lt;code>sys_mprotect()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>mm/mprotect.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(mprotect, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>, len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, prot)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_mprotect_pkey&lt;/span>(start, len, prot, -&lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_mprotect_pkey">&lt;code>do_mprotect_pkey()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>mm/mprotect.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * pkey==-1 when doing a legacy mprotect()
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">do_mprotect_pkey&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> prot, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> pkey)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> nstart, end, tmp, reqprot;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> vm_area_struct *vma, *prev;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> error = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> grows = prot &amp;amp; (PROT_GROWSDOWN|PROT_GROWSUP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> rier = (current-&amp;gt;personality &amp;amp; READ_IMPLIES_EXEC) &amp;amp;&amp;amp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (prot &amp;amp; PROT_READ);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> start = &lt;span style="color:#447fcf">untagged_addr&lt;/span>(start);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prot &amp;amp;= ~(PROT_GROWSDOWN|PROT_GROWSUP);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (grows == (PROT_GROWSDOWN|PROT_GROWSUP)) &lt;span style="color:#999;font-style:italic">/* can&amp;#39;t be both */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (start &amp;amp; ~PAGE_MASK)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!len)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> len = &lt;span style="color:#447fcf">PAGE_ALIGN&lt;/span>(len);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> end = start + len;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (end &amp;lt;= start)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -ENOMEM;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!&lt;span style="color:#447fcf">arch_validate_prot&lt;/span>(prot, start))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> reqprot = prot;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">mmap_write_lock_killable&lt;/span>(current-&amp;gt;mm))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINTR;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * If userspace did not allocate the pkey, do not let
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * them use it here.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> ((pkey != -&lt;span style="color:#3677a9">1&lt;/span>) &amp;amp;&amp;amp; !&lt;span style="color:#447fcf">mm_pkey_is_allocated&lt;/span>(current-&amp;gt;mm, pkey))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vma = &lt;span style="color:#447fcf">find_vma&lt;/span>(current-&amp;gt;mm, start);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -ENOMEM;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vma)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prev = vma-&amp;gt;vm_prev;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(grows &amp;amp; PROT_GROWSDOWN)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (vma-&amp;gt;vm_start &amp;gt;= end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> start = vma-&amp;gt;vm_start;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!(vma-&amp;gt;vm_flags &amp;amp; VM_GROWSDOWN))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (vma-&amp;gt;vm_start &amp;gt; start)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(grows &amp;amp; PROT_GROWSUP)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> end = vma-&amp;gt;vm_end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!(vma-&amp;gt;vm_flags &amp;amp; VM_GROWSUP))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (start &amp;gt; vma-&amp;gt;vm_start)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prev = vma;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (nstart = start ; ; ) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> mask_off_old_flags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> newflags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> new_vma_pkey;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Here we know that vma-&amp;gt;vm_start &amp;lt;= nstart &amp;lt; vma-&amp;gt;vm_end. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Does the application expect PROT_READ to imply PROT_EXEC */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (rier &amp;amp;&amp;amp; (vma-&amp;gt;vm_flags &amp;amp; VM_MAYEXEC))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prot |= PROT_EXEC;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Each mprotect() call explicitly passes r/w/x permissions.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * If a permission is not passed to mprotect(), it must be
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * cleared from the VMA.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mask_off_old_flags = VM_READ | VM_WRITE | VM_EXEC |
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> VM_FLAGS_CLEAR;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> new_vma_pkey = &lt;span style="color:#447fcf">arch_override_mprotect_pkey&lt;/span>(vma, prot, pkey);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newflags = &lt;span style="color:#447fcf">calc_vm_prot_bits&lt;/span>(prot, new_vma_pkey);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newflags |= (vma-&amp;gt;vm_flags &amp;amp; ~mask_off_old_flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* newflags &amp;gt;&amp;gt; 4 shift VM_MAY% in place of VM_% */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> ((newflags &amp;amp; ~(newflags &amp;gt;&amp;gt; &lt;span style="color:#3677a9">4&lt;/span>)) &amp;amp; VM_ACCESS_FLAGS) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EACCES;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">security_file_mprotect&lt;/span>(vma, reqprot, prot);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp = vma-&amp;gt;vm_end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (tmp &amp;gt; end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp = end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">mprotect_fixup&lt;/span>(vma, &amp;amp;prev, nstart, tmp, newflags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> nstart = tmp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (nstart &amp;lt; prev-&amp;gt;vm_end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> nstart = prev-&amp;gt;vm_end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (nstart &amp;gt;= end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vma = prev-&amp;gt;vm_next;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!vma || vma-&amp;gt;vm_start != nstart) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -ENOMEM;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prot = reqprot;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(current-&amp;gt;mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: Public Key Cryptography</title><link>http://forest0923.github.io/memo/en/docs/security/pkc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/security/pkc/</guid><description>
 &lt;p>Public key cryptography is a cryptographic scheme that uses two keys, a public key and a private key. It is used for signature, key exchange and etc.&lt;/p>
 &lt;p>The security is ensured by using the difficulty of the calculation.
 For example, given $x$, it is easy to compute $y$ such that $y=f(x)$, but it is difficult to compute $x$ from $y$.&lt;/p>
@@ -1306,6 +1779,337 @@ id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
 &lt;p>Update the GRUB configuration and reboot.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: munmap</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/munmap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/munmap/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_munmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> addr, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_munmap">&lt;code>sys_munmap()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>mm/mmap.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE2&lt;/span>(munmap, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, addr, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span>, len)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> addr = &lt;span style="color:#447fcf">untagged_addr&lt;/span>(addr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">profile_munmap&lt;/span>(addr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">__vm_munmap&lt;/span>(addr, len, &lt;span style="color:#24909d">true&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="__vm_munmap">&lt;code>__vm_munmap()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>mm/mmap.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">__vm_munmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len, &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> downgrade)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> mm_struct *mm = current-&amp;gt;mm;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">LIST_HEAD&lt;/span>(uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">mmap_write_lock_killable&lt;/span>(mm))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINTR;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">__do_munmap&lt;/span>(mm, start, len, &amp;amp;uf, downgrade);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Returning 1 indicates mmap_lock is downgraded.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * But 1 is not legal return value of vm_munmap() and munmap(), reset
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * it to 0 before return.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret == &lt;span style="color:#3677a9">1&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_read_unlock&lt;/span>(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">userfaultfd_unmap_complete&lt;/span>(mm, &amp;amp;uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>mm/mmap.c の外から呼び出したい場合には &lt;code>vm_munmap()&lt;/code> を使用する．&lt;/p>
+&lt;p>プロトタイプは &lt;code>include/linux/mm.h&lt;/code> に宣言されている．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">vm_munmap&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> start, &lt;span style="color:#6ab825;font-weight:bold">size_t&lt;/span> len)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">__vm_munmap&lt;/span>(start, len, &lt;span style="color:#24909d">false&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">EXPORT_SYMBOL&lt;/span>(vm_munmap);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: brk</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/brk/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/brk/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_brk&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> brk);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_brk">&lt;code>sys_brk()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>mm/mmap.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(brk, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, brk)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> retval;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> newbrk, oldbrk, origbrk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> mm_struct *mm = current-&amp;gt;mm;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> vm_area_struct *next;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> min_brk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> populate;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">bool&lt;/span> downgraded = &lt;span style="color:#24909d">false&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">LIST_HEAD&lt;/span>(uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">mmap_write_lock_killable&lt;/span>(mm))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINTR;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> origbrk = mm-&amp;gt;brk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#ifdef CONFIG_COMPAT_BRK
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * CONFIG_COMPAT_BRK can still be overridden by setting
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * randomize_va_space to 2, which will still cause mm-&amp;gt;start_brk
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * to be arbitrarily shifted
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (current-&amp;gt;brk_randomized)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> min_brk = mm-&amp;gt;start_brk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> min_brk = mm-&amp;gt;end_data;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#else
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> min_brk = mm-&amp;gt;start_brk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (brk &amp;lt; min_brk)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Check against rlimit here. If this check is done later after the test
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * of oldbrk with newbrk then it can escape the test and let the data
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * segment grow beyond its set limit the in case where the limit is
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * not page aligned -Ram Gupta
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">check_data_rlimit&lt;/span>(&lt;span style="color:#447fcf">rlimit&lt;/span>(RLIMIT_DATA), brk, mm-&amp;gt;start_brk,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;end_data, mm-&amp;gt;start_data))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> newbrk = &lt;span style="color:#447fcf">PAGE_ALIGN&lt;/span>(brk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> oldbrk = &lt;span style="color:#447fcf">PAGE_ALIGN&lt;/span>(mm-&amp;gt;brk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (oldbrk == newbrk) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;brk = brk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> success;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * Always allow shrinking brk.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * __do_munmap() may downgrade mmap_lock to read.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (brk &amp;lt;= mm-&amp;gt;brk) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> ret;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * mm-&amp;gt;brk must to be protected by write mmap_lock so update it
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * before downgrading mmap_lock. When __do_munmap() fails,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * mm-&amp;gt;brk will be restored from origbrk.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;brk = brk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = &lt;span style="color:#447fcf">__do_munmap&lt;/span>(mm, newbrk, oldbrk-newbrk, &amp;amp;uf, &lt;span style="color:#24909d">true&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;brk = origbrk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (ret == &lt;span style="color:#3677a9">1&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> downgraded = &lt;span style="color:#24909d">true&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> success;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Check against existing mmap mappings. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> next = &lt;span style="color:#447fcf">find_vma&lt;/span>(mm, oldbrk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (next &amp;amp;&amp;amp; newbrk + PAGE_SIZE &amp;gt; &lt;span style="color:#447fcf">vm_start_gap&lt;/span>(next))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* Ok, looks good - let it rip. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">do_brk_flags&lt;/span>(oldbrk, newbrk-oldbrk, &lt;span style="color:#3677a9">0&lt;/span>, &amp;amp;uf) &amp;lt; &lt;span style="color:#3677a9">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mm-&amp;gt;brk = brk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>success:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> populate = newbrk &amp;gt; oldbrk &amp;amp;&amp;amp; (mm-&amp;gt;def_flags &amp;amp; VM_LOCKED) != &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (downgraded)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_read_unlock&lt;/span>(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">userfaultfd_unmap_complete&lt;/span>(mm, &amp;amp;uf);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (populate)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mm_populate&lt;/span>(oldbrk, newbrk - oldbrk);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> brk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> retval = origbrk;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(mm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> retval;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: ioctl</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/ioctl/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/ioctl/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_ioctl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>sys_ioctl()
+&lt;ul>
+&lt;li>ksys_ioctl()
+&lt;ul>
+&lt;li>security_file_ioctl()&lt;/li>
+&lt;li>do_vfs_ioctl()&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_ioctl">&lt;code>sys_ioctl()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/ioctl.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE3&lt;/span>(ioctl, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span>, arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ksys_ioctl&lt;/span>(fd, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="ksys_ioctl">&lt;code>ksys_ioctl()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/ioctl.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">ksys_ioctl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> fd f = &lt;span style="color:#447fcf">fdget&lt;/span>(fd);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!f.file)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EBADF;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">security_file_ioctl&lt;/span>(f.file, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">goto&lt;/span> out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">do_vfs_ioctl&lt;/span>(f.file, fd, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (error == -ENOIOCTLCMD)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">vfs_ioctl&lt;/span>(f.file, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fdput&lt;/span>(f);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_vfs_ioctl">&lt;code>do_vfs_ioctl()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/ioctl.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * do_vfs_ioctl() is not for drivers and not intended to be EXPORT_SYMBOL()&amp;#39;d.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * It&amp;#39;s just a simple helper for sys_ioctl and compat_sys_ioctl.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * When you add any new common ioctls to the switches above and below,
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * please ensure they have compatible arguments in compat mode.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">do_vfs_ioctl&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *filp, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> cmd, &lt;span style="color:#6ab825;font-weight:bold">unsigned&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> arg)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> __user *argp = (&lt;span style="color:#6ab825;font-weight:bold">void&lt;/span> __user *)arg;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> inode *inode = &lt;span style="color:#447fcf">file_inode&lt;/span>(filp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">switch&lt;/span> (cmd) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIOCLEX:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">set_close_on_exec&lt;/span>(fd, &lt;span style="color:#3677a9">1&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIONCLEX:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">set_close_on_exec&lt;/span>(fd, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIONBIO:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fionbio&lt;/span>(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIOASYNC:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fioasync&lt;/span>(fd, filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIOQSIZE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">S_ISDIR&lt;/span>(inode-&amp;gt;i_mode) || &lt;span style="color:#447fcf">S_ISREG&lt;/span>(inode-&amp;gt;i_mode) ||
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">S_ISLNK&lt;/span>(inode-&amp;gt;i_mode)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">loff_t&lt;/span> res = &lt;span style="color:#447fcf">inode_get_bytes&lt;/span>(inode);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">copy_to_user&lt;/span>(argp, &amp;amp;res, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(res)) ?
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> -EFAULT : &lt;span style="color:#3677a9">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -ENOTTY;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIFREEZE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fsfreeze&lt;/span>(filp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FITHAW:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fsthaw&lt;/span>(filp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FS_IOC_FIEMAP:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_fiemap&lt;/span>(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIGETBSZ:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">/* anon_bdev filesystems may not have a block size */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!inode-&amp;gt;i_sb-&amp;gt;s_blocksize)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -EINVAL;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">put_user&lt;/span>(inode-&amp;gt;i_sb-&amp;gt;s_blocksize, (&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *)argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FICLONE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_file_clone&lt;/span>(filp, arg, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FICLONERANGE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_file_clone_range&lt;/span>(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIDEDUPERANGE:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">ioctl_file_dedupe_range&lt;/span>(filp, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">case&lt;/span> FIONREAD:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!&lt;span style="color:#447fcf">S_ISREG&lt;/span>(inode-&amp;gt;i_mode))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">vfs_ioctl&lt;/span>(filp, cmd, arg);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">put_user&lt;/span>(&lt;span style="color:#447fcf">i_size_read&lt;/span>(inode) - filp-&amp;gt;f_pos,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *)argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">default&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">S_ISREG&lt;/span>(inode-&amp;gt;i_mode))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">file_ioctl&lt;/span>(filp, cmd, argp);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> -ENOIOCTLCMD;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="わからない部分">わからない部分&lt;/h2>
+&lt;p>KVM の VM 作成などに ioctl を使うが，sys_ioctl のコードを読んでも KVM_CREATE_VM の処理などは書かれていない．&lt;/p>
+&lt;p>モジュール用の ioctl のハンドラはそのモジュール内で定義されるが，どうやってそこに飛んでいるのか今のところわかっていない．&lt;/p>
+&lt;p>以下は KVM_CREATE_VM のマクロを追ったときのメモ．&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define KVMIO 0xAE
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"># define _IOC_NONE 0U
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define _IOC(dir,type,nr,size) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> (((dir) &amp;lt;&amp;lt; 0+8+8+14) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((type) &amp;lt;&amp;lt; 0+8) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((nr) &amp;lt;&amp;lt; 0) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((size) &amp;lt;&amp;lt; 0+8+8))
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define _IO(type,nr) _IOC(_IOC_NONE,(type),(nr),0)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define KVM_CREATE_VM _IO(KVMIO, 0x01)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define KVM_CREATE_VM _IOC(0U,(0xAE),(0x01),0)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define KVM_CREATE_VM (((0) &amp;lt;&amp;lt; 30) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((0xAE) &amp;lt;&amp;lt; 8) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((0x01) &amp;lt;&amp;lt; 0) | \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold"> ((0) &amp;lt;&amp;lt; 16))
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>0000 0000 0000 0000
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>1010 1110 0000 0000
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0000 0000 0000 0001
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0000 0000 0000 0000
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>0xAE01
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Connect to GitHub with SSH</title><link>http://forest0923.github.io/memo/en/docs/git/github-ssh/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/git/github-ssh/</guid><description>
 &lt;h2 id="ssh-key-generation">SSH Key Generation&lt;/h2>
 &lt;p>Executing ssh-keygen as follows will generate a key using the algorithm you have selected.&lt;/p>
@@ -2085,7 +2889,54 @@ id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>dex2jar base.apk
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Decompile the generated &lt;code>base-dex2jar.jar&lt;/code>. In case of GUI, run jd-gui and select &lt;code>base-dex2jar.jar&lt;/code> from File Open. In case of CUI, run jd-cli as follows to extract the file to &lt;code>src/&lt;/code>.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>jd-cli base-dex2jar.jar -od src
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Configurations for Gpu Passthrough</title><link>http://forest0923.github.io/memo/en/docs/kvm/gpu-passthrough/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/kvm/gpu-passthrough/</guid><description>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: pipe</title><link>http://forest0923.github.io/memo/en/docs/linux-syscalls/pipe/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-syscalls/pipe/</guid><description>
+&lt;h2 id="version">Version&lt;/h2>
+&lt;ul>
+&lt;li>Linux v5.8.13&lt;/li>
+&lt;/ul>
+&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">long&lt;/span> &lt;span style="color:#447fcf">sys_pipe&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *fildes);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="arguments">Arguments&lt;/h2>
+&lt;h2 id="return">Return&lt;/h2>
+&lt;h2 id="definitions">Definitions&lt;/h2>
+&lt;h3 id="sys_pipe">&lt;code>sys_pipe()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/pipe.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(pipe, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *, fildes)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#447fcf">do_pipe2&lt;/span>(fildes, &lt;span style="color:#3677a9">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="do_pipe2">&lt;code>do_pipe2()&lt;/code>&lt;/h3>
+&lt;ul>
+&lt;li>fs/pipe.c&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * sys_pipe() is the normal C calling standard for creating
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> * a pipe. It&amp;#39;s not the way Unix traditionally does this, though.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"> */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">static&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">do_pipe2&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> __user *fildes, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> flags)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">struct&lt;/span> file *files[&lt;span style="color:#3677a9">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> fd[&lt;span style="color:#3677a9">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = &lt;span style="color:#447fcf">__do_pipe_flags&lt;/span>(fd, files, flags);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (!error) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (&lt;span style="color:#447fcf">unlikely&lt;/span>(&lt;span style="color:#447fcf">copy_to_user&lt;/span>(fildes, fd, &lt;span style="color:#6ab825;font-weight:bold">sizeof&lt;/span>(fd)))) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fput&lt;/span>(files[&lt;span style="color:#3677a9">0&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fput&lt;/span>(files[&lt;span style="color:#3677a9">1&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">put_unused_fd&lt;/span>(fd[&lt;span style="color:#3677a9">0&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">put_unused_fd&lt;/span>(fd[&lt;span style="color:#3677a9">1&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> error = -EFAULT;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fd_install&lt;/span>(fd[&lt;span style="color:#3677a9">0&lt;/span>], files[&lt;span style="color:#3677a9">0&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">fd_install&lt;/span>(fd[&lt;span style="color:#3677a9">1&lt;/span>], files[&lt;span style="color:#3677a9">1&lt;/span>]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: Configurations for Gpu Passthrough</title><link>http://forest0923.github.io/memo/en/docs/kvm/gpu-passthrough/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/kvm/gpu-passthrough/</guid><description>
 &lt;p>GPU passthrough is a technology that allows VMs to directly access hardware (GPU), and is expected to provide high graphics performance even in a virtualized environment. This page describes how to pass-through an Nvidia GPU to Windows 10 on KVM.&lt;/p>
 &lt;h2 id="system">System&lt;/h2>
 &lt;ul>
@@ -3417,654 +4268,4 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>Your program have to be saved in the &lt;code>src/&lt;/code>.&lt;/li>
 &lt;li>&lt;code>.pio&lt;/code> sometimes has an useful example code.&lt;/li>
-&lt;/ul></description></item><item><title>Docs: Rust Cheat Sheet</title><link>http://forest0923.github.io/memo/en/docs/lang/rust/cheatsheet/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/lang/rust/cheatsheet/</guid><description/></item><item><title>Docs: SSH</title><link>http://forest0923.github.io/memo/en/docs/security/ssh/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/security/ssh/</guid><description>
-&lt;p>SSH stands for Secure Shell, a protocol that allows you to communicate with a computer securely from a remote location.&lt;/p>
-&lt;h2 id="how-to-use-ssh-client">How to use SSH (client)&lt;/h2>
-&lt;h3 id="install">Install&lt;/h3>
-&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
-id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S openssh&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install openssh-client&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;h3 id="key-generation">Key Generation&lt;/h3>
-&lt;p>Generate a key with ssh-keygen.&lt;/p>
-&lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-01-00" aria-selected="false">RSA&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-01-01" aria-selected="false">Tab 2&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-01-02-tab" data-toggle="tab" href="#tabs-01-02" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-01-02" aria-selected="false">Tab 3&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
-id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t rsa -b &lt;span style="color:#3677a9">4096&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ecdsa -b &lt;span style="color:#3677a9">521&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-01-02" role="tabpanel" aria-labelled-by="tabs-01-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ssh-keygen -t ed25519&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;p>By default, the public key &lt;code>id_[algorithm].pub&lt;/code> and the private key &lt;code>id_[algorithm]&lt;/code> are created in &lt;code>~/.ssh/&lt;/code>. You can communicate without password authentication by registering a public key with the SSH server.&lt;/p></description></item><item><title>Docs: Submodule</title><link>http://forest0923.github.io/memo/en/docs/git/submodule/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/git/submodule/</guid><description>
-&lt;p>The submodule is a feature that allows you to include another Git repository as a sub directory in your repository. If you want to use the contents of a library or another project you are developing, you can include it in the project while managing it separately from the main project.&lt;/p>
-&lt;h3 id="adding-submodule">&lt;strong>Adding Submodule&lt;/strong>&lt;/h3>
-&lt;p>To add a submodule, use the following command.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git submodule add
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The information of the repository added as a submodule is described in .gitmodules.&lt;/p>
-&lt;h3 id="cloning-a-repository-containing-submodule">&lt;strong>Cloning a Repository Containing Submodule&lt;/strong>&lt;/h3>
-&lt;p>If you clone a repository containing submodules in the same way as a normal repository, the submodule directory will be empty. If you want to clone the submodules together, use the &lt;code>--recursive&lt;/code> option as follows.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git clone --recursive git@github.com:user/repo.git
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you have already cloned the main project and want to clone the contents of the sub-modules, execute the following command.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git submodule init
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git submodule update
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="updating-submodule">&lt;strong>Updating Submodule&lt;/strong>&lt;/h3>
-&lt;p>The first way to apply updates to the submodule is to go to the submodule directory and fetch and merge them.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> submod
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git fetch
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git merge
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The second method is to use &lt;code>submodule update&lt;/code> as follows.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git submodule update --remote
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you update a local submodule, move to the submodule directory, commit, and push.&lt;/p>
-&lt;h3 id="remove-submodule">&lt;strong>Remove Submodule&lt;/strong>&lt;/h3>
-&lt;p>If you want to remove a submodule, first run deinit.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git submodule deinit submoddir
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Next, remove the subdirectory from git with the following command.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git rm --cached submoddir
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Finally, commit to reflect the changes.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git commit
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Using minted for Syntax Highlighting</title><link>http://forest0923.github.io/memo/en/docs/latex/minted/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/latex/minted/</guid><description>
-&lt;h2 id="about">About&lt;/h2>
-&lt;p>minted is a package that enable to add syntax highlight by using Pygments library.&lt;/p>
-&lt;h2 id="installation">Installation&lt;/h2>
-&lt;p>Pygments is written in Python and can be installed by pip&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pip install Pygments
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Package minted is already installed if you use texlive.&lt;/p>
-&lt;h2 id="usage">Usage&lt;/h2>
-&lt;p>At the preamble add some commands as follows.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\usepackage&lt;/span>&lt;span style="color:#bbb">[cache=false]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\usepackage&lt;/span>&lt;span style="color:#24909d">{&lt;/span>xcolor&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\definecolor&lt;/span>&lt;span style="color:#24909d">{&lt;/span>code-bg&lt;span style="color:#24909d">}{&lt;/span>rgb&lt;span style="color:#24909d">}{&lt;/span>0.95, 0.95, 0.95&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>You can then use syntax highlighting in your document as follows.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>[breaklines, linenos, frame=lines, bgcolor=code-bg]&lt;span style="color:#24909d">{&lt;/span>c&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#include &amp;lt;stdio.h&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>int main()&lt;span style="color:#24909d">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf(&amp;#34;Hello, World!&amp;#34;);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Otherwise, you can use &lt;code>\inputminted&lt;/code> to include source files.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\inputminted&lt;/span>&lt;span style="color:#bbb">[breaklines, linenos, frame=lines, bgcolor=code-bg]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>python&lt;span style="color:#24909d">}{&lt;/span>src/hello.py&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>There are several options for configuring the code visuals.&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th style="text-align:left">Option&lt;/th>
-&lt;th style="text-align:left">Description&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td style="text-align:left">breaklines&lt;/td>
-&lt;td style="text-align:left">Insert break when source code exceeds page width.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align:left">linenos&lt;/td>
-&lt;td style="text-align:left">Add line numbers.&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align:left">frame=lines&lt;/td>
-&lt;td style="text-align:left">Add frame (line, single, &amp;hellip;).&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align:left">bgcolor=code-bg&lt;/td>
-&lt;td style="text-align:left">Add background color.&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table></description></item><item><title>Docs: Desktop Environment</title><link>http://forest0923.github.io/memo/en/docs/archlinux/desktop-env/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/desktop-env/</guid><description>
-&lt;p>This is a tutorial for installing desktop environment.&lt;/p>
-&lt;h2 id="install">Install&lt;/h2>
-&lt;h3 id="graphics-driver">Graphics Driver&lt;/h3>
-&lt;p>Install graphics driver.&lt;/p>
-&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-00" aria-selected="false">Intel&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-01" aria-selected="false">AMD&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-00-02-tab" data-toggle="tab" href="#tabs-00-02" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-02" aria-selected="false">Nvidia&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
-id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-intel&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xf86-video-amdgpu&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-00-02" role="tabpanel" aria-labelled-by="tabs-00-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S nvidia nvidia-utils nvidia-dkms&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;h3 id="display-server">Display Server&lt;/h3>
-&lt;p>Install xorg as a display server. A display server is software that passes input and output using a GUI such as Gnome to the OS and hardware.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xorg
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="display-manager">Display Manager&lt;/h3>
-&lt;p>Install the Display Manager to use the GUI for login.&lt;/p>
-&lt;ul class="nav nav-tabs" id="tabs-1" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-01-00-tab" data-toggle="tab" href="#tabs-01-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-01-00" aria-selected="false">lightdm&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-01-01-tab" data-toggle="tab" href="#tabs-01-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-01-01" aria-selected="false">gdm&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-01-02-tab" data-toggle="tab" href="#tabs-01-02" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-01-02" aria-selected="false">sddm&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-1-content">&lt;div class="tab-pane fade show active"
-id="tabs-01-00" role="tabpanel" aria-labelled-by="tabs-01-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S lightdm lightdm-gtk-greeter&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S gdm&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-01-02" role="tabpanel" aria-labelled-by="tabs-01-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S sddm&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;h3 id="desktop-environment">Desktop Environment&lt;/h3>
-&lt;ul class="nav nav-tabs" id="tabs-2" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-02-00-tab" data-toggle="tab" href="#tabs-02-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-02-00" aria-selected="false">xfce&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-02-01-tab" data-toggle="tab" href="#tabs-02-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-02-01" aria-selected="false">gnome&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-02-02-tab" data-toggle="tab" href="#tabs-02-02" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-02-02" aria-selected="false">budgie&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-02-03-tab" data-toggle="tab" href="#tabs-02-03" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-02-03" aria-selected="false">kde&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-2-content">&lt;div class="tab-pane fade show active"
-id="tabs-02-00" role="tabpanel" aria-labelled-by="tabs-02-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S xfce4 xfce4-goodies&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-02-01" role="tabpanel" aria-labelled-by="tabs-02-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S gnome gnome-tweaks&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-02-02" role="tabpanel" aria-labelled-by="tabs-02-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S budgie-desktop gnome&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-02-03" role="tabpanel" aria-labelled-by="tabs-02-03-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S plasma kde-applications&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;h3 id="systemd">Systemd&lt;/h3>
-&lt;p>Set systemd to start the display manager automatically.&lt;/p>
-&lt;ul class="nav nav-tabs" id="tabs-3" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-03-00-tab" data-toggle="tab" href="#tabs-03-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-03-00" aria-selected="false">lightdm&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-03-01-tab" data-toggle="tab" href="#tabs-03-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-03-01" aria-selected="false">gdm&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-03-02-tab" data-toggle="tab" href="#tabs-03-02" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-03-02" aria-selected="false">sddm&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-3-content">&lt;div class="tab-pane fade show active"
-id="tabs-03-00" role="tabpanel" aria-labelled-by="tabs-03-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> lightdm&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-03-01" role="tabpanel" aria-labelled-by="tabs-03-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> gdm&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-03-02" role="tabpanel" aria-labelled-by="tabs-03-02-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> sddm&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div></description></item><item><title>Docs: Dual boot (with Windows 11) + btrfs + systemd-boot</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-win11-systemd-boot/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-win11-systemd-boot/</guid><description>
-&lt;p>Install Arch Linux with the following settings.&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Settings&lt;/th>
-&lt;th>&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>Dual Booting&lt;/td>
-&lt;td>Windows 11&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Filesystem&lt;/td>
-&lt;td>Btrfs&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Boot Loader&lt;/td>
-&lt;td>Systemd-boot&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Disk&lt;/td>
-&lt;td>single-disk&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Disk Encryption&lt;/td>
-&lt;td>false&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;h2 id="install-windows-11">Install Windows 11&lt;/h2>
-&lt;h3 id="diskpart">diskpart&lt;/h3>
-&lt;p>At first, install Windows 11.&lt;/p>
-&lt;p>Boot from ISO which can be downloaded from &lt;a href="https://www.microsoft.com/en-us/software-download/windows11">here&lt;/a>, and choose drive to install Windows 11.&lt;/p>
-&lt;p>You can install with the default layout, but I recommend to use custom layout.
-This is because the size of the default EFI partition is 100 MB.&lt;/p>
-&lt;p>It is possible to manage linux and windows images in that size of partition, but some tweaks is needed, for example, compressing initramfs with xz.&lt;/p>
-&lt;p>In this example I will allocate 500 MB for the EFI partition.&lt;/p>
-&lt;p>When the following installation screen appears, press shift + F10 to open cmd.&lt;/p>
-&lt;p>&lt;img src="win11-setup.png" alt="">&lt;/p>
-&lt;p>Then, use diskpart for partitioning.
-Select a disk with SELECT and convert it to GPT if necessary.&lt;/p>
-&lt;p>&lt;img src="win11-diskpart2.png" alt="">&lt;/p>
-&lt;p>Run CREATE to create partitions.&lt;/p>
-&lt;p>&lt;img src="win11-diskpart3.png" alt="">&lt;/p>
-&lt;p>Each command is explained by running help, so if you do not understand a command, you can look it up as needed.&lt;/p>
-&lt;p>After partitioning, exit diskpart and cmd.&lt;/p>
-&lt;p>Press Refresh and install Windows 11 on the primary partition.&lt;/p>
-&lt;p>&lt;img src="win11-partition-layout.png" alt="">&lt;/p>
-&lt;h3 id="bypass-sign-in-option">Bypass sign-in (option)&lt;/h3>
-&lt;p>&lt;img src="win11-sign-in2.png" alt="">&lt;/p>
-&lt;p>When you see sign-in window like above, press Shift + F10 and run:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ipconfig /release
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>It will disconnect the network to make the sign in fail. After that, click &lt;code>Create one!&lt;/code> to create local account.&lt;/p>
-&lt;p>&lt;img src="win11-localaccount.png" alt="">&lt;/p>
-&lt;h3 id="shrink">Shrink&lt;/h3>
-&lt;p>We need to get a free disk for Linux, so we start the disk manager and shrink the disk.&lt;/p>
-&lt;p>&lt;img src="win11-disk-manager1.png" alt="">&lt;/p>
-&lt;p>&lt;img src="win11-disk-manager2.png" alt="">&lt;/p>
-&lt;p>&lt;img src="win11-disk-manager3.png" alt="">&lt;/p>
-&lt;p>Finally, downloads Arch Linux ISO from &lt;a href="https://archlinux.org/download/">here&lt;/a> and start installation.&lt;/p>
-&lt;h2 id="install-arch-linux">Install Arch Linux&lt;/h2>
-&lt;h3 id="iso">ISO&lt;/h3>
-&lt;p>&lt;a href="https://archlinux.org/download/">Arch Linux Downloads&lt;/a>&lt;/p>
-&lt;h3 id="commands">Commands&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>gdisk /dev/sda
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/sda4
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda4 /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@var_log
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/sda4 /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,.snapshots,var/log}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda4 /mnt/home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda4 /mnt/.snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda4 /mnt/var/log
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -Syy
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S archlinux-keyring
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode &lt;span style="color:#999;font-style:italic"># or amd-ucode&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hwclock --systohc
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/locale.gen
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>locale-gen
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/hosts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>dialog os-prober mtools dosfstools base-devel linux-headers &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span>git xdg-utils xdg-user-dirs
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bootctl --path=/boot install
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;timeout 10
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">default arch&amp;#34;&lt;/span> &amp;gt; /boot/loader/loader.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;title Arch Linux
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">linux /vmlinuz-linux
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">initrd /initramfs-linux.img
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">options root=UUID=xxxx rootflags=subvol=@ rw&amp;#34;&lt;/span> &amp;gt; /boot/loader/entries/arch.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;title Arch Linux
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">linux /vmlinuz-linux
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">initrd /initramfs-linux-fallback.img
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">options root=UUID=xxxx rootflags=subvol=@ rw&amp;#34;&lt;/span> &amp;gt; /boot/loader/entries/arch-fallback.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/mkinitcpio.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># btrfs, encrypt&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: fwupd</title><link>http://forest0923.github.io/memo/en/docs/commands/fwupd/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/commands/fwupd/</guid><description>
-&lt;h2 id="install">Install&lt;/h2>
-&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
-id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S fwupd&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install fwupd&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;h2 id="usage">Usage&lt;/h2>
-&lt;ul>
-&lt;li>Refresh data from server:&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>fwupdmgr refresh
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>Check device for updates:&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>fwupdmgr get-updates
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>Update and install:&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>fwupdmgr update
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="troubleshooting">Troubleshooting&lt;/h2>
-&lt;ul>
-&lt;li>If the update does not apply, follow the steps below.&lt;/li>
-&lt;/ul>
-&lt;ol>
-&lt;li>Download .cab file&lt;/li>
-&lt;li>Install:&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>fwupdmgr install [path-to-.cab]
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: LFS (Large File Storage)</title><link>http://forest0923.github.io/memo/en/docs/git/lfs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/git/lfs/</guid><description>
-&lt;p>The maximum file size that can be uploaded to github is 100MB.
-Git Large File Storage enables to upload large file that is larger than 100MB.&lt;/p>
-&lt;h2 id="install">&lt;strong>Install&lt;/strong>&lt;/h2>
-&lt;p>Install git-lfs with following commands.&lt;/p>
-&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
-&lt;a class="nav-link active persistLang-sh"
-id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
-&lt;/li>
-&lt;li class="nav-item">
-&lt;a class="nav-link persistLang-sh"
-id="tabs-00-01-tab" data-toggle="tab" href="#tabs-00-01" role="tab"
-onclick="persistLang(&amp;#34;sh&amp;#34;);"
-aria-controls="tabs-00-01" aria-selected="false">Ubuntu&lt;/a>
-&lt;/li>
-&lt;/ul>
-&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
-id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S git-lfs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;div class="tab-pane fade"
-id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install git-lfs&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
-&lt;/div>
-&lt;p>Use the following command to confirm that the installation is complete.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git lfs install
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="how-to-use">How to Use&lt;/h2>
-&lt;p>Assume that you have a file smaller than 100MB named hello.txt and a file larger than 100MB named large.file.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── hello.txt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── large.file
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you try to push as usual in this state, you will get the following error message.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git init
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git remote add origin git@github.com:user/git-lfs-test.git
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit -m &lt;span style="color:#ed9d13">&amp;#34;Initial commit&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push origin master
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>Enumerating objects: 4, done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Counting objects: 100% (4/4), done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Delta compression using up to 16 threads
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Compressing objects: 100% (3/3), done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Writing objects: 100% (4/4), 8.31 MiB | 1.76 MiB/s, done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: error: GH001: local files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: error: Trace: f2804525d75e71f1d42747fe638744b05a78ef347da1de187e2437a43d25eccb
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: error: See http://git.io/iEPt8g for more information.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: error: File large.file is 119.52 MB; this exceeds GitHub&amp;#39;s file size limit of 100.00 MB
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>To github.com:user/git-lfs-test.git
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ! [remote rejected] master -&amp;gt; master (pre-receive hook declined)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>error: failed to push some refs to &amp;#39;github.com:user/git-lfs-test.git&amp;#39;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To use LFS, first delete large files from commit.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git rm --cached large.file
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit --amend -CHEAD
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Track large files with LFS.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git lfs track large.file
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .gitattributes &amp;amp;&amp;amp; git commit -m &lt;span style="color:#ed9d13">&amp;#34;Track large file&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add large.file &amp;amp;&amp;amp; git commit -m &lt;span style="color:#ed9d13">&amp;#34;Add large file&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then, you can upload the large.file to GitHub by pushing it.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>git push origin master
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>Uploading LFS objects: 100% (1/1), 125 MB | 0 B/s, done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Enumerating objects: 9, done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Counting objects: 100% (9/9), done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Delta compression using up to 16 threads
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Compressing objects: 100% (7/7), done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Writing objects: 100% (9/9), 900 bytes | 900.00 KiB/s, done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Total 9 (delta 1), reused 0 (delta 0), pack-reused 0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remote: Resolving deltas: 100% (1/1), done.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>To github.com:user/git-lfs-test.git
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> * [new branch] master -&amp;gt; master
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="note">&lt;strong>Note&lt;/strong>&lt;/h2>
-&lt;p>GitHub has a per-account limit on the size of a file that can be managed using LFS. For more information, see &lt;a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage">GitHub - About storage and bandwidth usage&lt;/a>. You can check how much you&amp;rsquo;re currently using from Git LFS Data at &lt;a href="https://github.com/settings/billing">https://github.com/settings/billing&lt;/a>.&lt;/p></description></item><item><title>Docs: Dual Boot (with Windows 11) + btrfs + systemd-boot + dm-crypt (LUKS)</title><link>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-win11-dm-crypt/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/archlinux/base-install-manuals/dual-boot-win11-dm-crypt/</guid><description>
-&lt;p>Install Arch Linux with the following settings.&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th>Settings&lt;/th>
-&lt;th>&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td>Dual Booting&lt;/td>
-&lt;td>Windows 11&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Filesystem&lt;/td>
-&lt;td>Btrfs&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Boot Loader&lt;/td>
-&lt;td>Systemd-boot&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Disk&lt;/td>
-&lt;td>single-disk&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td>Disk Encryption&lt;/td>
-&lt;td>dm-crypt (LUKS)&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table>
-&lt;h2 id="install-windows-11">Install Windows 11&lt;/h2>
-&lt;h3 id="diskpart">diskpart&lt;/h3>
-&lt;p>At first, install Windows 11.&lt;/p>
-&lt;p>Boot from ISO which can be downloaded from &lt;a href="https://www.microsoft.com/en-us/software-download/windows11">here&lt;/a>, and choose drive to install Windows 11.&lt;/p>
-&lt;p>You can install with the default layout, but I recommend to use custom layout.
-This is because the size of the default EFI partition is 100 MB.&lt;/p>
-&lt;p>It is possible to manage linux and windows images in that size of partition, but some tweaks is needed, for example, compressing initramfs with xz.&lt;/p>
-&lt;p>In this example I will allocate 500 MB for the EFI partition.&lt;/p>
-&lt;p>When the following installation screen appears, press shift + F10 to open cmd.&lt;/p>
-&lt;p>&lt;img src="win11-setup.png" alt="">&lt;/p>
-&lt;p>Then, use diskpart for partitioning.
-Select a disk with SELECT and convert it to GPT if necessary.&lt;/p>
-&lt;p>&lt;img src="win11-diskpart2.png" alt="">&lt;/p>
-&lt;p>Run CREATE to create partitions.&lt;/p>
-&lt;p>&lt;img src="win11-diskpart3.png" alt="">&lt;/p>
-&lt;p>Each command is explained by running help, so if you do not understand a command, you can look it up as needed.&lt;/p>
-&lt;p>After partitioning, exit diskpart and cmd.&lt;/p>
-&lt;p>Press Refresh and install Windows 11 on the primary partition.&lt;/p>
-&lt;p>&lt;img src="win11-partition-layout.png" alt="">&lt;/p>
-&lt;h3 id="bypass-sign-in-option">Bypass sign-in (option)&lt;/h3>
-&lt;p>&lt;img src="win11-sign-in2.png" alt="">&lt;/p>
-&lt;p>When you see sign-in window like above, press Shift + F10 and run:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ipconfig /release
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>It will disconnect the network to make the sign in fail. After that, click &lt;code>Create one!&lt;/code> to create local account.&lt;/p>
-&lt;p>&lt;img src="win11-localaccount.png" alt="">&lt;/p>
-&lt;h3 id="shrink">Shrink&lt;/h3>
-&lt;p>We need to get a free disk for Linux, so we start the disk manager and shrink the disk.&lt;/p>
-&lt;p>&lt;img src="win11-disk-manager1.png" alt="">&lt;/p>
-&lt;p>&lt;img src="win11-disk-manager2.png" alt="">&lt;/p>
-&lt;p>&lt;img src="win11-disk-manager3.png" alt="">&lt;/p>
-&lt;p>Finally, downloads Arch Linux ISO from &lt;a href="https://archlinux.org/download/">here&lt;/a> and start installation.&lt;/p>
-&lt;h2 id="install-arch-linux">Install Arch Linux&lt;/h2>
-&lt;h3 id="iso">ISO&lt;/h3>
-&lt;p>&lt;a href="https://archlinux.org/download/">Arch Linux Downloads&lt;/a>&lt;/p>
-&lt;h3 id="commands">Commands&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>loadkeys jp106
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fdisk /dev/sda
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cryptsetup luksFormat /dev/sda4
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cryptsetup luksOpen /dev/sda4 luksroot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkfs.btrfs /dev/mapper/luksroot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/mapper/luksroot /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>btrfs su cr /mnt/@var_log
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@ /dev/mapper/luksroot /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkdir -p /mnt/{boot,home,.snapshots,var/log}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/mapper/luksroot /mnt/home
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/mapper/luksroot /mnt/.snapshots
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/mapper/luksroot /mnt/var/log
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda1 /mnt/boot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -Syy
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S archlinux-keyring
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacstrap /mnt base linux linux-firmware vim intel-ucode &lt;span style="color:#999;font-style:italic"># or amd-ucode&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>genfstab -U /mnt &amp;gt;&amp;gt; /mnt/etc/fstab
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>hwclock --systohc
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/locale.gen
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>locale-gen
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">LANG&lt;/span>=en_US.UTF-8 &amp;gt;&amp;gt; /etc/locale.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> &lt;span style="color:#40ffff">KEYMAP&lt;/span>=jp106 &amp;gt;&amp;gt; /etc/vconsole.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> arch &amp;gt; /etc/hostname
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/hosts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>useradd -mG wheel mori
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>passwd mori
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/pacman.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pacman -S efibootmgr networkmanager network-manager-applet &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> dialog os-prober mtools dosfstools base-devel linux-headers &lt;span style="color:#ed9d13">\
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">&lt;/span> git xdg-utils xdg-user-dirs pipewire-pulse
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl &lt;span style="color:#24909d">enable&lt;/span> NetworkManager
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">EDITOR&lt;/span>=vim visudo
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim /etc/mkinitcpio.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># btrfs, encrypt&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mkinitcpio -p linux
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>bootctl --path=/boot install
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;timeout 10
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">default arch&amp;#34;&lt;/span> &amp;gt; /boot/loader/loader.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;title Arch Linux
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">linux /vmlinuz-linux
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">initrd /initramfs-linux.img
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">options cryptdevice=UUID=xxxx:root root=UUID=xxxx rootflags=subvol=@ rw&amp;#34;&lt;/span> &amp;gt; /boot/loader/entries/arch.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">echo&lt;/span> -e &lt;span style="color:#ed9d13">&amp;#34;title Arch Linux
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">linux /vmlinuz-linux
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">initrd /initramfs-linux-fallback.img
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ed9d13">options cryptdevice=UUID=xxxx:root root=UUID=xxxx rootflags=subvol=@ rw&amp;#34;&lt;/span> &amp;gt; /boot/loader/entries/arch-fallback.conf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount -a
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: find and grep</title><link>http://forest0923.github.io/memo/en/docs/commands/find-grep/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/commands/find-grep/</guid><description>
-&lt;h2 id="source-code-reading-with-find--grep">Source Code Reading with find + grep&lt;/h2>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>find . -type f &lt;span style="color:#ed9d13">\(&lt;/span> -name &lt;span style="color:#ed9d13">&amp;#39;*.c&amp;#39;&lt;/span> -o -name &lt;span style="color:#ed9d13">&amp;#39;*.h&amp;#39;&lt;/span> &lt;span style="color:#ed9d13">\)&lt;/span> -print0 | xargs -0 grep -C &lt;span style="color:#3677a9">3&lt;/span> -Hni &lt;span style="color:#ed9d13">&amp;#39;root_hpa&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
+&lt;/ul></description></item></channel></rss>

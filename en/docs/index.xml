@@ -1379,7 +1379,43 @@ $$&lt;/p>
 &lt;p>$$
 \sigma^e = (M^d)^e = M^{ed} \equiv M \pmod N
 $$&lt;/p>
-&lt;/blockquote></description></item><item><title>Docs: Shell Script Cheat Sheet</title><link>http://forest0923.github.io/memo/en/docs/lang/shellscript/sh-cs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/lang/shellscript/sh-cs/</guid><description>
+&lt;/blockquote></description></item><item><title>Docs: Setting up Java Environment</title><link>http://forest0923.github.io/memo/en/docs/lang/java/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/lang/java/install/</guid><description>
+&lt;h2 id="system">System&lt;/h2>
+&lt;ul>
+&lt;li>JDK v11 Temurin&lt;/li>
+&lt;li>IntelliJ Community Edition&lt;/li>
+&lt;/ul>
+&lt;h2 id="installation">Installation&lt;/h2>
+&lt;ul class="nav nav-tabs" id="tabs-0" role="tablist">&lt;li class="nav-item">
+&lt;a class="nav-link active persistLang-sh"
+id="tabs-00-00-tab" data-toggle="tab" href="#tabs-00-00" role="tab"
+onclick="persistLang(&amp;#34;sh&amp;#34;);"
+aria-controls="tabs-00-00" aria-selected="false">Arch&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;div class="tab-content" id="tabs-0-content">&lt;div class="tab-pane fade show active"
+id="tabs-00-00" role="tabpanel" aria-labelled-by="tabs-00-00-tab">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S jdk11-temurin intellij-idea-community-edition&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/div>
+&lt;/div>
+&lt;h2 id="java-version-management">Java Version Management&lt;/h2>
+&lt;p>How to switch between multiple installed versions of Java.&lt;/p>
+&lt;p>To check the available versions and the default environment, run:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>archlinux-java status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Example output:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>Copy code
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Available Java environments:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> java-11-temurin
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> java-17-openjdk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> java-18-openjdk (default)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> java-8-openjdk/jre
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>To set the default to java-11-temurin, use &lt;code>set&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo archlinux-java &lt;span style="color:#24909d">set&lt;/span> java-11-temurin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Verify the default with java -version:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ java -version
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>openjdk version &amp;#34;11.0.16.1&amp;#34; 2022-08-12
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>OpenJDK Runtime Environment Temurin-11.0.16.1+1 (build 11.0.16.1+1)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>OpenJDK 64-Bit Server VM Temurin-11.0.16.1+1 (build 11.0.16.1+1, mixed mode)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Shell Script Cheat Sheet</title><link>http://forest0923.github.io/memo/en/docs/lang/shellscript/sh-cs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/lang/shellscript/sh-cs/</guid><description>
 &lt;h2 id="array">Array&lt;/h2>
 &lt;ul>
 &lt;li>Test code:&lt;/li>
@@ -4046,173 +4082,4 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;li>The problem is deactivated os-prober. os-prober automatically finds operating systems and adds their boot entry, but sometimes it is deactivated. The option reactivate os-prober.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></description></item><item><title>Docs: Implementing Original Hypercalls</title><link>http://forest0923.github.io/memo/en/docs/linux-dev/impl-hypercall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/linux-dev/impl-hypercall/</guid><description>
-&lt;p>This is a tutorial of implementing new hypercalls.&lt;/p>
-&lt;h2 id="system-setup">System Setup&lt;/h2>
-&lt;ul>
-&lt;li>CPU: x86_64&lt;/li>
-&lt;li>Hypervisor: Linux KVM 5.8.13&lt;/li>
-&lt;li>Guest: Linux 5.8.13&lt;/li>
-&lt;/ul>
-&lt;h2 id="step-by-step-instructions">Step-by-step instructions&lt;/h2>
-&lt;h3 id="add-new-hypercall-entry-in-kvm">Add new hypercall entry in KVM&lt;/h3>
-&lt;p>Register new hypercall number at the &lt;code>include/uapi/linux/kvm_para.h&lt;/code>.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span> #define KVM_HC_CLOCK_PAIRING 9
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #define KVM_HC_SEND_IPI 10
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #define KVM_HC_SCHED_YIELD 11
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#define KVM_HC_HELLO_HYPERCALL0 12
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#define KVM_HC_HELLO_HYPERCALL1 13
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> /*
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> * hypercalls use architecture specific
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hypercall occurs VMCALL that is one of the reason of VM Exit. The handler of VMCALL eventually calls &lt;code>kvm_emulate_hypercall()&lt;/code> in &lt;code>arch/x86/kvm/x86.c&lt;/code>. You can add hypercall by modifying the switch statement in it as follows.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span> kvm_sched_yield(vcpu-&amp;gt;kvm, a0);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = 0;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> break;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ case KVM_HC_HELLO_HYPERCALL0:
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ trace_printk(&amp;#34;Hello world!\n&amp;#34;);
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ break;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ case KVM_HC_HELLO_HYPERCALL1:
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ trace_printk(&amp;#34;a0 = %d\n&amp;#34;, a0);
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ break;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span> default:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret = -KVM_ENOSYS;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> break;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="implementing-systemcall-to-call-hypercall">Implementing systemcall to call hypercall&lt;/h3>
-&lt;p>A hypercall can be called using &lt;code>kvm_hypercall0()&lt;/code> and so on as follows. The maximum number of arguments is 4.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/kernel.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;linux/syscalls.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;uapi/linux/kvm_para.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;#34;my_syscalls.h&amp;#34;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE0&lt;/span>(hello_hypercall0)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kvm_hypercall0&lt;/span>(KVM_HC_HELLO_HYPERCALL0);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#447fcf">SYSCALL_DEFINE1&lt;/span>(hello_hypercall1, &lt;span style="color:#6ab825;font-weight:bold">int&lt;/span>, arg1)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">kvm_hypercall1&lt;/span>(KVM_HC_HELLO_HYPERCALL1, arg1);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>You need to add a system call to call &lt;code>kvm_hypercallk()&lt;/code> since it cannot be called directly from userspace. The following patch adds a system call to call a simple hypercall.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/Makefile b/Makefile
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 58283e912b4e..2f6191b70d84 100644
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- a/Makefile
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/Makefile
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -1066,7 +1066,7 @@ export MODORDER := $(extmod-prefix)modules.order
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span> export MODULES_NSDEPS := $(extmod-prefix)modules.nsdeps
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ifeq ($(KBUILD_EXTMOD),)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">-core-y += kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+core-y += kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ my_syscalls/
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vmlinux-dirs := $(patsubst %/,%,$(filter %/, \
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> $(core-y) $(core-m) $(drivers-y) $(drivers-m) \
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 78847b32e137..e8ce133372d2 100644
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- a/arch/x86/entry/syscalls/syscall_64.tbl
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/arch/x86/entry/syscalls/syscall_64.tbl
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -360,6 +360,8 @@
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span> 437 common openat2 sys_openat2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 438 common pidfd_getfd sys_pidfd_getfd
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 439 common faccessat2 sys_faccessat2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+440 common hello_hypercall0 sys_hello_hypercall0
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+441 common hello_hypercall1 sys_hello_hypercall1
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> # x32-specific system call numbers start at 512 to avoid cache impact
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index b951a87da987..65f480aed5ac 100644
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- a/include/linux/syscalls.h
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/include/linux/syscalls.h
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -1424,4 +1424,8 @@ long compat_ksys_semtimedop(int semid, struct sembuf __user *tsems,
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span> unsigned int nsops,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> const struct old_timespec32 __user *timeout);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+/* my_syscalls/my_syscalls.c */
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+asmlinkage long sys_hello_hypercall0(void);
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+asmlinkage long sys_hello_hypercall1(int arg1);
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span> #endif
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/include/uapi/linux/kvm_para.h b/include/uapi/linux/kvm_para.h
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 8b86609849b9..614cc87f38ec 100644
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- a/include/uapi/linux/kvm_para.h
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/include/uapi/linux/kvm_para.h
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -29,6 +29,8 @@
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span> #define KVM_HC_CLOCK_PAIRING 9
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #define KVM_HC_SEND_IPI 10
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> #define KVM_HC_SCHED_YIELD 11
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#define KVM_HC_HELLO_HYPERCALL0 12
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#define KVM_HC_HELLO_HYPERCALL1 13
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> /*
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> * hypercalls use architecture specific
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">diff --git a/my_syscalls/Makefile b/my_syscalls/Makefile
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>new file mode 100644
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 000000000000..e7e211791186
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- /dev/null
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/my_syscalls/Makefile
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -0,0 +1 @@
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#589819">+obj-y:=my_syscalls.o
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;font-weight:bold">diff --git a/my_syscalls/my_syscalls.c b/my_syscalls/my_syscalls.c
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>new file mode 100644
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 000000000000..0989c604cbd4
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- /dev/null
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/my_syscalls/my_syscalls.c
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -0,0 +1,15 @@
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#589819">+#include &amp;lt;linux/kernel.h&amp;gt;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#include &amp;lt;linux/syscalls.h&amp;gt;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#include &amp;lt;uapi/linux/kvm_para.h&amp;gt;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+#include &amp;#34;my_syscalls.h&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+SYSCALL_DEFINE0(hello_hypercall0)
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+{
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ kvm_hypercall0(KVM_HC_HELLO_HYPERCALL0);
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ return 0;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+}
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+SYSCALL_DEFINE1(hello_hypercall1, int, arg1)
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+{
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ kvm_hypercall1(KVM_HC_HELLO_HYPERCALL1, arg1);
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ return 0;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+}
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;font-weight:bold">diff --git a/my_syscalls/my_syscalls.h b/my_syscalls/my_syscalls.h
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>new file mode 100644
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">index 000000000000..04bf6fbd4efb
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold">&lt;/span>&lt;span style="color:#d22323">--- /dev/null
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+++ b/my_syscalls/my_syscalls.h
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">&lt;/span>&lt;span style="color:#fff;text-decoration:underline">@@ -0,0 +1,2 @@
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>&lt;span style="color:#589819">+asmlinkage long hello_hypercall0(void);
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+asmlinkage long hello_hypercall1(int arg1);
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="test">Test&lt;/h3>
-&lt;p>Call hypercall from guest:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#include&lt;/span> &lt;span style="color:#cd2828;font-weight:bold">&amp;lt;sys/syscall.h&amp;gt;&lt;/span>&lt;span style="color:#cd2828;font-weight:bold">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define HELLO_HYPERCALL0 440
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">#define HELLO_HYPERCALL1 441
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#cd2828;font-weight:bold">&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> &lt;span style="color:#447fcf">main&lt;/span>(&lt;span style="color:#6ab825;font-weight:bold">int&lt;/span> argc, &lt;span style="color:#6ab825;font-weight:bold">char&lt;/span> **argv)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">syscall&lt;/span>(&lt;span style="color:#3677a9">440&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">syscall&lt;/span>(&lt;span style="color:#3677a9">441&lt;/span>, &lt;span style="color:#3677a9">123&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> &lt;span style="color:#3677a9">0&lt;/span>;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Check log on host:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>user@host ~ % sudo cat /sys/kernel/tracing/trace
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># tracer: nop
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># entries-in-buffer/entries-written: 2/2 #P:6
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># _-----=&amp;gt; irqs-off
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># / _----=&amp;gt; need-resched
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># | / _---=&amp;gt; hardirq/softirq
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># || / _--=&amp;gt; preempt-depth
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># ||| / delay
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># TASK-PID CPU# |||| TIMESTAMP FUNCTION
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span># | | | |||| | |
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CPU 1/KVM-1748 [000] .... 457.868063: kvm_emulate_hypercall: Hello world!
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CPU 1/KVM-1748 [000] .... 457.868066: kvm_emulate_hypercall: a0 = 123
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
+&lt;/ul></description></item></channel></rss>

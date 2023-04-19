@@ -335,52 +335,6 @@ nvme0n1 259:0 0 476.9G 0 disk
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S openssl-1.1
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Blog: [Solved] GRUBをアップグレード後にArch Linuxが起動しなくなった (August 27, 2022)</title><link>http://forest0923.github.io/memo/ja/blog/2022/08/27/solved-grub%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E5%BE%8C%E3%81%ABarch-linux%E3%81%8C%E8%B5%B7%E5%8B%95%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F-august-27-2022/</link><pubDate>Sat, 27 Aug 2022 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2022/08/27/solved-grub%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E5%BE%8C%E3%81%ABarch-linux%E3%81%8C%E8%B5%B7%E5%8B%95%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F-august-27-2022/</guid><description>
 &lt;h2 id="issue">Issue&lt;/h2>
-&lt;p>After upgrading grub, Arch Linux will not boot.
-All I get is &amp;ldquo;Welcome to GRUB!&amp;rdquo; message and no boot menu.&lt;/p>
-&lt;h3 id="systems">Systems&lt;/h3>
-&lt;ul>
-&lt;li>GRUB version
-&lt;ul>
-&lt;li>2:2.06.r322.gd9b4638c5-1&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>My machine is dual boot and the partition layout is as follows:&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>nvme0n1 259:0 0 476.9G 0 disk
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─nvme0n1p1 259:1 0 100M 0 part &amp;lt;- EFI partition
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─nvme0n1p2 259:2 0 16M 0 part
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─nvme0n1p3 259:3 0 220.3G 0 part &amp;lt;- Windows C drive
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─nvme0n1p4 259:4 0 548M 0 part
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─nvme0n1p5 259:5 0 256G 0 part &amp;lt;- Linux filesystem
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="solution">Solution&lt;/h2>
-&lt;p>To solve the problem, I reinstalled GRUB with the following.&lt;/p>
-&lt;ol>
-&lt;li>Boot from Arch ISO (USB)&lt;/li>
-&lt;li>Mount partitions&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>mkdir /mnt/boot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/nvme0n1p5 /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/nvme0n1p1 /mnt/boot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
-&lt;li>chroot&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>arch-chroot /mnt
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
-&lt;li>Reinstall GRUB&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="5">
-&lt;li>Update config&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>grub-mkconfig -o /boot/grub/grub.cfg
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="6">
-&lt;li>exit, unmount and reboot&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">exit&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt/boot
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>umount /mnt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="issue-1">Issue&lt;/h2>
 &lt;p>GRUBをアップグレードした後に再起動すると &amp;ldquo;Welcome to GRUB!&amp;ldquo;というメッセージが表示され、ブートメニューが表示されなくなってしまいました。&lt;/p>
 &lt;h2 id="環境">環境&lt;/h2>
 &lt;ul>

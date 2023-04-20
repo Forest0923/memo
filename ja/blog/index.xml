@@ -324,14 +324,14 @@ nvme0n1 259:0 0 476.9G 0 disk
 &lt;h2 id="おわり">おわり&lt;/h2>
 &lt;p>Steam Deck は（一応）一般向けのゲーム機という位置づけなのでシステムが壊れないようにある程度の制限はあるようです．&lt;/p>
 &lt;p>また，全体的にディレクトリ構造がデフォルトとは違う，パーティションなどが複雑に分割されている，mkinitcpio などあるはずのものがないなど，普段使っている Arch の環境と違うことが多かったです．&lt;/p>
-&lt;p>Linux の勉強も兼ねてまた今度じっくり中身を見てみようと思います．&lt;/p></description></item><item><title>Blog: [Solved] paru, AUR helper didn't work due to openssl version error (November 7, 2022)</title><link>http://forest0923.github.io/memo/ja/blog/2022/11/07/solved-paru-aur-helper-didnt-work-due-to-openssl-version-error-november-7-2022/</link><pubDate>Mon, 07 Nov 2022 08:21:51 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2022/11/07/solved-paru-aur-helper-didnt-work-due-to-openssl-version-error-november-7-2022/</guid><description>
+&lt;p>Linux の勉強も兼ねてまた今度じっくり中身を見てみようと思います．&lt;/p></description></item><item><title>Blog: [Solved] paru (AUR helper) が動かない (November 7, 2022)</title><link>http://forest0923.github.io/memo/ja/blog/2022/11/07/solved-paru-aur-helper-%E3%81%8C%E5%8B%95%E3%81%8B%E3%81%AA%E3%81%84-november-7-2022/</link><pubDate>Mon, 07 Nov 2022 08:21:51 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2022/11/07/solved-paru-aur-helper-%E3%81%8C%E5%8B%95%E3%81%8B%E3%81%AA%E3%81%84-november-7-2022/</guid><description>
 &lt;h2 id="issue">Issue&lt;/h2>
-&lt;p>I couldn&amp;rsquo;t upgrade application via paru this morning. I got the error message as follows.&lt;/p>
+&lt;p>今朝、paruを使用してアプリケーションをアップグレードできませんでした。以下のエラーメッセージが表示されました。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ paru -Syu
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>paru: error while loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The problem was that the version of openssl had been updated from 1.1 to 3 and the version of the library that paru was using was gone.&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>問題は、opensslのバージョンが1.1から3に更新され、paruが使用していたライブラリのバージョンがなくなったことでした。&lt;/p>
 &lt;h2 id="solution">Solution&lt;/h2>
-&lt;p>I installed openssl v1.1 via pacman. Fortunately pacman was available this time.&lt;/p>
+&lt;p>pacmanを使用してopenssl v1.1をインストールしました。幸いにも、今回はpacmanが利用可能でした。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo pacman -S openssl-1.1
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Blog: [Solved] GRUBをアップグレード後にArch Linuxが起動しなくなった (August 27, 2022)</title><link>http://forest0923.github.io/memo/ja/blog/2022/08/27/solved-grub%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E5%BE%8C%E3%81%ABarch-linux%E3%81%8C%E8%B5%B7%E5%8B%95%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F-august-27-2022/</link><pubDate>Sat, 27 Aug 2022 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2022/08/27/solved-grub%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E5%BE%8C%E3%81%ABarch-linux%E3%81%8C%E8%B5%B7%E5%8B%95%E3%81%97%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F-august-27-2022/</guid><description>
 &lt;h2 id="issue">Issue&lt;/h2>

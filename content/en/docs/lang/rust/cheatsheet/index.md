@@ -6,7 +6,7 @@ weight: 40
 
 ## Array
 
-### 最大値・最小値
+### Maximum/minimum value
 
 ```rs
 let max = array.iter().max().unwrap();
@@ -18,14 +18,14 @@ let min = array.iter().min().unwrap();
 
 ## str, String
 
-### 先頭一致
+### prefix matching
 
 ```rs
 assert!("hello, world!".ends_with("h"));
 assert!("hello, world!".ends_with("hello"));
 ```
 
-### 末尾一致
+### suffix matching
 
 ```rs
 assert!("hello, world!".ends_with("!"));

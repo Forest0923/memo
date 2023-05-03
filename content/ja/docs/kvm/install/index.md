@@ -18,6 +18,11 @@ sudo apt install qemu-kvm libvirt-daemon-system \
                   libvirt-clients bridge-utils virtinst
 
 {{< /tab >}}
+{{< tab header="Fedora" lang="sh" >}}
+
+sudo dnf install @virtualization
+
+{{< /tab >}}
 {{< /tabpane >}}
 
 ## Configrations

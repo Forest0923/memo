@@ -1,4 +1,274 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Memo</title><link>http://forest0923.github.io/memo/en/</link><description>Recent content on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: [Solved] paru, AUR helper didn't work due to openssl version error (November 7, 2022)</title><link>http://forest0923.github.io/memo/en/blog/2022/11/07/solved-paru-aur-helper-didnt-work-due-to-openssl-version-error-november-7-2022/</link><pubDate>Mon, 07 Nov 2022 08:21:51 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/11/07/solved-paru-aur-helper-didnt-work-due-to-openssl-version-error-november-7-2022/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Memo</title><link>http://forest0923.github.io/memo/en/</link><description>Recent content on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Rust in Linux</title><link>http://forest0923.github.io/memo/en/blog/2023/05/03/rust-in-linux/</link><pubDate>Wed, 03 May 2023 21:18:29 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2023/05/03/rust-in-linux/</guid><description>
+&lt;h2 id="purpose">Purpose&lt;/h2>
+&lt;p>Since Linux v6.1, Rust can be used in the kernel. So, I wanted to try rust-in-linux!&lt;/p>
+&lt;blockquote>
+&lt;p>Initial goals:&lt;/p>
+&lt;ul>
+&lt;li>Create an LKM&lt;/li>
+&lt;li>Add a system call and call a handler written in Rust (integrate it into the kernel)&lt;/li>
+&lt;/ul>
+&lt;p>Although I couldn&amp;rsquo;t get it to work during holidays and it doesn&amp;rsquo;t seem easy to use for now, I&amp;rsquo;ll record it for future reference. Please refer to &lt;a href="#references">references&lt;/a> for pages that may be useful as the kernel may be a fork, so be aware of differences in environment and version.&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="background">Background&lt;/h2>
+&lt;p>Recently, there has been a growing movement to write software in Rust. Rust is a programming language that combines memory safety and performance, and it is attracting attention as a programming language for various software.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.wired.com/story/rust-secure-programming-language-memory-safe/">The ‘Viral’ Secure Programming Language That’s Taking Over Tech&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>It is well known that Rust is used in various software such as Dropbox and Discord.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://discord.com/blog/why-discord-is-switching-from-go-to-rust">WHY DISCORD IS SWITCHING FROM GO TO RUST&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>There is a trend to adopt Rust for system software such as operating systems, and it seems that Windows has already undergone significant rewriting. It hasn&amp;rsquo;t been released yet.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=8T6ClX-y2AE">BlueHat IL 2023 - David Weston - Default Security&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://texal.jp/2023/04/29/microsoft-reveals-that-it-is-rewriting-the-core-of-windows-with-rust/">Microsoft, Reveals That It Is Rewriting The Core Of Windows With Rust&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>It also discusses adoption and influence in Android.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://security.googleblog.com/2022/12/memory-safe-languages-in-android-13.html">Memory Safe Languages in Android 13&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.phoronix.com/news/Rust-For-Android-OS-System-Work">Google Begins Allowing Rust Code For Developing Android&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Now, in Linux, which is the main topic, it can be used from v6.1.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.phoronix.com/news/Rust-Is-Merged-Linux-6.1">The Initial Rust Infrastructure Has Been Merged Into Linux 6.1&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>It doesn&amp;rsquo;t seem to be considering rewriting the Linux kernel itself at this time, but it seems that they plan to gradually introduce it, starting with drivers. It is often pointed out in vulnerability analysis of Linux that there are many bugs in drivers rather than in the main kernel, so it seems good to improve that area.
+Since it has come to this, I believe it&amp;rsquo;s time for me to become familiar with Rust, so I will attempt to use Rust by referring to the documentation in the Linux kernel.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://docs.kernel.org/rust/index.html">Documents - rust&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="preparation">Preparation&lt;/h2>
+&lt;p>Since there is no random environment that can be broken, I will experiment on a VM this time. The VM settings are as follows.&lt;/p>
+&lt;ul>
+&lt;li>CPU: 6 cores, x86_64&lt;/li>
+&lt;li>Mem: 8 GB&lt;/li>
+&lt;li>Disk: 75 GB&lt;/li>
+&lt;li>OS: Fedora 38 server&lt;/li>
+&lt;/ul>
+&lt;p>First, make sure you can build the kernel in a Fedora environment.&lt;/p>
+&lt;h3 id="source-code">Source Code&lt;/h3>
+&lt;p>Download the kernel code. The working directory is &lt;code>$HOME/linux-6.3.1/&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl -O https://mirrors.edge.kernel.org/pub/linux/kernel/v6.x/linux-6.3.1.tar.xz
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tar xf linux-6.3.1.tar.xz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-required-software">Install Required Software&lt;/h3>
+&lt;p>Refer to &lt;a href="https://docs.kernel.org/rust/quick-start.html">Documents - rust/quick-start&lt;/a> and install the necessary software. First, install rustup.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl --proto &lt;span style="color:#ed9d13">&amp;#39;=https&amp;#39;&lt;/span> --tlsv1.2 -sSf https://sh.rustup.rs | sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Change the rustc version.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> /path/to/kernel-src
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rustup override &lt;span style="color:#24909d">set&lt;/span> &lt;span style="color:#ed9d13">`&lt;/span>scripts/min-tool-version.sh rustc&lt;span style="color:#ed9d13">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rustup component add rust-src
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Install clang.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo dnf install clang
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Install bindgen. This software is necessary to integrate C and Rust.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo install --locked --version &lt;span style="color:#ed9d13">`&lt;/span>scripts/min-tool-version.sh bindgen&lt;span style="color:#ed9d13">`&lt;/span> bindgen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Install other necessary software that is not written in quick-start.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo dnf install kernel-devel llvm lld dwarves zstd ncurses-devel
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>If you don&amp;rsquo;t install dwarves, it will result in something like:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>BTF: .tmp_vmlinux.btf: pahole (pahole) is not available
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Failed to generate BTF for vmlinux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/blockquote>
+&lt;h3 id="kernel-build">Kernel Build&lt;/h3>
+&lt;p>Build the kernel using LLVM.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>make &lt;span style="color:#40ffff">LLVM&lt;/span>=&lt;span style="color:#3677a9">1&lt;/span> -j7
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo make modules_install &amp;amp;&amp;amp; sudo make install
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>If you&amp;rsquo;re not sure if it went well after executing, check with &lt;code>echo $?&lt;/code>&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="reboot-and-check">Reboot and Check&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you are told &lt;code>bad shim signature&lt;/code> when selecting a custom kernel from the Grub menu, Secure Boot is getting in the way, so enter the EFI settings and disable it.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ uname -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Linux localhost.localdomain 6.3.1 #4 SMP PREEMPT_DYNAMIC Fri May 5 15:55:31 JST 2023 x86_64 GNU/Linux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>I was able to run the kernel compiled with LLVM for now.&lt;/p>
+&lt;h2 id="make-rust-available">Make Rust Available&lt;/h2>
+&lt;blockquote>
+&lt;p>From here on, it&amp;rsquo;s the part that didn&amp;rsquo;t work well this time, but I&amp;rsquo;ll record it anyway.&lt;/p>
+&lt;/blockquote>
+&lt;p>You need to modify &lt;code>.config&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>make menuconfig
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Modification 1: Enable Rust support.&lt;/p>
+&lt;ul>
+&lt;li>General setup
+&lt;ul>
+&lt;li>Rust support&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>Modification 2: Add sample code in samples/rust/* as kernel modules.&lt;/p>
+&lt;ul>
+&lt;li>Kernel hacking
+&lt;ul>
+&lt;li>Sample kernel code
+&lt;ul>
+&lt;li>Rust samples
+&lt;ul>
+&lt;li>Minimal&lt;/li>
+&lt;li>Printing macros&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>The following seems to fail again after rebuilding. Output of &lt;code>make LLVM=1 rustavailable&lt;/code> seemed to be okay, so it doesn&amp;rsquo;t seem to be a problem with tool installation or path specification.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>[mmori@localhost linux-6.3.1]$ make LLVM=1 -j6
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DESCEND objtool
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CALL scripts/checksyscalls.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> INSTALL libsubcmd_headers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BINDGEN rust/bindings/bindings_generated.rs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>thread &amp;#39;main&amp;#39; panicked at &amp;#39;&amp;#34;ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h_146_2)&amp;#34; is not a valid Ident&amp;#39;, /home/mmori/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/fallback.rs:811:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** [rust/Makefile:303: rust/bindings/bindings_generated.rs] Error 1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** Deleting file &amp;#39;rust/bindings/bindings_generated.rs&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make: *** [Makefile:1292: prepare] Error 2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>[mmori@localhost linux-6.3.1]$ make LLVM=1 -j6 RUST_BACKTRACE=1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DESCEND objtool
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CALL scripts/checksyscalls.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> INSTALL libsubcmd_headers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BINDGEN rust/bindings/bindings_generated.rs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>thread &amp;#39;main&amp;#39; panicked at &amp;#39;&amp;#34;ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h_146_2)&amp;#34; is not a valid Ident&amp;#39;, /home/mmori/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/fallback.rs:811:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>stack backtrace:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 0: rust_begin_unwind
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:584:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 1: core::panicking::panic_fmt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/core/src/panicking.rs:142:14
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 2: proc_macro2::fallback::Ident::_new
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 3: proc_macro2::Ident::new
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 4: bindgen::ir::context::BindgenContext::rust_ident
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 5: &amp;lt;bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 6: &amp;lt;bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 7: &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 8: &amp;lt;bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 9: &amp;lt;bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 10: &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 11: &amp;lt;bindgen::ir::module::Module as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 12: &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 13: bindgen::ir::context::BindgenContext::gen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 14: bindgen::Builder::generate
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 15: std::panicking::try
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 16: bindgen::main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** [rust/Makefile:303: rust/bindings/bindings_generated.rs] Error 1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** Deleting file &amp;#39;rust/bindings/bindings_generated.rs&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make: *** [Makefile:1292: prepare] Error 2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>[mmori@localhost linux-6.3.1]$ make LLVM=1 -j6 RUST_BACKTRACE=full
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DESCEND objtool
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CALL scripts/checksyscalls.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> INSTALL libsubcmd_headers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BINDGEN rust/bindings/bindings_generated.rs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>thread &amp;#39;main&amp;#39; panicked at &amp;#39;&amp;#34;ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h_146_2)&amp;#34; is not a valid Ident&amp;#39;, /home/mmori/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/fallback.rs:811:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>stack backtrace:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 0: 0x55b400da7ffd - std::backtrace_rs::backtrace::libunwind::trace::hb729d9642bb971eb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/../../backtrace/src/backtrace/libunwind.rs:93:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 1: 0x55b400da7ffd - std::backtrace_rs::backtrace::trace_unsynchronized::h373bb774579df5c7
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/../../backtrace/src/backtrace/mod.rs:66:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 2: 0x55b400da7ffd - std::sys_common::backtrace::_print_fmt::hfbd4e92d240c89bb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:66:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 3: 0x55b400da7ffd - &amp;lt;std::sys_common::backtrace::_print::DisplayBacktrace as core::fmt::Display&amp;gt;::fmt::h8f618991fbf64972
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:45:22
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 4: 0x55b400dcdcfc - core::fmt::write::hc69b5b640d88cce8
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/core/src/fmt/mod.rs:1196:17
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 5: 0x55b400da47d1 - std::io::Write::write_fmt::h3403cef06a24a303
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/io/mod.rs:1654:15
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 6: 0x55b400da97d5 - std::sys_common::backtrace::_print::h368f27cdedea0e52
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:48:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 7: 0x55b400da97d5 - std::sys_common::backtrace::print::ha105c9cf5a64cd17
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:35:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 8: 0x55b400da97d5 - std::panicking::default_hook::{{closure}}::h48ed2c3707d5e20e
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:295:22
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 9: 0x55b400da9449 - std::panicking::default_hook::h8744fc5cea5e3110
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:314:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 10: 0x55b400da9da8 - std::panicking::rust_panic_with_hook::hc82286af2030e925
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:698:17
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 11: 0x55b400da9c57 - std::panicking::begin_panic_handler::{{closure}}::h1c15057c2f09081f
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:588:13
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 12: 0x55b400da84b4 - std::sys_common::backtrace::__rust_end_short_backtrace::h65de906a5330f8da
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:138:18
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 13: 0x55b400da9989 - rust_begin_unwind
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:584:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 14: 0x55b400ba06e3 - core::panicking::panic_fmt::h741cfbfc95bc6112
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/core/src/panicking.rs:142:14
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 15: 0x55b400d82cbb - proc_macro2::fallback::Ident::_new::hd54a7f37b4be5ac2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 16: 0x55b400d84132 - proc_macro2::Ident::new::h5b24a800de987e3d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 17: 0x55b400c87dd2 - bindgen::ir::context::BindgenContext::rust_ident::hfb669cd12fde5045
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 18: 0x55b400c97543 - &amp;lt;bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator&amp;gt;::codegen::hdac53e6a48364ded
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 19: 0x55b400cb2df3 - &amp;lt;bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h9ea78383a1519d12
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 20: 0x55b400c24993 - &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h7f1cb457e8b5962b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 21: 0x55b400c9a76e - &amp;lt;bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator&amp;gt;::codegen::hdac53e6a48364ded
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 22: 0x55b400cb2df3 - &amp;lt;bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h9ea78383a1519d12
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 23: 0x55b400c24993 - &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h7f1cb457e8b5962b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 24: 0x55b400c7c063 - &amp;lt;bindgen::ir::module::Module as bindgen::codegen::CodeGenerator&amp;gt;::codegen::hcaa3f952aaaebcd2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 25: 0x55b400c24963 - &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h7f1cb457e8b5962b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 26: 0x55b400c8b3f3 - bindgen::ir::context::BindgenContext::gen::h8d593441c41f4c9e
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 27: 0x55b400c42e7a - bindgen::Builder::generate::hc6be0353ef288055
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 28: 0x55b400bbf63f - std::panicking::try::hfac0a9d96478463b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 29: 0x55b400ba9766 - bindgen::main::h66dca222f748f7fb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 30: 0x55b400bc0353 - std::sys_common::backtrace::__rust_begin_short_backtrace::he9f5e905c5b4f99b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 31: 0x55b400bab539 - std::rt::lang_start::{{closure}}::h309e4f396102cd0f
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 32: 0x55b400d9f12e - core::ops::function::impls::&amp;lt;impl core::ops::function::FnOnce&amp;lt;A&amp;gt; for &amp;amp;F&amp;gt;::call_once::hf833e7144973d4be
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/core/src/ops/function.rs:280:13
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 33: 0x55b400d9f12e - std::panicking::try::do_call::h79761d203bfb6b46
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:492:40
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 34: 0x55b400d9f12e - std::panicking::try::h0561cbbe1722251d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:456:19
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 35: 0x55b400d9f12e - std::panic::catch_unwind::hbca347ddd031b141
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panic.rs:137:14
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 36: 0x55b400d9f12e - std::rt::lang_start_internal::{{closure}}::h0492050ad281ec32
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/rt.rs:128:48
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 37: 0x55b400d9f12e - std::panicking::try::do_call::h3ebce69871996bb3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:492:40
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 38: 0x55b400d9f12e - std::panicking::try::hbed537d20e728475
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:456:19
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 39: 0x55b400d9f12e - std::panic::catch_unwind::h4185e2024c6a5d05
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panic.rs:137:14
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 40: 0x55b400d9f12e - std::rt::lang_start_internal::h1899cfd715ca6829
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/rt.rs:128:20
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 41: 0x55b400ba9ad2 - main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 42: 0x7fd85b1afb4a - __libc_start_call_main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 43: 0x7fd85b1afc0b - __libc_start_main@@GLIBC_2.34
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 44: 0x55b400ba0985 - _start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 45: 0x0 - &amp;lt;unknown&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** [rust/Makefile:303: rust/bindings/bindings_generated.rs] Error 1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** Deleting file &amp;#39;rust/bindings/bindings_generated.rs&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make: *** [Makefile:1292: prepare] Error 2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="writing-an-lkm">&lt;del>Writing an LKM&lt;/del>&lt;/h2>
+&lt;h2 id="calling-rust-functions-via-system-calls">&lt;del>Calling Rust functions via System Calls&lt;/del>&lt;/h2>
+&lt;h2 id="conclusion">Conclusion&lt;/h2>
+&lt;p>While the use of Rust in Linux is still in its early stages, I was hoping it would be more accessible, so it was a bit disappointing. I found some articles that create kernel modules, but it seems that they cannot be used as-is due to differences in the environment. Many of them use forks of the Linux kernel such as &lt;a href="">https://github.com/Rust-for-Linux/linux&lt;/a> or &lt;a href="">https://github.com/jackos/linux&lt;/a>. Additionally, creating an LKM as I had initially planned seems to have a different process from creating one in C, making it difficult to create one easily. As this is still an area of significant change, it seems that continuous catching up will be necessary.&lt;/p>
+&lt;p>As for Rust as a language itself, I think it&amp;rsquo;s the number one difficult language I want to use, so I want to gradually become proficient in it while tinkering with the kernel. It might be good to start with RedoxOS?&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.linuxfoundation.org/webinars/writing-linux-kernel-modules-in-rust">Writing Linux Kernel Modules In Rust&lt;/a>
+&lt;ul>
+&lt;li>An article from the Linux Foundation. There&amp;rsquo;s also a video, so it&amp;rsquo;s relatively detailed. It demonstrates building a kernel and running the image in QEMU.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://blog.rnstlr.ch/building-an-out-of-tree-rust-kernel-module.html">Building an out-of-tree Rust Kernel Module&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.rnstlr.ch/building-an-out-of-tree-rust-kernel-module-part-two.html">Building an out-of-tree Rust Kernel Module Part Two&lt;/a>
+&lt;ul>
+&lt;li>A blog from someone who seems to have struggled similarly to me. They succeeded in building but had trouble loading the module. By the way, they use Arch Linux.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/Rust-for-Linux/rust-out-of-tree-module">Rust-for-Linux/rust-out-of-tree-module&lt;/a>
+&lt;ul>
+&lt;li>A relatively similar approach to what I had in mind for using Rust. However, it doesn&amp;rsquo;t seem to work well due to differences in the environment.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://www.jackos.io/rust-kernel/rust-for-linux.html">Linux kernel development&lt;/a>
+&lt;ul>
+&lt;li>A method similar to the one used by the Linux Foundation. They&amp;rsquo;re using the Rust for Linux kernel, which is not a major version. There are various explanations about Rust, so it looks interesting to read other pages as well.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://wusyong.github.io/posts/rust-kernel-module-00/">Rust Kernel Module: Getting Started&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://wusyong.github.io/posts/rust-kernel-module-01/">Rust Kernel Module: Hello World&lt;/a>
+&lt;ul>
+&lt;li>Same as the above.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Blog: [Solved] paru, AUR helper didn't work due to openssl version error (November 7, 2022)</title><link>http://forest0923.github.io/memo/en/blog/2022/11/07/solved-paru-aur-helper-didnt-work-due-to-openssl-version-error-november-7-2022/</link><pubDate>Mon, 07 Nov 2022 08:21:51 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2022/11/07/solved-paru-aur-helper-didnt-work-due-to-openssl-version-error-november-7-2022/</guid><description>
 &lt;h2 id="issue">Issue&lt;/h2>
 &lt;p>I couldn&amp;rsquo;t upgrade application via paru this morning. I got the error message as follows.&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ paru -Syu

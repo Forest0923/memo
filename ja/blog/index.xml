@@ -1,4 +1,286 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/ja/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/ja/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Steam Deck が発売されたので中身を見ていく‼</title><link>http://forest0923.github.io/memo/ja/blog/2022/12/17/steam-deck-%E3%81%8C%E7%99%BA%E5%A3%B2%E3%81%95%E3%82%8C%E3%81%9F%E3%81%AE%E3%81%A7%E4%B8%AD%E8%BA%AB%E3%82%92%E8%A6%8B%E3%81%A6%E3%81%84%E3%81%8F/</link><pubDate>Sat, 17 Dec 2022 19:37:53 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2022/12/17/steam-deck-%E3%81%8C%E7%99%BA%E5%A3%B2%E3%81%95%E3%82%8C%E3%81%9F%E3%81%AE%E3%81%A7%E4%B8%AD%E8%BA%AB%E3%82%92%E8%A6%8B%E3%81%A6%E3%81%84%E3%81%8F/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/ja/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/ja/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Rust in Linux</title><link>http://forest0923.github.io/memo/ja/blog/2023/05/03/rust-in-linux/</link><pubDate>Wed, 03 May 2023 21:18:29 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2023/05/03/rust-in-linux/</guid><description>
+&lt;h2 id="目的">目的&lt;/h2>
+&lt;p>Linux v6.1 からカーネル内で Rust が使用できるようになったので rust-in-linux を試してみたい！&lt;/p>
+&lt;blockquote>
+&lt;p>当初の目標として&lt;/p>
+&lt;ul>
+&lt;li>LKMを作成する&lt;/li>
+&lt;li>system call を追加して rust で書いたハンドラを呼ぶ（カーネルに組み込む）&lt;/li>
+&lt;/ul>
+&lt;p>あたりができると良かったのですが、GW中にはうまく動かせないこと＋今の所はそこまで手軽に使えなさそうということがわかったので後学のために記録しておきます。
+一応、参考になりそうなページについては &lt;a href="#references">references&lt;/a> を参照（カーネルがフォークだったりするので環境やバージョンの違いに注意）。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="背景">背景&lt;/h2>
+&lt;p>最近ではソフトウェアを rust で書こうという動きが活発になっています。
+Rust はメモリ安全性とパフォーマンスを兼ね備えたプログラミング言語として注目されており、様々なソフトウェアでの採用が進んでいます。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.wired.com/story/rust-secure-programming-language-memory-safe/">The ‘Viral’ Secure Programming Language That’s Taking Over Tech&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Dropbox や Discord など様々なソフトウェアで使用されているというのはよく知られていると思います。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://discord.com/blog/why-discord-is-switching-from-go-to-rust">WHY DISCORD IS SWITCHING FROM GO TO RUST&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>OS のようなシステムソフトウェアでも Rust を採用しようという流れがあり、Windows ではすでにかなりの書き換えを行っているようです。リリースはまだのようですが。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=8T6ClX-y2AE">BlueHat IL 2023 - David Weston - Default Security&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://texal.jp/2023/04/29/microsoft-reveals-that-it-is-rewriting-the-core-of-windows-with-rust/">Microsoft、Windowsのコア部分を「Rust」で書き換えていることを明らかに&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Android での採用や影響についても述べられています。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://security.googleblog.com/2022/12/memory-safe-languages-in-android-13.html">Memory Safe Languages in Android 13&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.phoronix.com/news/Rust-For-Android-OS-System-Work">Google Begins Allowing Rust Code For Developing Android&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>さて、本題の Linux ではどうかというと v6.1 から使えるようになっています。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.phoronix.com/news/Rust-Is-Merged-Linux-6.1">The Initial Rust Infrastructure Has Been Merged Into Linux 6.1&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Linux カーネル自体の rewrite については今の所考えられていないようですが、ドライバなどを始めとして少しずつ導入していくつもりのようです。
+Linux の脆弱性に関する分析ではメインのカーネルよりもドライバに大量のバグがあるという指摘もよくあるので、そのあたりを改善できると良さそうです。
+こうなってくると、そろそろRustに慣れていかないとまずいかな、ということで Linux カーネル内のドキュメントを見ながらとRustを使ってみようと思います。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://docs.kernel.org/rust/index.html">Documents - rust&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="事前準備">事前準備&lt;/h2>
+&lt;p>壊れても平気な適当な環境がないので、今回は VM 上で実験します。VM の設定は以下のような感じです。&lt;/p>
+&lt;ul>
+&lt;li>CPU: 6 cores, x86_64&lt;/li>
+&lt;li>Mem: 8 GB&lt;/li>
+&lt;li>Disk: 75 GB&lt;/li>
+&lt;li>OS: Fedora 38 server&lt;/li>
+&lt;/ul>
+&lt;p>とりあえず Fedora 環境でカーネルビルドができるようにします。&lt;/p>
+&lt;h3 id="source-code">Source Code&lt;/h3>
+&lt;p>Linux v6.3.1 上で実験をするのでソースをダウンロードします。
+作業用ディレクトリは &lt;code>$HOME/linux-6.3.1/&lt;/code> です。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl -O https://mirrors.edge.kernel.org/pub/linux/kernel/v6.x/linux-6.3.1.tar.xz
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tar xf linux-6.3.1.tar.xz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="必要なソフトウェアのインストール">必要なソフトウェアのインストール&lt;/h3>
+&lt;p>&lt;a href="https://docs.kernel.org/rust/quick-start.html">Documents - rust/quick-start&lt;/a> を参考に必要そうなものをインストールします。
+まずは rustup のインストール。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl --proto &lt;span style="color:#ed9d13">&amp;#39;=https&amp;#39;&lt;/span> --tlsv1.2 -sSf https://sh.rustup.rs | sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>rustcのバージョンを変更します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> /path/to/kernel-src
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rustup override &lt;span style="color:#24909d">set&lt;/span> &lt;span style="color:#ed9d13">`&lt;/span>scripts/min-tool-version.sh rustc&lt;span style="color:#ed9d13">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>rustup component add rust-src
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>clang をインストールします。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo dnf install clang
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>bindgen をインストールします。これははCとRustを連携させるために必要なソフトウェアのようです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cargo install --locked --version &lt;span style="color:#ed9d13">`&lt;/span>scripts/min-tool-version.sh bindgen&lt;span style="color:#ed9d13">`&lt;/span> bindgen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>その他の quick-start には書かれていないけれど必要なものをインストールします。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo dnf install kernel-devel llvm lld dwarves zstd ncurses-devel
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>dwarves を入れないと&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>BTF: .tmp_vmlinux.btf: pahole (pahole) is not available
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Failed to generate BTF for vmlinux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>みたいになります&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="kernel-build">Kernel build&lt;/h3>
+&lt;p>LLVMでカーネルビルドをしていきます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>make &lt;span style="color:#40ffff">LLVM&lt;/span>=&lt;span style="color:#3677a9">1&lt;/span> -j7
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo make modules_install &amp;amp;&amp;amp; sudo make install
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>実行したあとにうまく行ったか分かりづらいときは &lt;code>echo $?&lt;/code> で確認する&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="reboot-して確認">Reboot して確認&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Grub のメニューでカスタムカーネルを選択したときに &lt;code>bad shim signature&lt;/code> とか言われた場合は Secure Boot が邪魔をしているので EFI 設定に入って disable にしてください。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>$ uname -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Linux localhost.localdomain 6.3.1 #4 SMP PREEMPT_DYNAMIC Fri May 5 15:55:31 JST 2023 x86_64 GNU/Linux
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>とりあえずLLVMでコンパイルしたカーネルを動かすことができました。&lt;/p>
+&lt;h2 id="rust-を使えるようにする">Rust を使えるようにする&lt;/h2>
+&lt;blockquote>
+&lt;p>ここから先は今回うまくできなかった部分ですが一応記録。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;code>.config&lt;/code> を修正する必要があるので修正します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>make menuconfig
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>修正箇所1: Rust サポートを有効にする&lt;/p>
+&lt;ul>
+&lt;li>General setup
+&lt;ul>
+&lt;li>Rust support&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>修正箇所2: ソース内の samples/rust/* にあるサンプルコードをモジュールとして追加する&lt;/p>
+&lt;ul>
+&lt;li>Kernel hacking
+&lt;ul>
+&lt;li>Sample kernel code
+&lt;ul>
+&lt;li>Rust samples
+&lt;ul>
+&lt;li>Minimal&lt;/li>
+&lt;li>Printing macros&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>以下は再度ビルドした結果、失敗している様子です。
+&lt;code>make LLVM=1 rustavailable&lt;/code> を実行した感じでは問題なさそうだったのでツールのインストールやパスの指定とかが問題ではなさそう？&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>[mmori@localhost linux-6.3.1]$ make LLVM=1 -j6
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DESCEND objtool
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CALL scripts/checksyscalls.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> INSTALL libsubcmd_headers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BINDGEN rust/bindings/bindings_generated.rs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>thread &amp;#39;main&amp;#39; panicked at &amp;#39;&amp;#34;ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h_146_2)&amp;#34; is not a valid Ident&amp;#39;, /home/mmori/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/fallback.rs:811:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** [rust/Makefile:303: rust/bindings/bindings_generated.rs] Error 1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** Deleting file &amp;#39;rust/bindings/bindings_generated.rs&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make: *** [Makefile:1292: prepare] Error 2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>[mmori@localhost linux-6.3.1]$ make LLVM=1 -j6 RUST_BACKTRACE=1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DESCEND objtool
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CALL scripts/checksyscalls.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> INSTALL libsubcmd_headers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BINDGEN rust/bindings/bindings_generated.rs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>thread &amp;#39;main&amp;#39; panicked at &amp;#39;&amp;#34;ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h_146_2)&amp;#34; is not a valid Ident&amp;#39;, /home/mmori/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/fallback.rs:811:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>stack backtrace:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 0: rust_begin_unwind
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:584:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 1: core::panicking::panic_fmt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/core/src/panicking.rs:142:14
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 2: proc_macro2::fallback::Ident::_new
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 3: proc_macro2::Ident::new
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 4: bindgen::ir::context::BindgenContext::rust_ident
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 5: &amp;lt;bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 6: &amp;lt;bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 7: &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 8: &amp;lt;bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 9: &amp;lt;bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 10: &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 11: &amp;lt;bindgen::ir::module::Module as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 12: &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 13: bindgen::ir::context::BindgenContext::gen
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 14: bindgen::Builder::generate
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 15: std::panicking::try
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 16: bindgen::main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** [rust/Makefile:303: rust/bindings/bindings_generated.rs] Error 1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** Deleting file &amp;#39;rust/bindings/bindings_generated.rs&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make: *** [Makefile:1292: prepare] Error 2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>[mmori@localhost linux-6.3.1]$ make LLVM=1 -j6 RUST_BACKTRACE=full
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DESCEND objtool
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CALL scripts/checksyscalls.sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> INSTALL libsubcmd_headers
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BINDGEN rust/bindings/bindings_generated.rs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>thread &amp;#39;main&amp;#39; panicked at &amp;#39;&amp;#34;ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h_146_2)&amp;#34; is not a valid Ident&amp;#39;, /home/mmori/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.56/src/fallback.rs:811:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>stack backtrace:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 0: 0x55b400da7ffd - std::backtrace_rs::backtrace::libunwind::trace::hb729d9642bb971eb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/../../backtrace/src/backtrace/libunwind.rs:93:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 1: 0x55b400da7ffd - std::backtrace_rs::backtrace::trace_unsynchronized::h373bb774579df5c7
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/../../backtrace/src/backtrace/mod.rs:66:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 2: 0x55b400da7ffd - std::sys_common::backtrace::_print_fmt::hfbd4e92d240c89bb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:66:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 3: 0x55b400da7ffd - &amp;lt;std::sys_common::backtrace::_print::DisplayBacktrace as core::fmt::Display&amp;gt;::fmt::h8f618991fbf64972
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:45:22
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 4: 0x55b400dcdcfc - core::fmt::write::hc69b5b640d88cce8
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/core/src/fmt/mod.rs:1196:17
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 5: 0x55b400da47d1 - std::io::Write::write_fmt::h3403cef06a24a303
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/io/mod.rs:1654:15
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 6: 0x55b400da97d5 - std::sys_common::backtrace::_print::h368f27cdedea0e52
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:48:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 7: 0x55b400da97d5 - std::sys_common::backtrace::print::ha105c9cf5a64cd17
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:35:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 8: 0x55b400da97d5 - std::panicking::default_hook::{{closure}}::h48ed2c3707d5e20e
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:295:22
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 9: 0x55b400da9449 - std::panicking::default_hook::h8744fc5cea5e3110
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:314:9
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 10: 0x55b400da9da8 - std::panicking::rust_panic_with_hook::hc82286af2030e925
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:698:17
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 11: 0x55b400da9c57 - std::panicking::begin_panic_handler::{{closure}}::h1c15057c2f09081f
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:588:13
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 12: 0x55b400da84b4 - std::sys_common::backtrace::__rust_end_short_backtrace::h65de906a5330f8da
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/sys_common/backtrace.rs:138:18
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 13: 0x55b400da9989 - rust_begin_unwind
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:584:5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 14: 0x55b400ba06e3 - core::panicking::panic_fmt::h741cfbfc95bc6112
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/core/src/panicking.rs:142:14
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 15: 0x55b400d82cbb - proc_macro2::fallback::Ident::_new::hd54a7f37b4be5ac2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 16: 0x55b400d84132 - proc_macro2::Ident::new::h5b24a800de987e3d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 17: 0x55b400c87dd2 - bindgen::ir::context::BindgenContext::rust_ident::hfb669cd12fde5045
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 18: 0x55b400c97543 - &amp;lt;bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator&amp;gt;::codegen::hdac53e6a48364ded
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 19: 0x55b400cb2df3 - &amp;lt;bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h9ea78383a1519d12
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 20: 0x55b400c24993 - &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h7f1cb457e8b5962b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 21: 0x55b400c9a76e - &amp;lt;bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator&amp;gt;::codegen::hdac53e6a48364ded
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 22: 0x55b400cb2df3 - &amp;lt;bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h9ea78383a1519d12
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 23: 0x55b400c24993 - &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h7f1cb457e8b5962b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 24: 0x55b400c7c063 - &amp;lt;bindgen::ir::module::Module as bindgen::codegen::CodeGenerator&amp;gt;::codegen::hcaa3f952aaaebcd2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 25: 0x55b400c24963 - &amp;lt;bindgen::ir::item::Item as bindgen::codegen::CodeGenerator&amp;gt;::codegen::h7f1cb457e8b5962b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 26: 0x55b400c8b3f3 - bindgen::ir::context::BindgenContext::gen::h8d593441c41f4c9e
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 27: 0x55b400c42e7a - bindgen::Builder::generate::hc6be0353ef288055
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 28: 0x55b400bbf63f - std::panicking::try::hfac0a9d96478463b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 29: 0x55b400ba9766 - bindgen::main::h66dca222f748f7fb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 30: 0x55b400bc0353 - std::sys_common::backtrace::__rust_begin_short_backtrace::he9f5e905c5b4f99b
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 31: 0x55b400bab539 - std::rt::lang_start::{{closure}}::h309e4f396102cd0f
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 32: 0x55b400d9f12e - core::ops::function::impls::&amp;lt;impl core::ops::function::FnOnce&amp;lt;A&amp;gt; for &amp;amp;F&amp;gt;::call_once::hf833e7144973d4be
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/core/src/ops/function.rs:280:13
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 33: 0x55b400d9f12e - std::panicking::try::do_call::h79761d203bfb6b46
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:492:40
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 34: 0x55b400d9f12e - std::panicking::try::h0561cbbe1722251d
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:456:19
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 35: 0x55b400d9f12e - std::panic::catch_unwind::hbca347ddd031b141
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panic.rs:137:14
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 36: 0x55b400d9f12e - std::rt::lang_start_internal::{{closure}}::h0492050ad281ec32
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/rt.rs:128:48
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 37: 0x55b400d9f12e - std::panicking::try::do_call::h3ebce69871996bb3
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:492:40
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 38: 0x55b400d9f12e - std::panicking::try::hbed537d20e728475
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panicking.rs:456:19
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 39: 0x55b400d9f12e - std::panic::catch_unwind::h4185e2024c6a5d05
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/panic.rs:137:14
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 40: 0x55b400d9f12e - std::rt::lang_start_internal::h1899cfd715ca6829
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> at /rustc/a8314ef7d0ec7b75c336af2c9857bfaf43002bfc/library/std/src/rt.rs:128:20
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 41: 0x55b400ba9ad2 - main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 42: 0x7fd85b1afb4a - __libc_start_call_main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 43: 0x7fd85b1afc0b - __libc_start_main@@GLIBC_2.34
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 44: 0x55b400ba0985 - _start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 45: 0x0 - &amp;lt;unknown&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** [rust/Makefile:303: rust/bindings/bindings_generated.rs] Error 1
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make[1]: *** Deleting file &amp;#39;rust/bindings/bindings_generated.rs&amp;#39;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make: *** [Makefile:1292: prepare] Error 2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="lkm-を書いてみる">&lt;del>LKM を書いてみる&lt;/del>&lt;/h2>
+&lt;h2 id="systemcall-を追加して-rust-の関数を呼び出す">&lt;del>Systemcall を追加して rust の関数を呼び出す&lt;/del>&lt;/h2>
+&lt;h2 id="最後に">最後に&lt;/h2>
+&lt;p>Linux における rust の使用はまだ導入されたばかりとはいえ、もっと気軽に使えると期待していたのでかなり残念な結果でした。
+現状でうまくカーネルモジュールなどを作成している英語記事はいくつか見つけましたが、環境の違いなどもあってそのままでは使えなさそう。
+Linux のメインラインを使っているのではなく &lt;a href="">https://github.com/Rust-for-Linux/linux&lt;/a> やそのフォークの &lt;a href="">https://github.com/jackos/linux&lt;/a> を使っているものも多いです。
+加えて今回やろうと思っていたLKMについてはCで書いたLKMとは作り方が異なるようで気軽に作りづらそう。
+多分まだ変化が大きい部分だと思うので継続的にキャッチアップしていく必要がありそうです。&lt;/p>
+&lt;p>Rust という言語そのものに関して言うと、個人的には使いたいけど難しい言語ナンバーワンだと思うので、カーネルをいじったりしながら少しずつ使いこなせるようになりたいです。
+RedoxOS あたりから触るのも良いかもしれない？&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.linuxfoundation.org/webinars/writing-linux-kernel-modules-in-rust">Writing Linux Kernel Modules In Rust&lt;/a>
+&lt;ul>
+&lt;li>Linux foundation の記事。動画もあるので比較的丁寧ではある。カーネルビルドして作ったイメージをQEMUで動かす感じ。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://blog.rnstlr.ch/building-an-out-of-tree-rust-kernel-module.html">Building an out-of-tree Rust Kernel Module&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://blog.rnstlr.ch/building-an-out-of-tree-rust-kernel-module-part-two.html">Building an out-of-tree Rust Kernel Module Part Two&lt;/a>
+&lt;ul>
+&lt;li>私と同じく苦労してそうな方のブログ。ビルドは成功したけどモジュールがロードできなかったりしてる。btw i use arch。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/Rust-for-Linux/rust-out-of-tree-module">Rust-for-Linux/rust-out-of-tree-module&lt;/a>
+&lt;ul>
+&lt;li>比較的イメージしていたRustの使い方に近いもの。環境の違いによるものか、うまく行かない。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://www.jackos.io/rust-kernel/rust-for-linux.html">Linux kernel development&lt;/a>
+&lt;ul>
+&lt;li>Linux foundation のやり方に近い。使用しているカーネルはRust for Linux のやつなのでメジャーバージョンではない。Rustに関して色々と書かれているので他のページをあさると面白そう。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://wusyong.github.io/posts/rust-kernel-module-00/">Rust Kernel Module: Getting Started&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://wusyong.github.io/posts/rust-kernel-module-01/">Rust Kernel Module: Hello World&lt;/a>
+&lt;ul>
+&lt;li>上に同じ。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Blog: Steam Deck が発売されたので中身を見ていく‼</title><link>http://forest0923.github.io/memo/ja/blog/2022/12/17/steam-deck-%E3%81%8C%E7%99%BA%E5%A3%B2%E3%81%95%E3%82%8C%E3%81%9F%E3%81%AE%E3%81%A7%E4%B8%AD%E8%BA%AB%E3%82%92%E8%A6%8B%E3%81%A6%E3%81%84%E3%81%8F/</link><pubDate>Sat, 17 Dec 2022 19:37:53 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2022/12/17/steam-deck-%E3%81%8C%E7%99%BA%E5%A3%B2%E3%81%95%E3%82%8C%E3%81%9F%E3%81%AE%E3%81%A7%E4%B8%AD%E8%BA%AB%E3%82%92%E8%A6%8B%E3%81%A6%E3%81%84%E3%81%8F/</guid><description>
 &lt;p>&lt;img src="./neofetch.png" alt="steamdeck">&lt;/p>
 &lt;h2 id="はじめに">はじめに&lt;/h2>
 &lt;p>Steam Deck は Valve が開発したゲーム機のふりをした Linux マシンで Arch Linux をベースにした SteamOS を搭載しています．&lt;/p>

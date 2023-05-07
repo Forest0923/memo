@@ -1,6 +1,6 @@
 +++
 title = "Rust in Linux"
-description = "Failed Memo"
+description = "失敗メモ"
 date = 2023-05-03T21:18:29+09:00
 tags = [
 
@@ -11,75 +11,80 @@ categories = [
 draft = false
 +++
 
-## Purpose
+## 目的
 
-Since Linux v6.1, Rust can be used in the kernel. So, I wanted to try rust-in-linux!
+Linux v6.1 からカーネル内で Rust が使用できるようになったので rust-in-linux を試してみたい！
 
-> Initial goals:
+>当初の目標として
 >
->- Create an LKM
->- Add a system call and call a handler written in Rust (integrate it into the kernel)
+>- LKMを作成する
+>- system call を追加して rust で書いたハンドラを呼ぶ（カーネルに組み込む）
 >
->Although I couldn't get it to work during holidays and it doesn't seem easy to use for now, I'll record it for future reference. Please refer to [references](#references) for pages that may be useful as the kernel may be a fork, so be aware of differences in environment and version.
+>あたりができると良かったのですが、GW中にはうまく動かせないこと＋今の所はそこまで手軽に使えなさそうということがわかったので後学のために記録しておきます。
+>一応、参考になりそうなページについては [references](#references) を参照（カーネルがフォークだったりするので環境やバージョンの違いに注意）。
 
-## Background
+## 背景
 
-Recently, there has been a growing movement to write software in Rust. Rust is a programming language that combines memory safety and performance, and it is attracting attention as a programming language for various software.
+最近ではソフトウェアを rust で書こうという動きが活発になっています。
+Rust はメモリ安全性とパフォーマンスを兼ね備えたプログラミング言語として注目されており、様々なソフトウェアでの採用が進んでいます。
 
 - [The ‘Viral’ Secure Programming Language That’s Taking Over Tech](https://www.wired.com/story/rust-secure-programming-language-memory-safe/)
 
-It is well known that Rust is used in various software such as Dropbox and Discord.
+Dropbox や Discord など様々なソフトウェアで使用されているというのはよく知られていると思います。
 
 - [WHY DISCORD IS SWITCHING FROM GO TO RUST](https://discord.com/blog/why-discord-is-switching-from-go-to-rust)
 
-There is a trend to adopt Rust for system software such as operating systems, and it seems that Windows has already undergone significant rewriting. It hasn't been released yet.
+OS のようなシステムソフトウェアでも Rust を採用しようという流れがあり、Windows ではすでにかなりの書き換えを行っているようです。リリースはまだのようですが。
 
 - [BlueHat IL 2023 - David Weston - Default Security](https://www.youtube.com/watch?v=8T6ClX-y2AE)
-- [Microsoft, Reveals That It Is Rewriting The Core Of Windows With Rust](https://texal.jp/2023/04/29/microsoft-reveals-that-it-is-rewriting-the-core-of-windows-with-rust/)
+- [Microsoft、Windowsのコア部分を「Rust」で書き換えていることを明らかに](https://texal.jp/2023/04/29/microsoft-reveals-that-it-is-rewriting-the-core-of-windows-with-rust/)
 
-It also discusses adoption and influence in Android.
+Android での採用や影響についても述べられています。
 
 - [Memory Safe Languages in Android 13](https://security.googleblog.com/2022/12/memory-safe-languages-in-android-13.html)
 - [Google Begins Allowing Rust Code For Developing Android](https://www.phoronix.com/news/Rust-For-Android-OS-System-Work)
 
-Now, in Linux, which is the main topic, it can be used from v6.1.
+さて、本題の Linux ではどうかというと v6.1 から使えるようになっています。
 
 - [The Initial Rust Infrastructure Has Been Merged Into Linux 6.1](https://www.phoronix.com/news/Rust-Is-Merged-Linux-6.1)
 
-It doesn't seem to be considering rewriting the Linux kernel itself at this time, but it seems that they plan to gradually introduce it, starting with drivers. It is often pointed out in vulnerability analysis of Linux that there are many bugs in drivers rather than in the main kernel, so it seems good to improve that area.
-Since it has come to this, I believe it's time for me to become familiar with Rust, so I will attempt to use Rust by referring to the documentation in the Linux kernel.
+Linux カーネル自体の rewrite については今の所考えられていないようですが、ドライバなどを始めとして少しずつ導入していくつもりのようです。
+Linux の脆弱性に関する分析ではメインのカーネルよりもドライバに大量のバグがあるという指摘もよくあるので、そのあたりを改善できると良さそうです。
+こうなってくると、そろそろRustに慣れていかないとまずいかな、ということで Linux カーネル内のドキュメントを見ながらとRustを使ってみようと思います。
 
 - [Documents - rust](https://docs.kernel.org/rust/index.html)
 
-## Preparation
+## 事前準備
 
-Since there is no random environment that can be broken, I will experiment on a VM this time. The VM settings are as follows.
+壊れても平気な適当な環境がないので、今回は VM 上で実験します。VM の設定は以下のような感じです。
 
 - CPU: 6 cores, x86_64
 - Mem: 8 GB
 - Disk: 75 GB
 - OS: Fedora 38 server
 
-First, make sure you can build the kernel in a Fedora environment.
+とりあえず Fedora 環境でカーネルビルドができるようにします。
 
 ### Source Code
 
-Download the kernel code. The working directory is `$HOME/linux-6.3.1/`.
+Linux v6.3.1 上で実験をするのでソースをダウンロードします。
+作業用ディレクトリは `$HOME/linux-6.3.1/` です。
 
 ```sh
 curl -O https://mirrors.edge.kernel.org/pub/linux/kernel/v6.x/linux-6.3.1.tar.xz
 tar xf linux-6.3.1.tar.xz
 ```
 
-### Install Required Software
+### 必要なソフトウェアのインストール
 
-Refer to [Documents - rust/quick-start](https://docs.kernel.org/rust/quick-start.html) and install the necessary software. First, install rustup.
+[Documents - rust/quick-start](https://docs.kernel.org/rust/quick-start.html) を参考に必要そうなものをインストールします。
+まずは rustup のインストール。
 
 ```sh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-Change the rustc version.
+rustcのバージョンを変更します。
 
 ```sh
 cd /path/to/kernel-src
@@ -87,34 +92,36 @@ rustup override set `scripts/min-tool-version.sh rustc`
 rustup component add rust-src
 ```
 
-Install clang.
+clang をインストールします。
 
 ```sh
 sudo dnf install clang
 ```
 
-Install bindgen. This software is necessary to integrate C and Rust.
+bindgen をインストールします。これははCとRustを連携させるために必要なソフトウェアのようです。
 
 ```sh
 cargo install --locked --version `scripts/min-tool-version.sh bindgen` bindgen
 ```
 
-Install other necessary software that is not written in quick-start.
+その他の quick-start には書かれていないけれど必要なものをインストールします。
 
 ```sh
 sudo dnf install kernel-devel llvm lld dwarves zstd ncurses-devel
 ```
 
-> If you don't install dwarves, it will result in something like:
+> dwarves を入れないと
 >
 > ```text
 > BTF: .tmp_vmlinux.btf: pahole (pahole) is not available
 > Failed to generate BTF for vmlinux
 > ```
+>
+> みたいになります
 
-### Kernel Build
+### Kernel build
 
-Build the kernel using LLVM.
+LLVMでカーネルビルドをしていきます。
 
 ```sh
 make LLVM=1 -j7
@@ -128,39 +135,39 @@ sudo make modules_install && sudo make install
 sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 ```
 
-> If you're not sure if it went well after executing, check with `echo $?`
+> 実行したあとにうまく行ったか分かりづらいときは `echo $?` で確認する
 
-### Reboot and Check
+### Reboot して確認
 
 ```sh
 reboot
 ```
 
-If you are told `bad shim signature` when selecting a custom kernel from the Grub menu, Secure Boot is getting in the way, so enter the EFI settings and disable it.
+Grub のメニューでカスタムカーネルを選択したときに `bad shim signature` とか言われた場合は Secure Boot が邪魔をしているので EFI 設定に入って disable にしてください。
 
 ```text
 $ uname -a
 Linux localhost.localdomain 6.3.1 #4 SMP PREEMPT_DYNAMIC Fri May  5 15:55:31 JST 2023 x86_64 GNU/Linux
 ```
 
-I was able to run the kernel compiled with LLVM for now.
+とりあえずLLVMでコンパイルしたカーネルを動かすことができました。
 
-## Make Rust Available
+## Rust を使えるようにする
 
-> From here on, it's the part that didn't work well this time, but I'll record it anyway.
+> ここから先は今回うまくできなかった部分ですが一応記録。
 
-You need to modify `.config`.
+`.config` を修正する必要があるので修正します。
 
 ```sh
 make menuconfig
 ```
 
-Modification 1: Enable Rust support.
+修正箇所1: Rust サポートを有効にする
 
 - General setup
   - Rust support
 
-Modification 2: Add sample code in samples/rust/* as kernel modules.
+修正箇所2: ソース内の samples/rust/* にあるサンプルコードをモジュールとして追加する
 
 - Kernel hacking
   - Sample kernel code
@@ -168,7 +175,8 @@ Modification 2: Add sample code in samples/rust/* as kernel modules.
       - Minimal
       - Printing macros
 
-The following seems to fail again after rebuilding. Output of `make LLVM=1 rustavailable` seemed to be okay, so it doesn't seem to be a problem with tool installation or path specification.
+以下は再度ビルドした結果、失敗している様子です。
+`make LLVM=1 rustavailable` を実行した感じでは問題なさそうだったのでツールのインストールやパスの指定とかが問題ではなさそう？
 
 ```text
 [mmori@localhost linux-6.3.1]$ make LLVM=1 -j6
@@ -299,27 +307,32 @@ make[1]: *** Deleting file 'rust/bindings/bindings_generated.rs'
 make: *** [Makefile:1292: prepare] Error 2
 ```
 
-## ~~Writing an LKM~~
+## ~~LKM を書いてみる~~
 
-## ~~Calling Rust functions via System Calls~~
+## ~~Systemcall を追加して rust の関数を呼び出す~~
 
-## Conclusion
+## 最後に
 
-While the use of Rust in Linux is still in its early stages, I was hoping it would be more accessible, so it was a bit disappointing. I found some articles that create kernel modules, but it seems that they cannot be used as-is due to differences in the environment. Many of them use forks of the Linux kernel such as [https://github.com/Rust-for-Linux/linux]() or [https://github.com/jackos/linux](). Additionally, creating an LKM as I had initially planned seems to have a different process from creating one in C, making it difficult to create one easily. As this is still an area of significant change, it seems that continuous catching up will be necessary.
+Linux における rust の使用はまだ導入されたばかりとはいえ、もっと気軽に使えると期待していたのでかなり残念な結果でした。
+現状でうまくカーネルモジュールなどを作成している英語記事はいくつか見つけましたが、環境の違いなどもあってそのままでは使えなさそう。
+Linux のメインラインを使っているのではなく [https://github.com/Rust-for-Linux/linux]() やそのフォークの [https://github.com/jackos/linux]() を使っているものも多いです。
+加えて今回やろうと思っていたLKMについてはCで書いたLKMとは作り方が異なるようで気軽に作りづらそう。
+多分まだ変化が大きい部分だと思うので継続的にキャッチアップしていく必要がありそうです。
 
-As for Rust as a language itself, I think it's the number one difficult language I want to use, so I want to gradually become proficient in it while tinkering with the kernel. It might be good to start with RedoxOS?
+Rust という言語そのものに関して言うと、個人的には使いたいけど難しい言語ナンバーワンだと思うので、カーネルをいじったりしながら少しずつ使いこなせるようになりたいです。
+RedoxOS あたりから触るのも良いかもしれない？
 
 ## References
 
 - [Writing Linux Kernel Modules In Rust](https://www.linuxfoundation.org/webinars/writing-linux-kernel-modules-in-rust)
-  - An article from the Linux Foundation. There's also a video, so it's relatively detailed. It demonstrates building a kernel and running the image in QEMU.
+  - Linux foundation の記事。動画もあるので比較的丁寧ではある。カーネルビルドして作ったイメージをQEMUで動かす感じ。
 - [Building an out-of-tree Rust Kernel Module](https://blog.rnstlr.ch/building-an-out-of-tree-rust-kernel-module.html)
 - [Building an out-of-tree Rust Kernel Module Part Two](https://blog.rnstlr.ch/building-an-out-of-tree-rust-kernel-module-part-two.html)
-  - A blog from someone who seems to have struggled similarly to me. They succeeded in building but had trouble loading the module. By the way, they use Arch Linux.
+  - 私と同じく苦労してそうな方のブログ。ビルドは成功したけどモジュールがロードできなかったりしてる。btw i use arch。
 - [Rust-for-Linux/rust-out-of-tree-module](https://github.com/Rust-for-Linux/rust-out-of-tree-module)
-  - A relatively similar approach to what I had in mind for using Rust. However, it doesn't seem to work well due to differences in the environment.
+  - 比較的イメージしていたRustの使い方に近いもの。環境の違いによるものか、うまく行かない。
 - [Linux kernel development](https://www.jackos.io/rust-kernel/rust-for-linux.html)
-  - A method similar to the one used by the Linux Foundation. They're using the Rust for Linux kernel, which is not a major version. There are various explanations about Rust, so it looks interesting to read other pages as well.
+  - Linux foundation のやり方に近い。使用しているカーネルはRust for Linux のやつなのでメジャーバージョンではない。Rustに関して色々と書かれているので他のページをあさると面白そう。
 - [Rust Kernel Module: Getting Started](https://wusyong.github.io/posts/rust-kernel-module-00/)
 - [Rust Kernel Module: Hello World](https://wusyong.github.io/posts/rust-kernel-module-01/)
-  - Same as the above.
+  - 上に同じ。

@@ -1,17 +1,13 @@
 ---
 title: "Docker"
 draft: false
-weight: 40
+weight: 150
 ---
 
 ## Install
 
 ```sh
 curl -sSL https://get.docker.com | sh
-```
-
-```sh
-sudo usermod -aG docker $USER
 ```
 
 ```sh

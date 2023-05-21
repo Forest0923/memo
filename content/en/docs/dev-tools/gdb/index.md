@@ -1,7 +1,7 @@
 ---
 title: "Debugging with gdb"
 draft: false
-weight: 999
+weight: 100
 ---
 In this page, I will describe how to debug programs with gdb.
 

@@ -1,0 +1,46 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Raspberry Pi</title><link>http://forest0923.github.io/memo/en/docs/raspberrypi/</link><description>Recent content in Raspberry Pi on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/docs/raspberrypi/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Setting Up an OpenVPN Server on a Raspberry Pi 4B</title><link>http://forest0923.github.io/memo/en/docs/raspberrypi/ovpn-server/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/raspberrypi/ovpn-server/</guid><description>
+&lt;p>This is a note when setting up an Open VPN server on Raspberry Pi 4B.
+I tried a few methods, so I will briefly record each one.&lt;/p>
+&lt;h2 id="method-1-pivpn">Method 1: pivpn&lt;/h2>
+&lt;p>I think this is the easiest and most reliable method.
+You can set it up just by following the instructions after executing the command below.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl -L https://install.pivpn.io | bash
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;a href="https://github.com/pivpn/pivpn">pivpn/pivpn - GitHub&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="method-2-docker">Method 2: Docker&lt;/h2>
+&lt;p>I wanted to implement it this way if it worked properly, but it didn&amp;rsquo;t support arm64, or the container kept restarting and didn&amp;rsquo;t work well.&lt;/p>
+&lt;p>The images I tried are as follows:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/mje-nz/rpi-docker-openvpn">mje-nz/rpi-docker-openvpn&lt;/a>
+&lt;ul>
+&lt;li>Fork of kylemanna/openvpn that supports rpi&lt;/li>
+&lt;li>Fails and enters a restart loop after startup&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://hub.docker.com/r/evolvedm/openvpn-rpi/">evolvedm/openvpn-rpi&lt;/a>
+&lt;ul>
+&lt;li>rpi-supported openvpn server&lt;/li>
+&lt;li>Fails and enters a restart loop after startup&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://hub.docker.com/r/linuxserver/openvpn-as/">linuxserver/openvpn-as&lt;/a>
+&lt;ul>
+&lt;li>Only supports the x86_64 architecture&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/kylemanna/docker-openvpn">kylemanna/openvpn&lt;/a>
+&lt;ul>
+&lt;li>Only supports the x86_64 architecture&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>It might work with the first two if I can use them properly.&lt;/p>
+&lt;h2 id="method-3-steadily-working-while-referring-to-the-arch-wiki">Method 3: Steadily working while referring to the Arch wiki&lt;/h2>
+&lt;p>It seems like you can manage by following the URL below.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://wiki.archlinux.jp/index.php/Easy-RSA">Easy-RSA&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://wiki.archlinux.jp/index.php/OpenVPN">OpenVPN&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>If you want to understand the mechanism, it might be worth giving it a try, but if you just want to set up a VPN server on a Raspberry Pi, I recommend pivpn.&lt;/p>
+&lt;p>I also tried creating an Easy RSA client file, but I stopped midway because I thought there would be a better way.&lt;/p></description></item></channel></rss>

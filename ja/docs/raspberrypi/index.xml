@@ -1,0 +1,46 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Raspberry Pi</title><link>http://forest0923.github.io/memo/ja/docs/raspberrypi/</link><description>Recent content in Raspberry Pi on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/ja/docs/raspberrypi/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: OpenVPN Server の設定</title><link>http://forest0923.github.io/memo/ja/docs/raspberrypi/ovpn-server/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/raspberrypi/ovpn-server/</guid><description>
+&lt;p>Raspberry Pi 4B で Open VPN サーバを立てたときのメモです。
+いくつか方法を試したのでそれぞれについて簡単に記録しておきます。&lt;/p>
+&lt;h2 id="方法1-pivpn">方法1: pivpn&lt;/h2>
+&lt;p>一番簡単で確実な方法だと思います。
+下記のコマンドを実行してあとは指示に従うだけでセットアップできます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl -L https://install.pivpn.io | bash
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;a href="https://github.com/pivpn/pivpn">pivpn/pivpn - GitHub&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="方法2-docker">方法2: Docker&lt;/h2>
+&lt;p>ちゃんと動いてくれればこの方法で実現したかったのですが、arm64 に対応していなかったり、コンテナがすぐ再起動してしまってうまく動かなかったりしました。&lt;/p>
+&lt;p>試したイメージはこんな感じ:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/mje-nz/rpi-docker-openvpn">mje-nz/rpi-docker-openvpn&lt;/a>
+&lt;ul>
+&lt;li>kylemanna/openvpn のフォークで rpi に対応&lt;/li>
+&lt;li>起動したあとに失敗して再起動ループ&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://hub.docker.com/r/evolvedm/openvpn-rpi/">evolvedm/openvpn-rpi&lt;/a>
+&lt;ul>
+&lt;li>rpi に対応した openvpn server&lt;/li>
+&lt;li>起動したあとに失敗して再起動ループ&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://hub.docker.com/r/linuxserver/openvpn-as/">linuxserver/openvpn-as&lt;/a>
+&lt;ul>
+&lt;li>アーキテクチャのサポートが x86_64 のみ&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a href="https://github.com/kylemanna/docker-openvpn">kylemanna/openvpn&lt;/a>
+&lt;ul>
+&lt;li>アーキテクチャのサポートが x86_64 のみ&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>自分がうまく使いこなせていないだけで上の2つは動くかもしれないです。&lt;/p>
+&lt;h2 id="方法3-arch-wiki-などを見て地道にやる">方法3: Arch wiki などを見て地道にやる&lt;/h2>
+&lt;p>下記URLをみて進めればなんとかなりそう。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://wiki.archlinux.jp/index.php/Easy-RSA">Easy-RSA&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://wiki.archlinux.jp/index.php/OpenVPN">OpenVPN&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>仕組みを理解したいとかであれば頑張ってみるのも良さそうですが、ただ VPN サーバをラズパイで立てたいだけであれば pivpn がおすすめです。&lt;/p>
+&lt;p>ちなみに私も Easy RSA のクライアントファイル作成まではやってみましたが、もっといい方法があるだろうということで途中でやめました。&lt;/p></description></item></channel></rss>

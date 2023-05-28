@@ -1147,6 +1147,25 @@ id="tabs-00-02" role="tabpanel" aria-labelled-by="tabs-00-02-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">dave&lt;/span> ;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">charlie&lt;/span> ;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#40ffff">X&lt;/span> = &lt;span style="color:#ed9d13">dave&lt;/span>.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: RAM disk（tmpfs）を使った SD カードの延命</title><link>http://forest0923.github.io/memo/ja/docs/raspberrypi/tmpfs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/raspberrypi/tmpfs/</guid><description>
+&lt;p>SD カードに何度も書き込みを行うと最終的にフラッシュメモリの劣化で書き込みができなくなるのですが、ラズパイでも &lt;code>/var/log&lt;/code> の頻繁な書き込みが原因で同じことが起こると聞いたので対策をしたときのメモです。&lt;/p>
+&lt;h2 id="tmpfs">tmpfs&lt;/h2>
+&lt;p>&lt;code>/etc/fstab&lt;/code> を編集してマウントし直します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>tmpfs /tmp tmpfs defaults,size=100m,noatime 0 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs /var/log tmpfs defaults,size=32m,noatime 0 0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mount -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl daemon-reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>結果:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>mmori@ubuntu:~$ df -h
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Filesystem Size Used Avail Use% Mounted on
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 380M 8.4M 371M 3% /run
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/mmcblk0p2 115G 5.5G 105G 5% /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 1.9G 0 1.9G 0% /dev/shm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 5.0M 0 5.0M 0% /run/lock
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 32M 348K 32M 2% /var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 100M 0 100M 0% /tmp
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/mmcblk0p1 253M 151M 102M 60% /boot/firmware
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 380M 4.0K 380M 1% /run/user/1000
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Rust 環境構築</title><link>http://forest0923.github.io/memo/ja/docs/lang/rust/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/rust/install/</guid><description>
 &lt;h2 id="install">Install&lt;/h2>
 &lt;p>rustup を用いて rust のインストールやバージョン管理を行います．
@@ -3860,51 +3879,4 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;li>The problem is deactivated os-prober. os-prober automatically finds operating systems and adds their boot entry, but sometimes it is deactivated. The option reactivate os-prober.&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></description></item><item><title>Docs: minted を使用したシンタックスハイライト</title><link>http://forest0923.github.io/memo/ja/docs/latex/minted/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/latex/minted/</guid><description>
-&lt;p>minted は Python 製の Pygments ライブラリを用いたシンタックスハイライティングを行うパッケージです．&lt;/p>
-&lt;h2 id="インストール">インストール&lt;/h2>
-&lt;p>Pygments は Python 製のライブラリで pip を使ってインストールできます．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>pip3 install Pygments
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>minted は TeX Live に含まれているので新たな sty などは不要です．&lt;/p>
-&lt;h2 id="使い方">使い方&lt;/h2>
-&lt;p>プリアンブルに次の内容を追加します．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\usepackage&lt;/span>&lt;span style="color:#bbb">[cache=false]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\usepackage&lt;/span>&lt;span style="color:#24909d">{&lt;/span>xcolor&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\definecolor&lt;/span>&lt;span style="color:#24909d">{&lt;/span>code-bg&lt;span style="color:#24909d">}{&lt;/span>rgb&lt;span style="color:#24909d">}{&lt;/span>0.95, 0.95, 0.95&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ドキュメント内で次のように minted を使うことでハイライトされます．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\begin&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>[breaklines, linenos, frame=lines, bgcolor=code-bg]&lt;span style="color:#24909d">{&lt;/span>c&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#include &amp;lt;stdio.h&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>int main()&lt;span style="color:#24909d">{&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> printf(&amp;#34;Hello, World!&amp;#34;);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\end&lt;/span>&lt;span style="color:#24909d">{&lt;/span>minted&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ファイルをインポートする場合は &lt;code>\inputminted&lt;/code> を使います．&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-tex" data-lang="tex">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">\inputminted&lt;/span>&lt;span style="color:#bbb">[breaklines, linenos, frame=lines, bgcolor=code-bg]&lt;/span>&lt;span style="color:#24909d">{&lt;/span>python&lt;span style="color:#24909d">}{&lt;/span>src/hello.py&lt;span style="color:#24909d">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>複数のオプションがありますが，下のような意味があります．&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th style="text-align:left">Option&lt;/th>
-&lt;th style="text-align:left">Description&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td style="text-align:left">breaklines&lt;/td>
-&lt;td style="text-align:left">ページ幅よりもコードが長いときに自動で改行する&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align:left">linenos&lt;/td>
-&lt;td style="text-align:left">コード行数を表示する&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align:left">frame=lines&lt;/td>
-&lt;td style="text-align:left">フレームを追加する&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align:left">bgcolor=code-bg&lt;/td>
-&lt;td style="text-align:left">背景色を追加する&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table></description></item></channel></rss>
+&lt;/ul></description></item></channel></rss>

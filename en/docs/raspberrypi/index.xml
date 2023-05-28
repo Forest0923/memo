@@ -1,4 +1,23 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Raspberry Pi</title><link>http://forest0923.github.io/memo/en/docs/raspberrypi/</link><description>Recent content in Raspberry Pi on Memo</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="http://forest0923.github.io/memo/en/docs/raspberrypi/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Setting Up an OpenVPN Server on a Raspberry Pi 4B</title><link>http://forest0923.github.io/memo/en/docs/raspberrypi/ovpn-server/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/raspberrypi/ovpn-server/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Raspberry Pi</title><link>http://forest0923.github.io/memo/en/docs/raspberrypi/</link><description>Recent content in Raspberry Pi on Memo</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="http://forest0923.github.io/memo/en/docs/raspberrypi/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Extending SD Card Lifespan Using RAM Disk (tmpfs)</title><link>http://forest0923.github.io/memo/en/docs/raspberrypi/tmpfs/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/raspberrypi/tmpfs/</guid><description>
+&lt;p>When writing to an SD card repeatedly, it eventually becomes impossible to write due to degradation of the flash memory. I heard that the same thing happens on Raspberry Pi due to frequent writing to &lt;code>/var/log&lt;/code>, so this is a note when I took measures against it.&lt;/p>
+&lt;h2 id="tmpfs">tmpfs&lt;/h2>
+&lt;p>Edit &lt;code>/etc/fstab&lt;/code> and remount.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>tmpfs /tmp tmpfs defaults,size=100m,noatime 0 0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs /var/log tmpfs defaults,size=32m,noatime 0 0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mount -a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo systemctl daemon-reload
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Result:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>mmori@ubuntu:~$ df -h
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Filesystem Size Used Avail Use% Mounted on
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 380M 8.4M 371M 3% /run
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/mmcblk0p2 115G 5.5G 105G 5% /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 1.9G 0 1.9G 0% /dev/shm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 5.0M 0 5.0M 0% /run/lock
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 32M 348K 32M 2% /var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 100M 0 100M 0% /tmp
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/mmcblk0p1 253M 151M 102M 60% /boot/firmware
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 380M 4.0K 380M 1% /run/user/1000
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Setting Up an OpenVPN Server on a Raspberry Pi 4B</title><link>http://forest0923.github.io/memo/en/docs/raspberrypi/ovpn-server/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/raspberrypi/ovpn-server/</guid><description>
 &lt;p>This is a note when setting up an Open VPN server on Raspberry Pi 4B.
 I tried a few methods, so I will briefly record each one.&lt;/p>
 &lt;h2 id="method-1-pivpn">Method 1: pivpn&lt;/h2>

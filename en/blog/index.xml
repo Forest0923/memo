@@ -1,4 +1,75 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/en/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/en/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Rust in Linux</title><link>http://forest0923.github.io/memo/en/blog/2023/05/03/rust-in-linux/</link><pubDate>Wed, 03 May 2023 21:18:29 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2023/05/03/rust-in-linux/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/en/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="http://forest0923.github.io/memo/en/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Deploying n8n on Raspberry Pi for Customized RSS Feed</title><link>http://forest0923.github.io/memo/en/blog/2023/05/27/deploying-n8n-on-raspberry-pi-for-customized-rss-feed/</link><pubDate>Sat, 27 May 2023 14:42:21 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2023/05/27/deploying-n8n-on-raspberry-pi-for-customized-rss-feed/</guid><description>
+&lt;h2 id="objective">Objective&lt;/h2>
+&lt;p>Deploy &lt;a href="https://github.com/n8n-io/n8n">n8n&lt;/a> on Raspberry Pi 4B to send RSS feeds to Discord.&lt;/p>
+&lt;h2 id="background">Background&lt;/h2>
+&lt;p>Until recently, I was using &lt;a href="https://ifttt.com/explore">IFTTT&lt;/a> for the same purpose, but as of May 23, 2023, the number of applications that can be run on the free plan has been limited to two. There are similar services like &lt;a href="https://zapier.com/">Zapier&lt;/a>, &lt;a href="https://www.make.com/">make&lt;/a>, &lt;a href="https://readybot.io/">Readybot.io&lt;/a>, and as of May 27, 2023, the usage scope is as follows:&lt;/p>
+&lt;ul>
+&lt;li>Zapier
+&lt;ul>
+&lt;li>Up to 5 applications (Zaps)&lt;/li>
+&lt;li>Can set up to one trigger, one action&lt;/li>
+&lt;li>100 tasks/month&lt;/li>
+&lt;li>Can be run at a minimum interval of 15 minutes&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>make
+&lt;ul>
+&lt;li>Up to 2 applications (scenarios)&lt;/li>
+&lt;li>1000 ops/month&lt;/li>
+&lt;li>Can be run at a minimum interval of 15 minutes&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Readybot.io
+&lt;ul>
+&lt;li>Specialized for Discord&lt;/li>
+&lt;li>Up to 5 applications (bots)&lt;/li>
+&lt;li>Can be run at a minimum interval of 10 minutes&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>Zapier and make did not meet my needs due to the daily execution limit and the number of applications that can be created. Readybot.io was perfect for my purpose, managing multiple RSS feeds with a single bot was quite good. However, it lacked flexibility, such as being unable to customize the content of notifications to Discord.&lt;/p>
+&lt;p>So this time, I am going to use the OSS &lt;a href="https://n8n.io/">n8n&lt;/a> (&lt;a href="https://github.com/n8n-io/n8n">github&lt;/a>). While there is no free plan when hosting with n8n, it can be used quite freely when self-hosting. There is the cost of electricity and the effort of managing it yourself, but I&amp;rsquo;m going to give it a try simply because I&amp;rsquo;m interested.&lt;/p>
+&lt;h2 id="deploying-n8n">Deploying n8n&lt;/h2>
+&lt;p>This time, I&amp;rsquo;m using Docker, so you can deploy with just the following command:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>docker run -d --rm --name n8n -p 5678:5678 -v ~/.n8n:/home/node/.n8n docker.n8n.io/n8nio/n8n
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If you can access &lt;a href="">http://[ip]:5678/&lt;/a> and see the login screen, then the deployment was successful. I believe the screen was Sign Up on the first access.&lt;/p>
+&lt;p>&lt;img src="n8n_signin.png" alt="">&lt;/p>
+&lt;h2 id="creating-the-workflow">Creating the Workflow&lt;/h2>
+&lt;p>If you have experience using services like IFTTT, creating the workflow should be straightforward. You run it at your preferred timing with &lt;code>Schedule Trigger&lt;/code> and specify the target URL with &lt;code>RSS Read&lt;/code>. Once you register the webhook of the Discord channel in &lt;code>Discord&lt;/code>, it&amp;rsquo;s complete.&lt;/p>
+&lt;p>However, when I first assembled the nodes as below, it ended up sending all the information outputted by &lt;code>RSS Read&lt;/code> to &lt;code>Discord&lt;/code> each time.&lt;/p>
+&lt;p>&lt;img src="workflow_failed.png" alt="">&lt;/p>
+&lt;p>In other words, it wasn&amp;rsquo;t comparing the content obtained at the last execution and distributing only the new content.&lt;/p>
+&lt;p>Here is the corrected workflow.&lt;/p>
+&lt;p>&lt;img src="workflow.png" alt="">&lt;/p>
+&lt;p>The change is the addition of the Code node. In Code, you can write JS code, and if you look at the &lt;a href="https://docs.n8n.io/code-examples/">Documentation&lt;/a>, you will see that n8n provides functions or variables. This time, I used &lt;a href="https://docs.n8n.io/code-examples/methods-variables-examples/get-workflow-static-data/">&lt;code>$getWorkflowStaticData(type)&lt;/code>&lt;/a> to record the last execution and only output new items.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> workflowStaticData = $getWorkflowStaticData(&lt;span style="color:#ed9d13">&amp;#39;global&amp;#39;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> lastRssLog = workflowStaticData.lastRssLog;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (lastRssLog == &lt;span style="color:#6ab825;font-weight:bold">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> workflowStaticData.lastRssLog = $(&lt;span style="color:#ed9d13">&amp;#39;RSS Read&amp;#39;&lt;/span>).first();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> $(&lt;span style="color:#ed9d13">&amp;#39;RSS Read&amp;#39;&lt;/span>).all().reverse();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span> ret = []
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span> item &lt;span style="color:#6ab825;font-weight:bold">of&lt;/span> $(&lt;span style="color:#ed9d13">&amp;#39;RSS Read&amp;#39;&lt;/span>).all()) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (item.json[&lt;span style="color:#ed9d13">&amp;#39;guid&amp;#39;&lt;/span>] == lastRssLog.json[&lt;span style="color:#ed9d13">&amp;#39;guid&amp;#39;&lt;/span>]) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret.push(item);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>workflowStaticData.lastRssLog = $(&lt;span style="color:#ed9d13">&amp;#39;RSS Read&amp;#39;&lt;/span>).first();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret.reverse();
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="raspberry-pi-resource-usage">Raspberry Pi Resource Usage&lt;/h2>
+&lt;p>As far as I have researched, there doesn&amp;rsquo;t seem to be any issues with the specs, but just in case, I checked the resource usage when an event occurs. I&amp;rsquo;m running the RSS check at 5-minute intervals for two applications.&lt;/p>
+&lt;p>During normal times:&lt;/p>
+&lt;p>&lt;img src="cpu_mem_idle.png" alt="">&lt;/p>
+&lt;p>At the time of events:&lt;/p>
+&lt;p>&lt;img src="cpu_mem.png" alt="">&lt;/p>
+&lt;h2 id="ending">Ending&lt;/h2>
+&lt;p>Although I checked out various other services similar to IFTTT, considering the limitations of the free version and the level of freedom, this setup seems to be the best at the moment. I also found a similar open source application called &lt;a href="https://github.com/huginn/huginn">Huginn&lt;/a>, but I had to give up because I couldn&amp;rsquo;t run the Docker image due to CPU architecture issues&amp;hellip; I&amp;rsquo;ve been unable to use containers due to architecture issues lately, but I wonder if I can solve this by rebuilding them once I get better at using Docker.&lt;/p></description></item><item><title>Blog: Rust in Linux</title><link>http://forest0923.github.io/memo/en/blog/2023/05/03/rust-in-linux/</link><pubDate>Wed, 03 May 2023 21:18:29 +0900</pubDate><guid>http://forest0923.github.io/memo/en/blog/2023/05/03/rust-in-linux/</guid><description>
 &lt;h2 id="purpose">Purpose&lt;/h2>
 &lt;p>Since Linux v6.1, Rust can be used in the kernel. So, I wanted to try rust-in-linux!&lt;/p>
 &lt;blockquote>

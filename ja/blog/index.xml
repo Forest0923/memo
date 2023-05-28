@@ -1,4 +1,87 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/ja/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><atom:link href="http://forest0923.github.io/memo/ja/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Rust in Linux</title><link>http://forest0923.github.io/memo/ja/blog/2023/05/03/rust-in-linux/</link><pubDate>Wed, 03 May 2023 21:18:29 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2023/05/03/rust-in-linux/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/ja/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><language>ja</language><atom:link href="http://forest0923.github.io/memo/ja/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: n8n で Discord に通知を送る RSS Reader を作る</title><link>http://forest0923.github.io/memo/ja/blog/2023/05/27/n8n-%E3%81%A7-discord-%E3%81%AB%E9%80%9A%E7%9F%A5%E3%82%92%E9%80%81%E3%82%8B-rss-reader-%E3%82%92%E4%BD%9C%E3%82%8B/</link><pubDate>Sat, 27 May 2023 14:42:21 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2023/05/27/n8n-%E3%81%A7-discord-%E3%81%AB%E9%80%9A%E7%9F%A5%E3%82%92%E9%80%81%E3%82%8B-rss-reader-%E3%82%92%E4%BD%9C%E3%82%8B/</guid><description>
+&lt;h2 id="目的">目的&lt;/h2>
+&lt;p>&lt;a href="https://github.com/n8n-io/n8n">n8n&lt;/a> を Raspberry Pi 4B にデプロイして RSS feed を Discord に送信する。&lt;/p>
+&lt;h2 id="背景">背景&lt;/h2>
+&lt;p>最近までは同じことを &lt;a href="https://ifttt.com/explore">IFTTT&lt;/a> で行っていたのですが、2023/05/23 から無料プランでは実行できるアプリケーションの数が2つまでに制限されてしまいました。
+似たようなサービスとしては &lt;a href="https://zapier.com/">Zapier&lt;/a>、&lt;a href="https://www.make.com/">make&lt;/a>、&lt;a href="https://readybot.io/">Readybot.io&lt;/a> などがあり、2023/05/27 時点で使える範囲は下のような感じ。&lt;/p>
+&lt;ul>
+&lt;li>Zapier
+&lt;ul>
+&lt;li>アプリケーション（Zaps）は 5 つまで&lt;/li>
+&lt;li>one trigger, one action まで設定可能&lt;/li>
+&lt;li>100 tasks/month&lt;/li>
+&lt;li>最短 15 分間隔で実行可能&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>make
+&lt;ul>
+&lt;li>アプリケーション（scenario）は 2 つまで&lt;/li>
+&lt;li>1000 ops/month&lt;/li>
+&lt;li>最短 15 分間隔で実行可能&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Readybot.io
+&lt;ul>
+&lt;li>Discord 特化&lt;/li>
+&lt;li>アプリケーション（bot）は 5 つまで&lt;/li>
+&lt;li>最短 10 分間隔で実行可能&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>Zapier と make は一日の実行回数や作れるアプリケーションの数からして自分のニーズには合わないものでした。
+Readybot.io は自分の用途にぴったりで、一つの bot で複数の RSS フィードを管理できることなども相まってかなり良かったです。
+しかし、あまり拡張性がなくDiscord への通知内容をカスタマイズしたりできないなど、自由度が足りないという印象でした。&lt;/p>
+&lt;p>そこで今回利用するのが OSS の &lt;a href="https://n8n.io/">n8n&lt;/a> （&lt;a href="https://github.com/n8n-io/n8n">github&lt;/a>）です。
+n8n 側でホスティングしてもらう場合には無料プランなどがないためお金がかかりますが、セルフホスティングする場合にはかなり自由に使えます。
+電気代や自分で管理する手間はあるのですが、単純に使ってみたいという興味もあるのでやってみます。&lt;/p>
+&lt;h2 id="n8n-のデプロイ">n8n のデプロイ&lt;/h2>
+&lt;p>今回は Docker を使用するので下のコマンド実行のみでデプロイできます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>docker run -d --rm --name n8n -p 5678:5678 -v ~/.n8n:/home/node/.n8n docker.n8n.io/n8nio/n8n
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="">http://[ip]:5678/&lt;/a> にアクセスしてログイン画面が出れば成功です。初回アクセス時は確か Sign Up の画面だったと思います。&lt;/p>
+&lt;p>&lt;img src="n8n_signin.png" alt="">&lt;/p>
+&lt;h2 id="ワークフローの作成">ワークフローの作成&lt;/h2>
+&lt;p>IFTTT などのサービスを使った経験があれば特に問題なくワークフローを作成できると思います。
+&lt;code>Schedule Trigger&lt;/code> で好きなタイミングで実行し、&lt;code>RSS Read&lt;/code> でターゲットのURL を指定します。
+Discord のチャンネルの webhook を &lt;code>Discord&lt;/code> に登録すれば完成です。&lt;/p>
+&lt;p>しかし、最初に下のようにノードを組んだところ、&lt;code>RSS Read&lt;/code> で出た情報を毎回すべて &lt;code>Discord&lt;/code> に送信するようになってしまいました。&lt;/p>
+&lt;p>&lt;img src="workflow_failed.png" alt="">&lt;/p>
+&lt;p>つまり、前回実行したときに得られたコンテンツと照合して新しい内容だけ配信するという処理が行われていないということですね。&lt;/p>
+&lt;p>修正したワークフローはこちらです。&lt;/p>
+&lt;p>&lt;img src="workflow.png" alt="">&lt;/p>
+&lt;p>変更点は Code のノードを追加したことです。
+Code では JS のコードを書くことができ、&lt;a href="https://docs.n8n.io/code-examples/">Documentation&lt;/a>を見ると n8n が提供している関数などがあります。
+今回は &lt;a href="https://docs.n8n.io/code-examples/methods-variables-examples/get-workflow-static-data/">&lt;code>$getWorkflowStaticData(type)&lt;/code>&lt;/a> を使って前回の実行を記録しておいて新しいものだけを出力するようにしました。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> workflowStaticData = $getWorkflowStaticData(&lt;span style="color:#ed9d13">&amp;#39;global&amp;#39;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> lastRssLog = workflowStaticData.lastRssLog;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (lastRssLog == &lt;span style="color:#6ab825;font-weight:bold">null&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> workflowStaticData.lastRssLog = $(&lt;span style="color:#ed9d13">&amp;#39;RSS Read&amp;#39;&lt;/span>).first();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> $(&lt;span style="color:#ed9d13">&amp;#39;RSS Read&amp;#39;&lt;/span>).all().reverse();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span> ret = []
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">for&lt;/span> (&lt;span style="color:#6ab825;font-weight:bold">let&lt;/span> item &lt;span style="color:#6ab825;font-weight:bold">of&lt;/span> $(&lt;span style="color:#ed9d13">&amp;#39;RSS Read&amp;#39;&lt;/span>).all()) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (item.json[&lt;span style="color:#ed9d13">&amp;#39;guid&amp;#39;&lt;/span>] == lastRssLog.json[&lt;span style="color:#ed9d13">&amp;#39;guid&amp;#39;&lt;/span>]) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ret.push(item);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>workflowStaticData.lastRssLog = $(&lt;span style="color:#ed9d13">&amp;#39;RSS Read&amp;#39;&lt;/span>).first();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> ret.reverse();
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="raspberry-pi-のリソース使用状況">Raspberry Pi のリソース使用状況&lt;/h2>
+&lt;p>調べた限りではスペック的な問題はなさそうなのですが、一応イベントが発生したときのリソース使用状況を確認してみました。
+RSS のチェックは2つのアプリケーションで5分間隔で実行しています。&lt;/p>
+&lt;p>平常時:&lt;/p>
+&lt;p>&lt;img src="cpu_mem_idle.png" alt="">&lt;/p>
+&lt;p>イベント発生時:&lt;/p>
+&lt;p>&lt;img src="cpu_mem.png" alt="">&lt;/p>
+&lt;h2 id="おわり">おわり&lt;/h2>
+&lt;p>IFTTT っぽい他のサービスも色々と調べてみたのですが、無料版の制限や自由度の高さを考えると現状ではこの環境が一番良さそうだったのでやってみました。
+オープンソースの似たようなアプリケーションとしては &lt;a href="https://github.com/huginn/huginn">Huginn&lt;/a> というものも見つけましたが、CPU アーキテクチャの問題で Docker イメージを実行できなかったので断念…。
+最近何かとアーキテクチャの都合でコンテナが使えないのですが、Docker をもっと使いこなせるようになったらビルドし直したりして解決できるんだろうか。&lt;/p></description></item><item><title>Blog: Rust in Linux</title><link>http://forest0923.github.io/memo/ja/blog/2023/05/03/rust-in-linux/</link><pubDate>Wed, 03 May 2023 21:18:29 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2023/05/03/rust-in-linux/</guid><description>
 &lt;h2 id="目的">目的&lt;/h2>
 &lt;p>Linux v6.1 からカーネル内で Rust が使用できるようになったので rust-in-linux を試してみたい！&lt;/p>
 &lt;blockquote>

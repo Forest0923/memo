@@ -1,7 +1,7 @@
 ---
-title: "Docker"
+title: "Install"
 draft: false
-weight: 150
+weight: 10
 ---
 
 ## Install

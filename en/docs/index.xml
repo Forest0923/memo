@@ -795,6 +795,13 @@ id="tabs-02-02" role="tabpanel" aria-labelled-by="tabs-02-02-tab">
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install build-essential
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="tweak-tool">&lt;strong>Tweak Tool&lt;/strong>&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo apt install gnome-tweak-tool
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Install</title><link>http://forest0923.github.io/memo/en/docs/docker/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/docker/install/</guid><description>
+&lt;h2 id="install">Install&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>curl -sSL https://get.docker.com | sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo systemctl status docker
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic"># sudo systemctl start docker&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="test">Test&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo docker run hello-world
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Install Curry</title><link>http://forest0923.github.io/memo/en/docs/lang/curry/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/lang/curry/install/</guid><description>
 &lt;p>Curry is a language that has features of both functional and logic programming languages. PAKCS is an interpreter that can execute programs written in Curry. PAKCS converts Curry code into Prolog and executes it.&lt;/p>
 &lt;h2 id="install">Install&lt;/h2>
@@ -1359,7 +1366,7 @@ id="tabs-01-01" role="tabpanel" aria-labelled-by="tabs-01-01-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>out:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#447fcf">mmap_write_unlock&lt;/span>(current-&amp;gt;mm);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> error&lt;span style="color:#a61717;background-color:#e3d2d2">;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="examples">Examples&lt;/h2></description></item><item><title>Docs: Public Key Cryptography</title><link>http://forest0923.github.io/memo/en/docs/security/pkc/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/security/pkc/</guid><description>
 &lt;p>Public key cryptography is a cryptographic scheme that uses two keys, a public key and a private key. It is used for signature, key exchange and etc.&lt;/p>
@@ -3682,213 +3689,4 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>233 TEXINPUTS.ptex = .;$TEXMF/tex/{ptex,plain,generic,}//
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>234 TEXINPUTS.platex = .;$TEXMF/tex/{platex,latex,generic,}//
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>According to these descriptions you can get a correct position.&lt;/p></description></item><item><title>Docs: Configurations for Single Root I/O Virtualization</title><link>http://forest0923.github.io/memo/en/docs/kvm/sriov/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/kvm/sriov/</guid><description>
-&lt;p>SR-IOV (Single Root I/O Virtualization) is a hardware feature that allows a single physical device to be recognized by a hypervisor as if it were multiple separate devices. For example, a machine with a single NIC that supports SR-IOV can be recognized as if it has multiple NICs by using SR-IOV, and each NIC can be passed through to the VM.&lt;/p>
-&lt;p>This page contains some notes on using SR-IOV with KVM.&lt;/p>
-&lt;h2 id="system-setup">System Setup&lt;/h2>
-&lt;ul>
-&lt;li>Hardware
-&lt;ul>
-&lt;li>CPU: Intel Core-i9 9900K&lt;/li>
-&lt;li>NIC: Intel Corporation I350 Gigabit Network Connection&lt;/li>
-&lt;li>Motherboard: PRIME H310M-AT R2.0&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>OS
-&lt;ul>
-&lt;li>Host: Arch&lt;/li>
-&lt;li>Guest
-&lt;ul>
-&lt;li>VM1: ubuntu 20.04 server&lt;/li>
-&lt;li>VM2: ubuntu 20.04 server&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;h2 id="configurations-for-bios">Configurations for BIOS&lt;/h2>
-&lt;p>Enable VT-d in the BIOS.&lt;/p>
-&lt;h2 id="enable-sr-iov">Enable SR-IOV&lt;/h2>
-&lt;p>Create a configuration file &lt;code>/etc/modprobe.d/igb.conf&lt;/code> for modprobe.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /etc/modprobe.d/igb.conf
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>options igb max_vfs=4
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>#blacklist igbvf
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="grub">Grub&lt;/h2>
-&lt;p>To enable IOMMU, change the Grub configuration and add kernel options.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /etc/default/grub
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">-GRUB_CMDLINE_LINUX_DEFAULT=&amp;#34;loglevel=3 quiet&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+GRUB_CMDLINE_LINUX_DEFAULT=&amp;#34;loglevel=3 quiet intel_iommu=on iommu=pt&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo grub-mkconfig -o /boot/grub/grub.cfg
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="when-the-error-occurs">When the Error Occurs&lt;/h3>
-&lt;p>Here is what to do if you get an error in dmesg.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo dmesg | grep igb
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>[ 2.070715] igb: Intel(R) Gigabit Ethernet Network Driver
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.070717] igb: Copyright (c) 2007-2014 Intel Corporation.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.126386] igb 0000:01:00.0: added PHC on eth0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.126389] igb 0000:01:00.0: Intel(R) Gigabit Ethernet Network Connection
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.126389] igb 0000:01:00.0: eth0: (PCIe:5.0Gb/s:Width x4) 80:61:5f:05:e2:ec
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.126465] igb 0000:01:00.0: eth0: PBA No: 106300-000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.126465] igb 0000:01:00.0: Using MSI-X interrupts. 8 rx queue(s), 8 tx queue(s)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.180163] igb 0000:01:00.1: added PHC on eth1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.180164] igb 0000:01:00.1: Intel(R) Gigabit Ethernet Network Connection
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.180165] igb 0000:01:00.1: eth1: (PCIe:5.0Gb/s:Width x4) 80:61:5f:05:e2:ed
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.180238] igb 0000:01:00.1: eth1: PBA No: 106300-000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.180239] igb 0000:01:00.1: Using MSI-X interrupts. 8 rx queue(s), 8 tx queue(s)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.274584] igb 0000:01:00.0 enp1s0f0: renamed from eth0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 2.317450] igb 0000:01:00.1 enp1s0f1: renamed from eth1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 5.510141] igb 0000:01:00.0 enp1s0f0: igb: enp1s0f0 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX/TX
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 6.363591] igb 0000:01:00.1 enp1s0f1: igb: enp1s0f1 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX/TX
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 643.338345] igb 0000:01:00.0: can&amp;#39;t enable 2 VFs (bus 02 out of range of [bus 01])
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 687.182846] igb 0000:01:00.0: can&amp;#39;t enable 2 VFs (bus 02 out of range of [bus 01])
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[ 705.005251] igb 0000:01:00.0: can&amp;#39;t enable 1 VFs (bus 02 out of range of [bus 01])
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Add the following options to the kernel options in grub configuration.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">-GRUB_CMDLINE_LINUX_DEFAULT=&amp;#34;loglevel=3 quiet intel_iommu=on iommu=pt&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+GRUB_CMDLINE_LINUX_DEFAULT=&amp;#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
-&lt;p>&lt;code>pci=assign-busses&lt;/code>: Make the kernel always assign all PCI bus numbers&lt;/p>
-&lt;p>&lt;a href="https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html">https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html&lt;/a>&lt;/p>
-&lt;/blockquote>
-&lt;p>Create grub config file and reboot.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo grub-mkconfig -o /boot/grub/grub.cfg
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
-&lt;p>Check iommu_group&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>find /sys/kernel/iommu_groups/ -type l
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/blockquote>
-&lt;h2 id="check-support-for-acs-access-control-services">Check support for ACS (Access Control Services)&lt;/h2>
-&lt;p>The following is the list of PCI devices.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>lspci | grep Ethernet
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>01:00.0 Ethernet controller: Intel Corporation I350 Gigabit Network Connection (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>01:00.1 Ethernet controller: Intel Corporation I350 Gigabit Network Connection (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>02:10.0 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>02:10.1 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>02:10.4 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>02:10.5 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>02:11.0 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>02:11.1 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>02:11.4 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>02:11.5 Ethernet controller: Intel Corporation I350 Ethernet Controller Virtual Function (rev 01)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 15)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Check if ACS is supported.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo lspci -vv | grep &lt;span style="color:#ed9d13">&amp;#34;Access Control Services&amp;#34;&lt;/span> -C &lt;span style="color:#3677a9">5&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Kernel driver in use: pcieport
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>00:1d.0 PCI bridge: Intel Corporation 200 Series PCH PCI Express Root Port #11 (rev f0) (prog-if 00 [Normal decode])
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Device specific mode supported
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Steering table in TPH capability structure
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Capabilities: [1c0 v1] Latency Tolerance Reporting
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Max snoop latency: 71680ns
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Max no snoop latency: 71680ns
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Capabilities: [1d0 v1] Access Control Services
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ACSCap: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ACSCtl: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Kernel driver in use: igb
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Kernel modules: igb
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>--
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Region 3: Memory at 00000000c8060000 (64-bit, prefetchable)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> VF Migration: offset: 00000000, BIR: 0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Capabilities: [1a0 v1] Transaction Processing Hints
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span> Capabilities: [1d0 v1] Access Control Services
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ACSCap: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ACSCtl: SrcValid- TransBlk- ReqRedir- CmpltRedir- UpstreamFwd- EgressCtrl- DirectTrans-
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ACSCap is the ACS Capability, +/- indicates supported/not supported.&lt;/p>
-&lt;p>ACSCtl is the ACS capability that is enabled, +/- indicates enabled/disabled.&lt;/p>
-&lt;h2 id="acs-override-patch">ACS Override Patch&lt;/h2>
-&lt;p>Install linux-vfio and overwrite ACS.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>paru -S linux-vfio
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Add kernel options and update the grub configuration.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /etc/default/grub
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">-GRUB_CMDLINE_LINUX_DEFAULT=&amp;#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#d22323">&lt;/span>&lt;span style="color:#589819">+GRUB_CMDLINE_LINUX_DEFAULT=&amp;#34;loglevel=3 quiet intel_iommu=on iommu=pt pci=assign-busses pcie_acs_override=downstream&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo grub-mkconfig -o /boot/grub/grub.cfg
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>reboot
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="create-vms">Create VMs&lt;/h2>
-&lt;p>Create a VM in Virtual Machine Manager.&lt;/p>
-&lt;p>&lt;img src="ubuntu-vm-overview.png" alt="Overview">&lt;/p>
-&lt;p>&lt;img src="ubuntu-vm-vcpu.png" alt="vCPU">&lt;/p>
-&lt;p>&lt;img src="ubuntu-vm-mem.png" alt="Memory">&lt;/p>
-&lt;p>&lt;img src="ubuntu-vm-iso.png" alt="iso">&lt;/p>
-&lt;p>&lt;img src="ubuntu-vm-nic.png" alt="NIC">&lt;/p>
-&lt;h2 id="ip-info">IP info&lt;/h2>
-&lt;p>The network information before and after starting the VM is as follows.&lt;/p>
-&lt;ul>
-&lt;li>Before:&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ip a | grep enp1s
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>3: enp1s0f0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc mq state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.170/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>4: enp1s0f1: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc mq state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.171/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>6: enp1s0f0v1: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.110/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>7: enp1s0f0v2: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.111/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>8: enp1s0f0v3: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.212/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v3
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>10: enp1s0f1v1: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.197/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>11: enp1s0f1v2: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.191/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>12: enp1s0f1v3: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.117/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v3
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>19: enp1s0f0v0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.199/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>20: enp1s0f1v0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.136/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v0
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>After:&lt;/li>
-&lt;/ul>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>ip a | grep enp1s
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>3: enp1s0f0: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc mq state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.170/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>4: enp1s0f1: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc mq state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.171/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>6: enp1s0f0v1: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.110/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>7: enp1s0f0v2: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.111/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>8: enp1s0f0v3: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.212/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f0v3
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>10: enp1s0f1v1: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.197/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>11: enp1s0f1v2: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.191/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>12: enp1s0f1v3: &amp;lt;BROADCAST,MULTICAST,UP,LOWER_UP&amp;gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> inet 192.168.0.117/24 brd 192.168.0.255 scope global dynamic noprefixroute enp1s0f1v3
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="speedtest">Speedtest&lt;/h2>
-&lt;p>I ran a speed test on the host and VM to check the speed. I was expecting to get near-native speed with SR-IOV, but the overhead was unexpectedly large.&lt;/p>
-&lt;ul>
-&lt;li>Host&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code class="language-test" data-lang="test">mori@arch-server ~ % speedtest-cli --server 15047
-Retrieving speedtest.net configuration...
-Testing from NTT (122.24.178.237)...
-Retrieving speedtest.net server list...
-Retrieving information for the selected server...
-Hosted by OPEN Project (via 20G SINET) (Tokyo) [1.82 km]: 50.513 ms
-Testing download speed................................................................................
-Download: 83.80 Mbit/s
-Testing upload speed......................................................................................................
-Upload: 98.05 Mbit/s
-&lt;/code>&lt;/pre>&lt;ul>
-&lt;li>VM1&lt;/li>
-&lt;/ul>
-&lt;p>&lt;img src="vm1-speedtest.png" alt="vm1-speedtest">&lt;/p>
-&lt;ul>
-&lt;li>VM2&lt;/li>
-&lt;/ul>
-&lt;p>&lt;img src="vm2-speedtest.png" alt="vm2-speedtest">&lt;/p>
-&lt;h2 id="references">References&lt;/h2>
-&lt;p>&lt;a href="https://downloadmirror.intel.com/13663/eng/readme_5.5.2.txt">https://downloadmirror.intel.com/13663/eng/readme_5.5.2.txt&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://qiita.com/m10i/items/980a350f898f28eac613">https://qiita.com/m10i/items/980a350f898f28eac613&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://metonymical.hatenablog.com/entry/2018/04/11/193408">https://metonymical.hatenablog.com/entry/2018/04/11/193408&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin/blob/master/docs/vf-setup.md">https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin/blob/master/docs/vf-setup.md&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/">https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_(ACS_override_patch)">https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_(ACS_override_patch)&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive">https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu">https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu&lt;/a>&lt;/p></description></item></channel></rss>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>According to these descriptions you can get a correct position.&lt;/p></description></item></channel></rss>

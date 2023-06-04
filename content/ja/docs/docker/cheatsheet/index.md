@@ -4,28 +4,28 @@ draft: false
 weight: 50
 ---
 
-## Images
+## イメージ
 
-### Search Docker Hub
+### Docker hub の検索
 
 ```sh
 docker search <query>
 ```
 
-### Download Image
+### イメージダウンロード
 
 ```sh
 docker pull <image>
 ```
 
-### Create Image
+### イメージ作成
 
 ```sh
 docker commit <container> new_image:tag
 docker commit <container> new_image
 ```
 
-### Remove Image
+### イメージ削除
 
 ```sh
 docker image rm <image>
@@ -37,20 +37,20 @@ or
 docker rmi <image>
 ```
 
-### Tag Image
+### イメージのタグ付け
 
 ```sh
 docker tag <image> new_image:tag
 docker tag <image> new_image
 ```
 
-### Display Image Information
+### イメージの情報表示
 
 ```sh
 docker image inspect
 ```
 
-### Build Image
+### イメージのビルド
 
 ```sh
 docker image build -t <image_name> .
@@ -59,12 +59,12 @@ docker image build -t <image_name> .
 or
 
 ```sh
-docker build -t <image_name> .
+docker image -t <image_name> .
 ```
 
-## Containers
+## コンテナ
 
-### Run Container
+### コンテナ実行
 
 ```sh
 docker container run <image>
@@ -76,25 +76,25 @@ or
 docker run <image>
 ```
 
-- Execute Shell
+- シェルを実行
 
 ```sh
 docker container run -it <image> /bin/bash
 ```
 
-- Overwrite ENTRYPOINT and Execute Shell (Be careful, as it might not work as originally planned)
+- ENTRYPOINT を上書きしてシェルを実行（本来の予定通りに動かなくなるので注意）
 
 ```sh
 docker container run --entrypoint /bin/bash -it <image>
 ```
 
-### Port Forwarding
+### ポートフォワーディング
 
 ```sh
 docker run -p <host-port>:<container-port> <image>
 ```
 
-### File System Mount
+### ファイルシステムマウント
 
 ```sh
 docker run -v /path/to/local:/path/to/container <image>
@@ -106,7 +106,7 @@ or
 docker run --mount type=bind,source=/path/to/local,target=/path/to/container <image>
 ```
 
-### Running Containers
+### 実行中のコンテナ
 
 ```sh
 docker container ls -a
@@ -118,7 +118,7 @@ or
 docker ps -a
 ```
 
-### Display Container stdout, stderr
+### コンテナの stdout, stderr の表示
 
 ```sh
 docker container logs <container>
@@ -130,19 +130,19 @@ or
 docker logs <container>
 ```
 
-### Display Container Information
+### コンテナの情報表示
 
 ```sh
 docker container inspect <container>
 ```
 
-### Rename Container
+### コンテナの名前変更
 
 ```sh
 docker container rename <old_name> <new_name>
 ```
 
-### Enter Shell of Running Container
+### 実行中のコンテナのシェルに入る
 
 ```sh
 docker container exec -it <container> /bin/bash
@@ -154,7 +154,7 @@ or
 docker exec -it <container> /bin/bash
 ```
 
-### Stop Container
+### コンテナの停止
 
 - SIGTERM
 
@@ -174,21 +174,21 @@ or
 docker kill
 ```
 
-### Automatically Start Container when OS Boots
+### OS 起動時にコンテナを自動起動
 
-- When you want to always start it
+- 必ず起動したいとき
 
 ```sh
 docker container run -d --restart=always <container>
 ```
 
-- When you don't want to execute the container stopped by `docker container stop` or similar
+- `docker container stop` などで停止したコンテナは実行したくないとき
 
 ```sh
 docker container run -d --restart=unless-stopped <container>
 ```
 
-- When you want to add a setting to a container that is already running
+- すでに実行しているコンテナに設定を追加したいとき
 
 ```sh
 docker update --restart=[always,unless-stopped] <container>

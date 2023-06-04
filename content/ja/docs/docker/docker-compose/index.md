@@ -7,10 +7,10 @@ weight: 110
 ## Template
 
 ```yml
-# Version of Docker compose
+# Docker compose のバージョン
 version: '3'
 services:
-  # First container
+  # 1つ目のコンテナ
   db:
     image: mysql:latest
     volumes:
@@ -22,23 +22,23 @@ services:
       MYSQL_USER: application
       MYSQL_PASSWORD: applicationpw
 
-  # Second container
+  # 2つ目のコンテナ
   web:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - "8080:80"
-    # Specifies dependencies
-    # As it depends on the db container, web starts after db starts
+    # 依存関係を示す
+    # db コンテナに依存するので db を起動したあとに web が起動される
     depends_on:
       - db
 
-# Creating volumes
+# volume の作成
 volumes:
-    # Write volume settings. When it's {}, it uses the default settings.
-    # It seems that you can store it locally or in AWS
-    # You can also specify the file system of the mount point, or attach labels
+    # volume の設定を記述する。{} のときはデフォルト設定
+    # local に保存したり aws に保存したりできるらしい
+    # マウント先のファイルシステムを指定したり、ラベルをつけたりもできる
     db_data:
         driver: local
     driver_opts:

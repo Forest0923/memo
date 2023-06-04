@@ -45,3 +45,29 @@ volumes:
       o: bind
       device: /path/to/data
 ```
+
+## Run
+
+### Docker compose plugin
+
+```sh
+docker compose up
+```
+
+or
+
+```sh
+docker compose -f /path/to/docker-compose.yml up
+```
+
+### docker-compose
+
+```sh
+docker-compose up
+```
+
+or
+
+```sh
+docker-compose -f /path/to/docker-compose.yml up
+```

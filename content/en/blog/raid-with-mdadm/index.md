@@ -11,34 +11,104 @@ categories = [
 draft = false
 +++
 
-## 目的
+## Objective
 
-ラズパイの外付け HDD で RAID を組みたい。
+I want to set up RAID on an external HDD with Raspberry Pi.
 
-## 背景
+## Background
 
-RAID は複数のストレージデバイスを組み合わせて信頼性の高い一つのストレージとして使用する技術です。
-なんとなくやっていることは知っていたのですが、今回はあらためて原理を調べつつ、実際に RAID を組んでファイルサーバとして使用してみようと思います。
+RAID is a technology that combines multiple storage devices to use as a single, highly reliable storage.
+I had a vague idea of what it does, but this time I try to research the principles and set up RAID to use as a file server.
 
-以下は各 RAID レベルの簡単な説明です。
-Arch wiki なりなんなり見たほうが詳しく書いてあるしわかりやすいですが、勉強の意味でも一応書いておきます。
+Below is a simple explanation of each RAID level.
+You can find more detailed and comprehensible information by looking at sources like the Arch wiki, but I will write it here for the sake of learning as well.
 
-### RAID0
-### RAID1
-### RAID5
-### RAID6
-### RAID10
+### RAID 0
 
-## 使うもの
+RAID 0 is a RAID that does not employ any redundancy.
+Data is distributed and saved, and since the bandwidth is large, read and write operations can be performed quickly if things go well.
+
+Since it does not improve reliability through redundancy, I was not sure about its practical use cases.
+But upon reading the Arch wiki, it says that it can be used for swap partitions and other scenarios where "the speed increase is worth the possibility of data loss".
+As large capacity memory is used these days, I really don't know the practical use cases as swap areas are often not created.
+
+![](raid0.svg)
+
+### RAID 1
+
+RAID 1 is a RAID that improves reliability by writing exactly the same data to multiple disks.
+Redundancy is provided, but there is a problem with the inefficient use of storage.
+Basically, when setting up RAID 1 using two storages, the usable capacity becomes half of the total.
+
+![](raid1.svg)
+
+Since there is no problem if either of the storages is alive, it is overwhelmingly reassuring compared to RAID 0.
+
+![](raid1_recovery.svg)
+
+### RAID 1+0 (RAID 10)
+
+In RAID 10, RAID 1 is combined with RAID 0 to improve performance while providing redundancy.
+The redundancy method is the same as RAID 1, so the storage usage efficiency remains poor.
+
+![](raid10.svg)
+
+It has improved fault tolerance compared to RAID 1, and there is no problem if two fail simultaneously, as long as they are from different RAID 1 groups.
+Of course, if two from the same RAID 1 group fail at the same time, it's over.
+
+![](raid10_recovery.svg)
+
+### RAID 5
+
+RAID 5 distributes and stores data, and creates parity blocks for redundancy.
+The capacity of parity is at most one storage, so if you set up RAID 5 with N storage devices, the usable capacity becomes (N - 1) / N.
+
+![](raid5.svg)
+
+Parity is calculated using XOR, so if only one storage fails, you can restore it.
+However, if two or more fail simultaneously, restoration is not possible, so depending on the reliability of the storage, the number and size of combinations, it is not recommended.
+If a disk fails, you add a new disk and perform restoration, but a large amount of reading and writing is performed during restoration, so there is a possibility of failure at that time.
+Again, according to the Arch wiki, it is not recommended in the recent storage industry.
+
+![](raid5_recovery.svg)
+
+### RAID 6
+
+RAID 6 is designed to allow for restoration even if up to two storage devices fail simultaneously by increasing the parity of RAID 5.
+A minimum of 4 storage devices is required, and the usage efficiency of capacity becomes (N - 2) / N.
+
+![](raid6.svg)
+
+It seems that parity is done in two ways, XOR and Reed-Solomon codes.
+To be honest, I don’t really understand Reed-Solomon codes.
+However, they are used for a specific reason.
+For example, in the case below, if the data of C1 and C2 is lost, XOR calculations alone cannot determine the values of C1 and C2.
+Reed-Solomon codes are introduced to address this issue and help in recovering the lost values.
+
+![](raid6_recovery.svg)
+
+## My environment
+
+Now that we understand the basic principles of RAID, let’s write about the environment for this time.
 
 - HDD: 512 GB x 5
 - Raspberry Pi 4B
   - OS: Ubuntu 23.04
 
-## コマンド
+For the RAID level, I will go with RAID 5.
+It is said that it is not recommended these days, but I believe it will be fine since the disk capacity is not that large.
+
+## RAID Configuration
+
+I will use mdadm, which seems to be a standard for configuring RAID on Linux.
+
+First, the state of the devices in the initial state looked like this.
+
+```sh
+lsblk
+```
 
 ```text
-mmori@ubuntu:~$ lsblk
 NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
 loop0         7:0    0  67.7M  1 loop /snap/core22/637
 loop1         7:1    0  46.4M  1 loop /snap/snapd/19127
@@ -59,7 +129,15 @@ sde           8:64   0 465.8G  0 disk
 mmcblk0     179:0    0 116.4G  0 disk
 ├─mmcblk0p1 179:1    0   256M  0 part /boot/firmware
 └─mmcblk0p2 179:2    0 116.1G  0 part /
-mmori@ubuntu:~$ sudo mdadm --create --verbose /dev/md0 --level=5 --raid-devices=5 /dev/sda /dev/sdb /dev/sdc /dev/sdd /dev/sde
+```
+
+`/dev/sda` through `/dev/sde` are the target HDDs, so we create a RAID device with mdadm.
+
+```sh
+sudo mdadm --create --verbose /dev/md0 --level=5 --raid-devices=5 /dev/sda /dev/sdb /dev/sdc /dev/sdd /dev/sde
+```
+
+```text
 mdadm: layout defaults to left-symmetric
 mdadm: layout defaults to left-symmetric
 mdadm: chunk size defaults to 512K
@@ -83,16 +161,30 @@ mdadm: automatically enabling write-intent bitmap on large array
 Continue creating array? y
 mdadm: Defaulting to version 1.2 metadata
 mdadm: array /dev/md0 started.
-mmori@ubuntu:~$
-mmori@ubuntu:~$ cat /proc/mdstat
+```
+
+You should see something like this when you look at `/proc/mdstat`.
+
+```sh
+cat /proc/mdstat
+```
+
+```text
 Personalities : [linear] [multipath] [raid0] [raid1] [raid6] [raid5] [raid4] [raid10]
-md0 : active raid5 sde[5] sdd[3] sdc[2] sdb[1] sda[0]
-      1953017856 blocks super 1.2 level 5, 512k chunk, algorithm 2 [5/4] [UUUU_]
-      [>....................]  recovery =  0.0% (118588/488254464) finish=1097.6min speed=7411K/sec
-      bitmap: 0/4 pages [0KB], 65536KB chunk
+md0 : active raid5 sde[5] sdd[3] sdc[2] sda[0] sdb[1]
+      1953017856 blocks super 1.2 level 5, 512k chunk, algorithm 2 [5/5] [UUUUU]
+      bitmap: 1/4 pages [4KB], 65536KB chunk
 
 unused devices: <none>
-mmori@ubuntu:~$ sudo mkfs.ext4 /dev/md0
+```
+
+Format `/dev/md0` as ext4.
+
+```sh
+sudo mkfs.ext4 /dev/md0
+```
+
+```text
 mke2fs 1.47.0 (5-Feb-2023)
 Creating filesystem with 488254464 4k blocks and 122068992 inodes
 Filesystem UUID: 65815302-0210-4b7c-8496-a3711f5ccb2a
@@ -105,9 +197,17 @@ Allocating group tables: done
 Writing inode tables: done
 Creating journal (262144 blocks): done
 Writing superblocks and filesystem accounting information: done
-mmori@ubuntu:~$ sudo mkdir /mnt/raid5
-mmori@ubuntu:~$ sudo mount /dev/md0 /mnt/raid5/
-mmori@ubuntu:~$ lsblk
+```
+
+The mount position will be `/mnt/raid5`.
+
+```sh
+sudo mkdir /mnt/raid5
+sudo mount /dev/md0 /mnt/raid5/
+lsblk
+```
+
+```text
 NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINTS
 loop0         7:0    0  67.7M  1 loop  /snap/core22/637
 loop1         7:1    0  46.4M  1 loop  /snap/snapd/19127
@@ -128,7 +228,13 @@ sde           8:64   0 465.8G  0 disk
 mmcblk0     179:0    0 116.4G  0 disk
 ├─mmcblk0p1 179:1    0   256M  0 part  /boot/firmware
 └─mmcblk0p2 179:2    0 116.1G  0 part  /
-mmori@ubuntu:~$ df -h
+```
+
+```sh
+df -h
+```
+
+```text
 Filesystem      Size  Used Avail Use% Mounted on
 tmpfs           380M  8.3M  371M   3% /run
 /dev/mmcblk0p2  115G  6.3G  104G   6% /
@@ -141,12 +247,34 @@ tmpfs           380M  4.0K  380M   1% /run/user/1000
 /dev/md0        1.8T  2.1M  1.7T   1% /mnt/raid5
 ```
 
+After rebooting, sometimes the device name becomes `/dev/md127` instead of `/dev/md0`, so after a little research, it seems to be good to modify `/etc/mdadm/mdadm.conf` as follows.
 
-```text
-mmori@ubuntu:~$ sudo systemctl enable mnt-raid5.mount
-Created symlink /etc/systemd/system/multi-user.target.wants/mnt-raid5.mount → /etc/systemd/system/mnt-raid5.mount.
-mmori@ubuntu:~$
-mmori@ubuntu:~$ cat /etc/systemd/system/mnt-raid5.mount
+```sh
+sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
+```
+
+```diff
++ ARRAY /dev/md/ubuntu:0 metadata=1.2 name=ubuntu:0 UUID=098f8892:ef715a43:dd38085d:46fb97c3
+```
+
+Update initramfs. (I don't know if it's necessary as the Boot partition is not on RAID, but just in case)
+
+```sh
+sudo update-initramfs -u
+```
+
+## Trouble Shooting: Auto-mount
+
+Initially, I had added an entry for /mnt/raid5 in /etc/fstab, but there was a problem where it tried to mount before the external HDD was started and the device was recognized.
+
+As a solution, I used systemd mount.
+With systemd mount, you can set detailed execution timing, so I configured it to execute after /dev/md0 is recognized.
+
+```sh
+sudo vim /etc/systemd/system/mnt-raid5.mount
+```
+
+```ini
 [Unit]
 Description=Mount RAID Array
 After=dev-md0.device
@@ -163,6 +291,5 @@ WantedBy=multi-user.target
 ```
 
 ```sh
-sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
-sudo update-initramfs -u
+sudo systemctl enable mnt-raid5.mount
 ```

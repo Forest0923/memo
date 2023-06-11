@@ -1,4 +1,192 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/ja/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><language>ja</language><atom:link href="http://forest0923.github.io/memo/ja/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: n8n で Discord に通知を送る RSS Reader を作る</title><link>http://forest0923.github.io/memo/ja/blog/2023/05/27/n8n-%E3%81%A7-discord-%E3%81%AB%E9%80%9A%E7%9F%A5%E3%82%92%E9%80%81%E3%82%8B-rss-reader-%E3%82%92%E4%BD%9C%E3%82%8B/</link><pubDate>Sat, 27 May 2023 14:42:21 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2023/05/27/n8n-%E3%81%A7-discord-%E3%81%AB%E9%80%9A%E7%9F%A5%E3%82%92%E9%80%81%E3%82%8B-rss-reader-%E3%82%92%E4%BD%9C%E3%82%8B/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Blog</title><link>http://forest0923.github.io/memo/ja/blog/</link><description>Recent content in Blog on Memo</description><generator>Hugo -- gohugo.io</generator><language>ja</language><atom:link href="http://forest0923.github.io/memo/ja/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Blog: Raid With Mdadm</title><link>http://forest0923.github.io/memo/ja/blog/2023/06/09/raid-with-mdadm/</link><pubDate>Fri, 09 Jun 2023 20:06:14 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2023/06/09/raid-with-mdadm/</guid><description>
+&lt;h2 id="目的">目的&lt;/h2>
+&lt;p>ラズパイの外付け HDD で RAID を組みたい。&lt;/p>
+&lt;h2 id="背景">背景&lt;/h2>
+&lt;p>RAID は複数のストレージデバイスを組み合わせて信頼性の高い一つのストレージとして使用する技術です。
+なんとなくやっていることは知っていたのですが、今回はあらためて原理を調べつつ、実際に RAID を組んでファイルサーバとして使用してみようと思います。&lt;/p>
+&lt;p>以下は各 RAID レベルの簡単な説明です。
+Arch wiki などを見たほうが詳しく書いてあるしわかりやすいですが、勉強の意味でも一応書いておきます。&lt;/p>
+&lt;h3 id="raid-0">RAID 0&lt;/h3>
+&lt;p>RAID 0 は冗長化を全く施していない RAID です。
+データを分散して保存しており、帯域幅が大きくなるのでうまく行けば高速に読み書きができます。
+（ちょうどアクセスしたいデータが一つのストレージに保存されていた場合などは高速なアクセスは期待できないでしょうが）&lt;/p>
+&lt;p>冗長化による信頼性の向上は行われていないので使用用途はいまいちよくわからなかったのですが、Arch wiki を読んでみるとスワップパーティションなどの「データが消失する可能性を差し引いても速度を上げる価値がある場合」に使えるとのことでした。
+大容量なメモリが使える最近ではわざわざスワップ領域を作らないことも多いと思うので本当に使いみちがわからないです。&lt;/p>
+&lt;p>&lt;img src="raid0.svg" alt="">&lt;/p>
+&lt;h3 id="raid-1">RAID 1&lt;/h3>
+&lt;p>RAID 1 は複数のディスクに全く同じデータを書き込むことで信頼性を向上させたRAID です。
+冗長化はされていますが、ストレージの使用効率が悪いという問題があります。
+基本的に RAID 1 を組む場合は2つのストレージを使いますが、この場合使用できるのは全体の 1/2 になってしまいます。&lt;/p>
+&lt;p>&lt;img src="raid1.svg" alt="">&lt;/p>
+&lt;p>どちらかのストレージが生きていれば問題ないので RAID 0 に比べて圧倒的に安心ではあります。&lt;/p>
+&lt;p>&lt;img src="raid1_recovery.svg" alt="">&lt;/p>
+&lt;h3 id="raid-10-raid-10">RAID 1+0 (RAID 10)&lt;/h3>
+&lt;p>RAID 10 では RAID 1 で冗長化をしながら RAID 0 と組み合わせてパフォーマンスの向上を目指しています。
+冗長化の仕方は RAID 1 と同じなのでストレージの使用効率は悪いままです。&lt;/p>
+&lt;p>&lt;img src="raid10.svg" alt="">&lt;/p>
+&lt;p>障害耐性については RAID 1 よりも向上していて、異なる RAID 1 のグループであれば同時に二つ故障しても問題ありません。
+当然ですが、同じ RAID 1 のグループで同時に二つが故障したら終わりです。&lt;/p>
+&lt;p>&lt;img src="raid10_recovery.svg" alt="">&lt;/p>
+&lt;h3 id="raid-5">RAID 5&lt;/h3>
+&lt;p>RAID 5 はデータを分散して保存し、それに加えてパリティブロックも作成することで冗長化を行っています。
+パリティの容量は最大でストレージ一つ分なので N 個のストレージで RAID 5 を組むと使える容量は (N - 1) / N になります。&lt;/p>
+&lt;p>&lt;img src="raid5.svg" alt="">&lt;/p>
+&lt;p>パリティは XOR で計算されるので、ストレージが一つ故障しただけであれば復元ができます。
+しかし、同時に二つ以上故障すると復元はできないため、ストレージの信頼性や組み合わせる数、サイズによってはあまり推奨されないとのこと。
+ディスクが一つ故障した場合には新しいディスクを追加して復元を行いますが、復元時に大量に読み書きを行うのでそのときに障害が発生する可能性があるためです。
+これまた Arch wiki 情報ですが、最近のストレージ界隈では非推奨だとか。&lt;/p>
+&lt;p>&lt;img src="raid5_recovery.svg" alt="">&lt;/p>
+&lt;h3 id="raid-6">RAID 6&lt;/h3>
+&lt;p>RAID 6 は RAID 5 のパリティをさらに増やして二つまで同時にストレージが故障しても復元できるように設計された RAID です。
+ストレージは最小で4つ必要で容量の使用効率は (N - 2) / N になります。&lt;/p>
+&lt;p>&lt;img src="raid6.svg" alt="">&lt;/p>
+&lt;p>パリティは XOR と Reed-Solomon 符号の二種類で行っているそうです。
+Reed-Solomon 符号については正直良くわかっていないですが、例えば下の例で C1 と C2 のデータが失われたときに XOR の計算結果だけでは C1 と C2 の値を特定できないのでそれを解消するために導入しています。&lt;/p>
+&lt;p>&lt;img src="raid6_recovery.svg" alt="">&lt;/p>
+&lt;h2 id="使うもの">使うもの&lt;/h2>
+&lt;p>さて、基本的な RAID の原理がわかったところで今回の環境について書いておきます。&lt;/p>
+&lt;ul>
+&lt;li>HDD: 512 GB x 5&lt;/li>
+&lt;li>Raspberry Pi 4B
+&lt;ul>
+&lt;li>OS: Ubuntu 23.04&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>RAID レベルですが、今回は RAID 5 にします。
+最近ではあまり推奨されないという話でしたが、ディスク容量もそこまで大きくないので大丈夫だと信じて使います。
+ちなみにソフトウェア RAID です。&lt;/p>
+&lt;h2 id="raid-設定">RAID 設定&lt;/h2>
+&lt;p>Linux で RAID を組む上では定番らしい mdadm を使って RAID の設定を行います。&lt;/p>
+&lt;p>まず、初期状態のデバイスを確認するとこんな感じでした。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>lsblk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop0 7:0 0 67.7M 1 loop /snap/core22/637
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop1 7:1 0 46.4M 1 loop /snap/snapd/19127
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop2 7:2 0 161.2M 1 loop /snap/lxd/24922
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop3 7:3 0 68.5M 1 loop /snap/core22/753
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop4 7:4 0 157.6M 1 loop /snap/lxd/24851
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop5 7:5 0 46.4M 1 loop /snap/snapd/19365
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sda 8:0 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sda1 8:1 0 465.8G 0 part
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdb 8:16 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sdb1 8:17 0 465.8G 0 part
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdc 8:32 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sdc1 8:33 0 465.8G 0 part
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdd 8:48 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sdd1 8:49 0 465.8G 0 part
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sde 8:64 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─sde1 8:65 0 465.8G 0 part
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mmcblk0 179:0 0 116.4G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─mmcblk0p1 179:1 0 256M 0 part /boot/firmware
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─mmcblk0p2 179:2 0 116.1G 0 part /
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/dev/sda&lt;/code> から &lt;code>/dev/sde&lt;/code> までが対象の HDD なので mdadm で RAID のデバイスを作成します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mdadm --create --verbose /dev/md0 --level=&lt;span style="color:#3677a9">5&lt;/span> --raid-devices=&lt;span style="color:#3677a9">5&lt;/span> /dev/sda /dev/sdb /dev/sdc /dev/sdd /dev/sde
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>mdadm: layout defaults to left-symmetric
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: layout defaults to left-symmetric
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: chunk size defaults to 512K
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sda
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sda but will be lost or
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> meaningless after creating array
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sdb
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sdb but will be lost or
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> meaningless after creating array
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sdc
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sdc but will be lost or
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> meaningless after creating array
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sdd
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sdd but will be lost or
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> meaningless after creating array
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sde
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: partition table exists on /dev/sde but will be lost or
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> meaningless after creating array
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: size set to 488254464K
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: automatically enabling write-intent bitmap on large array
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Continue creating array? y
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: Defaulting to version 1.2 metadata
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mdadm: array /dev/md0 started.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/proc/mdstat&lt;/code> を見るとこんな内容になっているはずです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>cat /proc/mdstat
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>Personalities : [linear] [multipath] [raid0] [raid1] [raid6] [raid5] [raid4] [raid10]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>md0 : active raid5 sde[5] sdd[3] sdc[2] sda[0] sdb[1]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 1953017856 blocks super 1.2 level 5, 512k chunk, algorithm 2 [5/5] [UUUUU]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> bitmap: 1/4 pages [4KB], 65536KB chunk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>unused devices: &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>/dev/md0&lt;/code> を ext4 でフォーマットします。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mkfs.ext4 /dev/md0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>mke2fs 1.47.0 (5-Feb-2023)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Creating filesystem with 488254464 4k blocks and 122068992 inodes
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Filesystem UUID: 65815302-0210-4b7c-8496-a3711f5ccb2a
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Superblock backups stored on blocks:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 102400000, 214990848
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Allocating group tables: done
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Writing inode tables: done
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Creating journal (262144 blocks): done
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Writing superblocks and filesystem accounting information: done
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>マウントポジションは &lt;code>/mnt/raid5&lt;/code> とします。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mkdir /mnt/raid5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo mount /dev/md0 /mnt/raid5/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>lsblk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>NAME MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop0 7:0 0 67.7M 1 loop /snap/core22/637
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop1 7:1 0 46.4M 1 loop /snap/snapd/19127
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop2 7:2 0 161.2M 1 loop /snap/lxd/24922
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop3 7:3 0 68.5M 1 loop /snap/core22/753
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop4 7:4 0 157.6M 1 loop /snap/lxd/24851
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>loop5 7:5 0 46.4M 1 loop /snap/snapd/19365
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sda 8:0 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─md0 9:0 0 1.8T 0 raid5 /mnt/raid5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdb 8:16 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─md0 9:0 0 1.8T 0 raid5 /mnt/raid5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdc 8:32 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─md0 9:0 0 1.8T 0 raid5 /mnt/raid5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sdd 8:48 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─md0 9:0 0 1.8T 0 raid5 /mnt/raid5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sde 8:64 0 465.8G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─md0 9:0 0 1.8T 0 raid5 /mnt/raid5
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mmcblk0 179:0 0 116.4G 0 disk
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├─mmcblk0p1 179:1 0 256M 0 part /boot/firmware
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└─mmcblk0p2 179:2 0 116.1G 0 part /
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>df -h
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>Filesystem Size Used Avail Use% Mounted on
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 380M 8.3M 371M 3% /run
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/mmcblk0p2 115G 6.3G 104G 6% /
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 1.9G 0 1.9G 0% /dev/shm
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 5.0M 0 5.0M 0% /run/lock
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 100M 0 100M 0% /tmp
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 32M 496K 32M 2% /var/log
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/mmcblk0p1 253M 152M 101M 61% /boot/firmware
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tmpfs 380M 4.0K 380M 1% /run/user/1000
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>/dev/md0 1.8T 2.1M 1.7T 1% /mnt/raid5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>再起動したときにデバイス名が &lt;code>/dev/md0&lt;/code> でなく &lt;code>/dev/md127&lt;/code> になることがあったので少し調べてみると以下のように /etc/mdadm/mdadm.conf を修正すると良いようです。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-diff" data-lang="diff">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#589819">+ ARRAY /dev/md/ubuntu:0 metadata=1.2 name=ubuntu:0 UUID=098f8892:ef715a43:dd38085d:46fb97c3
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>initramfs を更新します。（Boot パーティションはRAID 上にはないですし必要なのかわかりませんが一応）&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo update-initramfs -u
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="trouble-shooting-自動マウント">Trouble Shooting: 自動マウント&lt;/h2>
+&lt;p>最初は /etc/fstab に /mnt/raid5 のエントリを追加していたのですが、外付け HDD が起動されてデバイスが認識される前にマウントをしようとしてしまう問題がありました。&lt;/p>
+&lt;p>解決策として systemd の mount を使いました。
+systemd mount では実行タイミングの詳細な設定ができるので /dev/md0 が認識されてから事項するように設定します。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo vim /etc/systemd/system/mnt-raid5.mount
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ini" data-lang="ini">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">[Unit]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">Description&lt;/span>=&lt;span style="color:#ed9d13">Mount RAID Array&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">After&lt;/span>=&lt;span style="color:#ed9d13">dev-md0.device&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">Requires&lt;/span>=&lt;span style="color:#ed9d13">dev-md0.device&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">[Mount]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">What&lt;/span>=&lt;span style="color:#ed9d13">/dev/md0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">Where&lt;/span>=&lt;span style="color:#ed9d13">/mnt/raid5&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">Type&lt;/span>=&lt;span style="color:#ed9d13">ext4&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">Options&lt;/span>=&lt;span style="color:#ed9d13">defaults&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">[Install]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#bbb">WantedBy&lt;/span>=&lt;span style="color:#ed9d13">multi-user.target&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>sudo systemctl &lt;span style="color:#24909d">enable&lt;/span> mnt-raid5.mount
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Blog: n8n で Discord に通知を送る RSS Reader を作る</title><link>http://forest0923.github.io/memo/ja/blog/2023/05/27/n8n-%E3%81%A7-discord-%E3%81%AB%E9%80%9A%E7%9F%A5%E3%82%92%E9%80%81%E3%82%8B-rss-reader-%E3%82%92%E4%BD%9C%E3%82%8B/</link><pubDate>Sat, 27 May 2023 14:42:21 +0900</pubDate><guid>http://forest0923.github.io/memo/ja/blog/2023/05/27/n8n-%E3%81%A7-discord-%E3%81%AB%E9%80%9A%E7%9F%A5%E3%82%92%E9%80%81%E3%82%8B-rss-reader-%E3%82%92%E4%BD%9C%E3%82%8B/</guid><description>
 &lt;h2 id="目的">目的&lt;/h2>
 &lt;p>&lt;a href="https://github.com/n8n-io/n8n">n8n&lt;/a> を Raspberry Pi 4B にデプロイして RSS feed を Discord に送信する。&lt;/p>
 &lt;h2 id="背景">背景&lt;/h2>

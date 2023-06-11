@@ -1,5 +1,5 @@
 +++
-title = "Raid With Mdadm"
+title = "Setting Up RAID Using mdadm"
 description = ""
 date = 2023-06-09T20:06:14+09:00
 tags = [

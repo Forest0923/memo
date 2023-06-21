@@ -4,23 +4,22 @@ draft: false
 weight: 999
 ---
 
-攻撃者が悪意あるスクリプトをユーザに実行させる
+Cross-site scripting is a form of cyber-attack where the attacker tricks a user into executing a malicious script.
+The attacks can lead to the disclosure of the user's cookie information or manipulation of the web page content.
 
-## 持続型 XSS (stored)
+## Stored XSS Attacks
 
-攻撃用の JS が攻撃対象のサイトに保存されているタイプの XSS。
-攻撃者の悪意ある入力がデータベースに保存され、他のユーザがサイトにアクセスした時に実行される。
+Stored XSS attacks occur when the attacker storing a malicious JavaScript on the target website.
+This malicious input is saved into the website’s database and is executed when other users access the website.
 
-例えば、チャットアプリで攻撃者が
+For instance, in a chat application, an attacker could post the following:
 
 ```html
 <script>alert("Hacked!");</script>
 ```
 
-と投稿し、その内容がエスケープなどの適切な処理をされなかったとする。
-
-この時、ユーザがチャットアプリにアクセスすると上記の script タグが実行される。
-alert だけなら問題はないかもしれないが、下記のような script にすれば cookie を攻撃者に送信することができてしまう。
+If the website does not properly escape or sanitize the input, any user who accesses the chat application and views the attacker's post will inadvertently execute this script.
+While an alert may seem harmless, attackers could execute scripts like the following to send a user's cookies to the attacker:
 
 ```html
 <script>
@@ -31,19 +30,44 @@ alert だけなら問題はないかもしれないが、下記のような scri
 </script>
 ```
 
-## 反射型 XSS (reflected)
+## Reflected XSS Attacks
 
-攻撃用の JS が攻撃対象のサイトではない場所にある場合の XSS。
-持続型のXSS と比べて影響範囲は小さそう。
+Reflected XSS attacks are different from stored XSS attacks in that the malicious script is not stored on the target website.
+Its impact is generally more limited than stored XSS.
 
-例えば偽サイトのリンクやメール、SNS の URL として次のようなリンクを仕込んでおく。
+As an example, an attacker might send phishing emails or messages with a link like this:
 
 ```html
 https://victim.example.com/search?q=<script>alert('Hacked!');</script>
 ```
 
-攻撃対象のサイトでパラメータを適切に処理していない場合に script が実行されてしまう。
+If the target website doesn't properly handle parameters, the script might be executed.
+Just like with stored XSS, the script executed is not limited to displaying an alert.
+There are various techniques, such as embedding the target site inside an iframe on a fake website to steal session IDs or altering forms to send information to the attacker.
 
-## 対策
+## Prevention
 
-エスケープ
+The main cause of XSS vulnerabilities is a failure to escape special characters during HTML rendering.
+As a fundamental measure, it is necessary to systematically escape special characters within element content and attribute values, as shown in the table below:
+
+| Special Character | Escape Code |
+| ----------------- | ----------- |
+| <                 | `&lt;`      |
+| >                 | `&gt;`      |
+| &                 | `&amp;`     |
+| "                 | `&quot;`    |
+| '                 | `&#39;`     |
+
+Additionally, the following measures are recommended:
+
+- Returning response headers that enable XSS filters through web server configuration.
+  - Content Security Policy (CSP): A security policy controlled through server response headers, restricting external content loading and script execution.
+  - X-XSS-Protection: This is now deprecated as different or older browsers have varied implementations or lack support, CSP is recommended.
+- Sanitizing input values (e.g., allow only numbers, letters, character limits).
+- Thoughtful cookie settings:
+  - HttpOnly: Setting that prevents JavaScript from reading cookies.
+  - SameSite: Setting that prevents cookies from being read through requests from different domains. Since there are different types of restrictions, it's necessary to choose the appropriate setting when using it.
+
+## References
+
+- 徳丸 浩、「体系的に学ぶ 安全なWebアプリケーションの作り方 第2版」

@@ -45,7 +45,7 @@ If the target website doesn't properly handle parameters, the script might be ex
 Just like with stored XSS, the script executed is not limited to displaying an alert.
 There are various techniques, such as embedding the target site inside an iframe on a fake website to steal session IDs or altering forms to send information to the attacker.
 
-## Prevention
+## Mitigations
 
 The main cause of XSS vulnerabilities is a failure to escape special characters during HTML rendering.
 As a fundamental measure, it is necessary to systematically escape special characters within element content and attribute values, as shown in the table below:

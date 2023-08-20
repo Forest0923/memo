@@ -99,4 +99,399 @@ A--&amp;gt;B
 A--&amp;gt;B
 &lt;/code>&lt;/pre>
 &lt;/div>
-&lt;/div></description></item><item><title>Docs: Web Tools</title><link>http://forest0923.github.io/memo/en/docs/web/webtools/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/web/webtools/</guid><description/></item></channel></rss>
+&lt;/div></description></item><item><title>Docs: Dendron</title><link>http://forest0923.github.io/memo/en/docs/web/dendron/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/web/dendron/</guid><description>
+&lt;h2 id="requirements">Requirements&lt;/h2>
+&lt;ul>
+&lt;li>VSCode or VSCodium
+&lt;ul>
+&lt;li>dendron extension を使用して書いていくのでどちらかが必要&lt;/li>
+&lt;li>git 管理はしたいけどテキストファイルをバックアップ的に保存しておくだけでいい、かつ、ローカルでの確認もエディタ上のプレビューだけでいい場合はここから下は不要&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>yarn, pnpm or npm
+&lt;ul>
+&lt;li>VSCode 内のプレビューのみでいいのであればなくても問題ない&lt;/li>
+&lt;li>html にエクスポートしてブラウザで確認したり、GitHub Pages でホストする場合に手元で確認したりする場合は必要&lt;/li>
+&lt;li>yarn で最初からプロジェクトを作成する場合は下記を実行する&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>yarn init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>yarn add @dendronhq/dendron-cli@latest
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>yarn dendron publish init
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="how-to-build">How to build?&lt;/h2>
+&lt;h3 id="dendron-cli">dendron cli&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>yarn dendron publish dev
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="html-をエクスポート">html をエクスポート&lt;/h3>
+&lt;p>&lt;code>docs&lt;/code> に publish する：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>yarn dendron publish &lt;span style="color:#24909d">export&lt;/span> --target github
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>publish したページをローカルで確認する：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#24909d">cd&lt;/span> docs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>python3 -m http.server --bind 127.0.0.1
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Docusaurus</title><link>http://forest0923.github.io/memo/en/docs/web/docusaurus/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/web/docusaurus/</guid><description>
+&lt;h2 id="link">Link&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://docusaurus.io/">Docusaurus official page&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="project-structure">Project structure&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-txt" data-lang="txt">&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── docs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── docusaurus.config.js
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── node_modules
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── package.json
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── README.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── sidebars.js
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── src
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── components
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── HomepageFeatures
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── css
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── custom.css
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── pages
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── static
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── img
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── tsconfig.json
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── yarn.lock
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="blog">Blog&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-txt" data-lang="txt">&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── 2019-05-28-first-blog-post.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── 2019-05-29-long-blog-post.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── 2021-08-01-mdx-blog-post.mdx
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── 2021-08-26-welcome
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── docusaurus-plushie-banner.jpeg
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── index.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── authors.yml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>authors.yml
+&lt;ul>
+&lt;li>著者の情報を保存してブログページにいい感じに表示してくれる&lt;/li>
+&lt;li>Blog 本文の frontMatter に直接書いてもOK&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yml" data-lang="yml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">endi&lt;/span>:&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">name&lt;/span>:&lt;span style="color:#666"> &lt;/span>Endilie Yacop Sucipto&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">title&lt;/span>:&lt;span style="color:#666"> &lt;/span>Maintainer of Docusaurus&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">url&lt;/span>:&lt;span style="color:#666"> &lt;/span>https://github.com/endiliey&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">image_url&lt;/span>:&lt;span style="color:#666"> &lt;/span>https://github.com/endiliey.png&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">yangshun&lt;/span>:&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">name&lt;/span>:&lt;span style="color:#666"> &lt;/span>Yangshun Tay&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">title&lt;/span>:&lt;span style="color:#666"> &lt;/span>Front End Engineer @ Facebook&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">url&lt;/span>:&lt;span style="color:#666"> &lt;/span>https://github.com/yangshun&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">image_url&lt;/span>:&lt;span style="color:#666"> &lt;/span>https://github.com/yangshun.png&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666">&lt;/span>&lt;span style="color:#6ab825;font-weight:bold">slorber&lt;/span>:&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">name&lt;/span>:&lt;span style="color:#666"> &lt;/span>Sébastien Lorber&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">title&lt;/span>:&lt;span style="color:#666"> &lt;/span>Docusaurus maintainer&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">url&lt;/span>:&lt;span style="color:#666"> &lt;/span>https://sebastienlorber.com&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#666"> &lt;/span>&lt;span style="color:#6ab825;font-weight:bold">image_url&lt;/span>:&lt;span style="color:#666"> &lt;/span>https://github.com/slorber.png&lt;span style="color:#666">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>ブログ本文
+&lt;ul>
+&lt;li>&lt;code>first-blog.md&lt;/code> でも &lt;code>first-blog/index.md&lt;/code> でもOK&lt;/li>
+&lt;li>frontMatter
+&lt;ul>
+&lt;li>slug: URL に表示される path の名前&lt;/li>
+&lt;li>date: 日付を書けば反映される。ファイル名を &lt;code>2023-08-01-first-blog.md&lt;/code> のようにすればなくても平気&lt;/li>
+&lt;li>title, authors, tags: そのまま。&lt;/li>
+&lt;li>category はないみたい。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-md" data-lang="md">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>slug: welcome
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>title: Welcome
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>authors: [slorber, yangshun]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tags: [facebook, hello, docusaurus]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>contents
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>https://example.com/blog&lt;/code> にアクセスするとブログのリストが出てくるが、ブログが長すぎたときに &lt;code>&amp;lt;!-- truncate --&amp;gt;&lt;/code> 以下を表示しないようにできる。&lt;/li>
+&lt;li>Markdown 内で React の機能を使うことができる(?) MDX という拡張形式を使うことができる。&lt;/li>
+&lt;/ul>
+&lt;h2 id="document">Document&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>├── docs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── intro.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── tutorial-basics
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── _category_.json
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── congratulations.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── create-a-blog-post.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── create-a-document.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── create-a-page.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── deploy-your-site.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── markdown-features.mdx
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── tutorial-extras
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── _category_.json
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── img
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── manage-docs-versions.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── translate-your-site.md
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>docs/&lt;/code> 直下に intro.md のように直接ファイルを置いてもいいし、ディレクトリを挟んでもいい&lt;/li>
+&lt;li>&lt;code>docs/title.md&lt;/code>, &lt;code>docs/title/index.md&lt;/code> のどちらでもいい&lt;/li>
+&lt;li>&lt;code>_category_.json&lt;/code> でサイドバーの設定ができる
+&lt;ul>
+&lt;li>label: 表示名&lt;/li>
+&lt;li>position: 順番&lt;/li>
+&lt;li>link: &lt;code>generated-index&lt;/code> にすると小ページのリンクがパネル形式で表示される&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">&amp;#34;label&amp;#34;&lt;/span>: &lt;span style="color:#ed9d13">&amp;#34;Tutorial - Basics&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">&amp;#34;position&amp;#34;&lt;/span>: &lt;span style="color:#3677a9">2&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">&amp;#34;link&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">&amp;#34;type&amp;#34;&lt;/span>: &lt;span style="color:#ed9d13">&amp;#34;generated-index&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">&amp;#34;description&amp;#34;&lt;/span>: &lt;span style="color:#ed9d13">&amp;#34;5 minutes to learn the most important Docusaurus concepts.&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>ドキュメントの frontmatter
+&lt;ul>
+&lt;li>sidebar_position: label 内での表示順序を指定&lt;/li>
+&lt;li>slug: URL の path 指定&lt;/li>
+&lt;li>title: sidebar, パンくずリストに表示されるタイトル。指定しない場合は md 内の &lt;code># title&lt;/code> が入る。&lt;/li>
+&lt;li>sidebar_label: docs 直下に作成した場合にlabel を指定する&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-md" data-lang="md">&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sidebar_position: 2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>slug: hello
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>title: short title
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;font-weight:bold"># Very looooooooooooooooooooooooooooong title
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="page">Page&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>├── src
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── components
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── HomepageFeatures
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── css
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── custom.css
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── pages
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── index.module.css
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── index.tsx
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── markdown-page.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── my-react-page.js
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>docs, blog 以外に独立してページを作成する場合に使用する&lt;/li>
+&lt;li>&lt;code>src/pages/index.*&lt;/code> -&amp;gt; &lt;code>/&lt;/code>, &lt;code>src/pages/foo.md&lt;/code> -&amp;gt; &lt;code>/foo&lt;/code> のように対応する&lt;/li>
+&lt;/ul>
+&lt;h2 id="markdown-features">Markdown features&lt;/h2>
+&lt;h3 id="admonitions">Admonitions&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-md" data-lang="md">&lt;span style="display:flex;">&lt;span>:::tip My tip
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Use this awesome feature option
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:::
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:::info
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>info
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:::
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:::caution
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>caution
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:::
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:::danger Take care
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>This action is dangerous
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:::
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="code-block">Code block&lt;/h3>
+&lt;ul>
+&lt;li>ファイル名の表示&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-md" data-lang="md">&lt;span style="display:flex;">&lt;span>```jsx title=&amp;#34;src/components/HelloDocusaurus.js&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>function HelloDocusaurus() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> return (
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;lt;&lt;span style="color:#6ab825;font-weight:bold">h1&lt;/span>&amp;gt;Hello, Docusaurus!&amp;lt;/&lt;span style="color:#6ab825;font-weight:bold">h1&lt;/span>&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> )
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>ハイライト&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-md" data-lang="md">&lt;span style="display:flex;">&lt;span>```js title=&amp;#34;sidebars.js&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>module.exports = {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tutorialSidebar: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;#39;intro&amp;#39;,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> // highlight-next-line
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;#39;hello&amp;#39;,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> type: &amp;#39;category&amp;#39;,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> label: &amp;#39;Tutorial&amp;#39;,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> items: [&amp;#39;tutorial-basics/create-a-document&amp;#39;],
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ],
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-md" data-lang="md">&lt;span style="display:flex;">&lt;span>```text title=&amp;#34;my-doc.md&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// highlight-start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>id: my-doc-id
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>title: My document title
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>description: My document description
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>slug: /my-custom-url
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// highlight-end
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">## Markdown heading
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#fff;text-decoration:underline">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Markdown text with [&lt;span style="color:#6ab825;font-weight:bold">links&lt;/span>](&lt;span style="color:#bbb">./hello.md&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>```
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="i18n">i18n&lt;/h2>
+&lt;ul>
+&lt;li>各言語に対応した &lt;code>docs&lt;/code> のファイルは &lt;code>i18n/locale/docusaurus-plugin-content-docs/current&lt;/code> に保存する。&lt;/li>
+&lt;li>&lt;code>blog&lt;/code>, &lt;code>pages&lt;/code> は current なし。&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>.
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── babel.config.js
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── 2019-05-28-first-blog-post.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── 2019-05-29-long-blog-post.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── 2021-08-01-mdx-blog-post.mdx
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── 2021-08-26-welcome
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── authors.yml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── docs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── intro.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── tutorial-basics
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── tutorial-extras
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── docusaurus.config.js
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── i18n
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── en
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── docusaurus-plugin-content-docs &amp;lt;-- english version of docs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── current
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── intro.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── tutorial-basics
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── tutorial-extras
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── docusaurus-plugin-content-blog &amp;lt;-- english version of blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── 2019-05-28-first-blog-post.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── 2019-05-29-long-blog-post.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── 2021-08-01-mdx-blog-post.mdx
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ ├── 2021-08-26-welcome
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── authors.yml
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── socusaurus-plugin-content-pages &amp;lt;-- english version of pages
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── index.module.css
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── index.tsx
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── markdown-page.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── my-react-page.js
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── package.json
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── README.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── sidebars.js
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── src
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── components
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── HomepageFeatures
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── css
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ │ └── custom.css
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── pages
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── index.module.css
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── index.tsx
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── markdown-page.md
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── my-react-page.js
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="local-search">local search&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>検索機能はいくつか方法がある（&lt;a href="https://docusaurus.io/docs/search">Search&lt;/a>）&lt;/p>
+&lt;ul>
+&lt;li>Local search の場合は下記リンクのプラグインを使える&lt;/li>
+&lt;li>&lt;a href="https://docusaurus.io/community/resources#search">Local Search&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>docusaurus-lunr-search を使う場合は下記を実行&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>yarn add docusaurus-lunr-search
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>docusaurus.config.js にプラグインを追加する。&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-js" data-lang="js">&lt;span style="display:flex;">&lt;span>module.exports = {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#999;font-style:italic">// ...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#999;font-style:italic">&lt;/span> plugins: [require.resolve(&lt;span style="color:#ed9d13">&amp;#39;docusaurus-lunr-search&amp;#39;&lt;/span>)],
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Docs: Vitepress</title><link>http://forest0923.github.io/memo/en/docs/web/vitepress/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/web/vitepress/</guid><description>
+&lt;h2 id="links">Links&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://vitepress.dev/">VitePress&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="setup">Setup&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>yarn add vitepress
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>yarn vitepress init
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>package.json に script が作成される&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a61717;background-color:#e3d2d2">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">&amp;#34;scripts&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">&amp;#34;docs:dev&amp;#34;&lt;/span>: &lt;span style="color:#ed9d13">&amp;#34;vitepress dev docs&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">&amp;#34;docs:build&amp;#34;&lt;/span>: &lt;span style="color:#ed9d13">&amp;#34;vitepress build docs&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">&amp;#34;docs:preview&amp;#34;&lt;/span>: &lt;span style="color:#ed9d13">&amp;#34;vitepress preview docs&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a61717;background-color:#e3d2d2">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>local でデプロイ:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>yarn docs:dev
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>html を docs/ にエクスポート:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>yarn docs:build
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>build してから local で確認:&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-sh" data-lang="sh">&lt;span style="display:flex;">&lt;span>yarn docs:preview
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="problems">Problems&lt;/h2>
+&lt;ul>
+&lt;li>docs/ のサイドバーが自動で生成されない
+&lt;ul>
+&lt;li>自分で &lt;code>docs/.vitepress/config.mts&lt;/code> に書くか、自作するしかない&lt;/li>
+&lt;li>一応自作したもの↓&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-ts" data-lang="ts">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">function&lt;/span> getContentsDir(dir) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> contentsDir = fs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .readdirSync(&lt;span style="color:#ed9d13">`docs/&lt;/span>&lt;span style="color:#ed9d13">${&lt;/span>dir&lt;span style="color:#ed9d13">}&lt;/span>&lt;span style="color:#ed9d13">`&lt;/span>, { withFileTypes: &lt;span style="color:#6ab825;font-weight:bold">true&lt;/span> })
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .filter((dirent) =&amp;gt; dirent.isDirectory())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> .map((dirent) =&amp;gt; {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> text = dirent.name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> link = &lt;span style="color:#ed9d13">`&lt;/span>&lt;span style="color:#ed9d13">${&lt;/span>dir&lt;span style="color:#ed9d13">}${&lt;/span>text&lt;span style="color:#ed9d13">}&lt;/span>&lt;span style="color:#ed9d13">/`&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">const&lt;/span> items = getContentsDir(link);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">if&lt;/span> (items.length == &lt;span style="color:#3677a9">0&lt;/span>) &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> { text, link };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">else&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> { text, collapsed: &lt;span style="color:#6ab825;font-weight:bold">true&lt;/span>, items };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#6ab825;font-weight:bold">return&lt;/span> contentsDir;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#6ab825;font-weight:bold">export&lt;/span> &lt;span style="color:#6ab825;font-weight:bold">default&lt;/span> defineConfig({
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> themeConfig: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sidebar: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ed9d13">&amp;#34;/contents/&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> text: &lt;span style="color:#ed9d13">&amp;#34;Contents&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> items: &lt;span style="color:#6ab825;font-weight:bold">getContentsDir&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;contents/&amp;#34;&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ],
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#ed9d13">&amp;#34;/blogs/&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> text: &lt;span style="color:#ed9d13">&amp;#34;Blogs&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> items: &lt;span style="color:#6ab825;font-weight:bold">getContentsDir&lt;/span>(&lt;span style="color:#ed9d13">&amp;#34;blogs/&amp;#34;&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ],
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ...
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>})
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Blog を勝手にいい感じに表示してくれる機能がない。
+&lt;ul>
+&lt;li>タグをまとめたり、日付順に並んだリストを表示したりする機能がない&lt;/li>
+&lt;li>&lt;a href="https://github.com/jcamp-code/vitepress-blog-theme/tree/main">jcamp-code/vitepress-blog-theme&lt;/a> を使うとかなりいい感じ&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Docs: Web Tools</title><link>http://forest0923.github.io/memo/en/docs/web/webtools/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/en/docs/web/webtools/</guid><description/></item></channel></rss>

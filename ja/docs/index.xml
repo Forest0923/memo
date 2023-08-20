@@ -3441,7 +3441,7 @@ id="tabs-00-01" role="tabpanel" aria-labelled-by="tabs-00-01-tab">
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo chmod &lt;span style="color:#3677a9">644&lt;/span> /usr/share/fonts/WindowsFonts/*
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fc-cache -f
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-desktop-environment">&lt;strong>Install Desktop Environment&lt;/strong>&lt;/h3>
-&lt;p>&lt;a href="../desktop-env/">Desktop Environment&lt;/a>&lt;/p></description></item><item><title>Docs: System Call</title><link>http://forest0923.github.io/memo/ja/docs/lang/rust/systemcall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/rust/systemcall/</guid><description>
+&lt;p>&lt;a href="../../desktop-env/">Desktop Environment&lt;/a>&lt;/p></description></item><item><title>Docs: System Call</title><link>http://forest0923.github.io/memo/ja/docs/lang/rust/systemcall/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://forest0923.github.io/memo/ja/docs/lang/rust/systemcall/</guid><description>
 &lt;h2 id="use-system-call-crate">Use &lt;code>system-call&lt;/code> crate&lt;/h2>
 &lt;ul>
 &lt;li>Add a dependency to &lt;code>Cargo.toml&lt;/code>:&lt;/li>

@@ -97,7 +97,6 @@ paru -S brave-bin
 ## Virtual Machine Monitor
 
 - KVM
-  - []()
 
 - VirtualBox
 

@@ -285,4 +285,4 @@ fc-cache -f
 
 ### **Install Desktop Environment**
 
-[Desktop Environment](../desktop-env/)
+[Desktop Environment](../../desktop-env/)

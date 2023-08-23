@@ -36,6 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      pages: write
     steps:
       - name: Deploy GitHub Pages site
         uses: actions/deploy-pages@v1.2.9

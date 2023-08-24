@@ -1,11 +1,10 @@
-+++
-title = "glibc open"
-description = "glibc の open の挙動を調査したときのメモ"
-tags = [
+---
+title: "glibc open"
+description: "glibc の open の挙動を調査したときのメモ"
+tags: [
   "glibc", "File I/O"
 ]
-draft = false
-+++
+---
 
 ## Version
 

@@ -1,11 +1,10 @@
-+++
-title = "Data Structures Related to File I/O"
-description = "ファイルのオープンなどを行ったときのカーネル空間のデータ構造について調査する"
-tags = [
+---
+title: "Data Structures Related to File I/O"
+description: "ファイルのオープンなどを行ったときのカーネル空間のデータ構造について調査する"
+tags: [
   "Linux", "File I/O"
 ]
-draft = false
-+++
+---
 
 ## Data Structures
 

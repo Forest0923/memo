@@ -1,11 +1,10 @@
-+++
-title = "glibc printf"
-description = "glibc における printf() の実装を調査する"
-tags = [
+---
+title: "glibc printf"
+description: "glibc における printf() の実装を調査する"
+tags: [
   "glibc"
 ]
-draft = false
-+++
+---
 
 ## Version
 

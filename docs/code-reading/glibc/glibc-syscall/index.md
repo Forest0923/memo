@@ -1,11 +1,10 @@
-+++
-title = "glibc syscall"
-description = "glibc における syscall() の実装を調査する"
-tags = [
+---
+title: "glibc syscall"
+description: "glibc における syscall() の実装を調査する"
+tags: [
   "glibc"
 ]
-draft = false
-+++
+---
 
 ## Version
 

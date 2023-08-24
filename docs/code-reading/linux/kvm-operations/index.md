@@ -1,11 +1,10 @@
-+++
-title = "[KVM] kvm_x86_ops"
-description = "kvm_x86_ops 構造体に登録された関数についてのメモ．"
-tags = [
+---
+title: "[KVM] kvm_x86_ops"
+description: "kvm_x86_ops 構造体に登録された関数についてのメモ．"
+tags: [
   "Linux", "QEMU/KVM"
 ]
-draft = false
-+++
+---
 
 ## About
 

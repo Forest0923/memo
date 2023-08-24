@@ -1,11 +1,10 @@
-+++
-title = "Manipulating FS/GS Segment Registers"
-description = ""
-tags = [
+---
+title: "Manipulating FS/GS Segment Registers"
+description: ""
+tags: [
   "Segment", "Thread Local Storage", "x86"
 ]
-draft = false
-+++
+---
 
 ## Systems
 

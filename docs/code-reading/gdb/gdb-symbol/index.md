@@ -1,11 +1,10 @@
-+++
-title = "GDB Symbol"
-description = "GDB のシンボルの扱いについて調べたときの雑なメモ"
-tags = [
+---
+title: "GDB Symbol"
+description: "GDB のシンボルの扱いについて調べたときの雑なメモ"
+tags: [
   "GDB", "debug"
 ]
-draft = false
-+++
+---
 
 ## Version
 

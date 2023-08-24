@@ -1,11 +1,10 @@
-+++
-title = "Segfault"
-description = "Linux でセグメンテーションフォルトが発生したときの処理を調査する"
-tags = [
+---
+title: "Segfault"
+description: "Linux でセグメンテーションフォルトが発生したときの処理を調査する"
+tags: [
   "Linux"
 ]
-draft = false
-+++
+---
 
 ## Segfault
 

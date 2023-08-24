@@ -1,11 +1,10 @@
-+++
-title = "entry_SYSCALL_64"
-description = "Linux のシステムコールエントリでの処理を調べたときのメモ"
-tags = [
+---
+title: "entry_SYSCALL_64"
+description: "Linux のシステムコールエントリでの処理を調べたときのメモ"
+tags: [
   "Linux", "System Call"
 ]
-draft = false
-+++
+---
 
 ## Version
 

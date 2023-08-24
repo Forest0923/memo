@@ -1,11 +1,10 @@
-+++
-title = "[KVM] Creating VMs"
-description = "QEMU/KVM において VM が作成されて実行されるまでの流れを調べたときのメモ"
-tags = [
+---
+title: "[KVM] Creating VMs"
+description: "QEMU/KVM において VM が作成されて実行されるまでの流れを調べたときのメモ"
+tags: [
   "Linux", "QEMU/KVM"
 ]
-draft = false
-+++
+---
 
 ## 環境
 

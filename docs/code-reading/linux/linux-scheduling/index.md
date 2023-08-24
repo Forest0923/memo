@@ -1,20 +1,22 @@
-+++
-title = "Scheduling"
-description = ""
-tags = [
+---
+title: "Scheduling"
+description: ""
+tags: [
   "Linux", "Scheduling"
 ]
-draft = false
-+++
+---
 
 ## Functions
 
 Call Graph
 
-- [exit_to_usermode_loop()](#exit_to_usermode_loop)
-	- [schedule()](#schedule)
-		- [__schedule()](#__schedule)
-			- [context_switch()](#context_switch)
+- [Functions](#functions)
+	- [`exit_to_usermode_loop()`](#exit_to_usermode_loop)
+	- [`schedule()`](#schedule)
+	- [`__schedule()`](#__schedule)
+	- [`context_switch()`](#context_switch)
+- [Data Structures](#data-structures)
+	- [`struct rq`](#struct-rq)
 
 ### `exit_to_usermode_loop()`
 

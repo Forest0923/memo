@@ -1,11 +1,10 @@
-+++
-title = "[KVM] VMCS"
-description = "KVM 内での VMCS について調べたときのメモ．"
-tags = [
+---
+title: "[KVM] VMCS"
+description: "KVM 内での VMCS について調べたときのメモ．"
+tags: [
   "Linux", "QEMU/KVM"
 ]
-draft = false
-+++
+---
 
 ## About
 

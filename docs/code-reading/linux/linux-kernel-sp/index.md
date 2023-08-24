@@ -1,11 +1,10 @@
-+++
-title = "Kernel Stack Pointers"
-description = ""
-tags = [
+---
+title: "Kernel Stack Pointers"
+description: ""
+tags: [
   "Linux"
 ]
-draft = false
-+++
+---
 
 ## Version
 

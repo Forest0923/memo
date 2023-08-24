@@ -1,11 +1,10 @@
-+++
-title = "Timer Interrupt"
-description = "Linux のタイマ割り込みが起こった際の処理についてのメモ"
-tags = [
+---
+title: "Timer Interrupt"
+description: "Linux のタイマ割り込みが起こった際の処理についてのメモ"
+tags: [
   "Linux", "Interrupt", "Timer"
 ]
-draft = false
-+++
+---
 
 ## Local APIC
 

@@ -61,6 +61,9 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      colorMode: {
+        defaultMode: 'dark'
+      },
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       docs: {
@@ -74,6 +77,7 @@ const config = {
         logo: {
           alt: 'My Site Logo',
           src: 'img/owl.svg',
+          srcDark: 'img/owl_dark.svg',
         },
         items: [
           {
@@ -98,8 +102,8 @@ const config = {
             title: 'Memo',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'Root',
+                to: '/docs/category/root',
               },
             ],
           },

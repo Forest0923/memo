@@ -7,7 +7,7 @@
      viewBox="0 0 1000 1000">
      <!--<rect x="0" y="0" width="1000" height="1000" fill="red"></rect>-->
 
-  <path id="owl" stroke-width="1" stroke="black" fill="black"
+  <path id="owl" stroke-width="1" stroke="white" fill="white"
         d="M 215.80,147.55
            C 215.80,143.15 216.88,139.13 219.03,135.48
              221.20,131.84 224.12,128.92 227.80,126.72

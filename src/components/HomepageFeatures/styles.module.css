@@ -9,3 +9,19 @@
   height: 200px;
   width: 200px;
 }
+
+[data-theme='dark'] .topCard {
+  border: 2px solid #444950;
+}
+
+[data-theme='dark'] .topCard:hover {
+  border: 2px solid #25c2a0;
+}
+
+[data-theme='light'] .topCard {
+  border: 2px solid #ebedf0;
+}
+
+[data-theme='light'] .topCard:hover {
+  border: 2px solid #2e8555;
+}

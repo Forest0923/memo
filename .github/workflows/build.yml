@@ -1,10 +1,9 @@
-name: Github Pages
+name: Build Github Pages
 
 on:
-  push:
+  pull_request:
     branches:
       - master
-  pull_request:
 
 jobs:
   build:
@@ -33,18 +32,3 @@ jobs:
           name: github-pages
           # Path of the directory containing the static assets.
           path: build/
-
-  deploy:
-    if: github.event_name != 'pull_request'
-    name: deploy
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      pages: write
-    steps:
-      - name: Deploy GitHub Pages site
-        uses: actions/deploy-pages@v1.2.9
-        with:
-          # Name of the artifact to deploy
-          artifact_name: github-pages

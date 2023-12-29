@@ -13,6 +13,12 @@ jobs:
       id-token: write
       pages: write
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+      - name: ls
+        run: ls -al
       - name: Deploy GitHub Pages site
         uses: actions/deploy-pages@v1.2.9
         with:

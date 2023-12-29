@@ -4,6 +4,10 @@ draft: false
 weight: 10
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
 ## System
 
 - JDK v11 temurin
@@ -11,13 +15,15 @@ weight: 10
 
 ## Install
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
+    ```sh
 paru -S jdk11-temurin intellij-idea-community-edition
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ## Java のバージョン管理
 

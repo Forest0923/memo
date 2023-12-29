@@ -10,8 +10,6 @@ katex: true
 
 If you need an expression number:
 
-{{< columns >}}
-
 ```tex
 \begin{eqnarray}
   y=\alpha x + \beta
@@ -23,11 +21,7 @@ $$
   \tag{1}
 $$
 
-{{< /columns >}}
-
 If you do not need an expression number:
-
-{{< columns >}}
 
 ```tex
 \[
@@ -39,13 +33,9 @@ $$
   y=\alpha x + \beta
 $$
 
-{{< /columns >}}
-
 ### **Align Equations**
 
 Use \& to align multiple equations at equal positions.
-
-{{< columns >}}
 
 ```tex
 \[
@@ -60,10 +50,6 @@ $$
   d+e&=f
 \end{aligned}
 $$
-
-{{< /columns >}}
-
-{{< columns >}}
 
 ```tex
 \begin{eqnarray}
@@ -79,11 +65,7 @@ $$
 \end{aligned}
 $$
 
-{{< /columns >}}
-
 ### **Simultaneous Equations**
-
-{{< columns >}}
 
 ```tex
 \begin{eqnarray}
@@ -101,10 +83,6 @@ $$
 \end{cases}
 $$
 
-{{< /columns >}}
-
-{{< columns >}}
-
 ```tex
 \begin{numcases}
   {}
@@ -120,11 +98,7 @@ $$
 \end{cases}
 $$
 
-{{< /columns >}}
-
 ### **Matrix**
-
-{{< columns >}}
 
 ```tex
 \begin{eqnarray}
@@ -143,8 +117,6 @@ $$
    c & d
 \end{pmatrix}
 $$
-
-{{< /columns >}}
 
 ## Source Code
 
@@ -212,19 +184,13 @@ The table can be written as follows, but it is easier to create it automatically
 
 ### **Σ**
 
-{{< columns >}}
-
 ```latex
 \sum_{\alpha=0}^{\beta}
 ```
 
 $$\sum_{\alpha=0}^{\beta}$$
 
-{{< /columns >}}
-
 ### **∫**
-
-{{< columns >}}
 
 ```latex
 \int_{\alpha}^{\beta}
@@ -233,13 +199,9 @@ $$\sum_{\alpha=0}^{\beta}$$
 $$
 \int_{\alpha}^{\beta}
 $$
-
-{{< /columns >}}
 
 ### **lim**
 
-{{< columns >}}
-
 ```latex
 \lim_{n \to \infty}
 ```
@@ -247,13 +209,9 @@ $$
 $$
 \lim_{n \to \infty}
 $$
-
-{{< /columns >}}
 
 ### **≠**
 
-{{< columns >}}
-
 ```latex
 \neq
 ```
@@ -261,13 +219,9 @@ $$
 $$
 \neq
 $$
-
-{{< /columns >}}
 
 ### **≈**
 
-{{< columns >}}
-
 ```latex
 \approx
 ```
@@ -277,109 +231,73 @@ $$
 $$
 \approx
 $$
-
-{{< /columns >}}
 
 ### **≒**
 
-{{< columns >}}
-
 ```latex
 \fallingdotseq
 ```
 
-
-
 $$
 \fallingdotseq
 $$
-
-{{< /columns >}}
 
 ### **≡**
 
-{{< columns >}}
-
 ```latex
 \equiv
 ```
 
-
-
 $$
 \equiv
 $$
-
-{{< /columns >}}
 
 ### **>**
 
-{{< columns >}}
-
 ```latex
-\geq
+\gt
 ```
 
-
-
 $$
-\geq
+\gt
 $$
 
-{{< /columns >}}
-
-### **<**
-
-{{< columns >}}
+### **\<**
 
 ```latex
-\leq
+\lt
 ```
 
-
-
 $$
-\leq
+\lt
 $$
-
-{{< /columns >}}
 
 ### **≧**
 
-{{< columns >}}
-
 ```latex
+\geq
 \geqq
 ```
 
-
-
 $$
+\geq\\
 \geqq
 $$
-
-{{< /columns >}}
 
 ### **≦**
 
-{{< columns >}}
-
 ```latex
+\leq
 \leqq
 ```
 
-
-
 $$
+\leq\\
 \leqq
 $$
-
-{{< /columns >}}
 
 ### **×**
 
-{{< columns >}}
-
 ```latex
 \times
 ```
@@ -389,13 +307,9 @@ $$
 $$
 \times
 $$
-
-{{< /columns >}}
 
 ### **÷**
 
-{{< columns >}}
-
 ```latex
 \div
 ```
@@ -405,13 +319,9 @@ $$
 $$
 \div
 $$
-
-{{< /columns >}}
 
 ### **±**
 
-{{< columns >}}
-
 ```latex
 \pm
 ```
@@ -421,13 +331,9 @@ $$
 $$
 \pm
 $$
-
-{{< /columns >}}
 
 ### **∈**
 
-{{< columns >}}
-
 ```latex
 \in
 ```
@@ -437,131 +343,81 @@ $$
 $$
 \in
 $$
-
-{{< /columns >}}
 
 ### **⊂**
 
-{{< columns >}}
-
 ```latex
 \subset
 ```
 
-
-
 $$
 \subset
 $$
-
-{{< /columns >}}
 
 ### **∩**
 
-{{< columns >}}
-
 ```latex
 \cap
 ```
 
-
-
 $$
 \cap
 $$
-
-{{< /columns >}}
 
 ### **∪**
 
-{{< columns >}}
-
 ```latex
 \cup
 ```
 
-
-
 $$
 \cup
 $$
-
-{{< /columns >}}
 
 ### **Null Set ∅**
 
-{{< columns >}}
-
 ```latex
 \emptyset
 ```
 
-
-
 $$
 \emptyset
 $$
-
-{{< /columns >}}
 
 ### **∞**
 
-{{< columns >}}
-
 ```latex
 \infty
 ```
 
-
-
 $$
 \infty
 $$
-
-{{< /columns >}}
 
 ### **Vector**
 
-{{< columns >}}
-
 ```latex
 \vec{a}
 ```
-
-
 
 $$
 \vec{a}
 $$
 
-{{< /columns >}}
-
-{{< columns >}}
-
 ```latex
 \bm{a}
 ```
 
-
-
 $$
 \bm{a}
 $$
-
-{{< /columns >}}
 
 ### **Partial, Del, ∂**
 
-{{< columns >}}
-
 ```latex
 \partial
 ```
 
-
-
 $$
 \partial
 $$
-
-{{< /columns >}}

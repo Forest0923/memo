@@ -3,6 +3,10 @@ title: "デスクトップ環境"
 draft: false
 weight: 50
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 デスクトップ環境をインストールするチュートリアルです．
 
 ## Install
@@ -11,18 +15,22 @@ weight: 50
 
 グラフィックドライバをインストールします．
 
-{{< tabpane >}}
-{{< tab header="Intel" lang="sh" >}}
+<Tabs groupId="gpu-vendor" queryString>
+  <TabItem value="intel" label="Intel">
 
+  ```sh
 sudo pacman -S xf86-video-intel
+  ```
 
-{{< /tab >}}
-{{< tab header="Nvidia" lang="sh" >}}
+  </TabItem>
+  <TabItem value="amd" label="AMD">
 
+  ```sh
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **Display Server**
 
@@ -36,52 +44,66 @@ sudo pacman -S xorg
 
 ログインを GUI で行うためにディスプレイマネージャをインストールします．
 
-{{< tabpane >}}
-{{< tab header="lightdm" lang="sh" >}}
+<Tabs groupId="gui" queryString>
+  <TabItem value="lightdm" label="lightdm">
 
+  ```sh
 sudo pacman -S lightdm lightdm-gtk-greeter
+  ```
 
-{{< /tab >}}
-{{< tab header="gdm" lang="sh" >}}
+  </TabItem>
+  <TabItem value="gdm" label="gdm">
 
+  ```sh
 sudo pacman -S gdm
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **Desktop Environment**
 
-{{< tabpane >}}
-{{< tab header="xfce" lang="sh" >}}
+<Tabs groupId="gui" queryString>
+  <TabItem value="xfce" label="xfce">
 
+  ```sh
 sudo pacman -S xfce4 xfce4-goodies
+  ```
 
-{{< /tab >}}
-{{< tab header="gnome" lang="sh" >}}
+  </TabItem>
+  <TabItem value="gnome" label="gnome">
 
+  ```sh
 sudo pacman -S gnome gnome-tweaks
+  ```
 
-{{< /tab >}}
-{{< tab header="budgie" lang="sh" >}}
+  </TabItem>
+  <TabItem value="budgie" label="budgie">
 
+  ```sh
 sudo pacman -S budgie-desktop gnome
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **Systemd**
 
 ディスプレイマネージャを自動で起動するように systemd を設定します．
 
-{{< tabpane >}}
-{{< tab header="lightdm" lang="sh" >}}
+<Tabs groupId="gui" queryString>
+  <TabItem value="lightdm" label="lightdm">
 
+  ```sh
 systemctl enable lightdm
+  ```
 
-{{< /tab >}}
-{{< tab header="gdm" lang="sh" >}}
+  </TabItem>
+  <TabItem value="gdm" label="gdm">
 
+  ```sh
 systemctl enable gdm
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>

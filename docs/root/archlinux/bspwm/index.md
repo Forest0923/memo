@@ -3,6 +3,10 @@ title: "BSPWM のインストール"
 draft: false
 weight: 60
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 BSPWM という Tile 型のウィンドウマネージャをインストールして，カスタマイズを行います．
 
 ## Install and Configurations
@@ -11,18 +15,22 @@ BSPWM という Tile 型のウィンドウマネージャをインストール�
 
 グラフィックドライバをインストールします．
 
-{{< tabpane >}}
-{{< tab header="Intel" lang="sh" >}}
+<Tabs groupId="gpu-vendor" queryString>
+  <TabItem value="intel" label="Intel">
 
+  ```sh
 sudo pacman -S xf86-video-intel
+  ```
 
-{{< /tab >}}
-{{< tab header="Nvidia" lang="sh" >}}
+  </TabItem>
+  <TabItem value="amd" label="AMD">
 
+  ```sh
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **BSPWM**
 

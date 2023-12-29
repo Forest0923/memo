@@ -27,7 +27,7 @@ sudo apt install texlive-full
 
 ### **jlisting**
 
-日本語を含んだソースコードを載せたい場合は追加で jlisting をダウンロードする必要があります．jlisting を <https://osdn.net/projects/mytexpert/downloads/26068/jlisting.sty.bz2/> からダウンロードして解凍します．
+日本語を含んだソースコードを載せたい場合は追加で jlisting をダウンロードする必要があります．jlisting を https://osdn.net/projects/mytexpert/downloads/26068/jlisting.sty.bz2/ からダウンロードして解凍します．
 
 ```sh
 bzip2 -dk jlisting.sty

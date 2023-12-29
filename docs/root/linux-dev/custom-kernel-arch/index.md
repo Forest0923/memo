@@ -9,7 +9,7 @@ Arch Linux で Linux カーネルの開発をしたときのメモです．基�
 
 ソースコードは下記のページからダウンロードしました．
 
-<https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.17.tar.gz>
+https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.17.tar.gz
 
 ```sh
 curl -O  https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.17.tar.gz

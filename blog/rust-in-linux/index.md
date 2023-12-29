@@ -309,7 +309,7 @@ make: *** [Makefile:1292: prepare] Error 2
 
 Linux における rust の使用はまだ導入されたばかりとはいえ、もっと気軽に使えると期待していたのでかなり残念な結果でした。
 現状でうまくカーネルモジュールなどを作成している英語記事はいくつか見つけましたが、環境の違いなどもあってそのままでは使えなさそう。
-Linux のメインラインを使っているのではなく <https://github.com/Rust-for-Linux/linux> やそのフォークの <https://github.com/jackos/linux> を使っているものも多いです。
+Linux のメインラインを使っているのではなく [Rust for Linux/linux](https://github.com/Rust-for-Linux/linux) やそのフォークの [jackos/linux](https://github.com/jackos/linux) を使っているものも多いです。
 加えて今回やろうと思っていたLKMについてはCで書いたLKMとは作り方が異なるようで気軽に作りづらそう。
 多分まだ変化が大きい部分だと思うので継続的にキャッチアップしていく必要がありそうです。
 

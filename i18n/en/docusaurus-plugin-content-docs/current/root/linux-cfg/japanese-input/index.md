@@ -3,22 +3,30 @@ title: "Japanese Input"
 draft: false
 weight: 999
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This is a memo on how to set up Japanese input using Fcitx (Flexible Input Method Framework) and Mozc.
 
 ## Install
 
-{{< tabpane >}}
-{{< tab header="fcitx5" lang="sh" >}}
+<Tabs groupId="fcitx" queryString>
+  <TabItem value="fcitx5" label="fcitx5">
 
+    ```sh
 sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool
+    ```
 
-{{< /tab >}}
-{{< tab header="fcitx" lang="sh" >}}
+  </TabItem>
+  <TabItem value="fcitx" label="fcitx">
 
+    ```sh
 sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 fcitx5 is a successor to fcitx.
 

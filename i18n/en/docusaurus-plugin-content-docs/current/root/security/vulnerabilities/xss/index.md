@@ -52,7 +52,7 @@ As a fundamental measure, it is necessary to systematically escape special chara
 
 | Special Character | Escape Code |
 | ----------------- | ----------- |
-| <                 | `&lt;`      |
+| \<                 | `&lt;`      |
 | >                 | `&gt;`      |
 | &                 | `&amp;`     |
 | "                 | `&quot;`    |

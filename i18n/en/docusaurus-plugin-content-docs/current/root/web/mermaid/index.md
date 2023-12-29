@@ -31,30 +31,26 @@ Figures can be drawn by Mermaid.js by writing them in `<div class="mermaid">`.
 
 A flowchart can be written by using `flowchart`. The flow direction can be specified by appending T (top), B (bottom), L (left), or R (right) after `flowchart`.
 
-{{< columns >}}
+````text
+```mermaid
+flowchart TB
+    A-->B
+```
+````
 
 ```mermaid
 flowchart TB
     A-->B
 ```
 
+````text
 ```mermaid
-flowchart TB
+flowchart RL
     A-->B
 ```
-
-{{< /columns >}}
-
-{{< columns >}}
+````
 
 ```mermaid
 flowchart RL
     A-->B
 ```
-
-```mermaid
-flowchart RL
-    A-->B
-```
-
-{{< /columns >}}

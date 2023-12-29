@@ -3,23 +3,31 @@ title: "Install Rust"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Install
 
 Use rustup to install and version control rust.
 After installing rustup, add `$HOME/.cargo/bin` to your PATH.
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
+    ```sh
 sudo pacman -S rustup
+    ```
 
-{{< /tab >}}
-{{< tab header="Otherwise" lang="sh" >}}
+  </TabItem>
+  <TabItem value="otherwise" label="Otherwise">
 
+    ```sh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ## rustup
 
@@ -45,18 +53,22 @@ rustup self uninstall
 
 To create new project, run `cargo new`.
 
-{{< tabpane >}}
-{{< tab header="executable" lang="sh" >}}
+<Tabs groupId="type" queryString>
+  <TabItem value="exe" label="Executable">
 
+    ```sh
 cargo new dir_name --bin
+    ```
 
-{{< /tab >}}
-{{< tab header="library" lang="sh" >}}
+  </TabItem>
+  <TabItem value="lib" label="Library">
 
+    ```sh
 cargo new dir_name --lib
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 If you don't use version control such as git, add `--vcs none`.
 

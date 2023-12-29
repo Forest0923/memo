@@ -3,6 +3,10 @@ title: "Installing BSPWM"
 draft: false
 weight: 60
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Install and customize a Tile-type window manager called BSPWM.
 
 ## Install and Configurations
@@ -11,20 +15,22 @@ Install and customize a Tile-type window manager called BSPWM.
 
 Install graphics driver.
 
-{{< tabpane >}}
-{{< tab header="Intel" lang="sh" >}}
+<Tabs groupId="gpu-vendor" queryString>
+  <TabItem value="intel" label="Intel">
 
+  ```sh
 sudo pacman -S xf86-video-intel
+  ```
+
+  </TabItem>
+  <TabItem value="amd" label="AMD">
+
+  ```sh
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
+  ```
 
-{{< /tab >}}
-{{< tab header="Nvidia" lang="sh" >}}
-
-sudo pacman -S xf86-video-intel
-sudo pacman -S nvidia nvidia-utils nvidia-dkms
-
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **BSPWM**
 

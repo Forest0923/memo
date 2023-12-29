@@ -3,6 +3,10 @@ title: "Initial Settings for Ubuntu"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This article is a guide to help you quickly configure the initial settings when you install the desktop version of Ubuntu in VirtualBox. It is assumed that English is selected as the language setting during installation, and Minimal Install is selected.
 
 ```sh
@@ -22,18 +26,22 @@ chmod +x ubuntu-initial-settings.sh
 
 Set the time as follows.
 
-{{< tabpane >}}
-{{< tab header="Never" lang="sh" >}}
+<Tabs groupId="idle-delay" queryString>
+  <TabItem value="never" label="Never">
 
+    ```sh
 gsettings set org.gnome.desktop.session idle-delay 0
+    ```
 
-{{< /tab>}}
-{{< tab header="1 hours" lang="sh" >}}
+  </TabItem>
+  <TabItem value="an_hour" label="An hour">
 
+    ```sh
 gsettings set org.gnome.desktop.session idle-delay 3600
+    ```
 
-{{< /tab>}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **Customize Dock**
 
@@ -51,18 +59,22 @@ gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
 
 ### **Change Server for apt**
 
-{{< tabpane >}}
-{{< tab header="JAIST" lang="sh" >}}
+<Tabs groupId="mirror-server" queryString>
+  <TabItem value="jaist" label="JAIST">
 
+    ```sh
 sudo sed -i.bak -e 's%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.jaist.ac.jp/pub/Linux/ubuntu/archives/%g' /etc/apt/sources.list
+    ```
 
-{{< /tab>}}
-{{< tab header="Yamagata Univ." lang="sh" >}}
+  </TabItem>
+  <TabItem value="yamagata" label="Yamagata Univ.">
 
+    ```sh
 sudo sed -i.bak -e 's%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagata-u.ac.jp/pub/linux/ubuntu/archives/%g' /etc/apt/sources.list
+    ```
 
-{{< /tab>}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **Reduce the Time to Shutdown**
 
@@ -110,25 +122,30 @@ sudo sed -i 's/# set bell-style none/set bell-style none/' /etc/inputrc
 
 ### **Editor**
 
-{{< tabpane >}}
-{{< tab header="Vim" lang="sh" >}}
+<Tabs groupId="editor" queryString>
+  <TabItem value="vim" label="Vim">
 
+    ```sh
 sudo apt install vim-gtk3
+    ```
 
-{{< /tab >}}
-{{< tab header="VSCode" lang="sh" >}}
+  </TabItem>
+  <TabItem value="vscode" label="VS Code">
 
+    ```sh
 sudo apt install snapd
 sudo snap install code
+    ```
 
-{{< /tab >}}
-{{< tab header="Emacs" lang="sh" >}}
+  </TabItem>
+  <TabItem value="emacs" label="Emacs">
 
+    ```sh
 sudo apt install emacs-nox
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
-
+  </TabItem>
+</Tabs>
 ### **Terminal Multiplexer**
 
 ```sh

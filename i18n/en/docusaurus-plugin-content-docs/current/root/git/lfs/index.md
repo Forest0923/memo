@@ -3,6 +3,10 @@ title: "LFS (Large File Storage)"
 draft: false
 weight: 50
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 The maximum file size that can be uploaded to github is 100MB.
 Git Large File Storage enables to upload large file that is larger than 100MB.
 
@@ -10,18 +14,18 @@ Git Large File Storage enables to upload large file that is larger than 100MB.
 
 Install git-lfs with following commands.
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
-
+<Tabs groupId="git-lfs" queryString>
+  <TabItem value="arch" label="Arch">
+  ```sh
 sudo pacman -S git-lfs
-
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
+  ```sh
 sudo apt install git-lfs
-
-{{< /tab >}}
-{{< /tabpane >}}
+  ```
+  </TabItem>
+</Tabs>
 
 Use the following command to confirm that the installation is complete.
 
@@ -101,4 +105,4 @@ To github.com:user/git-lfs-test.git
 
 ## **Note**
 
-GitHub has a per-account limit on the size of a file that can be managed using LFS. For more information, see [GitHub - About storage and bandwidth usage](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage). You can check how much you're currently using from Git LFS Data at <https://github.com/settings/billing>.
+GitHub has a per-account limit on the size of a file that can be managed using LFS. For more information, see [GitHub - About storage and bandwidth usage](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage). You can check how much you're currently using from Git LFS Data at https://github.com/settings/billing.

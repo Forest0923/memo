@@ -146,12 +146,12 @@ In games that require network communication, even if only the GPU is passed thro
 
 > References
 >
-> <https://zenn.dev/190ikp/articles/vagrant_libvirt_gpu>
+> https://zenn.dev/190ikp/articles/vagrant_libvirt_gpu
 >
-> <https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10>
+> https://github.com/vanities/GPU-Passthrough-Arch-Linux-to-Windows10
 >
-> <https://github.com/bryansteiner/gpu-passthrough-tutorial>
+> https://github.com/bryansteiner/gpu-passthrough-tutorial
 >
-> <https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_getting_started_guide/sec-virtualization_getting_started-products-virtualized-hardware-devices>
+> https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_getting_started_guide/sec-virtualization_getting_started-products-virtualized-hardware-devices
 >
-> <https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-pci_devices-pci_passthrough>
+> https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-pci_devices-pci_passthrough

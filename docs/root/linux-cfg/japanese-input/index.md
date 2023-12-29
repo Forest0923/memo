@@ -3,22 +3,30 @@ title: "日本語入力"
 draft: false
 weight: 999
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Fcitx（Flexible Input Method Framework）と Mozc を用いた日本語入力の設定のメモです．
 
 ## インストール
 
-{{< tabpane >}}
-{{< tab header="fcitx5" lang="sh" >}}
+<Tabs groupId="fcitx" queryString>
+  <TabItem value="fcitx5" label="fcitx5">
 
+    ```sh
 sudo pacman -S fcitx5-mozc fcitx5-im fcitx5-configtool
+    ```
 
-{{< /tab >}}
-{{< tab header="fcitx" lang="sh" >}}
+  </TabItem>
+  <TabItem value="fcitx" label="fcitx">
 
+    ```sh
 sudo pacman -S fcitx-mozc fcitx-im fcitx-configtool
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 fcitx5 は fcitx の後継のソフトウェアです．
 

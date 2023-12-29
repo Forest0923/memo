@@ -4,6 +4,9 @@ draft: false
 weight: 11
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Install Arch Linux with the following settings.
 
 | Settings        |             |
@@ -84,9 +87,10 @@ mkfs.btrfs /dev/sda2
 
 Here is a template of the subvolume layout for each snapshot manager used.
 
-{{< tabpane >}}
-{{< tab header="snapper" lang="sh" >}}
+<Tabs groupId="snapshot-manager" queryString>
+  <TabItem value="snapper" label="snapper">
 
+  ```sh
 mount /dev/sda2 /mnt
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
@@ -99,10 +103,12 @@ mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda2 /mnt/home
 mount -o noatime,compress=zstd,space_cache=v2,subvol=@snapshots /dev/sda2 /mnt/.snapshots
 mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
 mount /dev/sda1 /mnt/boot
+  ```
 
-{{< /tab >}}
-{{< tab header="timeshift" lang="sh" >}}
+  </TabItem>
+  <TabItem value="timeshift" label="timeshift">
 
+  ```sh
 mount /dev/sda2 /mnt
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
@@ -113,9 +119,10 @@ mkdir -p /mnt/{boot,home,var/log}
 mount -o noatime,compress=zstd,space_cache=v2,subvol=@home /dev/sda2 /mnt/home
 mount -o noatime,compress=zstd,space_cache=v2,subvol=@var_log /dev/sda2 /mnt/var/log
 mount /dev/sda1 /mnt/boot
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### Base Install
 
@@ -128,18 +135,18 @@ pacman -S archlinux-keyring
 
 Install packages in `/mnt`.
 
-{{< tabpane >}}
-{{< tab header="Intel" lang="sh" >}}
-
+<Tabs groupId="cpu-vendor" queryString>
+  <TabItem value="intel" label="Intel">
+  ```sh
 pacstrap /mnt base linux linux-firmware vim intel-ucode
-
-{{< /tab >}}
-{{< tab header="AMD" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="amd" label="AMD">
+  ```sh
 pacstrap /mnt base linux linux-firmware vim amd-ucode
-
-{{< /tab >}}
-{{< /tabpane >}}
+  ```
+  </TabItem>
+</Tabs>
 
 ### fstab
 

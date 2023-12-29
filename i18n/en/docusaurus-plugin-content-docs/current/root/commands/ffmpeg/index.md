@@ -3,20 +3,24 @@ title: "ffmpeg"
 draft: false
 weight: 30
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Install
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
-
+<Tabs groupId="ffmpeg" queryString>
+  <TabItem value="arch" label="Arch">
+  ```sh
 sudo pacman -S ffmpeg
-
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
+  ```sh
 sudo apt install ffmpeg
-
-{{< /tab >}}
-{{< /tabpane >}}
+  ```
+  </TabItem>
+</Tabs>
 
 ## MP4 Manipulation with ffmpeg
 

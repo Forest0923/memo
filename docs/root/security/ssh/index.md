@@ -3,45 +3,53 @@ title: "SSH"
 draft: false
 weight: 40
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 SSH は Secure Shell の略で，リモートから安全にコンピュータと通信することができるプロトコルを指します．
 
 ## SSH の使い方（クライアント）
 
 ### インストール
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
+    ```sh
 sudo pacman -S openssh
+    ```
 
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
 
+    ```sh
 sudo apt install openssh-client
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### 鍵の生成
 
 ssh-keygen で鍵を生成します．
 
-{{< tabpane >}}
-{{< tab header="RSA" lang="sh" >}}
-
-ssh-keygen -t rsa -b 4096
-
-{{< /tab >}}
-{{< tab header="ECDSA" lang="sh" >}}
-
-ssh-keygen -t ecdsa -b 521
-
-{{< /tab >}}
-{{< tab header="EdDSA" lang="sh" >}}
-
+<Tabs groupId="algorhism" queryString>
+  <TabItem value="EdDSA" label="EdDSA">
+  ```sh
 ssh-keygen -t ed25519
-
-{{< /tab >}}
-{{< /tabpane >}}
+  ```
+  </TabItem>
+  <TabItem value="rsa" label="RSA">
+  ```sh
+ssh-keygen -t rsa -b 4096
+  ```
+  </TabItem>
+  <TabItem value="ecdsa" label="ECDSA">
+  ```sh
+ssh-keygen -t ecdsa -b 521
+  ```
+  </TabItem>
+</Tabs>
 
 デフォルトでは `~/.ssh/` に公開鍵 `id_[algorithm].pub` と秘密鍵 `id_[algorithm]` が作られるので，SSH サーバに公開鍵を登録することでパスワード認証せずに通信を行うことができます．

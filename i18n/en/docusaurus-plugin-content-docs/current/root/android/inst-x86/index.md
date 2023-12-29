@@ -12,7 +12,7 @@ weight: 10
 
 ### **Download OS image (*.iso)**
 
-- Download \*.iso from <https://www.android-x86.org/>
+- Download \*.iso from https://www.android-x86.org/
 
 ### **Configuration of Virtual Machine Manager**
 

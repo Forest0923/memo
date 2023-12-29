@@ -93,7 +93,7 @@ Add the following options to the kernel options in grub configuration.
 
 > `pci=assign-busses`: Make the kernel always assign all PCI bus numbers
 >
-> <https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html>
+> https://tldp.org/HOWTO/BootPrompt-HOWTO-4.html
 
 Create grub config file and reboot.
 
@@ -295,18 +295,18 @@ Upload: 98.05 Mbit/s
 
 ## References
 
-<https://downloadmirror.intel.com/13663/eng/readme_5.5.2.txt>
+https://downloadmirror.intel.com/13663/eng/readme_5.5.2.txt
 
-<https://qiita.com/m10i/items/980a350f898f28eac613>
+https://qiita.com/m10i/items/980a350f898f28eac613
 
-<https://metonymical.hatenablog.com/entry/2018/04/11/193408>
+https://metonymical.hatenablog.com/entry/2018/04/11/193408
 
-<https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin/blob/master/docs/vf-setup.md>
+https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin/blob/master/docs/vf-setup.md
 
-<https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/>
+https://www.heiko-sieger.info/iommu-groups-what-you-need-to-consider/
 
-<https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_(ACS_override_patch)>
+https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#Bypassing_the_IOMMU_groups_(ACS_override_patch)
 
-<https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive>
+https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/sect-iommu-deep-dive
 
-<https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu>
+https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/app-iommu

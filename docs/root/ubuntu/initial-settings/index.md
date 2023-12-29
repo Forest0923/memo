@@ -3,6 +3,10 @@ title: "Ubuntu の初期設定"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 VirtualBox にデスクトップ版の Ubuntu を入れたときに初期設定をすぐにできるようにまとめたものです．GUI なしで設定できるようにしているので，Ubuntu インストール後にターミナルで下記のコマンドを実行すればすべて設定可能です．インストール時の言語設定は English を選択し，Minimal Install を選択した場合を想定しています．
 
 ```sh
@@ -22,18 +26,22 @@ chmod +x ubuntu-initial-settings.sh
 
 次のコマンドで時間を設定します．
 
-{{< tabpane >}}
-{{< tab header="Never" lang="sh">}}
+<Tabs groupId="idle-delay" queryString>
+  <TabItem value="never" label="Never">
 
+    ```sh
 gsettings set org.gnome.desktop.session idle-delay 0
+    ```
 
-{{< /tab>}}
-{{< tab header="1 hours" lang="sh" >}}
+  </TabItem>
+  <TabItem value="an_hour" label="An hour">
 
+    ```sh
 gsettings set org.gnome.desktop.session idle-delay 3600
+    ```
 
-{{< /tab>}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **DOCK のカスタマイズ**
 
@@ -51,18 +59,22 @@ gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
 
 ### **パッケージインストール時のサーバ変更**
 
-{{< tabpane >}}
-{{< tab header="JAIST" lang="sh" >}}
+<Tabs groupId="mirror-server" queryString>
+  <TabItem value="jaist" label="JAIST">
 
+    ```sh
 sudo sed -i.bak -e 's%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.jaist.ac.jp/pub/Linux/ubuntu/archives/%g' /etc/apt/sources.list
+    ```
 
-{{< /tab>}}
-{{< tab header="Yamagata Univ." lang="sh" >}}
+  </TabItem>
+  <TabItem value="yamagata" label="Yamagata Univ.">
 
+    ```sh
 sudo sed -i.bak -e 's%http://jp.archive.ubuntu.com/ubuntu/%http://ftp.yz.yamagata-u.ac.jp/pub/linux/ubuntu/archives/%g' /etc/apt/sources.list
+    ```
 
-{{< /tab>}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **シャットダウンにかかる時間の短縮**
 
@@ -110,24 +122,30 @@ sudo sed -i 's/# set bell-style none/set bell-style none/' /etc/inputrc
 
 ### **エディタ**
 
-{{< tabpane >}}
-{{< tab header="Vim" lang="sh" >}}
+<Tabs groupId="editor" queryString>
+  <TabItem value="vim" label="Vim">
 
+    ```sh
 sudo apt install vim-gtk3
+    ```
 
-{{< /tab >}}
-{{< tab header="VSCode" lang="sh" >}}
+  </TabItem>
+  <TabItem value="vscode" label="VS Code">
 
+    ```sh
 sudo apt install snapd
 sudo snap install code
+    ```
 
-{{< /tab >}}
-{{< tab header="Emacs" lang="sh" >}}
+  </TabItem>
+  <TabItem value="emacs" label="Emacs">
 
+    ```sh
 sudo apt install emacs-nox
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### **ターミナルマルチプレクサ**
 

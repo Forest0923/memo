@@ -3,6 +3,10 @@ title: "LFS (Large File Storage)"
 draft: false
 weight: 50
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 GitHub にアップロードできる最大のファイルサイズはデフォルトでは 100 MB となっています．
 その制限を超えるサイズのファイルを Git で管理したい場合には Git LFS を用いる必要があり，ここではその使い方を説明します．
 
@@ -10,18 +14,18 @@ GitHub にアップロードできる最大のファイルサイズはデフォ�
 
 下記コマンドでインストールします．
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
-
+<Tabs groupId="git-lfs" queryString>
+  <TabItem value="arch" label="Arch">
+  ```sh
 sudo pacman -S git-lfs
-
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
+  ```sh
 sudo apt install git-lfs
-
-{{< /tab >}}
-{{< /tabpane >}}
+  ```
+  </TabItem>
+</Tabs>
 
 インストールできたことを下記のコマンドで確認します．
 
@@ -101,4 +105,4 @@ To github.com:user/git-lfs-test.git
 
 ## **注意点**
 
-GitHub では LFS を用いて管理できるサイズにはアカウント単位で上限が存在します．詳しい内容は [GitHub - About storage and bandwidth usage](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage) を見ることをおすすめしますが，現状でどれだけ利用しているかといった情報は <https://github.com/settings/billing> の Git LFS Data から確認できます．
+GitHub では LFS を用いて管理できるサイズにはアカウント単位で上限が存在します．詳しい内容は [GitHub - About storage and bandwidth usage](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage) を見ることをおすすめしますが，現状でどれだけ利用しているかといった情報は [Billing summary](https://github.com/settings/billing) の Git LFS Data から確認できます．

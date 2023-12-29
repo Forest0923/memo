@@ -3,25 +3,33 @@ title: "Curry 環境構築"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Curry は関数型プログラミング言語と論理型プログラミング言語の特徴を併せ持つ言語で，PAKCS は Curry 言語で書かれたプログラムを実行することができるインタープリタです．PAKCS は Curry のコードを Prolog に変換して実行します。
 
 ## インストール
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
+    ```sh
 paru -S pakcs
+    ```
 
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
 
+    ```sh
 sudo apt-add-repository ppa:swi-prolog/stable
 sudo apt update
 sudo apt install swi-prolog
 sudo apt install pakcs
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 [download site](https://www.informatik.uni-kiel.de/~pakcs/download.html)
 

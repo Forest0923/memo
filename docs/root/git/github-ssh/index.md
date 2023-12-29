@@ -3,27 +3,31 @@ title: "GitHub への SSH 接続"
 draft: false
 weight: 20
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## SSH Key の生成
 
 ssh-keygen を用いて下記のようにコマンドを実行すると選択したアルゴリズムで鍵が生成されます．
 
-{{< tabpane >}}
-{{< tab header="EdDSA" lang="sh" >}}
-
+<Tabs groupId="algorhism" queryString>
+  <TabItem value="EdDSA" label="EdDSA">
+  ```sh
 ssh-keygen -t ed25519
-
-{{< /tab >}}
-{{< tab header="RSA" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="rsa" label="RSA">
+  ```sh
 ssh-keygen -t rsa -b 4096
-
-{{< /tab >}}
-{{< tab header="ECDSA" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="ecdsa" label="ECDSA">
+  ```sh
 ssh-keygen -t ecdsa -b 521
-
-{{< /tab >}}
-{{< /tabpane >}}
+  ```
+  </TabItem>
+</Tabs>
 
 生成時に特に変更を加えなければ `~/.ssh` に秘密鍵の `id_[algorithm]` と公開鍵の `id_[algorithm].pub` が生成されます．
 
@@ -75,7 +79,7 @@ gh auth login
 ssh git@github.com
 ```
 
-フィンガープリントが表示されるので，<https://docs.github.com/ja/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints> と比較して github.com であることを確認したら yes を選択します．
+フィンガープリントが表示されるので，[GitHub の SSH キーフィンガープリント](https://docs.github.com/ja/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints) と比較して github.com であることを確認したら yes を選択します．
 
 > Reference:
 >

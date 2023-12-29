@@ -3,25 +3,33 @@ title: "Haskell 環境構築"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Haskell を Stack を用いてインストールするためのメモです．
 
 ## Install Stack
 
 Stack は haskell のプロジェクトを管理するためのツールでコンパイラやパッケージのインストール，プロジェクトのビルドなどを行えます．インストールは下記のように行います．
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
+    ```sh
 sudo pacman -S stack
+    ```
 
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
 
+    ```sh
 curl -sSL https://get.haskellstack.org/ | sh
 stack upgrade
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ## Basic Usage
 

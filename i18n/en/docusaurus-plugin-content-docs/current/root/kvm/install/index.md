@@ -3,27 +3,31 @@ title: "Install KVM"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Install
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
-
+<Tabs groupId="install-kvm" queryString>
+  <TabItem value="arch" label="Arch">
+  ```sh
 sudo pacman -S virt-manager qemu qemu-arch-extra ovmf vde2 \
                ebtables dnsmasq bridge-utils openbsd-netcat
-
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
+  ```sh
 sudo apt install qemu-kvm libvirt-daemon-system \
                   libvirt-clients bridge-utils virtinst
-
-{{< /tab >}}
-{{< tab header="Fedora" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="fedora" label="Fedora">
+  ```sh
 sudo dnf install @virtualization
-
-{{< /tab >}}
-{{< /tabpane >}}
+  ```
+  </TabItem>
+</Tabs>
 
 ## Configrations
 

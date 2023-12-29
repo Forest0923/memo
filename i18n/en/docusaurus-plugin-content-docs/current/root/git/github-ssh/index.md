@@ -3,27 +3,31 @@ title: "Connect to GitHub with SSH"
 draft: false
 weight: 20
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## SSH Key Generation
 
 Executing ssh-keygen as follows will generate a key using the algorithm you have selected.
 
-{{< tabpane >}}
-{{< tab header="EdDSA" lang="sh" >}}
-
+<Tabs groupId="algorhism" queryString>
+  <TabItem value="EdDSA" label="EdDSA">
+  ```sh
 ssh-keygen -t ed25519
-
-{{< /tab >}}
-{{< tab header="RSA" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="rsa" label="RSA">
+  ```sh
 ssh-keygen -t rsa -b 4096
-
-{{< /tab >}}
-{{< tab header="ECDSA" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="ecdsa" label="ECDSA">
+  ```sh
 ssh-keygen -t ecdsa -b 521
-
-{{< /tab >}}
-{{< /tabpane >}}
+  ```
+  </TabItem>
+</Tabs>
 
 If you do not make any changes during the generation, the private key `id_[algorithm]` and the public key `id_[algorithm].pub` will be generated in `~/.ssh`.
 
@@ -75,7 +79,7 @@ Execute the following command to test the connection.
 ssh git@github.com
 ```
 
-When the fingerprint is displayed, compare it with <https://docs.github.com/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints> and confirm that it is github.com, then select yes.
+When the fingerprint is displayed, compare it with https://docs.github.com/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints and confirm that it is github.com, then select yes.
 
 > Reference:
 >

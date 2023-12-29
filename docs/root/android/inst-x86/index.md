@@ -12,7 +12,7 @@ weight: 10
 
 ### **OS イメージのダウンロード**
 
-<https://www.android-x86.org/> から \*.iso をダウンロードする．
+[Android-x86](https://www.android-x86.org/) から \*.iso をダウンロードする．
 
 ### **Virtual Machine Manager の設定**
 

@@ -3,25 +3,33 @@ title: "Install Curry"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Curry is a language that has features of both functional and logic programming languages. PAKCS is an interpreter that can execute programs written in Curry. PAKCS converts Curry code into Prolog and executes it.
 
 ## Install
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
+    ```sh
 paru -S pakcs
+    ```
 
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
 
+    ```sh
 sudo apt-add-repository ppa:swi-prolog/stable
 sudo apt update
 sudo apt install swi-prolog
 sudo apt install pakcs
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 [download site](https://www.informatik.uni-kiel.de/~pakcs/download.html)
 

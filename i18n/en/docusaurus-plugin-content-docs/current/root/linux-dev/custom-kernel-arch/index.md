@@ -9,7 +9,7 @@ This is a note of my development of a Linux kernel on Arch Linux. Basically, I u
 
 The kernel source code was downloaded from the following URL.
 
-<https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.17.tar.gz>
+https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.17.tar.gz
 
 ```sh
 curl -O  https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.17.tar.gz

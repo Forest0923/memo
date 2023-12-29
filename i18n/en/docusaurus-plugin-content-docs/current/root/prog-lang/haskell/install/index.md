@@ -3,25 +3,33 @@ title: "Install Haskell"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This is a guide to installing Haskell using Stack.
 
 ## Install Stack
 
 Stack is a tool for managing haskell projects, installing compilers and packages, and building projects. The installation is done as follows.
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
+    ```sh
 sudo pacman -S stack
+    ```
 
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
 
+    ```sh
 curl -sSL https://get.haskellstack.org/ | sh
 stack upgrade
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ## Basic Usage
 

@@ -31,32 +31,28 @@ Mermaid.js は Markdown のようなテキストベースで図形やグラフ�
 
 フローチャートは `flowchart` を利用することで書くことができます．流れる方向は T (top), B (bottom), L (left), R (right) を `flowchart` の後ろにつけることで指定できます．
 
-{{< columns >}}
+````text
+```mermaid
+flowchart TB
+    A-->B
+```
+````
+
 
 ```mermaid
 flowchart TB
     A-->B
 ```
 
-
-```mermaid
-flowchart TB
-    A-->B
-```
-
-{{< /columns >}}
-
-{{< columns >}}
-
+````text
 ```mermaid
 flowchart RL
     A-->B
 ```
+````
 
 
 ```mermaid
 flowchart RL
     A-->B
 ```
-
-{{< /columns >}}

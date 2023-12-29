@@ -3,20 +3,23 @@ title: "GitHub CLI"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 このページでは GitHub CLI のインストール，設定，使い方をまとめます．
 
 ## インストール
 
 下記のコマンドでインストールします．
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
-
+<Tabs groupId="gh" queryString>
+  <TabItem value="arch" label="Arch">
+  ```sh
 sudo pacman -S github-cli
-
-{{< /tab >}}
-{{% tab header="Ubuntu" text=true %}}
-
+  ```
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
 Ubuntu の場合は apt から直接インストールできないので，snap 経由でインストールします．
 
 ```sh
@@ -26,9 +29,8 @@ sudo apt install snapd
 ```sh
 sudo snap install gh
 ```
-
-{{% /tab %}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ## 設定
 

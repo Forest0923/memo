@@ -27,7 +27,7 @@ sudo apt install texlive-full
 
 ### **jListing**
 
-If you want to add source code that contains Japanese, you need to download jlisting from <https://osdn.net/projects/mytexpert/downloads/26068/jlisting.sty.bz2/> and extract it.
+If you want to add source code that contains Japanese, you need to download jlisting from https://osdn.net/projects/mytexpert/downloads/26068/jlisting.sty.bz2/ and extract it.
 
 ```sh
 bzip2 -dk jlisting.sty

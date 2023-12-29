@@ -4,6 +4,9 @@ draft: false
 weight: 30
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Install Arch Linux with the following settings.
 
 | Settings        |             |
@@ -113,18 +116,22 @@ pacman -S archlinux-keyring
 
 Install packages in `/mnt`.
 
-{{< tabpane >}}
-{{< tab header="Intel" lang="sh" >}}
+<Tabs groupId="cpu-vender" queryString>
+  <TabItem value="intel" label="Intel">
 
+```sh
 pacstrap /mnt base linux linux-firmware vim intel-ucode
+```
 
-{{< /tab >}}
-{{< tab header="AMD" lang="sh" >}}
+  </TabItem>
+  <TabItem value="amd" label="AMD">
 
+```sh
 pacstrap /mnt base linux linux-firmware vim amd-ucode
+```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### fstab
 

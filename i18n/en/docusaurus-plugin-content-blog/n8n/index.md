@@ -39,7 +39,7 @@ This time, I'm using Docker, so you can deploy with just the following command:
 docker run -d --rm --name n8n -p 5678:5678 -v ~/.n8n:/home/node/.n8n docker.n8n.io/n8nio/n8n
 ```
 
-If you can access <http://[ip]:5678/> and see the login screen, then the deployment was successful. I believe the screen was Sign Up on the first access.
+If you can access http://[ip]:5678/ and see the login screen, then the deployment was successful. I believe the screen was Sign Up on the first access.
 
 ![](n8n_signin.png)
 

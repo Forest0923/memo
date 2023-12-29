@@ -3,6 +3,10 @@ title: "Desktop Environment"
 draft: false
 weight: 50
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This is a tutorial for installing desktop environment.
 
 ## Install
@@ -11,23 +15,22 @@ This is a tutorial for installing desktop environment.
 
 Install graphics driver.
 
-{{< tabpane >}}
-{{< tab header="Intel" lang="sh" >}}
+<Tabs groupId="gpu-vendor" queryString>
+  <TabItem value="intel" label="Intel">
 
+  ```sh
 sudo pacman -S xf86-video-intel
+  ```
 
-{{< /tab >}}
-{{< tab header="AMD" lang="sh" >}}
+  </TabItem>
+  <TabItem value="amd" label="AMD">
 
-sudo pacman -S xf86-video-amdgpu
-
-{{< /tab >}}
-{{< tab header="Nvidia" lang="sh" >}}
-
+  ```sh
 sudo pacman -S nvidia nvidia-utils nvidia-dkms
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### Display Server
 
@@ -41,67 +44,87 @@ sudo pacman -S xorg
 
 Install the Display Manager to use the GUI for login.
 
-{{< tabpane >}}
-{{< tab header="lightdm" lang="sh" >}}
+<Tabs groupId="gui" queryString>
+  <TabItem value="lightdm" label="lightdm">
 
+  ```sh
 sudo pacman -S lightdm lightdm-gtk-greeter
+  ```
 
-{{< /tab >}}
-{{< tab header="gdm" lang="sh" >}}
+  </TabItem>
+  <TabItem value="gdm" label="gdm">
 
+  ```sh
 sudo pacman -S gdm
+  ```
 
-{{< /tab >}}
-{{< tab header="sddm" lang="sh" >}}
+  </TabItem>
+  <TabItem value="sddm" label="sddm">
 
+  ```sh
 sudo pacman -S sddm
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### Desktop Environment
 
-{{< tabpane >}}
-{{< tab header="xfce" lang="sh" >}}
+<Tabs groupId="gui" queryString>
+  <TabItem value="xfce" label="xfce">
 
+  ```sh
 sudo pacman -S xfce4 xfce4-goodies
+  ```
 
-{{< /tab >}}
-{{< tab header="gnome" lang="sh" >}}
+  </TabItem>
+  <TabItem value="gnome" label="gnome">
 
+  ```sh
 sudo pacman -S gnome gnome-tweaks
+  ```
 
-{{< /tab >}}
-{{< tab header="budgie" lang="sh" >}}
+  </TabItem>
+  <TabItem value="budgie" label="budgie">
 
+  ```sh
 sudo pacman -S budgie-desktop gnome
+  ```
 
-{{< /tab >}}
-{{< tab header="kde" lang="sh" >}}
+  </TabItem>
+  <TabItem value="kde" label="KDE">
 
+  ```sh
 sudo pacman -S plasma kde-applications
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ### Systemd
 
 Set systemd to start the display manager automatically.
 
-{{< tabpane >}}
-{{< tab header="lightdm" lang="sh" >}}
+<Tabs groupId="gui" queryString>
+  <TabItem value="lightdm" label="lightdm">
 
+  ```sh
 systemctl enable lightdm
+  ```
 
-{{< /tab >}}
-{{< tab header="gdm" lang="sh" >}}
+  </TabItem>
+  <TabItem value="gdm" label="gdm">
 
+  ```sh
 systemctl enable gdm
+  ```
 
-{{< /tab >}}
-{{< tab header="sddm" lang="sh" >}}
+  </TabItem>
+  <TabItem value="sddm" label="sddm">
 
+  ```sh
 systemctl enable sddm
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>

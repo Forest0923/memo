@@ -299,7 +299,7 @@ make: *** [Makefile:1292: prepare] Error 2
 
 ## Conclusion
 
-While the use of Rust in Linux is still in its early stages, I was hoping it would be more accessible, so it was a bit disappointing. I found some articles that create kernel modules, but it seems that they cannot be used as-is due to differences in the environment. Many of them use forks of the Linux kernel such as <https://github.com/Rust-for-Linux/linux> or <https://github.com/jackos/linux>. Additionally, creating an LKM as I had initially planned seems to have a different process from creating one in C, making it difficult to create one easily. As this is still an area of significant change, it seems that continuous catching up will be necessary.
+While the use of Rust in Linux is still in its early stages, I was hoping it would be more accessible, so it was a bit disappointing. I found some articles that create kernel modules, but it seems that they cannot be used as-is due to differences in the environment. Many of them use forks of the Linux kernel such as https://github.com/Rust-for-Linux/linux or https://github.com/jackos/linux. Additionally, creating an LKM as I had initially planned seems to have a different process from creating one in C, making it difficult to create one easily. As this is still an area of significant change, it seems that continuous catching up will be necessary.
 
 As for Rust as a language itself, I think it's the number one difficult language I want to use, so I want to gradually become proficient in it while tinkering with the kernel. It might be good to start with RedoxOS?
 

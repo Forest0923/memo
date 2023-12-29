@@ -3,20 +3,28 @@ title: "nkf"
 draft: false
 weight: 20
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Install
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="nkf" queryString>
+  <TabItem value="arch" label="Arch">
 
+  ```sh
 paru -S nkf
+  ```
 
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
 
+  ```sh
 sudo apt install nkf
+  ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ## Usage
 

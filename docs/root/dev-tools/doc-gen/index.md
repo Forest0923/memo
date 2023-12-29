@@ -3,22 +3,26 @@ title: "Document Generator (doxygen, sourcetrail)"
 draft: false
 weight: 70
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Doxygen
 
 ### Install
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
-
+<Tabs groupId="doxygen" queryString>
+  <TabItem value="arch" label="Arch">
+  ```sh
 sudo pacman -S doxygen
-
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
-
+  ```
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
+  ```sh
 sudo apt install doxygen
-
-{{< /tab >}}
-{{< /tabpane >}}
+  ```
+  </TabItem>
+</Tabs>
 
 ### Configuration
 
@@ -172,13 +176,13 @@ doxygen foo/bar/Doxygen
 
 Arch Linux の場合は AUR からインストールできます．Ubuntu では [GitHub: CoatiSoftware/Sourcetrail](https://github.com/CoatiSoftware/Sourcetrail/releases) からダウンロードする必要があります．
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
-
+<Tabs groupId="sourcetrail" queryString>
+  <TabItem value="arch" label="Arch">
+```sh
 paru -S sourcetrail
-
-{{< /tab>}}
-{{< /tabpane>}}
+```
+  </TabItem>
+</Tabs>
 
 ### Create Projects
 

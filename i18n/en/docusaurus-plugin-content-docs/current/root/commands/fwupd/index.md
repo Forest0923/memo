@@ -3,21 +3,24 @@ title: "fwupd"
 draft: false
 weight: 50
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Install
 
-
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
-
-sudo pacman -S fwupd
-
-{{< /tab >}}
-{{< tab header="Ubuntu" lang="sh" >}}
-
-sudo apt install fwupd
-
-{{< /tab >}}
-{{< /tabpane >}}
+<Tabs groupId="fwupd" queryString>
+  <TabItem value="arch" label="Arch">
+  ```sh
+  sudo pacman -S fwupd
+  ```
+  </TabItem>
+  <TabItem value="ubuntu" label="Ubuntu">
+  ```sh
+  sudo apt install fwupd
+  ```
+  </TabItem>
+</Tabs>
 
 ## Usage
 

@@ -77,6 +77,6 @@ cat target/debug/deps/*.s
 
 > References
 >
-> <https://blog.rust-lang.org/inside-rust/2020/06/08/new-inline-asm.html>
+> https://blog.rust-lang.org/inside-rust/2020/06/08/new-inline-asm.html
 >
-> <https://doc.rust-lang.org/beta/unstable-book/library-features/asm.html>
+> https://doc.rust-lang.org/beta/unstable-book/library-features/asm.html

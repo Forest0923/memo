@@ -2,15 +2,12 @@
 title: "LaTeX Cheat Sheet"
 draft: false
 weight: 20
-katex: true
 ---
 ## 数式
 
 ### **式番号**
 
 式番号が必要な場合：
-
-{{< columns >}}
 
 ```tex
 \begin{eqnarray}
@@ -23,11 +20,7 @@ $$
   \tag{1}
 $$
 
-{{< /columns >}}
-
 式番号が必要ない場合：
-
-{{< columns >}}
 
 ```tex
 \[
@@ -39,13 +32,9 @@ $$
   y=\alpha x + \beta
 $$
 
-{{< /columns >}}
-
 ### **数式を揃える**
 
 イコールの位置で複数の数式を揃える場合は \& を使います．
-
-{{< columns >}}
 
 ```tex
 \[
@@ -61,9 +50,6 @@ $$
 \end{aligned}
 $$
 
-{{< /columns >}}
-
-{{< columns >}}
 
 ```tex
 \begin{eqnarray}
@@ -79,11 +65,7 @@ $$
 \end{aligned}
 $$
 
-{{< /columns >}}
-
 ### **連立方程式**
-
-{{< columns >}}
 
 ```tex
 \begin{eqnarray}
@@ -101,10 +83,6 @@ $$
 \end{cases}
 $$
 
-{{< /columns >}}
-
-{{< columns >}}
-
 ```tex
 \begin{numcases}
   {}
@@ -120,11 +98,7 @@ $$
 \end{cases}
 $$
 
-{{< /columns >}}
-
 ### **行列**
-
-{{< columns >}}
 
 ```tex
 \begin{eqnarray}
@@ -143,8 +117,6 @@ $$
    c & d
 \end{pmatrix}
 $$
-
-{{< /columns >}}
 
 ## ソースコード
 
@@ -212,20 +184,16 @@ int main(){
 
 ### **Σ**
 
-{{< columns >}}
-
 ```latex
 \sum_{\alpha=0}^{\beta}
 ```
 
-$$\sum_{\alpha=0}^{\beta}$$
-
-{{< /columns >}}
+$$
+\sum_{\alpha=0}^{\beta}
+$$
 
 ### **∫**
 
-{{< columns >}}
-
 ```latex
 \int_{\alpha}^{\beta}
 ```
@@ -233,13 +201,9 @@ $$\sum_{\alpha=0}^{\beta}$$
 $$
 \int_{\alpha}^{\beta}
 $$
-
-{{< /columns >}}
 
 ### **lim**
 
-{{< columns >}}
-
 ```latex
 \lim_{n \to \infty}
 ```
@@ -247,13 +211,9 @@ $$
 $$
 \lim_{n \to \infty}
 $$
-
-{{< /columns >}}
 
 ### **≠**
 
-{{< columns >}}
-
 ```latex
 \neq
 ```
@@ -261,13 +221,9 @@ $$
 $$
 \neq
 $$
-
-{{< /columns >}}
 
 ### **≈**
 
-{{< columns >}}
-
 ```latex
 \approx
 ```
@@ -275,13 +231,9 @@ $$
 $$
 \approx
 $$
-
-{{< /columns >}}
 
 ### **≒**
 
-{{< columns >}}
-
 ```latex
 \fallingdotseq
 ```
@@ -289,13 +241,9 @@ $$
 $$
 \fallingdotseq
 $$
-
-{{< /columns >}}
 
 ### **≡**
 
-{{< columns >}}
-
 ```latex
 \equiv
 ```
@@ -303,69 +251,53 @@ $$
 $$
 \equiv
 $$
-
-{{< /columns >}}
 
 ### **>**
 
-{{< columns >}}
-
 ```latex
-\geq
+\gt
 ```
 
 $$
-\geq
+\gt
 $$
 
-{{< /columns >}}
-
-### **<**
-
-{{< columns >}}
+### **\<**
 
 ```latex
-\leq
+\lt
 ```
 
 $$
-\leq
+\lt
 $$
-
-{{< /columns >}}
 
 ### **≧**
 
-{{< columns >}}
-
 ```latex
+\geq
 \geqq
 ```
 
 $$
+\geq\\
 \geqq
 $$
-
-{{< /columns >}}
 
 ### **≦**
 
-{{< columns >}}
-
 ```latex
+\leq
 \leqq
 ```
 
 $$
+\leq\\
 \leqq
 $$
-
-{{< /columns >}}
 
 ### **×**
 
-{{< columns >}}
-
 ```latex
 \times
 ```
@@ -373,13 +305,9 @@ $$
 $$
 \times
 $$
-
-{{< /columns >}}
 
 ### **÷**
 
-{{< columns >}}
-
 ```latex
 \div
 ```
@@ -387,13 +315,9 @@ $$
 $$
 \div
 $$
-
-{{< /columns >}}
 
 ### **±**
 
-{{< columns >}}
-
 ```latex
 \pm
 ```
@@ -401,13 +325,9 @@ $$
 $$
 \pm
 $$
-
-{{< /columns >}}
 
 ### **∈**
 
-{{< columns >}}
-
 ```latex
 \in
 ```
@@ -415,13 +335,9 @@ $$
 $$
 \in
 $$
-
-{{< /columns >}}
 
 ### **⊂**
 
-{{< columns >}}
-
 ```latex
 \subset
 ```
@@ -429,13 +345,9 @@ $$
 $$
 \subset
 $$
-
-{{< /columns >}}
 
 ### **∩**
 
-{{< columns >}}
-
 ```latex
 \cap
 ```
@@ -443,13 +355,9 @@ $$
 $$
 \cap
 $$
-
-{{< /columns >}}
 
 ### **∪**
 
-{{< columns >}}
-
 ```latex
 \cup
 ```
@@ -457,13 +365,9 @@ $$
 $$
 \cup
 $$
-
-{{< /columns >}}
 
 ### **空集合∅**
 
-{{< columns >}}
-
 ```latex
 \emptyset
 ```
@@ -471,13 +375,9 @@ $$
 $$
 \emptyset
 $$
-
-{{< /columns >}}
 
 ### **∞**
 
-{{< columns >}}
-
 ```latex
 \infty
 ```
@@ -485,13 +385,9 @@ $$
 $$
 \infty
 $$
-
-{{< /columns >}}
 
 ### **ベクトル**
 
-{{< columns >}}
-
 ```latex
 \vec{a}
 ```
@@ -500,9 +396,6 @@ $$
 \vec{a}
 $$
 
-{{< /columns >}}
-
-{{< columns >}}
 
 ```latex
 \bm{a}
@@ -511,13 +404,9 @@ $$
 $$
 \bm{a}
 $$
-
-{{< /columns >}}
 
 ### **Partial, Del, ∂**
 
-{{< columns >}}
-
 ```latex
 \partial
 ```
@@ -525,5 +414,3 @@ $$
 $$
 \partial
 $$
-
-{{< /columns >}}

@@ -12,8 +12,8 @@ weight: 999
 
 ## Dictionary Attack
 
-- <https://wiki.skullsecurity.org/index.php/Passwords>
-- <https://web.archive.org/web/20120207113205/http://www.insidepro.com/eng/download.shtml>
-- <https://www.passwordrandom.com/most-popular-passwords>
-- <https://github.com/danielmiessler/SecLists/tree/master/Passwords>
-- <https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm>
+- https://wiki.skullsecurity.org/index.php/Passwords
+- https://web.archive.org/web/20120207113205/http://www.insidepro.com/eng/download.shtml
+- https://www.passwordrandom.com/most-popular-passwords
+- https://github.com/danielmiessler/SecLists/tree/master/Passwords
+- https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm

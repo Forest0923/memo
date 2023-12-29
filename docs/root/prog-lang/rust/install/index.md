@@ -3,23 +3,31 @@ title: "Rust 環境構築"
 draft: false
 weight: 10
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Install
 
 rustup を用いて rust のインストールやバージョン管理を行います．
 rustup をインストールしたら `$HOME/.cargo/bin` を PATH に追加します．
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
+    ```sh
 sudo pacman -S rustup
+    ```
 
-{{< /tab >}}
-{{< tab header="Otherwise" lang="sh" >}}
+  </TabItem>
+  <TabItem value="otherwise" label="Otherwise">
 
+    ```sh
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 ## rustup
 
@@ -45,18 +53,22 @@ rustup self uninstall
 
 新しいプロジェクトは `cargo new` で作成します．
 
-{{< tabpane >}}
-{{< tab header="executable" lang="sh" >}}
+<Tabs groupId="type" queryString>
+  <TabItem value="exe" label="Executable">
 
+    ```sh
 cargo new dir_name --bin
+    ```
 
-{{< /tab >}}
-{{< tab header="library" lang="sh" >}}
+  </TabItem>
+  <TabItem value="lib" label="Library">
 
+    ```sh
 cargo new dir_name --lib
+    ```
 
-{{< /tab >}}
-{{< /tabpane >}}
+  </TabItem>
+</Tabs>
 
 git などのバージョン管理を行わない場合は `--vcs none` をつけます．
 

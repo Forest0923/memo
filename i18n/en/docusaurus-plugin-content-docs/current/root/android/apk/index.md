@@ -3,6 +3,10 @@ title: "Reverse Engineering (APK)"
 draft: false
 weight: 20
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This is a page about tools for analyzing APK files, which are application packages for Android, and how to use them.
 
 ## Tools
@@ -11,62 +15,72 @@ This is a page about tools for analyzing APK files, which are application packag
 
 A tool for reverse engineering APKs.
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
-paru -S android-apktool
-# or
-paru -S android-apktool-git
+    ```sh
+    paru -S android-apktool
+    # or
+    paru -S android-apktool-git
+    ```
 
-{{< /tab>}}
-{{< /tabpane>}}
+  </TabItem>
+</Tabs>
 
 ### **dex2jar**
 
 A tool to convert Android's dex format to Java's class.
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
-paru -S dex2jar
-# or
-paru -S dex2jar-git
+    ```sh
+    paru -S dex2jar
+    # or
+    paru -S dex2jar-git
+    ```
 
-{{< /tab>}}
-{{< /tabpane>}}
+  </TabItem>
+</Tabs>
 
 ### **jd-cli**
 
 CLI tool for Java Decompiler.
 
-{{< tabpane >}}
-{{< tab header="Black Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
-paru -S jd-cli
+    ```sh
+    paru -S jd-cli
+    ```
 
-{{< /tab>}}
-{{< /tabpane>}}
+  </TabItem>
+</Tabs>
 
 ### **jd-gui**
 
 GUI tool for Java Decompiler.
 
-{{< tabpane >}}
-{{< tab header="Arch" lang="sh" >}}
+<Tabs groupId="OS" queryString>
+  <TabItem value="arch" label="Arch">
 
-paru -S jd-gui
-# or
-paru -S jd-gui-git
-# or
-paru -S jd-gui-bin
+    ```sh
+    paru -S jd-gui
+    # or
+    paru -S jd-gui-git
+    # or
+    paru -S jd-gui-bin
+    ```
 
-{{< /tab>}}
-{{< tab header="Black Arch" lang="sh" >}}
+  </TabItem>
+  <TabItem value="blackarch" label="Black Arch">
 
-paru -S jd-gui
+    ```sh
+    paru -S jd-gui
+    ```
 
-{{< /tab>}}
-{{< /tabpane>}}
+  </TabItem>
+</Tabs>
 
 ## How to Use
 

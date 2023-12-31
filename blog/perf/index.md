@@ -159,8 +159,16 @@ record の際に -g をつけないと call graph を取得できないので注
 
 ioengine を libaio, sync, mmap に変えたときの flamegraph は以下のようになった。
 
+libaio:
+
 ![](./perf_libaio.svg)
+
+sync:
+
 ![](./perf_sync.svg)
+
+mmap:
+
 ![](./perf_mmap.svg)
 
 unknown となっている部分が多いが、fio を自前でビルドしてデバッグ情報をつけるようにすればおそらく解決する。

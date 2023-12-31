@@ -17,7 +17,7 @@ One of the tools that seemed useful but wasn't used is `perf`. This time, let's 
 
 ## Preparation
 
-### Regarding `perf`
+### `perf` and related packages
 
 Install the necessary packages. If only `perf` is needed, it can be installed with the following:
 
@@ -37,7 +37,9 @@ Install the required packages for creating flamegraphs (available in AUR):
 paru -S flamegraph
 ```
 
-To analyze the kernel with `perf`, you need to change a kernel parameter called `perf_event_paranoid`. This parameter controls access to performance events, and its default value is 2. However, this prevents capturing kernel events, so we need to change it to -1.
+To analyze the kernel with `perf`, you need to change a kernel parameter called `perf_event_paranoid`. 
+This parameter controls access to performance events, and its default value is 2.
+However, this prevents capturing kernel events, so we need to change it to -1.
 
 FYI: [Kernel Documentation - perf-security](https://www.kernel.org/doc/html/latest/admin-guide/perf-security.html#unprivileged-users)
 
@@ -48,15 +50,16 @@ echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
 
 ### `fio`
 
-For the purpose of this exercise, we will use `fio`, a tool for taking I/O benchmarks, as a test application.
+In this article, we will use `fio`, a tool for taking I/O benchmarks, as a test application.
 
 ```sh
 sudo pacman -S fio
 ```
 
-While researching how to use `fio`, it was found that there is a configuration item called `ioengine`. To see how the behavior changes when this `ioengine` is changed, we will analyze it with `perf`.
+While researching how to use `fio`, it was found that there is a configuration item called `ioengine`.
+To see how the behavior changes when this `ioengine` is changed, we will analyze it with `perf`.
 
-By the way, looking at the `man` page for `fio` reveals that there are many different `ioengine` options that can be configured.
+By the way, looking at the man page for `fio` reveals that there are many different `ioengine` options that can be configured.
 
 FYI: [fio Man Page](https://manpages.org/fio)
 
@@ -121,13 +124,13 @@ Although there is no particular preference, we will try `libaio`, `sync`, and `m
 - `perf diff` is used to compare `perf.data` files.
   - It can be used to verify the effects when making performance improvements.
 - `perf kvm` is used to profile KVM.
-  - You can supposedly use `perf kvm --guest record` to profile the guest machine, but I had trouble getting it to work, so I'll look into it later.
+  - You can use `perf kvm --guest record` to profile the guest machine, but I had trouble getting it to work, so I'll look into it later.
 
 ## Example
 
-Let's actually use `perf` to analyze `fio`.
+Let's use `perf` to analyze `fio`.
 
-The command to capture the `perf.data` when changing the `ioengine` to `libaio` is as follows:
+The command to capture the `perf.data` is as follows:
 
 ```sh
 perf record -o /tmp/perf_libaio.data -g fio configs/seq_read_libaio.ini
@@ -145,8 +148,16 @@ Note: Be sure to include the `-g` option when recording with `perf record` to ob
 
 Flamegraphs for changing the `ioengine` to `libaio`, `sync`, and `mmap` respectively:
 
+libaio:
+
 ![](./perf_libaio.svg)
+
+sync:
+
 ![](./perf_sync.svg)
+
+mmap:
+
 ![](./perf_mmap.svg)
 
 There are many parts marked as "unknown," but this can likely be resolved by building `fio` with debugging information.

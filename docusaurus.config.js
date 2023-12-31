@@ -1,16 +1,12 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-// const lightCodeTheme = require('prism-react-renderer/themes/github');
-// const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 import { themes } from "prism-react-renderer";
 const lightCodeTheme = themes.github;
 const darkCodeTheme = themes.dracula;
 
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-// const math = require('remark-math');
-// const katex = require('rehype-katex');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -53,8 +49,6 @@ const config = {
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
-          // remarkPlugins: [math],
-          // rehypePlugins: [katex],
         },
         blog: {
           showReadingTime: true,

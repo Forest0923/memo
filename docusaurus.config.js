@@ -150,6 +150,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ['diff', 'makefile', 'bash', 'json']
       },
     }),
   plugins: [require.resolve('docusaurus-lunr-search')],

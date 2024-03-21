@@ -10,43 +10,43 @@ import rehypeKatex from 'rehype-katex';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Forest0923\'s Tech Memo',
-  favicon: 'img/owl.svg',
+  title: "Forest0923's Tech Memo",
+  favicon: "img/owl.svg",
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-test-site.com',
+  url: "https://your-docusaurus-test-site.com",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/memo/',
+  baseUrl: "/memo/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Forest0923', // Usually your GitHub org/user name.
-  projectName: 'memo', // Usually your repo name.
+  organizationName: "Forest0923", // Usually your GitHub org/user name.
+  projectName: "memo", // Usually your repo name.
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'ja',
-    locales: ['en', 'ja'],
+    defaultLocale: "ja",
+    locales: ["en", "ja"],
   },
 
   presets: [
     [
       // 'classic',
-      '@docusaurus/preset-classic',
+      "@docusaurus/preset-classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
         },
@@ -55,21 +55,21 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       },
     ],
   ],
   stylesheets: [
     {
-      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-      type: 'text/css',
+      href: "https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css",
+      type: "text/css",
       integrity:
-        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-      crossorigin: 'anonymous',
+        "sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM",
+      crossorigin: "anonymous",
     },
   ],
 
@@ -77,10 +77,10 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       colorMode: {
-        defaultMode: 'dark'
+        defaultMode: "dark",
       },
       // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: "img/docusaurus-social-card.jpg",
       docs: {
         sidebar: {
           hideable: true,
@@ -88,59 +88,60 @@ const config = {
         },
       },
       navbar: {
-        title: 'Home',
+        title: "Home",
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/owl.svg',
-          srcDark: 'img/owl_dark.svg',
+          alt: "My Site Logo",
+          src: "img/owl.svg",
+          srcDark: "img/owl_dark.svg",
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'docsSidebar',
-            position: 'left',
-            label: 'Memo',
+            type: "docSidebar",
+            sidebarId: "docsSidebar",
+            position: "left",
+            label: "Memo",
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
-          {type: 'localeDropdown', position: 'right'},
+          { to: "/blog", label: "Blog", position: "left" },
+          { to: "/books", label: "Books", position: "left" },
+          { type: "localeDropdown", position: "right" },
           {
-            href: 'https://github.com/forest0923/memo',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://github.com/forest0923/memo",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           {
-            title: 'Memo',
+            title: "Memo",
             items: [
               {
-                label: 'Root',
-                to: '/docs/category/root',
+                label: "Root",
+                to: "/docs/category/root",
               },
             ],
           },
           {
-            title: 'Community',
+            title: "Community",
             items: [
               {
-                label: 'X (Twitter)',
-                href: 'https://twitter.com/forest0923',
+                label: "X (Twitter)",
+                href: "https://twitter.com/forest0923",
               },
             ],
           },
           {
-            title: 'More',
+            title: "More",
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: "Blog",
+                to: "/blog",
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/forest0923/',
+                label: "GitHub",
+                href: "https://github.com/forest0923/",
               },
             ],
           },
@@ -150,10 +151,20 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ['diff', 'makefile', 'bash', 'json']
+        additionalLanguages: ["diff", "makefile", "bash", "json"],
       },
     }),
-  plugins: [require.resolve('docusaurus-lunr-search')],
+  plugins: [
+    require.resolve("docusaurus-lunr-search"),
+    [
+      "@docusaurus/plugin-content-blog",
+      {
+        id: "books",
+        path: "./books",
+        routeBasePath: "books",
+      },
+    ],
+  ],
 };
 
 module.exports = config;

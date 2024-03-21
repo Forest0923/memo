@@ -32,7 +32,7 @@ const FeatureList: FeatureItem[] = [
     title: "Books / 読んだ本",
     Svg: require("@site/static/img/books.svg").default,
     SvgDark: require("@site/static/img/books-dark.svg").default,
-    // link: "./books/",
+    link: "./books/",
   },
 ];
 

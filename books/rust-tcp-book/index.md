@@ -14,9 +14,43 @@ date: 2024-03-07
 
 ### TCP header
 
+![alt text](image.png)
+
+- TCP header は 20 バイト
+- Data offset は 4 bit で TCP header の長さを示す。最小値は 5 で 20 バイト(Options がない場合)、最大値は 15 で 60 バイト
+- URG (urgent)
+  - 緊急のデータであることを示して先に処理させる
+- ACK (acknowledgment)
+- PSH (push)
+  - データをバッファリングせずに送信させる
+- RST (reset)
+  - 予期しない状況やエラー時に接続をリセットする
+- SYN (synchronize)
+- FIN (finish)
+- Window size は受信側のバッファサイズを通知する
+- Checksum はヘッダとデータの整合性を確認するためのもので計算には送信元 IP と宛先 IP も必要
+- Urgent pointer は URG フラグが立っている場合に使用されるもので、緊急のデータの位置を示す
+- Options は可変長で window scale や timestamp などが含まれる
+- Padding は Options の長さが 32 bit の倍数になるように埋めるためのもの
+
 ### スライディングウィンドウ
 
+- ある程度のセグメントを ACK を待たずに送信することで効率的に通信を行う仕組み
+  - 制限なしにパケットを送信し続けてしまうと受信側のバッファがオーバーフローしてしまう
+  - しかし、ACK を毎回待っていると通信効率が悪くなる
+- データ送信したらその分 Window を消費し、ACK を受け取ったら Window を回復する
+
 ### TCP の問題点、QUIC
+
+- HoL (Head of Line) Blocking
+  - パケットロスが発生した場合にその後のパケットも待たされてしまう問題
+- シーケンス番号の使い回し
+  - パケットロスが発生したときに再送されたパケットは同じシーケンス番号を持つため、確認応答がもとのパケットと紛らわしい
+  - 再送タイムアウト時間の推定に悪影響（←あまり良くわかってない）
+- QUICK
+  - 一つのコネクションで複数のストリームを扱うため、HoL Blocking を回避できる
+  - 扱うデータごとにストリームを分けることで再送によるブロッキングを回避
+  - セグメントのID とシーケンス番号を分けることでシーケンス番号の使い回しを回避
 
 ## Rust 関連
 
@@ -26,7 +60,11 @@ date: 2024-03-07
 
 ### thread
 
+[std::thread](https://doc.rust-lang.org/std/thread/)
+
 ### Arc
+
+[std::sync::Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html)
 
 ## ツール関連
 

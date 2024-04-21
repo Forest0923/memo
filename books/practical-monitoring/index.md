@@ -65,7 +65,7 @@ date: 2024-03-21
   - カスタムメトリクスを収集できる
   - Python 製でパフォーマンスが若干劣る？
   - あまりメンテナンスされていなさそう
-  
+
 #### CPU
 
 - top などで確認できる
@@ -266,7 +266,7 @@ cat /proc/loadavg
 - queue の長さの監視 => ConsumerLag?
 - consumption ratio
   - consume のスピード
-  
+
 #### cache
 
 - hit/miss ratio
@@ -276,7 +276,7 @@ cat /proc/loadavg
 - qps の監視
 - [BIND](https://github.com/isc-projects/bind9) の場合はメトリクスを収集するためのオプションがある
   - collectd のプラグインと組み合わせて監視できる
-  
+
 #### NTP
 
 - kerberos の認証などで問題になりうる

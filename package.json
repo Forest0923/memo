@@ -17,6 +17,7 @@
   "dependencies": {
     "@aldridged/docusaurus-plugin-lunr": "^1.0.0-alpha.10",
     "@docusaurus/core": "^3.4.0",
+    "@docusaurus/plugin-google-gtag": "^3.4.0",
     "@docusaurus/preset-classic": "3.4.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",

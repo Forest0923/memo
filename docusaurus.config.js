@@ -153,6 +153,13 @@ const config = {
         darkTheme: darkCodeTheme,
         additionalLanguages: ["diff", "makefile", "bash", "json"],
       },
+      zoom: {
+        selector: '.markdown :not(a) > img',
+        background: {
+          light: 'rgb(255, 255, 255)',
+          dark: 'rgb(50, 50, 50)'
+        }
+      }
     }),
   plugins: [
     require.resolve("docusaurus-lunr-search"),
@@ -164,6 +171,7 @@ const config = {
         routeBasePath: "books",
       },
     ],
+    require.resolve("docusaurus-plugin-image-zoom")
   ],
 };
 

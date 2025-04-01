@@ -54,6 +54,8 @@ const config = {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
+          blogSidebarTitle: 'All posts',
+          blogSidebarCount: 'ALL',
           editUrl:
             "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
@@ -172,6 +174,8 @@ const config = {
         id: "books",
         path: "./books",
         routeBasePath: "books",
+        blogSidebarTitle: 'All posts',
+        blogSidebarCount: 'ALL',
       },
     ],
     require.resolve("docusaurus-plugin-image-zoom")

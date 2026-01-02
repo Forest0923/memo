@@ -25,7 +25,11 @@ const config = {
   projectName: "memo", // Usually your repo name.
 
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  // onBrokenMarkdownLinks: "warn",
+
+  // markdown: {
+  //   onBrokenMarkdownLinks: "warn",
+  // },
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -58,6 +62,7 @@ const config = {
           blogSidebarCount: 'ALL',
           editUrl:
             "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+          onUntruncatedBlogPosts: 'ignore',
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -176,6 +181,7 @@ const config = {
         routeBasePath: "books",
         blogSidebarTitle: 'All posts',
         blogSidebarCount: 'ALL',
+        onUntruncatedBlogPosts: 'ignore',
       },
     ],
     require.resolve("docusaurus-plugin-image-zoom")

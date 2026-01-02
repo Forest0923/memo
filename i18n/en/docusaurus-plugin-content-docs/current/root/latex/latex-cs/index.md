@@ -280,8 +280,10 @@ $$
 ```
 
 $$
+\begin{aligned}
 \geq\\
 \geqq
+\end{aligned}
 $$
 
 ### **≦**
@@ -292,8 +294,10 @@ $$
 ```
 
 $$
+\begin{aligned}
 \leq\\
 \leqq
+\end{aligned}
 $$
 
 ### **×**
